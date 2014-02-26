@@ -1,4 +1,31 @@
 Agora::Application.routes.draw do
+  resources :responses
+
+
+  resources :questions
+
+
+  resources :scales
+
+
+  resources :evaluations
+
+
+  resources :assignments
+
+
+  resources :submissions
+
+
+  resources :courses
+
+
+  resources :registrations
+
+
+  resources :users
+
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

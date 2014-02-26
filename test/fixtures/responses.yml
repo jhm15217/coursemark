@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  peer_review: MyText
+  student_response: MyText
+  instructor_response: MyText
+  evaluation_id: 1
+  question_id: 1
+  scale_id: 1
+
+two:
+  peer_review: MyText
+  student_response: MyText
+  instructor_response: MyText
+  evaluation_id: 1
+  question_id: 1
+  scale_id: 1

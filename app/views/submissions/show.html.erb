@@ -1,0 +1,25 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Submitted:</b>
+  <%= @submission.submitted %>
+</p>
+
+<p>
+  <b>Submission:</b>
+  <%= @submission.submission %>
+</p>
+
+<p>
+  <b>Assignment:</b>
+  <%= @submission.assignment_id %>
+</p>
+
+<p>
+  <b>User:</b>
+  <%= @submission.user_id %>
+</p>
+
+
+<%= link_to 'Edit', edit_submission_path(@submission) %> |
+<%= link_to 'Back', submissions_path %>

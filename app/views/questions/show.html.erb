@@ -1,0 +1,25 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Question text:</b>
+  <%= @question.question_text %>
+</p>
+
+<p>
+  <b>Question weight:</b>
+  <%= @question.question_weight %>
+</p>
+
+<p>
+  <b>Written response required:</b>
+  <%= @question.written_response_required %>
+</p>
+
+<p>
+  <b>Assignment:</b>
+  <%= @question.assignment_id %>
+</p>
+
+
+<%= link_to 'Edit', edit_question_path(@question) %> |
+<%= link_to 'Back', questions_path %>

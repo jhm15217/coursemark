@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  question_text: MyText
+  question_weight: 1
+  written_response_required: false
+  assignment_id: 1
+
+two:
+  question_text: MyText
+  question_weight: 1
+  written_response_required: false
+  assignment_id: 1

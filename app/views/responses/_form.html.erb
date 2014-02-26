@@ -1,0 +1,41 @@
+<%= form_for(@response) do |f| %>
+  <% if @response.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@response.errors.count, "error") %> prohibited this response from being saved:</h2>
+
+      <ul>
+      <% @response.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :peer_review %><br />
+    <%= f.text_area :peer_review %>
+  </div>
+  <div class="field">
+    <%= f.label :student_response %><br />
+    <%= f.text_area :student_response %>
+  </div>
+  <div class="field">
+    <%= f.label :instructor_response %><br />
+    <%= f.text_area :instructor_response %>
+  </div>
+  <div class="field">
+    <%= f.label :evaluation_id %><br />
+    <%= f.number_field :evaluation_id %>
+  </div>
+  <div class="field">
+    <%= f.label :question_id %><br />
+    <%= f.number_field :question_id %>
+  </div>
+  <div class="field">
+    <%= f.label :scale_id %><br />
+    <%= f.number_field :scale_id %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

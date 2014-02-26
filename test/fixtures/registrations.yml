@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  instructor: false
+  active: false
+  user_id: 1
+  course_id: false
+
+two:
+  instructor: false
+  active: false
+  user_id: 1
+  course_id: false

@@ -1,0 +1,35 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Peer review:</b>
+  <%= @response.peer_review %>
+</p>
+
+<p>
+  <b>Student response:</b>
+  <%= @response.student_response %>
+</p>
+
+<p>
+  <b>Instructor response:</b>
+  <%= @response.instructor_response %>
+</p>
+
+<p>
+  <b>Evaluation:</b>
+  <%= @response.evaluation_id %>
+</p>
+
+<p>
+  <b>Question:</b>
+  <%= @response.question_id %>
+</p>
+
+<p>
+  <b>Scale:</b>
+  <%= @response.scale_id %>
+</p>
+
+
+<%= link_to 'Edit', edit_response_path(@response) %> |
+<%= link_to 'Back', responses_path %>

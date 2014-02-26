@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  submission_due: 2014-02-25 23:45:04
+  review_due: 2014-02-25 23:45:04
+  reviews_required: 1
+  draft: false
+  course_id: 1
+
+two:
+  submission_due: 2014-02-25 23:45:04
+  review_due: 2014-02-25 23:45:04
+  reviews_required: 1
+  draft: false
+  course_id: 1
