@@ -14,10 +14,12 @@
   <div class="field">
     <%= f.label :submission_id %><br />
     <%= f.number_field :submission_id %>
+    <%= f.collection_select :submission_id, Submission.all, :id, :name, :prompt => "Select submission..." %>
+
   </div>
   <div class="field">
     <%= f.label :user_id %><br />
-    <%= f.number_field :user_id %>
+    <%= f.collection_select :user_id, User.all, :id, :name, :prompt => "Select user..." %>
   </div>
   <div class="actions">
     <%= f.submit %>

@@ -25,7 +25,7 @@
   </div>
   <div class="field">
     <%= f.label :assignment_id %><br />
-    <%= f.number_field :assignment_id %>
+    <%= f.collection_select :assignment_id, Assignment.all, :id, :id, :prompt => "Select assignment..." %>
   </div>
   <div class="actions">
     <%= f.submit %>

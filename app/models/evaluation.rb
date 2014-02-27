@@ -5,5 +5,9 @@ class Evaluation < ActiveRecord::Base
   has_many :responses
   belongs_to :submission
   belongs_to :user
+
+  def user_name 
+  	self.user.name 
+  end
   
 end
