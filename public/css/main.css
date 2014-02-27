@@ -76,6 +76,11 @@ textarea {
     color: #FFF;
 }
 
+#sidebar a {
+    text-decoration:none;
+    color: #FFF;
+}
+
 #sidebar .tabs {
     width: 100%;
     height: 55px;
@@ -140,16 +145,21 @@ textarea {
     margin: 40px 0px 30px -60px;
     border-top: 1px solid #b2b2b2;
     border-bottom: 1px solid #b2b2b2;
+    padding-left: 60px;
 }
 
 #main .tab {
     float: left;
     height: 100%;
-    width: 235px;
+    width: 200px;
     text-align: center;
     padding-top: 10px;
     font-size: 10.5pt;
     border-right: 1px solid #b2b2b2;
+}
+
+#main .tab:nth-child(1) {
+    border-left: 1px solid #b2b2b2;    
 }
 
 #main .tab:hover {

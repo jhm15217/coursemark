@@ -1,4 +1,6 @@
 class QuestionsController < ApplicationController
+  before_filter :get_assignment
+
   # GET /questions
   # GET /questions.json
   def index
@@ -78,6 +80,12 @@ class QuestionsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to questions_url }
       format.json { head :no_content }
+    end
+  end
+
+  def get_assignment
+    if params[:assignment_id]
+      @assignment = Assignment.find(params[:assignment_id])
     end
   end
 end
