@@ -31,7 +31,7 @@
 
             <ul>
             	<% @assignments.each do |assignment| %>
-                <li>
+                <li class="<%= 'active' if @assignment.name == assignment.name %>">
                 	<%= link_to(assignment) do %>
 	                    <div class="name"><%= assignment.name %></div>
 	                    <div class="status"><%= assignment.draft ? 'Draft' : 'Published' %></div>
