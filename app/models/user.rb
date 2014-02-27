@@ -5,5 +5,9 @@ class User < ActiveRecord::Base
   has_many :evaluations
   has_many :submissions
   has_many :registrations
+
+  def name 
+		self.first_name.concat(' ').concat(self.last_name)
+	end
   
 end

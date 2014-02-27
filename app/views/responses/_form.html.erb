@@ -25,15 +25,15 @@
   </div>
   <div class="field">
     <%= f.label :evaluation_id %><br />
-    <%= f.number_field :evaluation_id %>
+    <%= f.collection_select :evaluation_id, Evaluation.all, :id, :user_name, :prompt => "Select evaluation..." %>
   </div>
   <div class="field">
     <%= f.label :question_id %><br />
-    <%= f.number_field :question_id %>
+        <%= f.collection_select :question_id, Question.all, :id, :question_text, :prompt => "Select question..." %>
   </div>
   <div class="field">
     <%= f.label :scale_id %><br />
-    <%= f.number_field :scale_id %>
+    <%= f.collection_select :scale_id, Scale.all, :id, :id, :prompt => "Select scale..." %>
   </div>
   <div class="actions">
     <%= f.submit %>
