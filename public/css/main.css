@@ -158,6 +158,11 @@ textarea {
     border-right: 1px solid #b2b2b2;
 }
 
+#main .tabs a {
+    text-decoration:none;
+    color: #2b2c38;
+}
+
 #main .tab:nth-child(1) {
     border-left: 1px solid #b2b2b2;    
 }
