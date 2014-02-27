@@ -163,6 +163,10 @@ textarea {
     color: #2b2c38;
 }
 
+#main .tab.active a {
+    color: #FFF;
+}
+
 #main .tab:nth-child(1) {
     border-left: 1px solid #b2b2b2;    
 }
@@ -174,24 +178,29 @@ textarea {
 #main .tab.active {
     background: #363746;
     color: #FFF;
+    border-left: 0px;
 }
 
-#main table.submissions {
+#main .tab.active + #main .tab {
+    border-left: 0px !important;
+}
+
+#main table {
     width: 100%;
     text-align: left;
 }
 
-#main table.submissions tr {
+#main table tr {
     height: 50px;
     border-bottom: 1px solid #d1d1d1;
 }
 
-#main table.submissions td:nth-child(1),
-#main table.submissions th:nth-child(1) {
+#main table td:nth-child(1),
+#main table th:nth-child(1) {
     padding-left: 15px;
 }
 
-#main table.submissions tr:nth-child(even) {
+#main table tr:nth-child(even) {
     background: #f8f8f8;
 }
 

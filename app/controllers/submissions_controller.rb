@@ -4,7 +4,7 @@ class SubmissionsController < ApplicationController
   # GET /submissions
   # GET /submissions.json
   def index
-    @submissions = Submission.all
+    @submissions = @assignment.submissions
 
     respond_to do |format|
       format.html # index.html.erb
