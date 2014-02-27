@@ -22,7 +22,9 @@
 
         <div id="sidebar">
             <div class="tabs">
-                <div class="tab assignments active"></div>
+                <%= link_to assignments_path do %>
+                    <div class="tab assignments active"></div>
+                <% end %>
                 <div class="tab"></div>
                 <div class="tab"></div>
             </div>
