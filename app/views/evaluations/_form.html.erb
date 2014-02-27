@@ -14,7 +14,7 @@
   <div class="field">
     <%= f.label :submission_id %><br />
     <%= f.number_field :submission_id %>
-    <%= f.collection_select :submission_id, Submission.all, :id, :id, :prompt => "Select submission..." %>
+    <%= f.collection_select :submission_id, Submission.all, :id, :name, :prompt => "Select submission..." %>
 
   </div>
   <div class="field">
