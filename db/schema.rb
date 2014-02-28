@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140227155836) do
+ActiveRecord::Schema.define(:version => 20140228013042) do
 
   create_table "assignments", :force => true do |t|
     t.datetime "submission_due"
@@ -76,7 +76,7 @@ ActiveRecord::Schema.define(:version => 20140227155836) do
 
   create_table "submissions", :force => true do |t|
     t.datetime "submitted"
-    t.binary   "submission"
+    t.string   "submission"
     t.integer  "assignment_id"
     t.integer  "user_id"
     t.datetime "created_at",    :null => false
