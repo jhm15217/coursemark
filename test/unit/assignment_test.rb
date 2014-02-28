@@ -8,7 +8,7 @@ class AssignmentTest < ActiveSupport::TestCase
   should have_many(:questions)
 
   # test IDs
-  should validate_numercality of(:course_id)
+  should validate_numericality_of(:course_id)
 	should_not allow_value(3.14159).for(:course_id)
   should_not allow_value(0).for(:course_id)
   should_not allow_value(-1).for(:course_id)
