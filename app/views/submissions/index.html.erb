@@ -8,11 +8,11 @@
     </tr>
     <% @submissions.each do |submission| %>
     <tr>
-      <td>submission.user.first_name</td>
-      <td>submission.user.last_name</td> 
-      <td>submission.submitted</td>
+      <td><%= submission.user.first_name %></td>
+      <td><%= submission.user.last_name %></td> 
+      <td><%= submission.submitted %></td>
       <td>GRADE HERE</td>
-      <td><%= link_to 'Show', submission %></td>
+      <td><%= link_to 'Show', [@assignment, submission] %></td>
     </tr>
     <% end %>
 </table>
