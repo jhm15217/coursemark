@@ -29,6 +29,8 @@ group :development do
   gem 'quiet_assets', '1.0.2'
   gem 'better_errors', '0.7.0'
   gem 'faker', '1.1.2'
+  gem "seed_dump"
+
 end
 
 # Gems used only for assets and not required
@@ -42,6 +44,9 @@ group :assets do
 
   gem 'uglifier', '>= 1.0.3'
 end
+
+#file upload
+gem 'carrierwave'
 
 gem 'jquery-rails'
 
