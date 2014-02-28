@@ -23,7 +23,7 @@
         <div id="sidebar">
             <div class="tabs">
                 <%= link_to assignments_path do %>
-                    <div class="tab assignments active"></div>
+                    <div class="tab assignments <%= 'active' if @assignment %>"></div>
                 <% end %>
                 <div class="tab"></div>
                 <div class="tab"></div>

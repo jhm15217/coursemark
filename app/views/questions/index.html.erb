@@ -1,3 +1,4 @@
+<% if @questions.length > 0 %>
 <table>
   <tr>
     <th>Question</th>
@@ -23,3 +24,8 @@
 <br />
 
 <%= link_to 'New Question',  new_assignment_question_path(@assignment) %>
+<% else %>
+    <h2 class="noData">
+      <%= link_to 'Create first rubric question.',  new_assignment_question_path(@assignment) %>
+    </h2>
+<% end %>

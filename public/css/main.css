@@ -99,6 +99,15 @@ textarea {
     background: #f39c12;
 }
 
+#sidebar .tab.assignments {
+    background: url(../img/assignments_icon.png) no-repeat center center;
+}
+
+#sidebar .tab.assignments.active {
+    background-color: #f39c12;
+    background-image: url(../img/assignments_icon.png) no-repeat center center;
+}
+
 #sidebar ul {
     padding: 0px;
     margin: 0px;
@@ -206,6 +215,16 @@ textarea {
 
 #main table tr:nth-child(even) {
     background: #f8f8f8;
+}
+
+#main .noData {
+    text-align: center;
+    opacity: 0.3;
+    margin-top: 100px;
+}
+
+#main .noData a {
+    color: #2b2c38;
 }
 
 /* ==========================================================================

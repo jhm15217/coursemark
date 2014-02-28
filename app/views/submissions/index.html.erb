@@ -1,18 +1,22 @@
-<table class="submissions">
-    <tr>
-      <th>First name</th>
-      <th>Last name</th> 
-      <th>Timestamp</th>
-      <th>Grade</th>
-      <th></th>
-    </tr>
-    <% @submissions.each do |submission| %>
-    <tr>
-      <td>submission.user.first_name</td>
-      <td>submission.user.last_name</td> 
-      <td>submission.submitted</td>
-      <td>GRADE HERE</td>
-      <td><%= link_to 'Show', submission %></td>
-    </tr>
-    <% end %>
-</table>
+<% if @submissions.length > 0 %>
+  <table class="submissions">
+      <tr>
+        <th>First name</th>
+        <th>Last name</th> 
+        <th>Timestamp</th>
+        <th>Grade</th>
+        <th></th>
+      </tr>
+      <% @submissions.each do |submission| %>
+      <tr>
+        <td>submission.user.first_name</td>
+        <td>submission.user.last_name</td> 
+        <td>submission.submitted</td>
+        <td>GRADE HERE</td>
+        <td><%= link_to 'Show', submission %></td>
+      </tr>
+      <% end %>
+  </table>
+<% else %>
+  <h2 class="noData">No one has submitted yet.</h2>
+<% end %>
