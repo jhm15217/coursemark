@@ -1,4 +1,4 @@
-<% if @questions.length > 0 %>
+<% if @questions and @questions.length > 0 %>
 <table>
   <tr>
     <th>Question</th>
@@ -14,9 +14,8 @@
     <td><%= question.question_text %></td>
     <td><%= question.question_weight %></td>
     <td><%= question.written_response_required %></td>
-    <td><%= link_to 'Show', [@assignment, question] %></td>
     <td><%= link_to 'Edit', [:edit, @assignment, question] %></td>
-    <td><%= link_to 'Destroy', [@assignment, question], method: :delete, data: { confirm: 'Are you sure?' } %></td>
+    <td><%= link_to "Delete", assignment_question_path(@assignment, question), confirm: "Are you sure?", method: :delete %></td>
   </tr>
 <% end %>
 </table>

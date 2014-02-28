@@ -1,4 +1,4 @@
-<%= form_for(@question) do |f| %>
+<%= form_for [@assignment, @question] do |f| %>
   <% if @question.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@question.errors.count, "error") %> prohibited this question from being saved:</h2>
@@ -12,20 +12,16 @@
   <% end %>
 
   <div class="field">
-    <%= f.label :question_text %><br />
+    <%= f.label :name, "Description" %><br />
     <%= f.text_area :question_text %>
   </div>
   <div class="field">
-    <%= f.label :question_weight %><br />
+    <%= f.label :name, "Weight (1%-100%)" %><br />
     <%= f.number_field :question_weight %>
   </div>
   <div class="field">
     <%= f.label :written_response_required %><br />
     <%= f.check_box :written_response_required %>
-  </div>
-  <div class="field">
-    <%= f.label :assignment_id %><br />
-    <%= f.collection_select :assignment_id, Assignment.all, :id, :id, :prompt => "Select assignment..." %>
   </div>
   <div class="actions">
     <%= f.submit %>
