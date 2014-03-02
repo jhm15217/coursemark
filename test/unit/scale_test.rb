@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class ScaleTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
+  should belong_to(:question)
+
+  should_not allow_value(nil).for(:question_id)
 end

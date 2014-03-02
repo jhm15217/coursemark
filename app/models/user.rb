@@ -6,8 +6,14 @@ class User < ActiveRecord::Base
   has_many :submissions
   has_many :registrations
 
-  def name 
+  # Validations
+  validates_presence_of :email, :password, :password_digest
+  validates_uniqueness_of :email
+
+
+  #Helpers
+  def name
 		self.first_name.concat(' ').concat(self.last_name)
 	end
-  
+
 end

@@ -7,5 +7,8 @@ class Submission < ActiveRecord::Base
   belongs_to :user
   belongs_to :assignment
   has_many :evaluations
-  
+
+  # Validations
+  validates_presence_of :assignment_id
+  validates_presence_of :user_id
 end

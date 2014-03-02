@@ -22,6 +22,7 @@ group :test do
 	gem 'nokogiri', '1.6.1'
 	gem 'simplecov', '0.8.2'
 	gem 'tconsole', '1.2.8'
+	gem 'validates_timeliness'
 end
 
 # Gems used only in development
