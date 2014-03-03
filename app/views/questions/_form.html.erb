@@ -1,4 +1,4 @@
-<%= form_for [@assignment, @question] do |f| %>
+<%= nested_form_for [@assignment, @question] do |f| %>
   <% if @question.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@question.errors.count, "error") %> prohibited this question from being saved:</h2>
@@ -23,6 +23,10 @@
     <%= f.label :written_response_required %><br />
     <%= f.check_box :written_response_required %>
   </div>
+  <% f.fields_for :scales do |scale| %>
+    <%= render 'scales/scale_fields', :f => scale %>
+  <% end %>
+  <%= f.link_to_add "Add an option", :scales %>
   <div class="actions">
     <%= f.submit %>
   </div>

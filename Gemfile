@@ -46,12 +46,14 @@ group :assets do
   gem 'uglifier', '>= 1.0.3'
 end
 
-#file upload
+# File upload
 gem 'carrierwave'
 
 gem 'jquery-rails'
 gem 'validates_timeliness'
 
+# Nested forms
+gem 'nested_form'
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'

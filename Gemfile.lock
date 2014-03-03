@@ -103,6 +103,7 @@ GEM
       metaclass (~> 0.0.1)
     multi_json (1.8.4)
     multi_test (0.0.3)
+    nested_form (0.3.2)
     nokogiri (1.6.1)
       mini_portile (~> 0.5.0)
     polyglot (0.3.4)
@@ -196,6 +197,7 @@ DEPENDENCIES
   jquery-rails
   launchy (= 2.4.2)
   mocha (= 1.0.0)
+  nested_form
   nokogiri (= 1.6.1)
   quiet_assets (= 1.0.2)
   rails (= 3.2.13)
