@@ -1,5 +1,6 @@
 class Assignment < ActiveRecord::Base
   attr_accessible :course_id, :draft, :review_due, :reviews_required, :submission_due, :name
+  has_secure_password
 
   # Relationships
   belongs_to :course
