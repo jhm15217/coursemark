@@ -4,5 +4,9 @@ class Registration < ActiveRecord::Base
   # Relationships
   belongs_to :user
   belongs_to :course
-  
+
+  # Validations
+  validates_inclusion_of :active, :in => [true, false], :message => "must be true or false"
+  validates_inclusion_of :instructor, :in => [true, false], :message => "must be true or false"
+
 end

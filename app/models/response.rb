@@ -5,5 +5,8 @@ class Response < ActiveRecord::Base
   belongs_to :question
   belongs_to :scale
   belongs_to :evaluation
-  
+
+  # Validations
+  validates_presence_of :question_id, :scale_id, :evaluation_id
+
 end

@@ -4,8 +4,17 @@ class AssignmentsController < ApplicationController
   def index
     @assignments = Assignment.all
 
+    # Redirect to first assignment page or 
+    # new assignment page if there are none
+
+    if @assignments.length > 0
+      @URL = @assignments.first
+    else
+      @URL = { :action => 'new' }
+    end
+
     respond_to do |format|
-      format.html # index.html.erb
+      format.html { redirect_to(@URL) }
       format.json { render json: @assignments }
     end
   end
@@ -16,7 +25,7 @@ class AssignmentsController < ApplicationController
     @assignment = Assignment.find(params[:id])
 
     respond_to do |format|
-      format.html # show.html.erb
+      format.html { redirect_to(assignment_submissions_url(@assignment)) }
       format.json { render json: @assignment }
     end
   end

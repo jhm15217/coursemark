@@ -12,6 +12,12 @@ input,
 select,
 textarea {
     color: #2b2c38;
+    outline: none;
+}
+
+input, textarea {
+    border: 1px solid #d1d1d1;
+    padding: 5px;
 }
 
 html, body {
@@ -76,6 +82,11 @@ textarea {
     color: #FFF;
 }
 
+#sidebar a {
+    text-decoration:none;
+    color: #FFF;
+}
+
 #sidebar .tabs {
     width: 100%;
     height: 55px;
@@ -94,6 +105,15 @@ textarea {
     background: #f39c12;
 }
 
+#sidebar .tab.assignments {
+    background: url(../img/assignments_icon.png) no-repeat center center;
+}
+
+#sidebar .tab.assignments.active {
+    background-color: #f39c12;
+    background-image: url(../img/assignments_icon.png) no-repeat center center;
+}
+
 #sidebar ul {
     padding: 0px;
     margin: 0px;
@@ -109,6 +129,10 @@ textarea {
 }
 
 #sidebar li:hover {
+    background: #2b2c38;
+}
+
+#sidebar li.active {
     background: #2b2c38;
 }
 
@@ -140,16 +164,30 @@ textarea {
     margin: 40px 0px 30px -60px;
     border-top: 1px solid #b2b2b2;
     border-bottom: 1px solid #b2b2b2;
+    padding-left: 60px;
 }
 
 #main .tab {
     float: left;
     height: 100%;
-    width: 235px;
+    width: 200px;
     text-align: center;
     padding-top: 10px;
     font-size: 10.5pt;
     border-right: 1px solid #b2b2b2;
+}
+
+#main .tabs a {
+    text-decoration:none;
+    color: #2b2c38;
+}
+
+#main .tab.active a {
+    color: #FFF;
+}
+
+#main .tab:nth-child(1) {
+    border-left: 1px solid #b2b2b2;    
 }
 
 #main .tab:hover {
@@ -159,25 +197,172 @@ textarea {
 #main .tab.active {
     background: #363746;
     color: #FFF;
+    border-left: 0px;
 }
 
-#main table.submissions {
+#main .tab.active + #main .tab {
+    border-left: 0px !important;
+}
+
+#backBar {
+    width: calc(100% + 120px);
+    height: 40px;
+    margin: -30px 0px 30px -60px;
+    padding-top: 11px;
+    padding-left: 60px;
+    background: #F8F8F8;
+    border-bottom: 1px solid #b2b2b2;
+    font-size: 10.5pt;
+}
+
+#backBar a {
+    color: #2b2c38;
+    text-decoration: none;
+}
+
+#main table {
     width: 100%;
     text-align: left;
 }
 
-#main table.submissions tr {
+#main table tr {
     height: 50px;
     border-bottom: 1px solid #d1d1d1;
 }
 
-#main table.submissions td:nth-child(1),
-#main table.submissions th:nth-child(1) {
+#main table td:nth-child(1),
+#main table th:nth-child(1) {
     padding-left: 15px;
 }
 
-#main table.submissions tr:nth-child(even) {
+#main table tr:nth-child(even) {
     background: #f8f8f8;
+}
+
+#main .noData {
+    text-align: center;
+    opacity: 0.3;
+    margin-top: 100px;
+}
+
+#main .noData a {
+    color: #2b2c38;
+}
+
+#main h2 {
+    font-weight: normal;
+    margin-top: 1.6em;
+    margin-bottom: 1.6em;
+}
+
+#main input[type=submit], .button {
+    width: 215px;
+    height: 50px;
+    background: #FFF;
+    border-radius: 5px;
+    border: 1px solid #d1d1d1;
+    text-align: center;
+    margin-right: 15px;
+    margin-bottom: 20px;
+    cursor: pointer;
+    padding-top: 13px;
+}
+
+#main input[type=submit] {
+    padding-top: 9px;
+}
+
+#main input[type=submit]:hover, .button:hover {
+    background: #f8f8f8;
+}
+
+#main input[type=submit].selected, .button.selected {
+    background: #F8F8F8;
+}
+
+#main .questionType {
+    float: left;
+}
+
+#main .questionType a {
+    color: #2b2c38;
+    text-decoration: none;
+}
+
+#main h4 {
+    opacity: .5;
+    text-transform: uppercase;
+    font-size: 10pt;
+}
+
+#main label {
+    opacity: .5;
+    text-transform: uppercase;
+    font-size: 10pt;
+    font-weight: bold;
+}
+
+#new_question textarea, .edit_question textarea {
+    width: 445px;
+    height: 101px;
+    margin-top: 15px;
+    margin-bottom: 25px;
+    border: 1px solid #d1d1d1;
+}
+
+#questionOptions {
+    margin-top: 5px;
+    margin-bottom: 24px;
+    width: 444px;
+}
+
+#questionOptions a {
+    color: #2b2c38;
+    font-size: 10pt;
+    font-weight: bold;
+    opacity: .5;
+}
+
+#questionOptions .fields {
+    background-color: rgba(243, 156, 16, 0.1);
+    padding-left: 26px;
+    padding-top: 20px;
+    padding-bottom: 13px;
+    margin-bottom: 12px;
+}
+
+#questionOptions input {
+    margin-top: 5px;
+    margin-bottom: 15px;
+    margin-left: 11px;
+    width: 260px;
+}
+
+#question_question_weight {
+    margin-left: 10px;
+    margin-right: 45px;
+    margin-bottom: 25px;
+    width: 80px;
+    padding-left: 5px;
+    font-size: 18pt;
+}
+
+#question_written_response_required {
+    margin-left: 7px;
+    margin-bottom: 25px;
+}
+
+#rubricActions {
+    margin-top: 5px;
+}
+
+#rubricActions .button {
+    float: left;
+}
+
+#rubricActions a {
+    color: #2b2c38;
+    text-decoration: none;
 }
 
 /* ==========================================================================
