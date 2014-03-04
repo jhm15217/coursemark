@@ -1,11 +1,9 @@
-<h1>Listing questions</h1>
-
+<% if @questions and @questions.length > 0 %>
 <table>
   <tr>
-    <th>Question text</th>
-    <th>Question weight</th>
+    <th>Question</th>
+    <th>Points</th>
     <th>Written response required</th>
-    <th>Assignment</th>
     <th></th>
     <th></th>
     <th></th>
@@ -16,14 +14,17 @@
     <td><%= question.question_text %></td>
     <td><%= question.question_weight %></td>
     <td><%= question.written_response_required %></td>
-    <td><%= question.assignment_id %></td>
-    <td><%= link_to 'Show', question %></td>
-    <td><%= link_to 'Edit', edit_question_path(question) %></td>
-    <td><%= link_to 'Destroy', question, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+    <td><%= link_to 'Edit', [:edit, @assignment, question] %></td>
+    <td><%= link_to "Delete", assignment_question_path(@assignment, question), method: :delete %></td>
   </tr>
 <% end %>
 </table>
 
 <br />
 
-<%= link_to 'New Question', new_question_path %>
+<%= link_to 'New Question',  new_assignment_question_path(@assignment, :type => 'yesno') %>
+<% else %>
+    <h2 class="noData">
+      <%= link_to 'Create first rubric question.',  new_assignment_question_path(@assignment, :type => 'yesno') %>
+    </h2>
+<% end %>

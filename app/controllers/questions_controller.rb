@@ -1,8 +1,10 @@
 class QuestionsController < ApplicationController
+  before_filter :get_assignment
+
   # GET /questions
   # GET /questions.json
   def index
-    @questions = Question.all
+    @questions = @assignment.questions
 
     respond_to do |format|
       format.html # index.html.erb
@@ -25,6 +27,18 @@ class QuestionsController < ApplicationController
   # GET /questions/new.json
   def new
     @question = Question.new
+    @type = params[:type]
+
+    if @type == 'scale'
+      @question.scales.build(:value => 1, :description => 'Strongly Disagree')
+      @question.scales.build(:value => 2)
+      @question.scales.build(:value => 3)
+      @question.scales.build(:value => 4)
+      @question.scales.build(:value => 5, :description => 'Strongly Agree')
+    elsif @type == 'yesno'
+      @question.scales.build(:value => 1, :description => 'Yes')
+      @question.scales.build(:value => 0, :description => 'No')
+    end
 
     respond_to do |format|
       format.html # new.html.erb
@@ -41,10 +55,17 @@ class QuestionsController < ApplicationController
   # POST /questions.json
   def create
     @question = Question.new(params[:question])
+    @question.assignment = @assignment
+    @question.save
+    
+    @question.scales do |scale, i|
+      scale.value = i
+      scale.save!
+    end 
 
     respond_to do |format|
       if @question.save
-        format.html { redirect_to @question, notice: 'Question was successfully created.' }
+        format.html { redirect_to action: "index" }
         format.json { render json: @question, status: :created, location: @question }
       else
         format.html { render action: "new" }
@@ -60,7 +81,7 @@ class QuestionsController < ApplicationController
 
     respond_to do |format|
       if @question.update_attributes(params[:question])
-        format.html { redirect_to @question, notice: 'Question was successfully updated.' }
+        format.html { redirect_to action: "index" }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
@@ -76,8 +97,14 @@ class QuestionsController < ApplicationController
     @question.destroy
 
     respond_to do |format|
-      format.html { redirect_to questions_url }
+      format.html { redirect_to action: "index" }
       format.json { head :no_content }
+    end
+  end
+
+  def get_assignment
+    if params[:assignment_id]
+      @assignment = Assignment.find(params[:assignment_id])
     end
   end
 end

@@ -4,5 +4,8 @@ class Scale < ActiveRecord::Base
   # Relationships
   has_many :responses
   belongs_to :question
-  
+
+  # Validations
+  # validates_presence_of :question_id
+
 end

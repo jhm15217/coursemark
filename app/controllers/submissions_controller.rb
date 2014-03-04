@@ -1,8 +1,10 @@
 class SubmissionsController < ApplicationController
+  before_filter :get_assignment
+
   # GET /submissions
   # GET /submissions.json
   def index
-    @submissions = Submission.all
+    @submissions = @assignment.submissions
 
     respond_to do |format|
       format.html # index.html.erb
@@ -78,6 +80,12 @@ class SubmissionsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to submissions_url }
       format.json { head :no_content }
+    end
+  end
+
+  def get_assignment
+    if params[:assignment_id]
+      @assignment = Assignment.find(params[:assignment_id])
     end
   end
 end

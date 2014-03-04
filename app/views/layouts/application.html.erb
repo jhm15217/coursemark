@@ -1,14 +1,72 @@
 <!DOCTYPE html>
-<html>
-<head>
-  <title>Agora</title>
-  <%= stylesheet_link_tag    "application", :media => "all" %>
-  <%= javascript_include_tag "application" %>
-  <%= csrf_meta_tags %>
-</head>
-<body>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]> <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]> <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Agora</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
 
-<%= yield %>
+        <link rel="stylesheet" href="/css/normalize.min.css">
+        <link rel="stylesheet" href="/css/main.css">
 
-</body>
+        <script src="/js/vendor/modernizr-2.6.2.min.js"></script>
+    </head>
+    <body>
+        <!--[if lt IE 7]>
+            <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+        <![endif]-->
+
+        <div id="sidebar">
+            <div class="tabs">
+                <%= link_to assignments_path do %>
+                    <div class="tab assignments <%= 'active' if @assignment %>"></div>
+                <% end %>
+                <div class="tab"></div>
+                <div class="tab"></div>
+            </div>
+
+            <ul>
+            	<% @assignments.each do |assignment| %>
+                <li class="<%= 'active' if @assignment.name == assignment.name %>">
+                	<%= link_to(assignment) do %>
+	                    <div class="name"><%= assignment.name %></div>
+	                    <div class="status"><%= assignment.draft ? 'Draft' : 'Published' %></div>
+                    <% end %>
+                </li>
+                <% end %>
+            </ul>
+        </div>
+
+        <div id="main">
+            <h1 class="name"><%= @assignment.name %></h1>
+
+            <% if @assignment.id %>
+                <div class="tabs">
+                    <div class="tab <%= 'active' if controller.controller_name == 'submissions' %>">
+                        <%= link_to assignment_submissions_path(@assignment) do %>
+                            Submissions
+                        <% end %>
+                    </div>
+
+                    <!-- Temporarily removed grade distribution tab -->
+
+                    <div class="tab <%= 'active' if controller.controller_name == 'questions' %>">
+                        <%= link_to assignment_questions_path(@assignment) do %>
+                            Rubric
+                        <% end %>
+                    </div>
+                </div>
+            <% end %>
+
+            <%= yield %>
+
+        </div>
+
+        <%= javascript_include_tag "application" %>
+        <%= javascript_include_tag "nested_form" %>
+    </body>
 </html>

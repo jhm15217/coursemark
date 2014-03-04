@@ -9,19 +9,20 @@ gem 'sqlite3'
 
 # Gems used only in testing
 group :test do
-	gem 'shoulda', '3.3.2'
-	gem 'shoulda-matchers', '1.4.2'
-	gem 'factory_girl_rails', '4.2.1'
-	gem 'mocha', '0.10.5'
-	gem 'cucumber-rails', '1.3.0', :require => false
-	gem 'gherkin', '2.11.6'
-	gem 'capybara', '2.0.2'
-	gem 'database_cleaner', '0.9.1'
-	gem 'launchy', '2.2.0'
-	gem 'email_spec', '1.4.0'
-	gem 'nokogiri', '1.5.6'
-	gem 'simplecov', '0.7.1'
+	gem 'shoulda', '3.5.0'
+	gem 'shoulda-matchers', '2.5.0'
+	gem 'factory_girl_rails', '4.4.1'
+	gem 'mocha', '1.0.0'
+	gem 'cucumber-rails', '1.4.0', :require => false
+	gem 'gherkin', '2.12.2'
+	gem 'capybara', '2.2.1'
+	gem 'database_cleaner', '1.2.0'
+	gem 'launchy', '2.4.2'
+	gem 'email_spec', '1.5.0'
+	gem 'nokogiri', '1.6.1'
+	gem 'simplecov', '0.8.2'
 	gem 'tconsole', '1.2.8'
+	gem 'bcrypt-ruby', '~> 3.0.0'
 end
 
 # Gems used only in development
@@ -29,6 +30,8 @@ group :development do
   gem 'quiet_assets', '1.0.2'
   gem 'better_errors', '0.7.0'
   gem 'faker', '1.1.2'
+  gem "seed_dump"
+
 end
 
 # Gems used only for assets and not required
@@ -43,7 +46,14 @@ group :assets do
   gem 'uglifier', '>= 1.0.3'
 end
 
+# File upload
+gem 'carrierwave'
+
 gem 'jquery-rails'
+gem 'validates_timeliness'
+
+# Nested forms
+gem 'nested_form'
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
