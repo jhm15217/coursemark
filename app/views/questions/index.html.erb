@@ -2,7 +2,7 @@
 <table>
   <tr>
     <th>Question</th>
-    <th>Weight</th>
+    <th>Points</th>
     <th>Written response required</th>
     <th></th>
     <th></th>
@@ -15,16 +15,16 @@
     <td><%= question.question_weight %></td>
     <td><%= question.written_response_required %></td>
     <td><%= link_to 'Edit', [:edit, @assignment, question] %></td>
-    <td><%= link_to "Delete", assignment_question_path(@assignment, question), confirm: "Are you sure?", method: :delete %></td>
+    <td><%= link_to "Delete", assignment_question_path(@assignment, question), method: :delete %></td>
   </tr>
 <% end %>
 </table>
 
 <br />
 
-<%= link_to 'New Question',  new_assignment_question_path(@assignment) %>
+<%= link_to 'New Question',  new_assignment_question_path(@assignment, :type => 'yesno') %>
 <% else %>
     <h2 class="noData">
-      <%= link_to 'Create first rubric question.',  new_assignment_question_path(@assignment) %>
+      <%= link_to 'Create first rubric question.',  new_assignment_question_path(@assignment, :type => 'yesno') %>
     </h2>
 <% end %>

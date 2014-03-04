@@ -1,9 +1,5 @@
 <div class="field">
-  <%= f.label :value, "Value" %><br />
-  <%= f.number_field :value %>
+  <%= f.label :description, "Optional Label" %>
+  <%= f.text_field :description %>
 </div>
-<div class="field">
-  <%= f.label :description, "Name" %><br />
-  <%= f.text_area :description %>
-</div>
-<%= f.link_to_remove "Remove this option" %>
+<%= f.link_to_remove "Remove" %>

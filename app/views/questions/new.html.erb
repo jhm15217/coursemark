@@ -1,5 +1,16 @@
-<h2>New rubric question</h2>
+<div id="backBar">
+	<%= link_to 'Back to Rubric', assignment_questions_path %>
+</div>
+
+<h2>New Rubric Question</h2>
+
+<h4>Question Type</h4>
+
+<div class="button questionType <%= 'selected' if @type == 'yesno' %>"><%= link_to 'Yes/No',  new_assignment_question_path(@assignment, :type => 'yesno') %>
+</div>
+<div class="button questionType <%= 'selected' if @type == 'scale' %>"><%= link_to 'Scale',  new_assignment_question_path(@assignment, :type => 'scale') %>
+</div>
+<div class="clearfix"></div>
+
 
 <%= render 'form' %>
-
-<%= link_to 'Back', assignment_questions_path(@assignment) %>

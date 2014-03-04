@@ -1,33 +1,22 @@
 <%= nested_form_for [@assignment, @question] do |f| %>
-  <% if @question.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@question.errors.count, "error") %> prohibited this question from being saved:</h2>
-
-      <ul>
-      <% @question.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
-
   <div class="field">
-    <%= f.label :name, "Description" %><br />
+    <%= f.label :name, "Question" %><br />
     <%= f.text_area :question_text %>
   </div>
   <div class="field">
-    <%= f.label :name, "Weight (1%-100%)" %><br />
+    <%= f.label :name, "Points" %>
     <%= f.number_field :question_weight %>
-  </div>
-  <div class="field">
-    <%= f.label :written_response_required %><br />
+    <%= f.label :written_response_required, "Written Explanation Required"%>
     <%= f.check_box :written_response_required %>
   </div>
-  <% f.fields_for :scales do |scale| %>
-    <%= render 'scales/scale_fields', :f => scale %>
-  <% end %>
-  <%= f.link_to_add "Add an option", :scales %>
-  <div class="actions">
+  <div id="questionOptions">
+    <%= f.fields_for :scales do |scale| %>
+        <%= render 'scales/scale_fields', :f => scale %>
+    <% end %>
+  </div>
+
+  <div class="actions" id="rubricActions">
+    <div class="button"><%= f.link_to_add "Add an option", :scales, :data => { :target => "#questionOptions" } %></div>
     <%= f.submit %>
   </div>
 <% end %>

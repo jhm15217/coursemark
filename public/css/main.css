@@ -12,6 +12,12 @@ input,
 select,
 textarea {
     color: #2b2c38;
+    outline: none;
+}
+
+input, textarea {
+    border: 1px solid #d1d1d1;
+    padding: 5px;
 }
 
 html, body {
@@ -198,6 +204,22 @@ textarea {
     border-left: 0px !important;
 }
 
+#backBar {
+    width: calc(100% + 120px);
+    height: 40px;
+    margin: -30px 0px 30px -60px;
+    padding-top: 11px;
+    padding-left: 60px;
+    background: #F8F8F8;
+    border-bottom: 1px solid #b2b2b2;
+    font-size: 10.5pt;
+}
+
+#backBar a {
+    color: #2b2c38;
+    text-decoration: none;
+}
+
 #main table {
     width: 100%;
     text-align: left;
@@ -229,6 +251,118 @@ textarea {
 
 #main h2 {
     font-weight: normal;
+    margin-top: 1.6em;
+    margin-bottom: 1.6em;
+}
+
+#main input[type=submit], .button {
+    width: 215px;
+    height: 50px;
+    background: #FFF;
+    border-radius: 5px;
+    border: 1px solid #d1d1d1;
+    text-align: center;
+    margin-right: 15px;
+    margin-bottom: 20px;
+    cursor: pointer;
+    padding-top: 13px;
+}
+
+#main input[type=submit] {
+    padding-top: 9px;
+}
+
+#main input[type=submit]:hover, .button:hover {
+    background: #f8f8f8;
+}
+
+#main input[type=submit].selected, .button.selected {
+    background: #F8F8F8;
+}
+
+#main .questionType {
+    float: left;
+}
+
+#main .questionType a {
+    color: #2b2c38;
+    text-decoration: none;
+}
+
+#main h4 {
+    opacity: .5;
+    text-transform: uppercase;
+    font-size: 10pt;
+}
+
+#main label {
+    opacity: .5;
+    text-transform: uppercase;
+    font-size: 10pt;
+    font-weight: bold;
+}
+
+#new_question textarea, .edit_question textarea {
+    width: 445px;
+    height: 101px;
+    margin-top: 15px;
+    margin-bottom: 25px;
+    border: 1px solid #d1d1d1;
+}
+
+#questionOptions {
+    margin-top: 5px;
+    margin-bottom: 24px;
+    width: 444px;
+}
+
+#questionOptions a {
+    color: #2b2c38;
+    font-size: 10pt;
+    font-weight: bold;
+    opacity: .5;
+}
+
+#questionOptions .fields {
+    background-color: rgba(243, 156, 16, 0.1);
+    padding-left: 26px;
+    padding-top: 20px;
+    padding-bottom: 13px;
+    margin-bottom: 12px;
+}
+
+#questionOptions input {
+    margin-top: 5px;
+    margin-bottom: 15px;
+    margin-left: 11px;
+    width: 260px;
+}
+
+#question_question_weight {
+    margin-left: 10px;
+    margin-right: 45px;
+    margin-bottom: 25px;
+    width: 80px;
+    padding-left: 5px;
+    font-size: 18pt;
+}
+
+#question_written_response_required {
+    margin-left: 7px;
+    margin-bottom: 25px;
+}
+
+#rubricActions {
+    margin-top: 5px;
+}
+
+#rubricActions .button {
+    float: left;
+}
+
+#rubricActions a {
+    color: #2b2c38;
+    text-decoration: none;
 }
 
 /* ==========================================================================

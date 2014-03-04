@@ -27,6 +27,18 @@ class QuestionsController < ApplicationController
   # GET /questions/new.json
   def new
     @question = Question.new
+    @type = params[:type]
+
+    if @type == 'scale'
+      @question.scales.build(:value => 1, :description => 'Strongly Disagree')
+      @question.scales.build(:value => 2)
+      @question.scales.build(:value => 3)
+      @question.scales.build(:value => 4)
+      @question.scales.build(:value => 5, :description => 'Strongly Agree')
+    elsif @type == 'yesno'
+      @question.scales.build(:value => 1, :description => 'Yes')
+      @question.scales.build(:value => 0, :description => 'No')
+    end
 
     respond_to do |format|
       format.html # new.html.erb
@@ -44,6 +56,12 @@ class QuestionsController < ApplicationController
   def create
     @question = Question.new(params[:question])
     @question.assignment = @assignment
+    @question.save
+    
+    @question.scales do |scale, i|
+      scale.value = i
+      scale.save!
+    end 
 
     respond_to do |format|
       if @question.save

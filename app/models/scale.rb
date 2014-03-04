@@ -6,6 +6,6 @@ class Scale < ActiveRecord::Base
   belongs_to :question
 
   # Validations
-  validates_presence_of :question_id
+  # validates_presence_of :question_id
 
 end

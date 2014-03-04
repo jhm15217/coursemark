@@ -1,5 +1,5 @@
 class Question < ActiveRecord::Base
-  attr_accessible :assignment_id, :question_text, :question_weight, :written_response_required
+  attr_accessible :assignment_id, :question_text, :question_weight, :written_response_required, :scales_attributes
 
   # Relationships
   has_many :scales
