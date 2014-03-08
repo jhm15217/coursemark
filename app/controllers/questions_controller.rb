@@ -30,14 +30,14 @@ class QuestionsController < ApplicationController
     @type = params[:type]
 
     if @type == 'scale'
-      @question.scales.build(:value => 1, :description => 'Strongly Disagree')
+      @question.scales.build(:value => 1, :description => 'Lowest Score')
       @question.scales.build(:value => 2)
       @question.scales.build(:value => 3)
       @question.scales.build(:value => 4)
-      @question.scales.build(:value => 5, :description => 'Strongly Agree')
+      @question.scales.build(:value => 5, :description => 'Highest Score')
     elsif @type == 'yesno'
-      @question.scales.build(:value => 1, :description => 'Yes')
-      @question.scales.build(:value => 0, :description => 'No')
+      @question.scales.build(:value => 1, :description => 'No')
+      @question.scales.build(:value => 2, :description => 'Yes')
     end
 
     respond_to do |format|
@@ -59,7 +59,7 @@ class QuestionsController < ApplicationController
     @question.save
     
     @question.scales do |scale, i|
-      scale.value = i
+      scale.value = i+1
       scale.save!
     end 
 

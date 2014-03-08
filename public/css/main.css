@@ -302,6 +302,15 @@ textarea {
     font-weight: bold;
 }
 
+#main .num {
+    float: left;
+    opacity: .5;
+    text-transform: uppercase;
+    font-size: 18pt;
+    margin-top: 3px;
+    width: 15px;
+}
+
 #new_question textarea, .edit_question textarea {
     width: 445px;
     height: 101px;
@@ -334,7 +343,7 @@ textarea {
 #questionOptions input {
     margin-top: 5px;
     margin-bottom: 15px;
-    margin-left: 11px;
+    margin-left: 17px;
     width: 260px;
 }
 

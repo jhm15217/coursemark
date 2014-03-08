@@ -1,5 +1,5 @@
 <div class="field">
-  <%= f.label :description, "Optional Label" %>
-  <%= f.text_field :description %>
+  <div class="num"><%= f.object.value %></div>
+  <%= f.text_field :description, :placeholder => "Optional Label" %>
 </div>
 <%= f.link_to_remove "Remove" %>

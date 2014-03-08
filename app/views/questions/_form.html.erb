@@ -1,3 +1,8 @@
+<% content_for :javascript_includes do %>
+  <%= javascript_include_tag "rubric.js" %>
+<% end %>
+
+
 <%= nested_form_for [@assignment, @question] do |f| %>
   <div class="field">
     <%= f.label :name, "Question" %><br />
