@@ -79,6 +79,11 @@ class QuestionsController < ApplicationController
   def update
     @question = Question.find(params[:id])
 
+    @question.scales do |scale, i|
+      scale.value = i+1
+      scale.save!
+    end 
+
     respond_to do |format|
       if @question.update_attributes(params[:question])
         format.html { redirect_to action: "index" }

@@ -302,6 +302,10 @@ textarea {
     font-weight: bold;
 }
 
+#main .field {
+    margin-bottom: 15px;
+}
+
 #main .num {
     float: left;
     opacity: .5;
