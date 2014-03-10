@@ -21,14 +21,6 @@
         <![endif]-->
 
         <div id="sidebar">
-            <div class="tabs">
-                <%= link_to course_assignments_path(@course) do %>
-                    <div class="tab assignments <%= 'active' if @assignment %>"></div>
-                <% end %>
-                <div class="tab"></div>
-                <div class="tab"></div>
-            </div>
-
             <ul>
             	<% @assignments.each do |assignment| %>
                 <li class="<%= 'active' if @assignment.name == assignment.name %>">
