@@ -1,4 +1,4 @@
-<%= form_for(@response) do |f| %>
+<%= nested_form_for [@course, @assignment, @question, @response]  do |f| %>
   <% if @response.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@response.errors.count, "error") %> prohibited this response from being saved:</h2>
@@ -29,7 +29,7 @@
   </div>
   <div class="field">
     <%= f.label :question_id %><br />
-    <%= f.collection_select :user_id, User.all, :id, :question_text, :prompt => "Select question..." %>
+    <%= f.collection_select :question_id, User.all, :id, :question_text, :prompt => "Select question..." %>
   </div>
   <div class="field">
     <%= f.label :scale_id %><br />
