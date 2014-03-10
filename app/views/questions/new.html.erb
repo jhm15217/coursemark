@@ -1,16 +1,16 @@
 <%= render "assignments/header" %>
 
 <div id="backBar">
-	<%= link_to 'Back to Rubric', assignment_questions_path %>
+	<%= link_to 'Back to Rubric', :back %>
 </div>
 
 <h2>New Rubric Question</h2>
 
 <h4>Question Type</h4>
 
-<div class="button questionType <%= 'selected' if @type == 'yesno' %>"><%= link_to 'Yes/No',  new_assignment_question_path(@assignment, :type => 'yesno') %>
+<div class="button questionType <%= 'selected' if @type == 'yesno' %>"><%= link_to 'Yes/No',  new_course_assignment_question_path(@course, @assignment, :type => 'yesno') %>
 </div>
-<div class="button questionType <%= 'selected' if @type == 'scale' %>"><%= link_to 'Scale',  new_assignment_question_path(@assignment, :type => 'scale') %>
+<div class="button questionType <%= 'selected' if @type == 'scale' %>"><%= link_to 'Scale',  new_course_assignment_question_path(@course, @assignment, :type => 'scale') %>
 </div>
 <div class="clearfix"></div>
 

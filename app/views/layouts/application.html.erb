@@ -22,7 +22,7 @@
 
         <div id="sidebar">
             <div class="tabs">
-                <%= link_to assignments_path do %>
+                <%= link_to course_assignments_path(@course) do %>
                     <div class="tab assignments <%= 'active' if @assignment %>"></div>
                 <% end %>
                 <div class="tab"></div>
@@ -32,7 +32,7 @@
             <ul>
             	<% @assignments.each do |assignment| %>
                 <li class="<%= 'active' if @assignment.name == assignment.name %>">
-                	<%= link_to(assignment) do %>
+                	<%= link_to course_assignment_path(@course, assignment) do %>
 	                    <div class="name"><%= assignment.name %></div>
 	                    <div class="status"><%= assignment.draft ? 'Draft' : 'Published' %></div>
                     <% end %>

@@ -16,17 +16,17 @@
     <td><%= question.question_text %></td>
     <td><%= question.question_weight %></td>
     <td><%= question.written_response_required %></td>
-    <td><%= link_to 'Edit', [:edit, @assignment, question] %></td>
-    <td><%= link_to "Delete", assignment_question_path(@assignment, question), method: :delete %></td>
+    <td><%= link_to 'Edit', [:edit, @course, @assignment, question] %></td>
+    <td><%= link_to "Delete", course_assignment_question_path(@course, @assignment, question), method: :delete %></td>
   </tr>
 <% end %>
 </table>
 
 <br />
 
-<%= link_to 'New Question',  new_assignment_question_path(@assignment, :type => 'yesno') %>
+<%= link_to 'New Question',  new_course_assignment_question_path(@course, @assignment, :type => 'yesno') %>
 <% else %>
     <h2 class="noData">
-      <%= link_to 'Create first rubric question.',  new_assignment_question_path(@assignment, :type => 'yesno') %>
+      <%= link_to 'Create first rubric question.',  new_course_assignment_question_path(@course, @assignment, :type => 'yesno') %>
     </h2>
 <% end %>
