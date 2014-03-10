@@ -1,5 +1,5 @@
 class SubmissionsController < ApplicationController
-  before_filter :get_assignment
+  before_filter :get_assignment, :get_course
 
   # GET /submissions
   # GET /submissions.json
@@ -86,6 +86,12 @@ class SubmissionsController < ApplicationController
   def get_assignment
     if params[:assignment_id]
       @assignment = Assignment.find(params[:assignment_id])
+    end
+  end
+
+  def get_course
+    if params[:course_id]
+      @course = Course.find(params[:course_id])
     end
   end
 end

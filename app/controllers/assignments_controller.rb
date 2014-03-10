@@ -1,4 +1,6 @@
 class AssignmentsController < ApplicationController
+  before_filter :get_course
+
   # GET /assignments
   # GET /assignments.json
   def index
@@ -8,7 +10,7 @@ class AssignmentsController < ApplicationController
     # new assignment page if there are none
 
     if @assignments.length > 0
-      @URL = @assignments.first
+      @URL = course_assignment_url(@course, @assignments.first)
     else
       @URL = { :action => 'new' }
     end
@@ -25,7 +27,7 @@ class AssignmentsController < ApplicationController
     @assignment = Assignment.find(params[:id])
 
     respond_to do |format|
-      format.html { redirect_to(assignment_submissions_url(@assignment)) }
+      format.html { redirect_to(course_assignment_submissions_url(@course, @assignment)) }
       format.json { render json: @assignment }
     end
   end
@@ -87,6 +89,12 @@ class AssignmentsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to assignments_url }
       format.json { head :no_content }
+    end
+  end
+
+  def get_course
+    if params[:course_id]
+      @course = Course.find(params[:course_id])
     end
   end
 end
