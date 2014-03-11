@@ -203,11 +203,6 @@ textarea {
     font-weight: bold;
 }
 
-#main .tab:hover {
-    color: #e74c3c;
-    font-weight: bold;
-}
-
 #main .tab.active {
     color: #e74c3c;
     border-bottom: 3px solid #e74c3c;
