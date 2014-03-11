@@ -1,25 +1,29 @@
-<h1 class="name"><%= @assignment.name %></h1>
+<div id="header">
 
-<% if @assignment.id %>
-    <div class="tabs">
-        <div class="tab <%= 'active' if controller.controller_name == 'submissions' %>">
-            <%= link_to course_assignment_submissions_path(@course, @assignment) do %>
-                Submissions
-            <% end %>
+    <h1 class="name"><%= @assignment.name %></h1>
+
+    <% if @assignment.id %>
+        <div class="tabs">
+            <div class="tab <%= 'active' if controller.controller_name == 'assignments' %>">
+                <%= link_to edit_course_assignment_path(@course, @assignment) do %>
+                    Dashboard
+                <% end %>
+            </div>
+
+            <div class="tab <%= 'active' if controller.controller_name == 'submissions' %>">
+                <%= link_to course_assignment_submissions_path(@course, @assignment) do %>
+                    Submissions
+                <% end %>
+            </div>
+
+            <!-- Temporarily removed grade distribution tab -->
+
+            <div class="tab <%= 'active' if controller.controller_name == 'questions' %>">
+                <%= link_to course_assignment_questions_path(@course, @assignment) do %>
+                    Rubric
+                <% end %>
+            </div>
         </div>
+    <% end %>
 
-        <!-- Temporarily removed grade distribution tab -->
-
-        <div class="tab <%= 'active' if controller.controller_name == 'questions' %>">
-            <%= link_to course_assignment_questions_path(@course, @assignment) do %>
-                Rubric
-            <% end %>
-        </div>
-
-        <div class="tab <%= 'active' if controller.controller_name == 'assignments' %>">
-            <%= link_to edit_course_assignment_path(@course, @assignment) do %>
-                Settings
-            <% end %>
-        </div>
-    </div>
-<% end %>
+</div>
