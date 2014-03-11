@@ -27,7 +27,7 @@ html, body {
 body {
     font-size: 1em;
     line-height: 1.4;
-    font-family: "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
+    font-family: "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
 }
 
 ::-moz-selection {
@@ -210,9 +210,19 @@ textarea {
     font-weight: bold;
 }
 
+#main .tab:hover {
+    color: #e74c3c;
+    font-weight: bold;
+    margin-right:49px;
+}
+
 #main .tab.active {
     color: #e74c3c;
     border-bottom: 3px solid #e74c3c;
+}
+
+#main .tab.active:hover {
+  margin-right:50px;
 }
 
 #main .tab.active + #main .tab {
@@ -341,7 +351,7 @@ textarea {
 
 #main .num {
     float: left;
-    opacity: .5;    
+    opacity: .5;
     margin-top: 3px;
     width: 15px;
 }
@@ -449,7 +459,7 @@ textarea {
 
 .highlight a {
     color: #e74c3c;
-}   
+}
 
 
 /* ==========================================================================
