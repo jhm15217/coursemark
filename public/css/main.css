@@ -169,6 +169,7 @@ textarea {
     padding: 28px 50px 0px 50px;
     border-bottom: 1px solid #DFDFDF;
     background: #FFF;
+    z-index: 1000;
 }
 
 #headerSpacer {
