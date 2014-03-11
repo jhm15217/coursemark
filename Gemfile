@@ -48,6 +48,7 @@ end
 
 # File upload
 gem 'carrierwave'
+gem 'uuid'
 
 gem 'jquery-rails'
 gem 'validates_timeliness'
