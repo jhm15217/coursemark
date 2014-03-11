@@ -1,3 +1,4 @@
+<div style='width:50%;'>
 <p id="notice"><%= notice %></p>
 
 <p>
@@ -19,7 +20,13 @@
   <b>User:</b>
   <%= @submission.user_id %>
 </p>
+</div>
+<div style='width:50%;'>
+  <iframe src="http://docs.google.com/viewer?url=agora.dev<%= url_encode(@submission.submission) %>&embedded=true" width="600" height="780" style="border: none;"></iframe>
+</div>  
 
 
-<%= link_to 'Edit', edit_assignment_submission_path(@submission) %> |
-<%= link_to 'Back', assignment_submissions_path %>
+
+
+<%= link_to 'Edit', edit_course_assignment_submission_path(@course, @submission) %> |
+<%= link_to 'Back', course_assignment_submissions_path %>
