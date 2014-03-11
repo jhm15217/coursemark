@@ -27,7 +27,7 @@ class AssignmentsController < ApplicationController
     @assignment = Assignment.find(params[:id])
 
     respond_to do |format|
-      format.html { redirect_to(course_assignment_submissions_url(@course, @assignment)) }
+      format.html { redirect_to(edit_course_assignment_url(@course, @assignment)) }
       format.json { render json: @assignment }
     end
   end
