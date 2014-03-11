@@ -29,7 +29,7 @@
   </div>
   <div class="field">
     <%= f.label :question_id %><br />
-    <%= f.collection_select :question_id, User.all, :id, :question_text, :prompt => "Select question..." %>
+    <%= f.collection_select :question_id, Question.all, :id, :question_text, :prompt => "Select question..." %>
   </div>
   <div class="field">
     <%= f.label :scale_id %><br />

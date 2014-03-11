@@ -13,3 +13,12 @@
 //= require jquery
 //= require jquery_ujs
 //= require_tree .
+
+$( document ).ready(function() {
+
+  // Allows the entire tab div to be clickable and not just the text
+  $("div.tab").click(function() {
+    window.location.href = $(this).children('a').attr('href');
+  });
+
+});
