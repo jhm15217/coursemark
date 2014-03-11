@@ -56,12 +56,6 @@ class QuestionsController < ApplicationController
   def create
     @question = Question.new(params[:question])
     @question.assignment = @assignment
-    @question.save
-    
-    @question.scales do |scale, i|
-      scale.value = i+1
-      scale.save!
-    end 
 
     respond_to do |format|
       if @question.save
