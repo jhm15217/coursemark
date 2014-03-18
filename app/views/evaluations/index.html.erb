@@ -13,13 +13,13 @@
   <tr>
     <td><%= evaluation.submission_id %></td>
     <td><%= evaluation.user_id %></td>
-    <td><%= link_to 'Show', evaluation %></td>
-    <td><%= link_to 'Edit', edit_evaluation_path(evaluation) %></td>
-    <td><%= link_to 'Destroy', evaluation, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+    <td><%= link_to 'Show', course_assignment_submission_evaluation_path(@course, @assignment, @submission, evaluation) %></td>
+    <td><%= link_to 'Edit', edit_course_assignment_submission_evaluation_path(@course, @assignment, @submission, evaluation) %></td>
+    <td><%= link_to 'Destroy', course_assignment_submission_evaluation_path(@course, @assignment, @submission, evaluation), method: :delete, data: { confirm: 'Are you sure?' } %></td>
   </tr>
 <% end %>
 </table>
 
 <br />
 
-<%= link_to 'New Evaluation', new_evaluation_path %>
+<%= link_to 'New Evaluation', new_course_assignment_submission_evaluation_path %>

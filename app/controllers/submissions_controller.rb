@@ -1,6 +1,7 @@
 class SubmissionsController < ApplicationController
   before_filter :get_assignment, :get_course
 
+
   # GET /submissions
   # GET /submissions.json
   def index
@@ -18,7 +19,7 @@ class SubmissionsController < ApplicationController
     @submission = Submission.find(params[:id])
 
     respond_to do |format|
-      format.html # show.html.erb
+      format.html { render :layout => 'no_sidebar' } # show.html.erb
       format.json { render json: @submission }
     end
   end
