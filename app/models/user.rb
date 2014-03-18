@@ -1,6 +1,6 @@
 class User < ActiveRecord::Base
+  acts_as_authentic
   attr_accessible :email, :first_name, :last_name, :password, :password_confirmation
-  has_secure_password
 
   # Relationships
   has_many :evaluations
@@ -8,7 +8,7 @@ class User < ActiveRecord::Base
   has_many :registrations
 
   # Validations
-  validates_presence_of :email, :password_digest
+  validates :password, presence: { on: :create }, length: { minimum: 8, allow_blank: true }
   validates_uniqueness_of :email
 
   # Helpers
