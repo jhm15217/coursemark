@@ -12,14 +12,15 @@
   <% end %>
 
   <div class="field">
-    <%= f.label :email, "Email" %>  
-    <%= f.text_field :email %>   
+    <%= f.text_field :email, :placeholder => "Email" %>   
   </div>
   <div class="field">
-    <%= f.label :password, "Password" %>  
-    <%= f.password_field :password %> 
+    <%= f.password_field :password, :placeholder => "Password" %> 
   </div>
   <div class="actions">
-    <%= f.submit %>
+    <%= f.submit "Login" %>
+  </div>
+  <div class="actions newAccount">
+    <%= link_to "New Account", new_user_path, :class => "button"  %>
   </div>
 <% end %>
