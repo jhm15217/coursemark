@@ -212,8 +212,7 @@ textarea {
 
 #main .tab:hover {
     color: #e74c3c;
-    font-weight: bold;
-    margin-right:49px;
+    border-bottom: 3px solid #95969C;
 }
 
 #main .tab.active {
@@ -227,6 +226,11 @@ textarea {
 
 #main .tab.active + #main .tab {
     border-left: 0px !important;
+}
+
+#main .tab.logout {
+    right: 394px;
+    position: absolute;
 }
 
 #backBar {
@@ -461,6 +465,62 @@ textarea {
     color: #e74c3c;
 }
 
+.loginWrapper {
+    height: 100%;
+    width: 100%;
+    background: #F5F6F8;
+    padding-top: 250px;
+}
+
+.loginWrapper.newAccount {
+    padding-top: 190px;
+}
+
+.loginWrapper form {
+    color: #FFF;
+    width: 470px;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 5px;
+}
+
+.loginWrapper input {
+    width: 100%;
+    height: 50px;
+    padding-left: 15px;
+}
+
+.loginWrapper .field:nth-child(3) input {
+    border-top: 0px;
+}
+
+.loginWrapper.newAccount .field:nth-child(3) input,
+.loginWrapper.newAccount .field:nth-child(6) input {
+    border-top: 0px;
+}
+
+.loginWrapper.newAccount .field:nth-child(3) input,
+.loginWrapper.newAccount .field:nth-child(4) input {
+    margin-bottom: 10px;
+}
+
+.loginWrapper .actions {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.loginWrapper .actions input {
+    padding-left: 0px;
+    background: #e74c3c;
+    color: #FFF;
+}
+
+.loginWrapper .actions.newAccount a {
+    border: 0px;
+    background: none;
+    text-decoration: none;
+    color: #343F53;
+}
 
 /* ==========================================================================
    Media Queries
