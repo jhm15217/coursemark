@@ -160,6 +160,9 @@ textarea {
     padding: 0px 60px 40px 60px;
     background: #F5F6F8;
 }
+.no_sidebar_main {
+  width:100% !important;
+}
 
 #header {
     position: fixed;

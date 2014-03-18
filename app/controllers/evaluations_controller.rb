@@ -1,4 +1,7 @@
 class EvaluationsController < ApplicationController
+  before_filter :get_assignment, :get_course, :get_submission
+
+
   # GET /evaluations
   # GET /evaluations.json
   def index
@@ -44,7 +47,7 @@ class EvaluationsController < ApplicationController
 
     respond_to do |format|
       if @evaluation.save
-        format.html { redirect_to @evaluation, notice: 'Evaluation was successfully created.' }
+        format.html { redirect_to course_assignment_submission_evaluation_path(@course, @assignment, @submission, @evaluation), notice: 'Evaluation was successfully created.' }
         format.json { render json: @evaluation, status: :created, location: @evaluation }
       else
         format.html { render action: "new" }
@@ -76,8 +79,27 @@ class EvaluationsController < ApplicationController
     @evaluation.destroy
 
     respond_to do |format|
-      format.html { redirect_to evaluations_url }
+      format.html { redirect_to course_assignment_submission_evaluations_path(@course, @assignment, @submission) }
       format.json { head :no_content }
     end
   end
+
+  def get_assignment
+    if params[:assignment_id]
+      @assignment = Assignment.find(params[:assignment_id])
+    end
+  end
+
+  def get_course
+    if params[:course_id]
+      @course = Course.find(params[:course_id])
+    end
+  end
+
+  def get_submission
+    if params[:submission_id]
+      @submission = Submission.find(params[:submission_id])
+    end
+  end
+
 end
