@@ -31,7 +31,7 @@ group :development do
   gem 'better_errors', '0.7.0'
   gem 'faker', '1.1.2'
   gem "seed_dump"
-
+  gem 'binding_of_caller'
 end
 
 # Gems used only for assets and not required
@@ -56,8 +56,10 @@ gem 'validates_timeliness'
 # Nested forms
 gem 'nested_form'
 
+gem 'authlogic'
+
 # To use ActiveModel has_secure_password
-# gem 'bcrypt-ruby', '~> 3.0.0'
+#gem 'bcrypt-ruby', '~> 3.0.0'
 
 # To use Jbuilder templates for JSON
 # gem 'jbuilder'
