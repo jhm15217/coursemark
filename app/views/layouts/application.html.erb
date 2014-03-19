@@ -24,7 +24,7 @@
         <div id="sidebar">
             <ul>
             	<% @assignments.each do |assignment| %>
-                <li class="<%= 'active' if @assignment.name == assignment.name %>">
+                <li class="<%= 'active' if @assignment.id == assignment.id %>">
                 	<%= link_to course_assignment_path(@course, assignment) do %>
 	                    <div class="name"><%= assignment.name %></div>
 	                    <div class="status"><%= assignment.draft ? 'Draft' : 'Published' %></div>

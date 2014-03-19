@@ -81,6 +81,9 @@ textarea {
     background: #343F53;
     color: #A0ABC0;
     overflow-y: scroll;
+    -webkit-box-shadow: inset -72px 0px 7px -69px rgba(0,0,0,0.2);
+    -moz-box-shadow: inset -72px 0px 7px -69px rgba(0,0,0,0.2);
+    box-shadow: inset -72px 0px 7px -69px rgba(0,0,0,0.2);
 }
 
 #sidebar a {
@@ -247,6 +250,24 @@ textarea {
 #backBar a {
     color: #343F53;
     text-decoration: none;
+}
+
+#main #error_explanation h2,
+#main #error_explanation {
+    font-size: 11pt;
+}
+
+#main .edit_assignment, #main .new_assignment {
+    background: #FFF;
+    padding: 25px;
+    width: 405px;
+    border-radius: 6px;
+    border: 1px solid #DFDFDF;
+}
+
+#main .edit_assignment input[type=submit],
+#main .new_assignment input[type=submit] {
+    margin-bottom: 0px;
 }
 
 #main table {
