@@ -36,6 +36,9 @@ class AssignmentsController < ApplicationController
   # GET /assignments/new.json
   def new
     @assignment = Assignment.new
+    @assignment.name = "New Assignment"
+    @assignment.reviews_required = 4
+    @assignment.draft = true
 
     respond_to do |format|
       format.html # new.html.erb
@@ -52,10 +55,11 @@ class AssignmentsController < ApplicationController
   # POST /assignments.json
   def create
     @assignment = Assignment.new(params[:assignment])
+    @assignment.course_id = @course.id
 
     respond_to do |format|
       if @assignment.save
-        format.html { redirect_to @assignment, notice: 'Assignment was successfully created.' }
+        format.html { redirect_to [@course, @assignment], notice: 'Assignment was successfully created.' }
         format.json { render json: @assignment, status: :created, location: @assignment }
       else
         format.html { render action: "new" }
