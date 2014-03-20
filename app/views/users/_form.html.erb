@@ -12,26 +12,21 @@
   <% end %>
 
   <div class="field">
-    <%= f.label :first_name %><br />
-    <%= f.text_field :first_name %>
+    <%= f.text_field :first_name, :placeholder => "First Name" %>   
   </div>
   <div class="field">
-    <%= f.label :last_name %><br />
-    <%= f.text_field :last_name %>
+    <%= f.text_field :last_name, :placeholder => "Last Name" %>   
   </div>
   <div class="field">
-    <%= f.label :email %><br />
-    <%= f.text_field :email %>
+    <%= f.text_field :email, :placeholder => "Email" %>   
   </div>
   <div class="field">
-    <%= f.label :password %><br />
-    <%= f.text_field :password %>
+    <%= f.password_field :password, :placeholder => "Password" %> 
   </div>
   <div class="field">
-    <%= f.label :password_digest %><br />
-    <%= f.text_field :password_digest %>
+    <%= f.password_field :password_confirmation, :placeholder => "Password Confirmation" %> 
   </div>
   <div class="actions">
-    <%= f.submit %>
+    <%= f.submit "Create account" %>
   </div>
 <% end %>
