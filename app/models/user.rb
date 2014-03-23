@@ -7,6 +7,7 @@ class User < ActiveRecord::Base
   has_many :submissions
   has_many :registrations
   has_many :courses, :through => :registrations
+  has_many :assignments, :through => :courses
 
   # Validations
   validates :password, presence: { on: :create }, length: { minimum: 8, allow_blank: true }
