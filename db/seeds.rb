@@ -2,6 +2,8 @@
 # Instructor login: admin@test.com (This is the user Aldorayne Grotkey) 
 # Student login: student@test.com (This is the user Theodore Detweiller)
 
+# All other passwords are [user first name]@test.com
+
 # There are 8 users in the system
 # There are 2 courses 2014, and 2015
 
