@@ -4,7 +4,20 @@ class ApplicationController < ActionController::Base
   helper_method :current_user
 
   def get_assignments
-    @assignments = Assignment.all
+    # TODO: This should be a scope or a method in a model
+    # Getting the right assignments for the user
+    if current_user
+        @assignments = []
+        current_user.registrations.each do |registration|
+          if registration.instructor
+            # if a user is an instructor for course, get drafts
+            @assignments.concat(registration.course.assignments)
+          else
+            # otherwise user is a student, get published assignments only
+            @assignments.concat(registration.course.assignments.published)
+          end
+      end
+    end
   end
 
   private  
@@ -14,7 +27,7 @@ class ApplicationController < ActionController::Base
   end  
   
   def current_user  
-    @current_user = current_user_session && current_user_session.record  
+    @current_user = current_user_session && current_user_session.record 
   end
 
   def require_login
