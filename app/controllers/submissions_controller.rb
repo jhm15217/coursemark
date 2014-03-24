@@ -1,5 +1,6 @@
 class SubmissionsController < ApplicationController
   before_filter :get_assignment, :get_course
+  before_filter :get_evaluations, :only => :show
 
 
   # GET /submissions
@@ -63,7 +64,7 @@ class SubmissionsController < ApplicationController
 
     respond_to do |format|
       if @submission.update_attributes(params[:submission])
-        format.html { redirect_to @submission, notice: 'Submission was successfully updated.' }
+        format.html { redirect_to course_assignment_submission_evaluation_path(@course, @assignment, @submission), notice: 'Submission was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
@@ -94,5 +95,13 @@ class SubmissionsController < ApplicationController
     if params[:course_id]
       @course = Course.find(params[:course_id])
     end
+  end
+
+  def get_evaluations
+    @evaluations = Evaluation.where(submission_id: params[:id])
+  end
+
+  def get_responses
+
   end
 end
