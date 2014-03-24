@@ -15,4 +15,14 @@ class Assignment < ActiveRecord::Base
   validates_numericality_of :reviews_required, :only_integer => true, :greater_than => 0
   validates_date :submission_due
 
+  def status
+    if Date.today <= (self.submission_due).to_date
+      return "Submissions due " + self.submission_due.to_s(:pretty)
+    elsif Date.today <= (self.review_due).to_date
+      return "Reviews due " + self.review_due.to_s(:pretty)
+    elsif Date.today > (self.review_due).to_date
+      return "Reviews completed " + self.review_due.to_s(:pretty)
+    end
+  end
+
 end

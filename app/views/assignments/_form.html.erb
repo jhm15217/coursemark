@@ -12,6 +12,9 @@
   <% end %>
 
   <div class="field">
+    <div class="label"><%= @assignment.status %></div>
+  </div>
+  <div class="field">
     <%= f.label :name, "Assignment Name" %><br />
     <%= f.text_field :name %>
   </div>
