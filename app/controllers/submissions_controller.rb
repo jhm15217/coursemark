@@ -29,6 +29,7 @@ class SubmissionsController < ApplicationController
   # GET /submissions/new.json
   def new
     @submission = Submission.new
+    @submission.instructor_approved = false;
 
     respond_to do |format|
       format.html # new.html.erb
