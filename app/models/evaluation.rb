@@ -6,8 +6,8 @@ class Evaluation < ActiveRecord::Base
   belongs_to :submission
   belongs_to :user
 
-  def user_name 
-  	self.user.name 
+  def user_name
+  	self.user.name
   end
-  
+
 end

@@ -1,32 +1,55 @@
-<div style='width:50%;'>
-  <embed src="http://agora.dev<%= @submission.submission %>" width="600" height="780" style="border: none;"></embed>
+<div id='header' style='width:100%;'>
+  <small style='display:block;float:left;margin-top:-18px;'><%= link_to "&larr; #{@submission.assignment.name}".html_safe , course_assignment_path(@course, @assignment) %></small>
+  <h1 class="name" style='margin-top:5px;'><%= @submission.user.name %></h1>
+  <a href='#' id='nextSubmissionBtn'>Next Submission</a>
 </div>
 
-<div style='width:50%;'>
+
+<div id='submissionPDFWrapper'>
+  <embed src="http://agora.dev<%= @submission.submission %>" width="100%" height="100%" style="border: none;"></embed>
+  <div id='submissionDownloadBtn' class='button'>
+    <a href='http://<%= request.host %><%= @submission.submission %>' >Download Submission</a>
+  </div>
+</div>
+
+<div id='submissionsWrapper'>
   <p id="notice"><%= notice %></p>
 
-  <p>
-    <b>Submitted:</b>
-    <%= @submission.submitted %>
-  </p>
 
-  <p>
-    <b>Submission:</b>
-    <%= @submission.submission %>
-  </p>
 
-  <p>
-    <b>Assignment:</b>
-    <%= @submission.assignment_id %>
-  </p>
 
-  <p>
-    <b>User:</b>
-    <%= @submission.user_id %>
-  </p>
+  <div id='submissionBoxesWrapper'>
+    <% @evaluations[0].responses.each do |eval| %>
+      <%# eval.responses.each do |resp| %>
+        <%# get_evaluations_for_submission_question(@submission, eval.question) %>
+        <div class='submissionQuestionBox'>
+        <h2><%= eval.question.question_text %></h2>
+          <% get_evaluations_for_submission_question(@submission, eval.question).each_with_index do |response, index| %>
+              <div class='submissionBox'>
+                <div class='submissionResponsePoints'><%= response.scale.value %></div>
+                <div class='submissionResponseFrom'>Reviewer <%= index + 1 %></div>
+                <div class='submissionPeerReview'><%= response.peer_review %></div>
+                <% if response.student_response != nil then %>
+                  <div class='submissionStudentResponse'>
+                    <div class='submissionResponseFrom'>Submitter (student)</div>
+                    <%= response.student_response %>
+                  </div>
+                <% end %>
+                <% if response.instructor_response != nil then %>
+                  <div class='submissionInstructorResponse'>
+                    <div class='submissionResponseFrom'>Instructor</div>
+                    <%= response.instructor_response %></div>
+                <% end %>
+              </div>
+
+          <% end %>
+        </div> <!-- end submissionQuestionBox -->
+    <% end %>
+
+  </div>
+
 </div>
 
 
 
-<%= link_to 'Edit', edit_course_assignment_submission_path(@course, @submission) %> |
-<%= link_to 'Back', course_assignment_submissions_path %>
+<%= link_to 'Edit', edit_course_assignment_submission_path(@course, @submission) %>
