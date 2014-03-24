@@ -6,6 +6,8 @@ class Assignment < ActiveRecord::Base
   has_many :submissions
   has_many :questions
 
+  scope :published, -> { where(draft: false) }
+
   # Validations
   #validates_numericality_of :course_id, :only_integer => true, :greater_than => 0
   validates_inclusion_of :draft, :in => [true, false], :message => "must be true or false"
