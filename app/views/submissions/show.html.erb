@@ -1,22 +1,19 @@
-<div id='header' style='width:100%;'>
-  <small style='display:block;float:left;margin-top:-18px;'><%= link_to "&larr; #{@submission.assignment.name}".html_safe , course_assignment_path(@course, @assignment) %></small>
-  <h1 class="name" style='margin-top:5px;'><%= @submission.user.name %></h1>
-  <a href='#' id='nextSubmissionBtn'>Next Submission</a>
+<div id='submissionHeader'>
+  <small style='display:block; float:left; margin-top:-18px; width:100%;'>
+    <%= link_to "&larr; #{@submission.assignment.name}".html_safe , course_assignment_path(@course, @assignment) %>
+    <h1 class="name"><%= @submission.user.name %></h1>
+    <div id='submissionDownloadBtn'>
+      <a href='http://<%= request.host %><%= @submission.submission %>' >Download Submission</a>
+    </div>
+  </small>
 </div>
-
 
 <div id='submissionPDFWrapper'>
   <embed src="http://agora.dev<%= @submission.submission %>" width="100%" height="100%" style="border: none;"></embed>
-  <div id='submissionDownloadBtn' class='button'>
-    <a href='http://<%= request.host %><%= @submission.submission %>' >Download Submission</a>
-  </div>
 </div>
 
 <div id='submissionsWrapper'>
   <p id="notice"><%= notice %></p>
-
-
-
 
   <div id='submissionBoxesWrapper'>
     <% @evaluations[0].responses.each do |eval| %>
@@ -31,7 +28,7 @@
                 <div class='submissionPeerReview'><%= response.peer_review %></div>
                 <% if response.student_response != nil then %>
                   <div class='submissionStudentResponse'>
-                    <div class='submissionResponseFrom'>Submitter (student)</div>
+                    <div class='submissionResponseFrom'>Author's Reply</div>
                     <%= response.student_response %>
                   </div>
                 <% end %>

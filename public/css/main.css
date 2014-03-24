@@ -160,18 +160,20 @@ textarea {
     width: calc(100% - 290px);
     height: 100%;
     overflow-y: scroll;
-    padding: 0px 60px 40px 60px;
+    padding: 0px 50px 40px 50px;
     background: #F5F6F8;
 }
-.no_sidebar_main {
-  width:100% !important;
+
+#main.no_sidebar_main {
+  width:100%;
+  padding: 0px 36px 40px 50px;
 }
 
 #header {
     position: fixed;
     width: calc(100% + 120px);
     height: 85px;
-    margin: 0px 0px 45px -60px;
+    margin: 0px 0px 45px -50px;
     padding: 28px 50px 0px 50px;
     border-bottom: 1px solid #DFDFDF;
     background: #FFF;
@@ -277,6 +279,7 @@ textarea {
     width: 100%;
     text-align: left;
     background: #FFF;
+    border: 1px solid #DFDFDF;
     border-radius: 6px;
 }
 
@@ -546,25 +549,51 @@ textarea {
     color: #343F53;
 }
 
+#submissionHeader {
+    position: fixed;
+    width: 100%;
+    height: 37px;
+    margin: 0px 0px 45px -50px;
+    padding: 28px 50px 0px 50px;
+    border-bottom: 1px solid #DFDFDF;
+    background: #FFF;
+    z-index: 1000;
+}
+
+#submissionHeader h1 {
+    float: left;
+    font-size: 13px;
+    margin: 0px;
+    text-align: center;
+    width: calc(100% - 400px);
+    margin-top: -19px;
+    margin-left: 250px;
+}
+
+#submissionHeader a {
+    float: left;
+}
+
 #submissionPDFWrapper {
   width: 55%;
-  height: calc(90% - 85px);
-  min-height:400px;
-  margin-top: 85px;
+  height: 100%;
+  min-height: 400px;
+  margin-top: 37px;
   float: left;
   margin-left: -60px;
-  position:absolute;
+  position: absolute;
 }
 
 #submissionDownloadBtn {
-  margin: 10px 0 0 20px;
+  position: absolute;
+  right: 36px;
 }
 
 #submissionsWrapper {
   width: 43%;
   float: right;
   margin-left: 8px;
-  margin-top: 85px;
+  margin-top: 43px;
 }
 
 #submissionsWrapper h1 {
@@ -577,10 +606,10 @@ textarea {
 }
 
 #submissionBoxesWrapper {
-  margin-top:20px;
-  display:block;
-  width:100%;
-  height:100%;
+    margin-top: 20px;
+    display: block;
+    width: 100%;
+    height: 100%;
 }
 
 .submissionQuestionBox {
@@ -592,18 +621,18 @@ textarea {
 }
 
 .submissionBox {
-  width: 97%;
-  min-width: 250px;
-  height: auto;
-  min-height:100px;
-  display: inline-block;
-  box-sizing: border-box;
-  background: #F5F6F8;
-  border: 1px solid #DFDFDF;
-  border-radius: 6px;
-  margin: 10px;
-  padding: 10px 50px 10px 10px;
-  overflow:hidden;
+    width: 100%;
+    min-width: 250px;
+    height: auto;
+    min-height: 100px;
+    display: inline-block;
+    box-sizing: border-box;
+    background: #FFF;
+    border: 1px solid #DFDFDF;
+    border-radius: 6px;
+    margin: 10px 0px 10px 0px;
+    padding: 17px 50px 17px 17px;
+    overflow: hidden;
 }
 
 .submissionQuestionBox h2 {
@@ -621,10 +650,10 @@ textarea {
   min-width: 45px;
   font-size: 22px;
   float: right;
-  margin: -10px -50px 0 0;
+  margin: -17px -50px 0 0;
   text-align: right;
   padding: 10px 15px 0 15px;
-  background: #AAABAE;
+  background: #e74c3c;
   border-bottom-left-radius: 6px;
   color: white;
 }
@@ -632,8 +661,9 @@ textarea {
 .submissionResponseFrom {
   color: #48494B;
   font-size: 14px;
-  font-weight:600;
-  text-transform:uppercase;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-bottom: 8px;
 }
 
 .submissionStudentResponse, .submissionInstructorResponse {
