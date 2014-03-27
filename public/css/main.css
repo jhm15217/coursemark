@@ -677,6 +677,15 @@ textarea {
   margin-top:30px;
   padding-top:20px;
 }
+
+.assignment_details {
+    background: #FFF;
+    padding: 25px;
+    width: 405px;
+    border-radius: 6px;
+    border: 1px solid #DFDFDF;
+}
+
 /* ==========================================================================
    Media Queries
    ========================================================================== */
