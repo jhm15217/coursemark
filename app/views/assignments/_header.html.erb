@@ -4,6 +4,7 @@
 
     <% if @assignment.id %>
         <div class="tabs">
+            <% if current_user.instructor?(@course) %>
             <div class="tab <%= 'active' if controller.controller_name == 'assignments' %>">
                 <%= link_to edit_course_assignment_path(@course, @assignment) do %>
                     Dashboard
@@ -16,13 +17,13 @@
                 <% end %>
             </div>
 
-            <!-- Temporarily removed grade distribution tab -->
-
             <div class="tab <%= 'active' if controller.controller_name == 'questions' %>">
                 <%= link_to course_assignment_questions_path(@course, @assignment) do %>
                     Rubric
                 <% end %>
             </div>
+
+            <% end %>
 
             <div class="tab logout">
                 <%= link_to logout_path do %>

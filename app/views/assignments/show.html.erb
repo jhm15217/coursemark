@@ -1,4 +1,4 @@
-<p id="notice"><%= notice %></p>
+<%= render "assignments/header" %>
 
 <p>
   <b>Submission due:</b>
@@ -25,6 +25,3 @@
   <%= @assignment.course_id %>
 </p>
 
-
-<%= link_to 'Edit', edit_assignment_path(@assignment) %> |
-<%= link_to 'Back', assignments_path %>
