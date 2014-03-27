@@ -1,27 +1,13 @@
 <%= render "assignments/header" %>
 
-<p>
-  <b>Submission due:</b>
-  <%= @assignment.submission_due %>
-</p>
+<div class="assignment_details">
+  <p>
+    <b>Submissions due:</b>
+    <%= @assignment.submission_due.to_s(:pretty) %>
+  </p>
 
-<p>
-  <b>Review due:</b>
-  <%= @assignment.review_due %>
-</p>
-
-<p>
-  <b>Reviews required:</b>
-  <%= @assignment.reviews_required %>
-</p>
-
-<p>
-  <b>Draft:</b>
-  <%= @assignment.draft %>
-</p>
-
-<p>
-  <b>Course:</b>
-  <%= @assignment.course_id %>
-</p>
-
+  <p>
+    <b>Reviews due:</b>
+    <%= @assignment.review_due.to_s(:pretty) %>
+  </p>
+</div>
