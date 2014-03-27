@@ -19,6 +19,7 @@ class Assignment < ActiveRecord::Base
   validates :submission_due, :deadline => true, :on => :update, :unless => :draft?, :if => :submission_due_changed?
   validates :review_due, :deadline => true, :on => :update, :unless => :draft?, :if => :review_due_changed?
   validate :reviews_required_feasible
+  validate :submissions_open, :on => :update, :if => :reviews_required_changed?
 
   def status
     if Date.today <= (self.submission_due).to_date
@@ -37,7 +38,13 @@ class Assignment < ActiveRecord::Base
 
   def reviews_required_feasible
     if self.course.get_students.length < reviews_required
-      errors.add(:reviews_required, "Too many reviews required for class size")
+      errors.add(:reviews_required, "Too many reviews required for class size.")
+    end
+  end
+
+  def submissions_open
+    if submission_due < Date.today
+      errors.add(:reviews_required, "Can't change number of reviews required after submission deadline has passed.")
     end
   end
 end
