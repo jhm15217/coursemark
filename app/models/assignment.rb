@@ -16,9 +16,12 @@ class Assignment < ActiveRecord::Base
   validates_numericality_of :reviews_required, :only_integer => true, :greater_than_or_equal_to  => 0
   validates_date :submission_due, :allow_nil => true
   validates_date :review_due, :allow_nil => true
+  # submission and review due dates can only be changed if they haven't passed
   validates :submission_due, :deadline => true, :on => :update, :unless => :draft?, :if => :submission_due_changed?
   validates :review_due, :deadline => true, :on => :update, :unless => :draft?, :if => :review_due_changed?
+  # make sure the number of reviews required is feasible given class size
   validate :reviews_required_feasible
+  # only allow changes to reviews_required if we are still taking submissions
   validate :submissions_open, :on => :update, :if => :reviews_required_changed?
 
   def status

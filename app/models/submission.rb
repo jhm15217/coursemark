@@ -16,11 +16,14 @@ class Submission < ActiveRecord::Base
 
   private 
   def create_and_save_evaluations
+  	# only run if the number of evaluations isn't the number required
   	if self.evaluations.length != self.assignment.reviews_required
 	  	self.evaluations.delete_all
 	  	courseStudents = self.assignment.course.get_students.without_user(self.user)
 	  	evaluations = self.assignment.evaluations
 	  	evaluationCounts = Hash.new
+	  	# create hashmap that maps student id's to the number
+	  	# of evaluations they have for this assignment
 	  	courseStudents.map { |student| 
 	  		evaluationCounts[student.id] = evaluations.forUser(student).count		
 	  	}
@@ -28,10 +31,14 @@ class Submission < ActiveRecord::Base
 	  	evaluationsLeft = self.assignment.reviews_required
 	  	evaluatorPool = []
 	  	begin
+	  		# get students that have the lowest number of evaluations alreaddy assigned
 	  		evaluatorPool.concat(courseStudents.select { |student|
 	  			evaluationCounts[student.id] == reviewThreshold
 	  		})
+	  		# shuffle them because randomness
 	  		evaluatorPool.shuffle!
+	  		# Create evaluations for students until no more evaluations
+	  		# are required or we run out of students
 	  		while evaluatorPool.length > 0 && evaluationsLeft > 0
 	  			evaluator = evaluatorPool.pop
 	  			evaluation = Evaluation.new
@@ -40,6 +47,7 @@ class Submission < ActiveRecord::Base
 					evaluation.save
 					evaluationsLeft -= 1
 	  		end	
+	  		# Increase the review threshold incase we ran out of students and need more
 	 			reviewThreshold += 1
 	  	end while evaluationsLeft > 0
 	  end
