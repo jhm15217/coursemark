@@ -65,7 +65,7 @@ class SubmissionsController < ApplicationController
 
     respond_to do |format|
       if @submission.update_attributes(params[:submission])
-        format.html { redirect_to course_assignment_submission_evaluation_path(@course, @assignment, @submission), notice: 'Submission was successfully updated.' }
+        format.html { redirect_to course_assignment_submission_path(@course, @assignment, @submission), notice: 'Submission was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }

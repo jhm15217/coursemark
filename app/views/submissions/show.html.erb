@@ -17,7 +17,7 @@
 
   <div id='submissionBoxesWrapper'>
 <!--     GRADE -->
-    <% if @submission.instructor_approved != 'f' and @submission.instructor_approved != nil then %>
+    <% if @submission.instructor_approved != false and @submission.instructor_approved != nil then %>
 <!--     GRADE IS APPROVED -->
       <div class='submissionGradeBox'>
         <span>Grade: Approved</span>
