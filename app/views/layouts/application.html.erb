@@ -22,6 +22,16 @@
         <![endif]-->
 
         <div id="sidebar">
+            <div>
+              <select id='courseSelector' onchange="this.options[this.selectedIndex].value && (window.location = '../' + this.options[this.selectedIndex].value);">
+                  <option>Change course...</option>
+                <% current_user.courses.each do |course| %>
+                  <option value="<%= course.id %>"><%= course.name %></option>
+                <% end %>
+              </select>
+
+              <%# select "user", "courses", current_user.courses.map {|course, index| [course.name,index]} %>
+            </div>
             <ul>
             	<% @assignments.each do |assignment| %>
                 <li class="<%= 'active' if @assignment.id == assignment.id %>">
