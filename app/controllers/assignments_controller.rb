@@ -31,6 +31,8 @@ class AssignmentsController < ApplicationController
     if @submission.nil?
       @submission = Submission.new
       @submission.assignment = @assignment
+    else
+      @evaluations = Evaluation.where(submission_id: @submission.id)
     end
 
     if current_user.instructor?(@course)
