@@ -39,34 +39,33 @@
       </div>
     <% end %>
 
-<!--     EVALUATIONS -->
+  <!--     EVALUATIONS -->
     <% @evaluations[0].responses.each do |eval| %>
-        <div class='submissionQuestionBox'>
-        <h2><%= eval.question.question_text %></h2>
-          <% get_evaluations_for_submission_question(@submission, eval.question).each_with_index do |response, index| %>
-              <div class='submissionBox'>
-                <div class='submissionResponsePoints'><%= response.scale.value %></div>
-                <div class='submissionResponseFrom'>Reviewer <%= index + 1 %></div>
-                <div class='submissionPeerReview'><%= response.peer_review %></div>
-                <% if response.student_response != nil then %>
-                  <div class='submissionStudentResponse'>
-                    <div class='submissionResponseFrom'>Author's Reply</div>
-                    <%= response.student_response %>
-                  </div>
-                <% end %>
-                <div class='submissionInstructorResponse'>
-                  <div class='submissionResponseFrom'>Instructor</div>
-                  <% if response.instructor_response != nil then %>
-                      <%= response.instructor_response %>
-                  <% else %>
-                    <%= nested_form_for [@course, @assignment, eval.question, response]  do |f| %>
-                      <%= f.text_area :instructor_response, class: 'submissionTextArea fl'  %>
-                      <%= f.submit "Reply", class: 'submissionTextAreaReply fr' %>
-                    <% end %>
+      <div class='submissionQuestionBox'>
+      <h2><%= eval.question.question_text %></h2>
+        <% get_evaluations_for_submission_question(@submission, eval.question).each_with_index do |response, index| %>
+            <div class='submissionBox'>
+              <div class='submissionResponsePoints'><%= response.scale.value %></div>
+              <div class='submissionResponseFrom'>Reviewer <%= index + 1 %></div>
+              <div class='submissionPeerReview'><%= response.peer_review %></div>
+              <% if response.student_response != nil then %>
+                <div class='submissionStudentResponse'>
+                  <div class='submissionResponseFrom'>Author's Reply</div>
+                  <%= response.student_response %>
+                </div>
+              <% end %>
+              <div class='submissionInstructorResponse'>
+                <div class='submissionResponseFrom'>Instructor</div>
+                <% if response.instructor_response != nil then %>
+                    <%= response.instructor_response %>
+                <% else %>
+                  <%= nested_form_for [@course, @assignment, eval.question, response]  do |f| %>
+                    <%= f.text_area :instructor_response, class: 'submissionTextArea fl'  %>
+                    <%= f.submit "Reply", class: 'submissionTextAreaReply fr' %>
                   <% end %>
-                </div> <!-- End Instructor Response -->
-              </div>
-
+                <% end %>
+              </div> <!-- End Instructor Response -->
+            </div>
           <% end %>
         </div> <!-- end submissionQuestionBox -->
     <% end %>

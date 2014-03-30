@@ -20,3 +20,37 @@
 	</div>
 <% end %>
 
+<% if @evaluations && @evaluations[0] %>
+<div id="student_evaluation_view">
+  <% @evaluations[0].responses.each do |eval| %>
+    <div class='submissionQuestionBox clearfix'>
+    <h2><%= eval.question.question_text %></h2>
+      <% get_evaluations_for_submission_question(@submission, eval.question).each_with_index do |response, index| %>
+          <div class='submissionBox'>
+            <div class='submissionResponsePoints'><%= response.scale.value %></div>
+            <div class='submissionResponseFrom'>Reviewer <%= index + 1 %></div>
+            <div class='submissionPeerReview'><%= response.peer_review %></div>
+            <div class='submissionInstructorResponse'>
+              <div class='submissionResponseFrom'>Your Reply</div>
+              <% if response.student_response != nil then %>
+                  <%= response.student_response %>
+              <% else %>
+                <%= nested_form_for [@course, @assignment, eval.question, response]  do |f| %>
+                  <%= f.text_area :student_response, class: 'submissionTextArea fl'  %>
+                  <%= f.submit "Reply", class: 'submissionTextAreaReply fr' %>
+                <% end %>
+              <% end %>
+            </div> <!-- End Student Response -->
+            <% if response.instructor_response != nil then %>
+              <div class='submissionStudentResponse'>
+                <div class='submissionResponseFrom'>Instructor's Reply</div>
+                <%= response.instructor_response %>
+              </div>
+            <% end %>
+          </div>
+      <% end %>
+    </div> <!-- end submissionQuestionBox -->
+    <div class="clearfix"></div>
+  <% end %>
+</div>
+<% end %>

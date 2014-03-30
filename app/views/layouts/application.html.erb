@@ -23,7 +23,7 @@
 
         <div id="sidebar">
             <div id='courseSelector'>
-              <select  onchange="this.options[this.selectedIndex].value && (window.location = '../' + this.options[this.selectedIndex].value);">
+              <select onchange="this.options[this.selectedIndex].value && (window.location = '/courses/' + this.options[this.selectedIndex].value);">
                   <option>Change course...</option>
                 <% current_user.courses.each do |course| %>
                   <option value="<%= course.id %>"><%= course.name %></option>

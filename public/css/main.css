@@ -760,6 +760,19 @@ textarea {
     margin-bottom: 0px;
 }
 
+#student_evaluation_view {
+    margin-top: 163px;
+}
+
+#student_evaluation_view .submissionBox {
+    float: left;
+    width: calc(50% - 10px);
+}
+
+#student_evaluation_view .submissionBox:nth-child(even) {
+    margin-right: 20px;
+}
+
 /* ==========================================================================
    Media Queries
    ========================================================================== */
