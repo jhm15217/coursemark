@@ -118,6 +118,24 @@ textarea {
     background-image: url(../img/assignments_icon.png) no-repeat center center;
 }
 
+#sidebar #courseSelector {
+  margin-top:5px;
+  padding:20px;
+}
+
+#sidebar #courseSelector select {
+  width:100%;
+}
+
+#sidebar #newAssignmentBtn {
+  margin-left:20px;
+  color:white;
+  height:30px;
+  margin-top:5px;
+  margin-bottom: 5px;
+}
+
+
 #sidebar ul {
     padding: 0px;
     margin: 0px;
