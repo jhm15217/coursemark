@@ -26,8 +26,13 @@ class AssignmentsController < ApplicationController
   def show
     @assignment = Assignment.find(params[:id])
 
+    if current_user.instructor?(@course)
+      redirect_to(edit_course_assignment_url(@course, @assignment))
+      return
+    end
+
     respond_to do |format|
-      format.html { redirect_to(edit_course_assignment_url(@course, @assignment)) }
+      format.html
       format.json { render json: @assignment }
     end
   end
