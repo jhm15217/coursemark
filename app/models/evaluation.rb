@@ -6,6 +6,9 @@ class Evaluation < ActiveRecord::Base
   belongs_to :submission
   belongs_to :user
 
+  # Scopes
+  scope :forUser, ->(user) {where("evaluations.user_id = ?", user.id)}
+
   def user_name
   	self.user.name
   end

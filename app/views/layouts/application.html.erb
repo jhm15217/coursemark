@@ -22,6 +22,17 @@
         <![endif]-->
 
         <div id="sidebar">
+            <div id='courseSelector'>
+              <select  onchange="this.options[this.selectedIndex].value && (window.location = '../' + this.options[this.selectedIndex].value);">
+                  <option>Change course...</option>
+                <% current_user.courses.each do |course| %>
+                  <option value="<%= course.id %>"><%= course.name %></option>
+                <% end %>
+              </select>
+            </div>
+            <div id='newAssignmentBtn'>
+              <%= link_to "+ New Assignment", new_course_assignment_path(@course) %>
+            </div>
             <ul>
             	<% @assignments.each do |assignment| %>
                 <li class="<%= 'active' if @assignment.id == assignment.id %>">
