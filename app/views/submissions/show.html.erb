@@ -1,25 +1,79 @@
-<p id="notice"><%= notice %></p>
+<div id='submissionHeader'>
+  <small style='display:block; float:left; margin-top:-18px; width:100%;'>
+    <%= link_to "&larr; #{@submission.assignment.name}".html_safe , course_assignment_path(@course, @assignment) %>
+    <h1 class="name"><%= @submission.user.name %></h1>
+    <div id='submissionDownloadBtn'>
+      <a href='http://<%= request.host %><%= @submission.submission %>' >Download Submission</a>
+    </div>
+  </small>
+</div>
 
-<p>
-  <b>Submitted:</b>
-  <%= @submission.submitted %>
-</p>
+<div id='submissionPDFWrapper'>
+  <embed src="http://agora.dev<%= @submission.submission %>" width="100%" height="100%" style="border: none;"></embed>
+</div>
 
-<p>
-  <b>Submission:</b>
-  <%= @submission.submission %>
-</p>
+<div id='submissionsWrapper'>
+  <p id="notice"><%= notice %></p>
 
-<p>
-  <b>Assignment:</b>
-  <%= @submission.assignment_id %>
-</p>
+  <div id='submissionBoxesWrapper'>
+<!--     GRADE -->
+    <% if @submission.instructor_approved != false and @submission.instructor_approved != nil then %>
+<!--     GRADE IS APPROVED -->
+      <div class='submissionGradeBox'>
+        <span>Grade: Approved</span>
+        <div class='button fr'><%= link_to "Unapprove Grade",
+              course_assignment_submission_path(@course, @assignment, @submission,
+                        :submission => { :instructor_approved => false}),
+              :method => :put %>
+        </div>
+      </div>
+    <% else %>
+<!--     GRADE IS NOT APPROVED -->
+      <div class='submissionGradeBox'>
+        <span>Grade: Unapproved</span>
+        <div class='button fr'><%= link_to "Approve Grade",
+              course_assignment_submission_path(@course, @assignment, @submission,
+                        :submission => { :instructor_approved => true}),
+              :method => :put %>
+        </div>
+      </div>
+    <% end %>
 
-<p>
-  <b>User:</b>
-  <%= @submission.user_id %>
-</p>
+  <!--     EVALUATIONS -->
+    <% @evaluations[0].responses.each do |eval| %>
+      <div class='submissionQuestionBox'>
+      <h2><%= eval.question.question_text %></h2>
+        <% get_evaluations_for_submission_question(@submission, eval.question).each_with_index do |response, index| %>
+            <div class='submissionBox'>
+              <div class='submissionResponsePoints'><%= response.scale.value %></div>
+              <div class='submissionResponseFrom'>Reviewer <%= index + 1 %></div>
+              <div class='submissionPeerReview'><%= response.peer_review %></div>
+              <% if response.student_response != nil then %>
+                <div class='submissionStudentResponse'>
+                  <div class='submissionResponseFrom'>Author's Reply</div>
+                  <%= response.student_response %>
+                </div>
+              <% end %>
+              <div class='submissionInstructorResponse'>
+                <div class='submissionResponseFrom'>Instructor</div>
+                <% if response.instructor_response != nil then %>
+                    <%= response.instructor_response %>
+                <% else %>
+                  <%= nested_form_for [@course, @assignment, eval.question, response]  do |f| %>
+                    <%= f.text_area :instructor_response, class: 'submissionTextArea fl'  %>
+                    <%= f.submit "Reply", class: 'submissionTextAreaReply fr' %>
+                  <% end %>
+                <% end %>
+              </div> <!-- End Instructor Response -->
+            </div>
+          <% end %>
+        </div> <!-- end submissionQuestionBox -->
+    <% end %>
+
+  </div>
+
+</div>
 
 
-<%= link_to 'Edit', edit_assignment_submission_path(@submission) %> |
-<%= link_to 'Back', assignment_submissions_path %>
+
+<%= link_to 'Edit', edit_course_assignment_submission_path(@course, @submission) %>

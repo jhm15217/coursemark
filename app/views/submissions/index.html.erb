@@ -1,8 +1,10 @@
+<%= render "assignments/header" %>
+
 <% if @submissions.length > 0 %>
   <table class="submissions">
       <tr>
         <th>First name</th>
-        <th>Last name</th> 
+        <th>Last name</th>
         <th>Timestamp</th>
         <th>Grade</th>
         <th></th>
@@ -10,10 +12,14 @@
       <% @submissions.each do |submission| %>
       <tr>
         <td><%= submission.user.first_name %></td>
-        <td><%= submission.user.last_name %></td> 
+        <td><%= submission.user.last_name %></td>
         <td><%= submission.submitted %></td>
         <td>GRADE HERE</td>
-        <td><%= link_to 'Show', [@assignment, submission] %></td>
+        <% if submission.instructor_approved %>
+          <td><%= link_to 'View', [@course, @assignment, submission] %></td>
+        <% else %>
+          <td><%= link_to 'Approve', [@course, @assignment, submission] %></td>
+        <% end %>
       </tr>
       <% end %>
   </table>

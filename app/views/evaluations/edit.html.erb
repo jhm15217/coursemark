@@ -2,5 +2,5 @@
 
 <%= render 'form' %>
 
-<%= link_to 'Show', @evaluation %> |
-<%= link_to 'Back', evaluations_path %>
+<%= link_to 'Show', course_assignment_submission_evaluation_path(@course, @assignment, @submission, @evaluation) %> |
+<%= link_to 'Back', course_assignment_submission_evaluations_path(@course, @assignment, @submission) %>

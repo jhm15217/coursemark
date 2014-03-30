@@ -1,4 +1,5 @@
-<%= form_for(@scale) do |f| %>
+<%= nested_form_for [@course, @assignment, @question, @scale]  do |f| %>
+
   <% if @scale.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@scale.errors.count, "error") %> prohibited this scale from being saved:</h2>

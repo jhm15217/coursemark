@@ -1,4 +1,4 @@
-<%= form_for(@assignment) do |f| %>
+<%= nested_form_for [@course, @assignment] do |f| %>
   <% if @assignment.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@assignment.errors.count, "error") %> prohibited this assignment from being saved:</h2>
@@ -12,15 +12,18 @@
   <% end %>
 
   <div class="field">
-    <%= f.label :name %><br />
+    <div class="label"><%= @assignment.status %></div>
+  </div>
+  <div class="field">
+    <%= f.label :name, "Assignment Name" %><br />
     <%= f.text_field :name %>
   </div>
   <div class="field">
-    <%= f.label :submission_due %><br />
+    <%= f.label :submission_due, "Submission Deadline" %><br />
     <%= f.datetime_select :submission_due %>
   </div>
   <div class="field">
-    <%= f.label :review_due %><br />
+    <%= f.label :review_due, "Review Deadline" %><br />
     <%= f.datetime_select :review_due %>
   </div>
   <div class="field">
@@ -28,12 +31,8 @@
     <%= f.number_field :reviews_required %>
   </div>
   <div class="field">
-    <%= f.label :draft %><br />
+    <%= f.label :draft %>&nbsp;
     <%= f.check_box :draft %>
-  </div>
-  <div class="field">
-    <%= f.label :course_id %><br />
-    <%= f.collection_select :course_id, Course.all, :id, :name, :prompt => "Select course..." %>
   </div>
   <div class="actions">
     <%= f.submit %>
