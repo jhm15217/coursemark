@@ -672,18 +672,42 @@ textarea {
   margin-bottom: 8px;
 }
 
-.submissionStudentResponse, .submissionInstructorResponse {
+.submissionStudentResponse, 
+.submissionInstructorResponse {
   border-top: 1px solid #DFDFDF;
   margin-top:30px;
   padding-top:20px;
 }
 
 .assignment_details {
+    float: left;
     background: #FFF;
     padding: 25px;
-    width: 405px;
+    width: calc(50% - 10px);
     border-radius: 6px;
     border: 1px solid #DFDFDF;
+}
+
+.new_submission, 
+.edit_submission {
+    float: left;
+    background: #FFF;
+    padding: 25px;
+    width: calc(50% - 10px);
+    margin-left: 20px;
+    border-radius: 6px;
+    border: 1px solid #DFDFDF;
+    height: 144px;
+}
+
+.new_submission input, 
+.edit_submission input {
+    border: 0px;
+}
+
+#main .new_submission input[type=submit], 
+#main .edit_submission input[type=submit] {
+    margin-bottom: 0px;
 }
 
 /* ==========================================================================

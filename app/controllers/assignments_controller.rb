@@ -1,5 +1,6 @@
 class AssignmentsController < ApplicationController
   before_filter :get_course
+  helper_method :get_submission_for_assignment
 
   # GET /assignments
   # GET /assignments.json
@@ -25,6 +26,12 @@ class AssignmentsController < ApplicationController
   # GET /assignments/1.json
   def show
     @assignment = Assignment.find(params[:id])
+    @submission = get_submission_for_assignment(@assignment)
+
+    if @submission.nil?
+      @submission = Submission.new
+      @submission.assignment = @assignment
+    end
 
     if current_user.instructor?(@course)
       redirect_to(edit_course_assignment_url(@course, @assignment))
@@ -105,5 +112,10 @@ class AssignmentsController < ApplicationController
     if params[:course_id]
       @course = Course.find(params[:course_id])
     end
+  end
+
+  def get_submission_for_assignment(assignment)
+    @submission = Submission.where(:assignment_id => assignment.id, :user_id => current_user.id)
+    return @submission[0]
   end
 end

@@ -27,7 +27,13 @@
                 <li class="<%= 'active' if @assignment.id == assignment.id %>">
                 	<%= link_to course_assignment_path(@course, assignment) do %>
 	                    <div class="name"><%= assignment.name %></div>
-	                    <div class="status"><%= assignment.draft ? 'Draft' : 'Published' %></div>
+                        <% if get_submission_for_assignment(assignment) %>
+                            <div class="status">Submitted</div>
+                        <% elsif @submission %>
+                            <div class="status">Not Submitted</div>
+                        <% else %>
+	                       <div class="status"><%= assignment.draft ? 'Draft' : 'Published' %></div>
+                        <% end %>
                     <% end %>
                 </li>
                 <% end %>
