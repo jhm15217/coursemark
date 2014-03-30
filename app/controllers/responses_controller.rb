@@ -1,4 +1,6 @@
 class ResponsesController < ApplicationController
+  before_filter :get_assignment, :get_course, :get_question
+
   # GET /responses
   # GET /responses.json
   def index
@@ -60,7 +62,7 @@ class ResponsesController < ApplicationController
 
     respond_to do |format|
       if @response.update_attributes(params[:response])
-        format.html { redirect_to @response, notice: 'Response was successfully updated.' }
+        format.html { redirect_to course_assignment_submission_path(@course, @assignment, @response.evaluation.submission), notice: 'Response was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
@@ -78,6 +80,24 @@ class ResponsesController < ApplicationController
     respond_to do |format|
       format.html { redirect_to responses_url }
       format.json { head :no_content }
+    end
+  end
+
+  def get_assignment
+    if params[:assignment_id]
+      @assignment = Assignment.find(params[:assignment_id])
+    end
+  end
+
+  def get_course
+    if params[:course_id]
+      @course = Course.find(params[:course_id])
+    end
+  end
+
+  def get_question
+    if params[:question_id]
+      @question = Question.find(params[:question_id])
     end
   end
 end

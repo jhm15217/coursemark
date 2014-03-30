@@ -1,5 +1,5 @@
 class QuestionsController < ApplicationController
-  before_filter :get_assignment
+  before_filter :get_assignment, :get_course
 
   # GET /questions
   # GET /questions.json
@@ -30,14 +30,14 @@ class QuestionsController < ApplicationController
     @type = params[:type]
 
     if @type == 'scale'
-      @question.scales.build(:value => 1, :description => 'Strongly Disagree')
+      @question.scales.build(:value => 1, :description => 'Lowest Score Label')
       @question.scales.build(:value => 2)
       @question.scales.build(:value => 3)
       @question.scales.build(:value => 4)
-      @question.scales.build(:value => 5, :description => 'Strongly Agree')
+      @question.scales.build(:value => 5, :description => 'Highest Score Label')
     elsif @type == 'yesno'
-      @question.scales.build(:value => 1, :description => 'Yes')
-      @question.scales.build(:value => 0, :description => 'No')
+      @question.scales.build(:value => 1, :description => 'No')
+      @question.scales.build(:value => 2, :description => 'Yes')
     end
 
     respond_to do |format|
@@ -56,12 +56,6 @@ class QuestionsController < ApplicationController
   def create
     @question = Question.new(params[:question])
     @question.assignment = @assignment
-    @question.save
-    
-    @question.scales do |scale, i|
-      scale.value = i
-      scale.save!
-    end 
 
     respond_to do |format|
       if @question.save
@@ -78,6 +72,11 @@ class QuestionsController < ApplicationController
   # PUT /questions/1.json
   def update
     @question = Question.find(params[:id])
+
+    @question.scales do |scale, i|
+      scale.value = i+1
+      scale.save!
+    end 
 
     respond_to do |format|
       if @question.update_attributes(params[:question])
@@ -105,6 +104,12 @@ class QuestionsController < ApplicationController
   def get_assignment
     if params[:assignment_id]
       @assignment = Assignment.find(params[:assignment_id])
+    end
+  end
+
+  def get_course
+    if params[:course_id]
+      @course = Course.find(params[:course_id])
     end
   end
 end

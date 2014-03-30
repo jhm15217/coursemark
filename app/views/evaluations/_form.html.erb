@@ -1,5 +1,5 @@
-<%= form_for(@evaluation) do |f| %>
-  <% if @evaluation.errors.any? %>
+<%= nested_form_for [@course, @assignment, @submission, @evaluation] do |f| %>
+<% if @evaluation.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@evaluation.errors.count, "error") %> prohibited this evaluation from being saved:</h2>
 
@@ -13,8 +13,7 @@
 
   <div class="field">
     <%= f.label :submission_id %><br />
-    <%= f.number_field :submission_id %>
-    <%= f.collection_select :submission_id, Submission.all, :id, :name, :prompt => "Select submission..." %>
+    <%= f.collection_select :submission_id, Submission.all, :id, :user_id, :prompt => "Select submission..." %>
 
   </div>
   <div class="field">

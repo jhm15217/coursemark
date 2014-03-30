@@ -1,22 +1,32 @@
 Agora::Application.routes.draw do
-  resources :assignments do
+  get "users/new"
 
-    resources :submissions do
-      resources :evaluations
-    end
+  get "users/edit"
 
-    resources :questions do
-      resources :responses
-      resources :scales
+  get "user_sessions/new"
+
+  resources :courses do
+    resources :assignments do
+
+      resources :submissions do
+        resources :evaluations
+      end
+
+      resources :questions do
+        resources :responses
+        resources :scales
+      end
+      
     end
-    
   end
 
-  resources :courses
   resources :registrations
   resources :users
+  get 'login', :controller => 'user_sessions', :action => 'new'  
+  get 'logout', :controller => 'user_sessions', :action => 'destroy'  
+  resources :user_sessions 
 
-  root :to => 'assignments#index'
+  root :to => 'courses#index'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

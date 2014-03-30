@@ -1,30 +1,30 @@
+<%= render "assignments/header" %>
+
 <% if @questions and @questions.length > 0 %>
-<table>
-  <tr>
-    <th>Question</th>
-    <th>Points</th>
-    <th>Written response required</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
 
 <% @questions.each do |question| %>
-  <tr>
-    <td><%= question.question_text %></td>
-    <td><%= question.question_weight %></td>
-    <td><%= question.written_response_required %></td>
-    <td><%= link_to 'Edit', [:edit, @assignment, question] %></td>
-    <td><%= link_to "Delete", assignment_question_path(@assignment, question), method: :delete %></td>
-  </tr>
+  <div class="rubricQuestion">
+    <%= link_to [:edit, @course, @assignment, question] do %>
+      <h2>"<%= question.question_text %>"</h2>
+    <% end %>
+    <h4>
+      <%=question.question_weight %> POINTS -
+      <%= link_to "Delete", course_assignment_question_path(@course, @assignment, question), method: :delete %>
+    </h4>
+    
+  </div>
 <% end %>
-</table>
 
 <br />
 
-<%= link_to 'New Question',  new_assignment_question_path(@assignment, :type => 'yesno') %>
+<div class="button">
+  <%= link_to 'New Question',  new_course_assignment_question_path(@course, @assignment, :type => 'yesno') %>
+</div>
+
 <% else %>
-    <h2 class="noData">
-      <%= link_to 'Create first rubric question.',  new_assignment_question_path(@assignment, :type => 'yesno') %>
-    </h2>
+
+  <h2 class="noData">
+    <%= link_to 'Create first rubric question.',  new_course_assignment_question_path(@course, @assignment, :type => 'yesno') %>
+  </h2>
+
 <% end %>

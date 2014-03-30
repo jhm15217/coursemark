@@ -1,11 +1,22 @@
 class CoursesController < ApplicationController
+  layout false
+
   # GET /courses
   # GET /courses.json
   def index
     @courses = Course.all
 
+    # Redirect to first course page or 
+    # new course page if there are none
+
+    if @courses.length > 0
+      @URL = @courses.first
+    else
+      @URL = { :action => 'new' }
+    end
+
     respond_to do |format|
-      format.html # index.html.erb
+      format.html { redirect_to(@URL) }
       format.json { render json: @courses }
     end
   end
@@ -15,8 +26,10 @@ class CoursesController < ApplicationController
   def show
     @course = Course.find(params[:id])
 
+    # Redirect to assignments page
+
     respond_to do |format|
-      format.html # show.html.erb
+      format.html { redirect_to course_assignments_path(@course) }
       format.json { render json: @course }
     end
   end
