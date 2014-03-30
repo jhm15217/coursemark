@@ -612,12 +612,24 @@ textarea {
     height: 100%;
 }
 
-.submissionQuestionBox {
+
+.submissionQuestionBox, .submissionGradeBox {
   background: #FFF;
   padding: 10px 20px 25px 20px;
   border-radius: 6px;
   margin-bottom: 20px;
   border: 1px solid #DFDFDF;
+}
+
+.submissionGradeBox {
+  height:72px;
+}
+
+.submissionGradeBox span {
+  text-transform:uppercase;
+  font-color:#48494B;
+  line-height: 50px;
+  font-weight:bold;
 }
 
 .submissionBox {
@@ -689,6 +701,13 @@ textarea {
 /* ==========================================================================
    Helper classes
    ========================================================================== */
+.fl {
+  float:left;
+}
+
+.fr {
+  float:right;
+}
 
 .ir {
     background-color: transparent;
