@@ -499,6 +499,12 @@ textarea {
     padding-top: 250px;
 }
 
+.loginWrapper #error_explanation ul {
+    list-style: none;
+    padding: 0px;
+    color: #343F53;
+}
+
 .loginWrapper.newAccount {
     padding-top: 190px;
 }
@@ -683,6 +689,15 @@ textarea {
   margin-top:30px;
   padding-top:20px;
 }
+
+.assignment_details {
+    background: #FFF;
+    padding: 25px;
+    width: 405px;
+    border-radius: 6px;
+    border: 1px solid #DFDFDF;
+}
+
 /* ==========================================================================
    Media Queries
    ========================================================================== */
