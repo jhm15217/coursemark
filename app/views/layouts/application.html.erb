@@ -30,9 +30,11 @@
                 <% end %>
               </select>
             </div>
-            <div id='newAssignmentBtn'>
-              <%= link_to "+ New Assignment", new_course_assignment_path(@course) %>
-            </div>
+            <% if current_user.instructor?(@course) %>
+                <div id='newAssignmentBtn'>
+                  <%= link_to "+ New Assignment", new_course_assignment_path(@course) %>
+                </div>
+            <% end %>
             <ul>
             	<% @assignments.each do |assignment| %>
                 <li class="<%= 'active' if @assignment.id == assignment.id %>">
