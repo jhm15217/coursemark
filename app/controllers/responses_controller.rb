@@ -62,7 +62,7 @@ class ResponsesController < ApplicationController
 
     respond_to do |format|
       if @response.update_attributes(params[:response])
-        format.html { redirect_to @response, notice: 'Response was successfully updated.' }
+        format.html { redirect_to course_assignment_submission_path(@course, @assignment, @response.evaluation.submission), notice: 'Response was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
