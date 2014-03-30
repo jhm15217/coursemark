@@ -54,11 +54,17 @@
                     <%= response.student_response %>
                   </div>
                 <% end %>
-                <% if response.instructor_response != nil then %>
-                  <div class='submissionInstructorResponse'>
-                    <div class='submissionResponseFrom'>Instructor</div>
-                    <%= response.instructor_response %></div>
-                <% end %>
+                <div class='submissionInstructorResponse'>
+                  <div class='submissionResponseFrom'>Instructor</div>
+                  <% if response.instructor_response != nil then %>
+                      <%= response.instructor_response %>
+                  <% else %>
+                    <%= nested_form_for [@course, @assignment, eval.question, response]  do |f| %>
+                      <%= f.text_area :instructor_response, class: 'submissionTextArea fl'  %>
+                      <%= f.submit "Reply", class: 'submissionTextAreaReply fr' %>
+                    <% end %>
+                  <% end %>
+                </div> <!-- End Instructor Response -->
               </div>
 
           <% end %>
