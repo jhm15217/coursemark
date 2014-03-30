@@ -16,9 +16,31 @@
   <p id="notice"><%= notice %></p>
 
   <div id='submissionBoxesWrapper'>
+<!--     GRADE -->
+    <% if @submission.instructor_approved != 'f' and @submission.instructor_approved != nil then %>
+<!--     GRADE IS APPROVED -->
+      <div class='submissionGradeBox'>
+        <span>Grade: Approved</span>
+        <div class='button fr'><%= link_to "Unapprove Grade",
+              course_assignment_submission_path(@course, @assignment, @submission,
+                        :submission => { :instructor_approved => false}),
+              :method => :put %>
+        </div>
+      </div>
+    <% else %>
+<!--     GRADE IS NOT APPROVED -->
+      <div class='submissionGradeBox'>
+        <span>Grade: Unapproved</span>
+        <div class='button fr'><%= link_to "Approve Grade",
+              course_assignment_submission_path(@course, @assignment, @submission,
+                        :submission => { :instructor_approved => true}),
+              :method => :put %>
+        </div>
+      </div>
+    <% end %>
+
+<!--     EVALUATIONS -->
     <% @evaluations[0].responses.each do |eval| %>
-      <%# eval.responses.each do |resp| %>
-        <%# get_evaluations_for_submission_question(@submission, eval.question) %>
         <div class='submissionQuestionBox'>
         <h2><%= eval.question.question_text %></h2>
           <% get_evaluations_for_submission_question(@submission, eval.question).each_with_index do |response, index| %>
