@@ -11,3 +11,12 @@
     <%= @assignment.review_due.to_s(:pretty) %>
   </p>
 </div>
+
+<% if !@submission.created_at %>
+	<%= render 'submission' %>
+<% else %>
+	<div class="edit_submission">
+		<p>Successfully submitted assignment.</p>
+	</div>
+<% end %>
+
