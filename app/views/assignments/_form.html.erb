@@ -30,10 +30,17 @@
     <%= f.label :reviews_required %><br />
     <%= f.number_field :reviews_required %>
   </div>
-  <div class="field">
-    <%= f.label :draft %>&nbsp;
-    <%= f.check_box :draft %>
-  </div>
+  <% if @assignment.draft %>
+    <div class="field">
+      <%= f.label :draft %>&nbsp;
+      <%= f.check_box :draft %>
+    </div>
+  <% else %>
+    <div class="field">
+      <%= f.label :draft %>&nbsp;
+      <%= f.check_box :draft, :disabled => true %>
+    </div>
+  <% end %>
   <div class="actions">
     <%= f.submit %>
   </div>

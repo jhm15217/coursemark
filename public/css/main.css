@@ -119,8 +119,8 @@ textarea {
 }
 
 #sidebar #courseSelector {
-  margin-top:5px;
-  padding:20px;
+    padding: 31px 20px;
+    height: 84px;
 }
 
 #sidebar #courseSelector select {
@@ -128,13 +128,14 @@ textarea {
 }
 
 #sidebar #newAssignmentBtn {
-  margin-left:20px;
-  color:white;
-  height:30px;
-  margin-top:5px;
-  margin-bottom: 5px;
+    padding-left: 20px;
+    color: white;
+    height: 30px;
+    padding-top: 14px;
+    padding-bottom: 36px;
+    border-top: 1px solid #484957;
+    border-bottom: 1px solid #484957;
 }
-
 
 #sidebar ul {
     padding: 0px;

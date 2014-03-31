@@ -25,6 +25,9 @@ class Assignment < ActiveRecord::Base
   validate :submissions_open, :on => :update, :if => :reviews_required_changed?
 
   def status
+    if (self.id.nil?)
+      return
+    end
     if Date.today <= (self.submission_due).to_date
       return "Submissions due " + self.submission_due.to_s(:pretty)
     elsif Date.today <= (self.review_due).to_date
