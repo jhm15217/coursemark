@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140331034203) do
+ActiveRecord::Schema.define(:version => 20140331042744) do
 
   create_table "assignments", :force => true do |t|
     t.datetime "submission_due"
@@ -52,8 +52,9 @@ ActiveRecord::Schema.define(:version => 20140331034203) do
     t.boolean  "active"
     t.integer  "user_id"
     t.integer  "course_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+    t.string   "course_code"
   end
 
   create_table "responses", :force => true do |t|

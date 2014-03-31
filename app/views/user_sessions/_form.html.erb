@@ -9,16 +9,18 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= f.text_field :email, :placeholder => "Email" %>   
-  </div>
-  <div class="field">
-    <%= f.password_field :password, :placeholder => "Password" %> 
-  </div>
-  <div class="actions">
-    <%= f.submit "Login" %>
-  </div>
-  <div class="actions newAccount">
-    <%= link_to "New Account", new_user_path, :class => "button"  %>
+  <div class="loginFields">
+    <div class="field">
+      <%= f.text_field :email, :placeholder => "Email" %>   
+    </div>
+    <div class="field">
+      <%= f.password_field :password, :placeholder => "Password" %> 
+    </div>
+    <div class="actions">
+      <%= f.submit "Login" %>
+    </div>
+    <div class="actions newAccount">
+      <%= link_to "New Account", new_user_path, :class => "button"  %>
+    </div>
   </div>
 <% end %>

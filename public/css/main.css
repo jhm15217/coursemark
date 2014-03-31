@@ -546,17 +546,18 @@ textarea {
     padding-left: 15px;
 }
 
-.loginWrapper .field:nth-child(3) input {
+.newAccountFields .field:nth-child(2) input,
+.loginFields .field:nth-child(2) input {
     border-top: 0px;
 }
 
-.loginWrapper.newAccount .field:nth-child(3) input,
-.loginWrapper.newAccount .field:nth-child(6) input {
+.loginWrapper.newAccount .newAccountFields .field:nth-child(3) input,
+.loginWrapper.newAccount .newAccountFields .field:nth-child(6) input {
     border-top: 0px;
 }
 
-.loginWrapper.newAccount .field:nth-child(3) input,
-.loginWrapper.newAccount .field:nth-child(4) input {
+.loginWrapper.newAccount .newAccountFields .field:nth-child(3) input,
+.loginWrapper.newAccount .newAccountFields .field:nth-child(4) input {
     margin-bottom: 10px;
 }
 

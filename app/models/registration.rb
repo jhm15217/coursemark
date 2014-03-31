@@ -1,5 +1,5 @@
 class Registration < ActiveRecord::Base
-  attr_accessible :active, :course_id, :instructor, :user_id
+  attr_accessible :active, :course_id, :instructor, :user_id, :course_code
 
   # Relationships
   belongs_to :user
