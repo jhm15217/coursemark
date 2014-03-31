@@ -40,9 +40,9 @@
                 <li class="<%= 'active' if @assignment.id == assignment.id %>">
                 	<%= link_to course_assignment_path(@course, assignment) do %>
 	                    <div class="name"><%= assignment.name %></div>
-                        <% if get_submission_for_assignment(assignment) %>
+                        <% if !current_user.instructor?(@course) && get_submission_for_assignment(assignment) %>
                             <div class="status">Submitted</div>
-                        <% elsif @submission %>
+                        <% elsif !current_user.instructor?(@course) && @submission %>
                             <div class="status">Not Submitted</div>
                         <% else %>
 	                       <div class="status"><%= assignment.draft ? 'Draft' : 'Published' %></div>
