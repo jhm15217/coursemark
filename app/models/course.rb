@@ -1,7 +1,6 @@
 class Course < ActiveRecord::Base
   before_create :create_unique_identifier
-
-  attr_accessible :name
+  attr_accessible :name, :course_code
 
   # Relationships
   has_many :registrations
