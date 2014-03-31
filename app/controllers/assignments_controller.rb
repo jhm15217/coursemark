@@ -5,7 +5,7 @@ class AssignmentsController < ApplicationController
   # GET /assignments
   # GET /assignments.json
   def index
-    @assignments = Assignment.all
+    @assignments = Assignment.where(:course_id => @course.id)
 
     # Redirect to first assignment page or 
     # new assignment page if there are none

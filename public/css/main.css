@@ -528,6 +528,10 @@ textarea {
     padding-top: 190px;
 }
 
+.loginWrapper.newCourse {
+    padding-top: 300px;
+}
+
 .loginWrapper form {
     color: #FFF;
     width: 470px;
@@ -636,7 +640,6 @@ textarea {
     width: 100%;
     height: 100%;
 }
-
 
 .submissionQuestionBox, .submissionGradeBox {
   background: #FFF;
