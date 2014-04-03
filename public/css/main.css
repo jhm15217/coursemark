@@ -181,6 +181,7 @@ textarea {
     overflow-y: scroll;
     padding: 0px 50px 40px 50px;
     background: #F5F6F8;
+    overflow-x: hidden;
 }
 
 #main.no_sidebar_main {
