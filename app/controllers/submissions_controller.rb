@@ -105,7 +105,4 @@ class SubmissionsController < ApplicationController
     @evaluations = Evaluation.where(submission_id: params[:id])
   end
 
-  def get_responses
-
-  end
 end

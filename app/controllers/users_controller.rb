@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
-	skip_before_filter :require_login
-	layout false 
+	skip_before_filter :require_login, :except => :edit
+	layout false, :except => :edit
 	
 	def new  
 		@user = User.new
@@ -13,6 +13,7 @@ class UsersController < ApplicationController
 
 	def edit
     	@user = User.find(params[:id])
+    	@course = @user.courses.first
   	end
 
 	def create  

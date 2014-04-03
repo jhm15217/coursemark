@@ -1,10 +1,11 @@
 class RegistrationsController < ApplicationController
-  layout false 
+  layout false, :except => :index
   
   # GET /registrations
   # GET /registrations.json
   def index
-    @registrations = Registration.all
+    @registrations = current_user.registrations
+    @course = current_user.courses.first
 
     respond_to do |format|
       format.html # index.html.erb
@@ -81,7 +82,8 @@ class RegistrationsController < ApplicationController
   # DELETE /registrations/1.json
   def destroy
     @registration = Registration.find(params[:id])
-    @registration.destroy
+    @registration.active = false;
+    @registration.save!
 
     respond_to do |format|
       format.html { redirect_to registrations_url }

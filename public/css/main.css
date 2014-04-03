@@ -95,6 +95,7 @@ textarea {
     width: 100%;
     height: 55px;
     background: #343F53;
+    border-top: 1px solid #484957;
     border-bottom: 1px solid #484957;
 }
 
@@ -106,16 +107,21 @@ textarea {
 }
 
 #sidebar .tab.active {
-    background: #f39c12;
+    background-color: #e74c3c;
 }
 
 #sidebar .tab.assignments {
-    background: url(../img/assignments_icon.png) no-repeat center center;
+    background-image: url(../img/assignments_icon.png);
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 23px;
 }
 
-#sidebar .tab.assignments.active {
-    background-color: #f39c12;
-    background-image: url(../img/assignments_icon.png) no-repeat center center;
+#sidebar .tab.profile {
+    background-image: url(../img/user_icon.png);
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 23px;
 }
 
 #sidebar #courseSelector {
@@ -158,8 +164,6 @@ textarea {
 
 #sidebar li.active {
     background: #2c3447;
-    border-left: 5px solid #e74c3c;
-    padding: 23px 20px;
     color: #FFF;
 }
 
@@ -547,18 +551,18 @@ textarea {
     padding-left: 15px;
 }
 
-.newAccountFields .field:nth-child(2) input,
+.new_user .field:nth-child(2) input,
 .loginFields .field:nth-child(2) input {
     border-top: 0px;
 }
 
-.loginWrapper.newAccount .newAccountFields .field:nth-child(3) input,
-.loginWrapper.newAccount .newAccountFields .field:nth-child(6) input {
+.loginWrapper.newAccount .new_user .field:nth-child(3) input,
+.loginWrapper.newAccount .new_user .field:nth-child(6) input {
     border-top: 0px;
 }
 
-.loginWrapper.newAccount .newAccountFields .field:nth-child(3) input,
-.loginWrapper.newAccount .newAccountFields .field:nth-child(4) input {
+.loginWrapper.newAccount .new_user .field:nth-child(3) input,
+.loginWrapper.newAccount .new_user .field:nth-child(4) input {
     margin-bottom: 10px;
 }
 

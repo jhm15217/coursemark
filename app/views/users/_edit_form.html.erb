@@ -1,0 +1,26 @@
+<%= form_for(@user) do |f| %>
+  <% if @user.errors.any? %>
+    <div id="error_explanation">
+      <ul>
+      <% @user.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="newAccountFields">
+    <div class="field">
+      <%= f.text_field :email, :placeholder => "Email" %>   
+    </div>
+    <div class="field">
+      <%= f.password_field :password, :placeholder => "Password" %> 
+    </div>
+    <div class="field">
+      <%= f.password_field :password_confirmation, :placeholder => "Password Confirmation" %> 
+    </div>
+    <div class="actions">
+      <%= f.submit "Update account" %>
+    </div>
+  </div>
+<% end %>
