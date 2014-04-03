@@ -21,253 +21,182 @@
 
 # 2015 Has one assignment, it is a draft
 
-# IF YOU RUN rake db:seed:dump AGAIN IT WILL OVERWRITE THIS AND BREAK IT
+people = [
+  {first_name: 'Aldorayne', last_name: 'Grotkey', email: 'admin@test.com'}, 
+  {first_name: 'Muriel', last_name: 'Finster'},
+  {first_name: 'Theodore', last_name: 'Detweiller', email: 'student@test.com'},
+  {first_name: 'Vincent', last_name: 'LaSalle'},
+  {first_name: 'Ashley', last_name: 'Spinelli'},
+  {first_name: 'Gretchen', last_name: 'Priscilla'},
+  {first_name: 'Michael', last_name: 'Blumberg'},
+  {first_name: 'Gustav', last_name: 'Patton'}
+]
 
-User.create!([
-  {first_name: "Aldorayne", last_name: "Grotkey", email: "admin@test.com", password: "agoraagora", password_confirmation: "agoraagora"},
-  {first_name: "Muriel", last_name: "Finster", email: "Muriel@test.com", password: "agoraagora", password_confirmation: "agoraagora"},
-  {first_name: "Theodore", last_name: "Detweiller", email: "student@test.com", password: "agoraagora", password_confirmation: "agoraagora"},
-  {first_name: "Vincent", last_name: "LaSalle", email: "Vincent@test.com", password: "agoraagora", password_confirmation: "agoraagora"},
-  {first_name: "Ashley", last_name: "Spinelli", email: "Ashley@test.com", password: "agoraagora", password_confirmation: "agoraagora"},
-  {first_name: "Gretchen", last_name: "Priscilla", email: "Gretchen@test.com", password: "agoraagora", password_confirmation: "agoraagora"},
-  {first_name: "Michael", last_name: "Blumberg", email: "Michael@test.com", password: "agoraagora", password_confirmation: "agoraagora"},
-  {first_name: "Gustav", last_name: "Patton", email: "Gustav@test.com", password: "agoraagora", password_confirmation: "agoraagora"}
-], :without_protection => true)
+lorem = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue " +
+"luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra " + 
+"vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, vitae " + 
+"ornare mauris gravida. In quis eros vitae eros hendrerit dignissim." +
+"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue " +
+"luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra " + 
+"vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, vitae " + 
+"ornare mauris gravida. In quis eros vitae eros hendrerit dignissim."
 
-Course.create!([
-  {name: "User-Centered Research and Evaluation - Spring 2014"},
-  {name: "UCRE Fall 2015"}
-])
+users = Hash.new
 
-Registration.create!([
-  {instructor: true, active: true, user_id: 1, course_id: 1},
-  {instructor: true, active: true, user_id: 1, course_id: 2},
-  {instructor: true, active: true, user_id: 2, course_id: 1},
-  {instructor: false, active: true, user_id: 3, course_id: 1},
-  {instructor: false, active: true, user_id: 3, course_id: 2},
-  {instructor: false, active: true, user_id: 4, course_id: 1},
-  {instructor: false, active: true, user_id: 5, course_id: 1},
-  {instructor: false, active: true, user_id: 5, course_id: 2},
-  {instructor: false, active: true, user_id: 6, course_id: 1},
-  {instructor: true, active: true, user_id: 6, course_id: 2},
-  {instructor: false, active: true, user_id: 7, course_id: 1},
-  {instructor: false, active: true, user_id: 8, course_id: 1}
-])
+for person in people
+  user = User.new
+  user.first_name = person[:first_name]
+  user.last_name = person[:last_name]
+  user.email = person[:email] || person[:first_name] + "@test.com"
+  user.password = person[:password] || 'agoraagora'
+  user.password_confirmation = person[:password] || 'agoraagora'
+  user.save
+  users[person[:first_name]] = user
+end
 
-Assignment.create!([
-  {submission_due: "2013-03-27 23:46:10", review_due: "2012-03-27 23:46:10", reviews_required: 5, draft: false, course_id: 1, name: "Assignment 1 (Completed)"},
-  {submission_due: "2013-03-27 23:46:10", review_due: "2015-03-27 23:46:10", reviews_required: 3, draft: false, course_id: 1, name: "Assignment 2 (Reviewing)"},
-  {submission_due: "2015-03-27 23:46:10", review_due: "2016-03-27 23:46:10", reviews_required: 5, draft: false, course_id: 1, name: "Assignment 3 (Submitting)"},
-  {submission_due: "2015-03-27 23:46:10", review_due: "2016-03-27 23:46:10", reviews_required: 5, draft: true, course_id: 1, name: "Assignment 4 (Draft)"},
-  {submission_due: "2015-03-27 23:46:10", review_due: "2016-03-27 23:46:10", reviews_required: 0, draft: true, course_id: 2, name: "Assignment for 2015 (draft)"}
-])
+courseUCRE2014 = Course.create(name: 'User-Centered Research and Evaluation - Spring 2014')
+courseUCRE2015 = Course.create(name: 'UCRE Fall 2015')
 
+# Aldorayne is an instructor for both 2014, 2015
+# Muriel is an instructor only for 2014
+# Gretchen is a student in 2014 and an instructor in 2015
+# Ashley and Theodore are registered for 2014 and 2015 as students
+# All other people are students for 2014 only
 
-# Now generating evaluations when submissions are created
-# Evaluation.create!([
-#   {submission_id: 1, user_id: 4},
-#   {submission_id: 1, user_id: 8},
-#   {submission_id: 1, user_id: 7},
-#   {submission_id: 1, user_id: 5},
-#   {submission_id: 1, user_id: 6},
-#   {submission_id: 2, user_id: 8},
-#   {submission_id: 2, user_id: 6},
-#   {submission_id: 2, user_id: 4},
-#   {submission_id: 3, user_id: 3},
-#   {submission_id: 3, user_id: 7},
-#   {submission_id: 3, user_id: 6},
-#   {submission_id: 3, user_id: 5},
-#   {submission_id: 3, user_id: 8},
-#   {submission_id: 4, user_id: 7},
-#   {submission_id: 4, user_id: 3},
-#   {submission_id: 4, user_id: 5},
-#   {submission_id: 5, user_id: 4},
-#   {submission_id: 5, user_id: 3},
-#   {submission_id: 5, user_id: 6},
-#   {submission_id: 5, user_id: 8},
-#   {submission_id: 5, user_id: 7},
-#   {submission_id: 6, user_id: 7},
-#   {submission_id: 6, user_id: 3},
-#   {submission_id: 6, user_id: 8},
-#   {submission_id: 7, user_id: 4},
-#   {submission_id: 7, user_id: 3},
-#   {submission_id: 7, user_id: 5},
-#   {submission_id: 7, user_id: 8},
-#   {submission_id: 7, user_id: 7},
-#   {submission_id: 8, user_id: 4},
-#   {submission_id: 8, user_id: 5},
-#   {submission_id: 8, user_id: 7},
-#   {submission_id: 9, user_id: 5},
-#   {submission_id: 9, user_id: 6},
-#   {submission_id: 9, user_id: 3},
-#   {submission_id: 9, user_id: 4},
-#   {submission_id: 9, user_id: 8},
-#   {submission_id: 10, user_id: 6},
-#   {submission_id: 10, user_id: 4},
-#   {submission_id: 10, user_id: 8},
-#   {submission_id: 11, user_id: 6},
-#   {submission_id: 11, user_id: 5},
-#   {submission_id: 11, user_id: 7},
-#   {submission_id: 11, user_id: 3},
-#   {submission_id: 11, user_id: 4},
-#   {submission_id: 12, user_id: 6},
-#   {submission_id: 12, user_id: 5},
-#   {submission_id: 12, user_id: 3}
-# ])
-Question.create!([
-  {question_text: "Did the report have a title?", question_weight: 10, written_response_required: false, assignment_id: 1},
-  {question_text: "Was the report good?", question_weight: 100, written_response_required: true, assignment_id: 1},
-  {question_text: "Did the report have a title?", question_weight: 10, written_response_required: false, assignment_id: 2},
-  {question_text: "Was the report good?", question_weight: 100, written_response_required: true, assignment_id: 2},
-  {question_text: "Did the report have a title?", question_weight: 10, written_response_required: false, assignment_id: 3},
-  {question_text: "Was the report good?", question_weight: 100, written_response_required: true, assignment_id: 3},
-  {question_text: "Did the report have a title?", question_weight: 10, written_response_required: false, assignment_id: 4},
-  {question_text: "Was the report good?", question_weight: 100, written_response_required: true, assignment_id: 4}
-])
+enrollments = [
+  {course: courseUCRE2014, user: users["Aldorayne"], instructor: true},
+  {course: courseUCRE2015, user: users["Aldorayne"], instructor: true},
+  {course: courseUCRE2014, user: users["Muriel"], instructor: true},
+  {course: courseUCRE2014, user: users["Theodore"]},
+  {course: courseUCRE2015, user: users["Theodore"]},
+  {course: courseUCRE2014, user: users["Vincent"]},
+  {course: courseUCRE2014, user: users["Ashley"]},
+  {course: courseUCRE2015, user: users["Ashley"]},
+  {course: courseUCRE2014, user: users["Gretchen"]},
+  {course: courseUCRE2015, user: users["Gretchen"], instructor: true},
+  {course: courseUCRE2014, user: users["Michael"]},
+  {course: courseUCRE2014, user: users["Gustav"]},
+]
 
-Response.create!([
-  {peer_review: nil, student_response: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit ame", instructor_response: nil, evaluation_id: 1, question_id: 1, scale_id: 2},
-  {peer_review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula solli", student_response: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, vitae ornare mauris gravida. In quis eros vitae eros h", instructor_response: nil, evaluation_id: 1, question_id: 2, scale_id: 5},
-  {peer_review: nil, student_response: nil, instructor_response: nil, evaluation_id: 2, question_id: 1, scale_id: 2},
-  {peer_review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, vitae ornare mauris gravida. In quis eros vitae eros hendrerit dignissim.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit ame", student_response: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, vitae ornare mauris gravida. In quis eros vitae eros hendrerit dignissim.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat,", instructor_response: nil, evaluation_id: 2, question_id: 2, scale_id: 7},
-  {peer_review: "Lorem ipsum dolor sit ame", student_response: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, vitae ornare mauris grav", instructor_response: nil, evaluation_id: 3, question_id: 1, scale_id: 1},
-  {peer_review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla le", student_response: nil, instructor_response: nil, evaluation_id: 3, question_id: 2, scale_id: 5},
-  {peer_review: nil, student_response: "Lorem ipsum dolor sit amet, consectetur a", instructor_response: nil, evaluation_id: 4, question_id: 1, scale_id: 2},
-  {peer_review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, vitae ornare mauris gravida. In quis eros vitae eros hendrerit dignissim.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, s", student_response: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, vitae ornare mauris gravida. In quis eros vitae eros hendrerit dignissim.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, ", instructor_response: nil, evaluation_id: 4, question_id: 2, scale_id: 7},
-  {peer_review: nil, student_response: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, vitae ornare mauris gravida. In quis eros vitae eros hendrerit dignissim.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue", instructor_response: nil, evaluation_id: 5, question_id: 1, scale_id: 2},
-  {peer_review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, vitae ornare mauris gravida. In quis eros vitae eros ", student_response: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, vitae ornare mauris gravida. In quis eros vitae eros hendrerit dignissim.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringill", instructor_response: nil, evaluation_id: 5, question_id: 2, scale_id: 3},
-  {peer_review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, vitae ornare mauris gravida. In quis eros vitae eros hendrerit dignissim.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus ni", student_response: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, vitae ornare mauris gravida. In quis eros vitae eros hendrerit dignissim.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo ve", instructor_response: nil, evaluation_id: 6, question_id: 1, scale_id: 1},
-  {peer_review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla le", student_response: nil, instructor_response: nil, evaluation_id: 6, question_id: 2, scale_id: 4},
-  {peer_review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, vitae ornare mauris gravida. In quis eros vitae eros hendrerit dignissim.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, vitae ornare mauris gravida. In quis eros ", student_response: nil, instructor_response: nil, evaluation_id: 7, question_id: 1, scale_id: 2},
-  {peer_review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligu", student_response: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, vitae ornare mauris gravida. In quis eros vitae eros hendrerit dignissim.Lorem ipsum dolor sit amet, c", instructor_response: nil, evaluation_id: 7, question_id: 2, scale_id: 6},
-  {peer_review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra l", student_response: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, vitae ornare mauris gravida. In quis eros vitae eros hendrerit dignissim.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. N", instructor_response: nil, evaluation_id: 8, question_id: 1, scale_id: 1},
-  {peer_review: "Lorem ip", student_response: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat", instructor_response: nil, evaluation_id: 8, question_id: 2, scale_id: 6},
-  {peer_review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet", student_response: nil, instructor_response: nil, evaluation_id: 9, question_id: 1, scale_id: 2},
-  {peer_review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, vitae ornare mauris gravida. In quis eros vitae eros hendrerit dignissim.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, vitae ornare ", student_response: nil, instructor_response: nil, evaluation_id: 9, question_id: 2, scale_id: 6},
-  {peer_review: nil, student_response: "Lorem ipsum dolor sit amet, consectetur adi", instructor_response: nil, evaluation_id: 10, question_id: 1, scale_id: 2},
-  {peer_review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus ", student_response: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, vitae ornare mauris gravida. In quis eros vitae eros hendrerit dignissim.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, s", instructor_response: nil, evaluation_id: 10, question_id: 2, scale_id: 7},
-  {peer_review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, vitae ornare mauris gravida. In quis eros vitae eros hendrerit dignissim.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ", student_response: nil, instructor_response: nil, evaluation_id: 11, question_id: 1, scale_id: 1},
-  {peer_review: "Lorem ipsum dolor sit amet, cons", student_response: "Lorem ipsum dolor sit amet, consectetur adipiscing eli", instructor_response: nil, evaluation_id: 11, question_id: 2, scale_id: 3},
-  {peer_review: nil, student_response: nil, instructor_response: nil, evaluation_id: 12, question_id: 1, scale_id: 1},
-  {peer_review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, vitae ornare mauris gravida. In quis eros vitae eros hendrerit dignissim.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, v", student_response: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, vitae ornare mauris gravida. In quis eros vitae eros hendrerit dignissim.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, vitae ornare mauris gra", instructor_response: nil, evaluation_id: 12, question_id: 2, scale_id: 4},
-  {peer_review: nil, student_response: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, vitae ornare mauris gravida. In quis eros vitae eros hendrerit dignissim.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet", instructor_response: nil, evaluation_id: 13, question_id: 1, scale_id: 1},
-  {peer_review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, vitae ornare mauris gravida. In quis eros vitae eros hendrerit dignissim.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, si", student_response: "Lorem ipsum dolor sit amet, consectetur ", instructor_response: nil, evaluation_id: 13, question_id: 2, scale_id: 7},
-  {peer_review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non", student_response: nil, instructor_response: nil, evaluation_id: 14, question_id: 1, scale_id: 2},
-  {peer_review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra", student_response: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, vitae ornare mauris gravida. In quis eros vitae eros hendrerit digni", instructor_response: nil, evaluation_id: 14, question_id: 2, scale_id: 5},
-  {peer_review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, vitae ornare mauris gravida. In quis eros vitae eros hendrerit dignissim.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, vitae ornare ma", student_response: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, vitae ornare mauris gravida. In quis eros vitae eros hendrerit dignissi", instructor_response: nil, evaluation_id: 15, question_id: 1, scale_id: 2},
-  {peer_review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, vitae ornare mauris gravida. In quis eros vitae eros hendrerit dignissim.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo v", student_response: nil, instructor_response: nil, evaluation_id: 15, question_id: 2, scale_id: 7},
-  {peer_review: nil, student_response: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, vitae ornare mauris gravida. In quis eros vitae eros hendrerit dignissim.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra", instructor_response: nil, evaluation_id: 16, question_id: 1, scale_id: 2},
-  {peer_review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, vitae ornare mauris gravida. In quis eros vitae eros hendrerit dignissim.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feu", student_response: nil, instructor_response: nil, evaluation_id: 16, question_id: 2, scale_id: 7},
-  {peer_review: nil, student_response: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, vitae ornare mauris gravida. In quis eros vitae eros hendrerit dignissim.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In ", instructor_response: nil, evaluation_id: 17, question_id: 1, scale_id: 1},
-  {peer_review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feug", student_response: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, vitae ornare mauris gravida. In quis eros vitae eros hendrerit dignissim.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In t", instructor_response: nil, evaluation_id: 17, question_id: 2, scale_id: 5},
-  {peer_review: nil, student_response: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, vitae ornare mauris gravida. In quis eros vitae eros hendrerit dignissim.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus", instructor_response: nil, evaluation_id: 18, question_id: 1, scale_id: 1},
-  {peer_review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, vitae ornare mauris gravida. In quis eros vitae eros hend", student_response: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit ame", instructor_response: nil, evaluation_id: 18, question_id: 2, scale_id: 6},
-  {peer_review: "Lorem ipsum dolor sit ", student_response: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverr", instructor_response: nil, evaluation_id: 19, question_id: 1, scale_id: 1},
-  {peer_review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, vitae ornare mauris gravida. In quis eros vitae eros hendrerit dignissim.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringil", student_response: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. ", instructor_response: nil, evaluation_id: 19, question_id: 2, scale_id: 7},
-  {peer_review: nil, student_response: nil, instructor_response: nil, evaluation_id: 20, question_id: 1, scale_id: 1},
-  {peer_review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, vitae ornare mauris gravida. In quis eros vitae eros hendrerit dignissim.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae", student_response: nil, instructor_response: nil, evaluation_id: 20, question_id: 2, scale_id: 4},
-  {peer_review: nil, student_response: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, vitae ornare mauris gravida. In quis eros vitae eros hendrerit dignissim.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, vitae ornare mauris gravida. In qui", instructor_response: nil, evaluation_id: 21, question_id: 1, scale_id: 1},
-  {peer_review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, vitae ornare mauris gravida. In quis eros vitae eros hendrerit dignissim.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nis", student_response: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, vitae ornare mauris gravida. In quis eros vitae eros hendrerit dignissim.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In", instructor_response: nil, evaluation_id: 21, question_id: 2, scale_id: 4},
-  {peer_review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, vitae ornare mauris gravida. In quis eros vitae eros hendrerit dignissim.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est ", student_response: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, vitae ornare mauris", instructor_response: nil, evaluation_id: 22, question_id: 1, scale_id: 2},
-  {peer_review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viver", student_response: nil, instructor_response: nil, evaluation_id: 22, question_id: 2, scale_id: 3},
-  {peer_review: nil, student_response: "Lorem ipsum dolor sit amet, consectetur adipiscing ", instructor_response: nil, evaluation_id: 23, question_id: 1, scale_id: 1},
-  {peer_review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, vitae ornare mauris gravida. In quis eros vitae eros hendrerit dignissim.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugi", student_response: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, vitae ornare mauris gravida. In quis eros vitae eros hendrerit dignissim.Lorem ipsum dolor sit ", instructor_response: nil, evaluation_id: 23, question_id: 2, scale_id: 7},
-  {peer_review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra li", student_response: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, vitae ornare mauris gravida. In quis eros vitae eros hendrerit dignissim.Lorem ipsum dolor sit amet, co", instructor_response: nil, evaluation_id: 24, question_id: 1, scale_id: 2},
-  {peer_review: "Lorem ipsum dolor ", student_response: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, vitae ornare mauris gravida. In quis eros vitae eros hendrerit dignissim.Lorem ipsum dolor", instructor_response: nil, evaluation_id: 24, question_id: 2, scale_id: 3},
-  {peer_review: nil, student_response: nil, instructor_response: nil, evaluation_id: 25, question_id: 1, scale_id: 2},
-  {peer_review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, vitae ornare mauris gravida. In quis eros vitae eros hendrerit dignissim.Lorem ipsum dolor sit amet, con", student_response: nil, instructor_response: nil, evaluation_id: 25, question_id: 2, scale_id: 7},
-  {peer_review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel ", student_response: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula ", instructor_response: nil, evaluation_id: 26, question_id: 1, scale_id: 2},
-  {peer_review: "Lorem ip", student_response: nil, instructor_response: nil, evaluation_id: 26, question_id: 2, scale_id: 6},
-  {peer_review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales a", student_response: nil, instructor_response: nil, evaluation_id: 27, question_id: 1, scale_id: 2},
-  {peer_review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, vitae ornare mauris gravida. In quis eros vitae eros hendrerit dignissim.Lorem ipsum dolor sit amet, consectetur adipiscing el", student_response: nil, instructor_response: nil, evaluation_id: 27, question_id: 2, scale_id: 7},
-  {peer_review: nil, student_response: nil, instructor_response: nil, evaluation_id: 28, question_id: 1, scale_id: 1},
-  {peer_review: "Lo", student_response: nil, instructor_response: nil, evaluation_id: 28, question_id: 2, scale_id: 7},
-  {peer_review: nil, student_response: nil, instructor_response: nil, evaluation_id: 29, question_id: 1, scale_id: 1},
-  {peer_review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, vitae ornare mauris gravida. In quis eros vitae eros hendrerit dignissim.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra li", student_response: nil, instructor_response: nil, evaluation_id: 29, question_id: 2, scale_id: 4},
-  {peer_review: nil, student_response: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus ", instructor_response: nil, evaluation_id: 30, question_id: 1, scale_id: 1},
-  {peer_review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, vitae ornare mauris gravida. In quis eros vitae eros hendrerit dignissim.L", student_response: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, vitae ornare mauris gravida. In quis eros vitae eros hendrerit dignissim.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pha", instructor_response: nil, evaluation_id: 30, question_id: 2, scale_id: 4},
-  {peer_review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, vitae ornare mauris gravida. In quis eros vitae eros hendrerit dignissim.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, vitae ornare mauris gravida. In quis e", student_response: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, vitae ornare mauris gravida. In quis eros vitae eros hendrerit dignissim.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla l", instructor_response: nil, evaluation_id: 31, question_id: 1, scale_id: 2},
-  {peer_review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est f", student_response: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, vitae ornare mauris gravida. In quis eros vitae eros hendrerit dignissim.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, vitae ornare mauris gravida. In quis e", instructor_response: nil, evaluation_id: 31, question_id: 2, scale_id: 4},
-  {peer_review: nil, student_response: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudi", instructor_response: nil, evaluation_id: 32, question_id: 1, scale_id: 1},
-  {peer_review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, vitae ornare mauris gravida. In quis eros vitae eros hendrerit dignissim.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit a", student_response: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, vitae ornare mauris gravida. In quis eros vitae eros hendrerit dignissim.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, si", instructor_response: nil, evaluation_id: 32, question_id: 2, scale_id: 7},
-  {peer_review: nil, student_response: nil, instructor_response: nil, evaluation_id: 33, question_id: 1, scale_id: 1},
-  {peer_review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, vitae ornare mauris gravida. In quis eros vitae eros hendrerit dignissim.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan ", student_response: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, vitae ornare mauris gravida. In quis eros vitae eros hendrerit dignissim.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, vitae ornare mauris gravida. In quis eros vitae eros hend", instructor_response: nil, evaluation_id: 33, question_id: 2, scale_id: 6},
-  {peer_review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, vitae ornare mauris gravida. In quis eros vitae eros hendreri", student_response: nil, instructor_response: nil, evaluation_id: 34, question_id: 1, scale_id: 1},
-  {peer_review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat,", student_response: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, vitae ornare mauris gravid", instructor_response: nil, evaluation_id: 34, question_id: 2, scale_id: 4},
-  {peer_review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, vitae ornare mauris gravida. In quis eros vitae eros hendrerit dignissim.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, vitae ornare mauris gravida. In quis eros vitae eros hendrerit dignissim", student_response: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, vitae ornare mauris gravida. In quis eros vitae eros hendrerit dignissim.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet p", instructor_response: nil, evaluation_id: 35, question_id: 1, scale_id: 2},
-  {peer_review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, vitae ornare mauris gravida. In quis eros vitae eros hendrerit dignissim.Lorem ipsum dolor s", student_response: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, vitae ornare mauris gravida. In quis eros vitae eros hendrerit dignissim.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tell", instructor_response: nil, evaluation_id: 35, question_id: 2, scale_id: 5},
-  {peer_review: nil, student_response: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vi", instructor_response: nil, evaluation_id: 36, question_id: 1, scale_id: 2},
-  {peer_review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, vitae ornare mauris gravida. In quis eros vitae eros hendrerit dignissim.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula ", student_response: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, vitae ornare mauris gravida. In quis eros vitae eros hendrerit dignissim.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quis", instructor_response: nil, evaluation_id: 36, question_id: 2, scale_id: 5},
-  {peer_review: nil, student_response: nil, instructor_response: nil, evaluation_id: 37, question_id: 1, scale_id: 1},
-  {peer_review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sod", student_response: nil, instructor_response: nil, evaluation_id: 37, question_id: 2, scale_id: 7},
-  {peer_review: nil, student_response: "Lorem ", instructor_response: nil, evaluation_id: 38, question_id: 1, scale_id: 1},
-  {peer_review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, vitae ornare mauris gravida. In quis eros vitae eros hendrerit d", student_response: nil, instructor_response: nil, evaluation_id: 38, question_id: 2, scale_id: 7},
-  {peer_review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla ", student_response: "Lorem", instructor_response: nil, evaluation_id: 39, question_id: 1, scale_id: 1},
-  {peer_review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, vitae ornare mauris gravida. In quis eros vitae eros hendrerit dignissim.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, vitae ornare mauris gravida. In quis er", student_response: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, vitae ornare mauris gravida. In quis eros vitae eros hendrerit dignissim.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellu", instructor_response: nil, evaluation_id: 39, question_id: 2, scale_id: 5},
-  {peer_review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, vitae ornare mauris gravida. In q", student_response: nil, instructor_response: nil, evaluation_id: 40, question_id: 1, scale_id: 2},
-  {peer_review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, vitae ornare mauris gravida. In quis eros vitae eros hendrerit dignissim.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accums", student_response: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae", instructor_response: nil, evaluation_id: 40, question_id: 2, scale_id: 4},
-  {peer_review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est ", student_response: nil, instructor_response: nil, evaluation_id: 41, question_id: 1, scale_id: 1},
-  {peer_review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, vitae ornare mauris gravida. In quis eros vitae ero", student_response: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisqu", instructor_response: nil, evaluation_id: 41, question_id: 2, scale_id: 3},
-  {peer_review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fring", student_response: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus ni", instructor_response: nil, evaluation_id: 42, question_id: 1, scale_id: 1},
-  {peer_review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus ", student_response: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, vitae ornare mauris gravida. In quis eros vitae eros hendrerit dignissim.Lorem ipsum dolor sit ame", instructor_response: nil, evaluation_id: 42, question_id: 2, scale_id: 6},
-  {peer_review: nil, student_response: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, vitae ornare mauris gravida. In quis eros vitae eros hendrerit dignissim.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin n", instructor_response: nil, evaluation_id: 43, question_id: 1, scale_id: 2},
-  {peer_review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accu", student_response: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, vitae ornare mauris gravida. In quis eros vitae eros hendrerit dignissim.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales ", instructor_response: nil, evaluation_id: 43, question_id: 2, scale_id: 5},
-  {peer_review: nil, student_response: nil, instructor_response: nil, evaluation_id: 44, question_id: 1, scale_id: 1},
-  {peer_review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi", student_response: nil, instructor_response: nil, evaluation_id: 44, question_id: 2, scale_id: 5},
-  {peer_review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, vitae ornare mauris gravida. In quis eros vitae eros hendrerit dignissim.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus era", student_response: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales ", instructor_response: nil, evaluation_id: 45, question_id: 1, scale_id: 2},
-  {peer_review: "Lorem ipsum dolor sit amet, conse", student_response: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, vitae ornare mauris gravida. In quis eros vitae eros hendrerit dignissim.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales a", instructor_response: nil, evaluation_id: 45, question_id: 2, scale_id: 3},
-  {peer_review: nil, student_response: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, vitae ornare mauris gravida. In quis eros vitae eros hendrerit dignissim.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est", instructor_response: nil, evaluation_id: 46, question_id: 1, scale_id: 1},
-  {peer_review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, vitae ornare mauris gravida. In quis eros vitae eros hendrerit dignissim.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, vitae ornare mauris gravida. In qui", student_response: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitu", instructor_response: nil, evaluation_id: 46, question_id: 2, scale_id: 5},
-  {peer_review: nil, student_response: nil, instructor_response: nil, evaluation_id: 47, question_id: 1, scale_id: 2},
-  {peer_review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, vitae ornare mauris gravida. In quis eros vitae eros hendrerit dignissim.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vi", student_response: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, vitae ornare mauris gravida. In quis eros vitae eros hendrerit dignissim.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla l", instructor_response: nil, evaluation_id: 47, question_id: 2, scale_id: 5},
-  {peer_review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, vitae ornare mauris gravida. In quis eros vitae eros hendrerit dignissim.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, vitae ornare mauris gravida. In quis eros vitae eros hendrerit d", student_response: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, vitae ornare mauris gravida. In quis eros vitae eros hendrerit dignissim.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue luctus erat, sit amet pharetra ligula sollicitudin non. In tellus nisi, viverra vitae metus sit amet, sodales accumsan mi. Nam fringilla leo vel est feugiat, vitae ornare mauris gravida. In quis eros vitae e", instructor_response: nil, evaluation_id: 48, question_id: 1, scale_id: 1},
-  {peer_review: "Lorem ipsum dolor sit amet, consectetur adipisci", student_response: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque congue l", instructor_response: nil, evaluation_id: 48, question_id: 2, scale_id: 3}
-])
+for enrollment in enrollments
+  Registration.create({
+    active: enrollment[:active] || true,
+    course_id: enrollment[:course].id,
+    user_id: enrollment[:user].id,
+    instructor: enrollment[:instructor] || false
+  })
+end
 
-Scale.create!([
-  {value: 1, description: "Yes, title included", question_id: 1},
-  {value: 0, description: "NO! Not even a title!", question_id: 1},
-  {value: 4, description: "IT WAS THE BEST THING I EVER READ", question_id: 2},
-  {value: 3, description: "It was really good", question_id: 2},
-  {value: 2, description: "It was really average?", question_id: 2},
-  {value: 1, description: "No.", question_id: 2},
-  {value: 0, description: "It was so bad I want to kill myself now", question_id: 2},
-  {value: 1, description: "Yes, title included", question_id: 3},
-  {value: 0, description: "NO! Not even a title!", question_id: 3},
-  {value: 4, description: "IT WAS THE BEST THING I EVER READ", question_id: 4},
-  {value: 3, description: "It was really good", question_id: 4},
-  {value: 2, description: "It was really average?", question_id: 4},
-  {value: 1, description: "No.", question_id: 4},
-  {value: 0, description: "It was so bad I want to kill myself now", question_id: 4},
-  {value: 1, description: "Yes, title included", question_id: 5},
-  {value: 0, description: "NO! Not even a title!", question_id: 5},
-  {value: 4, description: "IT WAS THE BEST THING I EVER READ", question_id: 6},
-  {value: 3, description: "It was really good", question_id: 6},
-  {value: 2, description: "It was really average?", question_id: 6},
-  {value: 1, description: "No.", question_id: 6},
-  {value: 0, description: "It was so bad I want to kill myself now", question_id: 6},
-  {value: 1, description: "Yes, title included", question_id: 7},
-  {value: 0, description: "NO! Not even a title!", question_id: 7},
-  {value: 4, description: "IT WAS THE BEST THING I EVER READ", question_id: 8},
-  {value: 3, description: "It was really good", question_id: 8},
-  {value: 2, description: "It was really average?", question_id: 8},
-  {value: 1, description: "No.", question_id: 8},
-  {value: 0, description: "It was so bad I want to kill myself now", question_id: 8}
-])
+assignment1 = Assignment.create({
+  course_id: courseUCRE2014.id, 
+  draft: false,
+  review_due: 2.years.ago,
+  reviews_required: 5,
+  submission_due: 1.year.ago,
+  name: "Assignment 1 (Completed)"
+})
 
+assignment2 = Assignment.create({
+  course_id: courseUCRE2014.id, 
+  draft: false,
+  review_due: 1.year.from_now,
+  reviews_required: 3,
+  submission_due: 1.year.ago,
+  name: "Assignment 2 (Reviewing)"
+})
 
-# Need to come last
-Submission.create!([
-  {submission: nil, assignment_id: 1, user_id: 3, instructor_approved: nil},
-  {submission: nil, assignment_id: 2, user_id: 3, instructor_approved: nil},
-  {submission: nil, assignment_id: 1, user_id: 4, instructor_approved: nil},
-  {submission: nil, assignment_id: 2, user_id: 4, instructor_approved: nil},
-  {submission: nil, assignment_id: 1, user_id: 5, instructor_approved: nil},
-  {submission: nil, assignment_id: 2, user_id: 5, instructor_approved: nil},
-  {submission: nil, assignment_id: 1, user_id: 6, instructor_approved: nil},
-  {submission: nil, assignment_id: 2, user_id: 6, instructor_approved: nil},
-  {submission: nil, assignment_id: 1, user_id: 7, instructor_approved: nil},
-  {submission: nil, assignment_id: 2, user_id: 7, instructor_approved: nil},
-  {submission: nil, assignment_id: 1, user_id: 8, instructor_approved: nil},
-  {submission: nil, assignment_id: 2, user_id: 8, instructor_approved: nil}
-])
+assignment3 = Assignment.create({
+  course_id: courseUCRE2014.id, 
+  draft: false,
+  review_due: 2.year.from_now,
+  reviews_required: 5,
+  submission_due: 1.year.from_now,
+  name: "Assignment 3 (Submitting)"
+})
+
+assignment4 = Assignment.create({
+  course_id: courseUCRE2014.id, 
+  draft: true,
+  review_due: 2.year.from_now,
+  reviews_required: 5,
+  submission_due: 1.year.from_now,
+  name: "Assignment 4 (Draft)"
+})
+
+assignment5 = Assignment.create({
+  course_id: courseUCRE2015.id, 
+  draft: true,
+  review_due: 2.year.from_now,
+  reviews_required: 0,
+  submission_due: 1.year.from_now,
+  name: "Assignment for 2015 (draft)"
+})
+
+assignments = [assignment1, assignment2, assignment3, assignment4]
+
+for assignment in assignments 
+  question1 = Question.create({assignment_id: assignment.id,
+                 question_text: 'Did the report have a title?',
+                 question_weight: 10,
+                 written_response_required: false})
+  Scale.create({description: "Yes, title included", question_id: question1.id, value: 1})
+  Scale.create({description: "NO! Not even a title!", question_id: question1.id, value: 0})
+
+  question2 = Question.create({assignment_id: assignment.id,
+                 question_text: 'Was the report good?',
+                 question_weight: 100,
+                 written_response_required: true})
+  Scale.create({description: "IT WAS THE BEST THING I EVER READ", question_id: question2.id, value: 4})
+  Scale.create({description: "It was really good", question_id: question2.id, value: 3})
+  Scale.create({description: "It was really average?", question_id: question2.id, value: 2})
+  Scale.create({description: "No.", question_id: question2.id, value: 1})
+  Scale.create({description: "It was so bad I want to kill myself now", question_id: question2.id, value: 0})
+end
+
+evaluations = []
+
+students2014 = people[2..people.length]
+for student in students2014
+  for assignment in [assignment1, assignment2]
+    submission = Submission.new
+    submission.assignment_id = assignment.id
+    submission.user_id = users[student[:first_name]].id
+    # not actually supplying a file to submit
+    # submission.submission = params[:file]
+    # submission.submission = File.open('')
+    submission.save
+    # assignment.reviews_required.times do |i|
+    #   evaluation = Evaluation.new
+    #   evaluation.submission_id = submission.id
+    #   evaluator = students2014[(students2014.index(student) + i + 1) % students2014.length]
+    #   evaluation.user_id = users[evaluator[:first_name]].id
+    #   evaluation.save
+    #   evaluations.push(evaluation)      
+    # end
+  end
+end
+
+for evaluation in Evaluation.all
+  if evaluation.submission.assignment.id = assignment1.id
+    for question in evaluation.submission.assignment.questions
+      response = Response.new
+      response.question_id = question.id
+      response.evaluation_id = evaluation.id
+      response.scale_id = question.scales.sample.id
+      if question.written_response_required
+        response.peer_review = lorem[0..rand(lorem.length)]
+      else
+        if rand(2) == 1
+          response.peer_review = lorem[0..rand(lorem.length)]
+        end
+      end
+      if rand(3) == 1
+        response.student_response = lorem[0..rand(lorem.length)]
+      end
+      if rand(3) == 1
+        response.student_response = lorem[0..rand(lorem.length)]
+      end
+      response.save
+    end
+  end
+end
