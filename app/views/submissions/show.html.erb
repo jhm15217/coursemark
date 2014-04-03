@@ -1,6 +1,6 @@
 <div id='submissionHeader'>
   <small style='display:block; float:left; margin-top:-18px; width:100%;'>
-    <%= link_to "&larr; #{@submission.assignment.name}".html_safe , course_assignment_path(@course, @assignment) %>
+    <%= link_to "&larr; #{@submission.assignment.name}".html_safe , course_assignment_submissions_path(@course, @assignment) %>
     <h1 class="name"><%= @submission.user.name %></h1>
     <div id='submissionDownloadBtn'>
       <a href='http://<%= request.host %><%= @submission.submission %>' >Download Submission</a>
