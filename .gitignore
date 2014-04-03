@@ -11,7 +11,7 @@
 /db/*.sqlite3
 
 # Ignore uploaded files
-/public/uploads
+/public/uploads/tmp
 
 # Ignore all logfiles and tempfiles.
 /log/*.log

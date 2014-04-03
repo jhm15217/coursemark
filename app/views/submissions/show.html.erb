@@ -9,7 +9,7 @@
 </div>
 
 <div id='submissionPDFWrapper'>
-  <embed src="http://agora.dev<%= @submission.submission %>" width="100%" height="100%" style="border: none;"></embed>
+  <embed src="http://<%= request.host %><%= @submission.submission %>" width="100%" height="100%" style="border: none;"></embed>
 </div>
 
 <div id='submissionsWrapper'>

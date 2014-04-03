@@ -1,5 +1,5 @@
 # ALL PASSWORDS ARE "agoraagora"
-# Instructor login: admin@test.com (This is the user Aldorayne Grotkey) 
+# Instructor login: admin@test.com (This is the user Aldorayne Grotkey)
 # Student login: student@test.com (This is the user Theodore Detweiller)
 
 # All other passwords are [user first name]@test.com
@@ -159,7 +159,7 @@ Scale.create!([
 
 # Need to come last
 Submission.create!([
-  {submitted: nil, submission: nil, assignment_id: 1, user_id: 3, instructor_approved: nil},
+  {submitted: "2015-03-27 23:46:10", submission: "/uploads/submission/submission/1/submission-b7a9eec095c80131823f040cce2069fc.pdf", assignment_id: 1, user_id: 3, instructor_approved: nil},
   {submitted: nil, submission: nil, assignment_id: 2, user_id: 3, instructor_approved: nil},
   {submitted: nil, submission: nil, assignment_id: 1, user_id: 4, instructor_approved: nil},
   {submitted: nil, submission: nil, assignment_id: 2, user_id: 4, instructor_approved: nil},
