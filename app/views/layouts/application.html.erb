@@ -21,15 +21,37 @@
             <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
         <![endif]-->
 
-        <div id="sidebar">
-            <div id='courseSelector'>
-              <select onchange="this.options[this.selectedIndex].value && (window.location = '/courses/' + this.options[this.selectedIndex].value);">
-                  <option>Change course...</option>
+        <div id="courseSelectorModal" class="hidden">
+            <div class="modal">
+                <h1>Courses</h1>
                 <% current_user.courses.each do |course| %>
-                  <option value="<%= course.id %>"><%= course.name %></option>
+                  <%= link_to course_path(course) do %>
+                    <div class="course"><%= course.name %></div>
+                  <% end %>
                 <% end %>
-              </select>
             </div>
+        </div>
+
+        <div id="sidebar">
+            <% if current_user.courses.length > 1 %>
+            <div id='courseSelector'>
+              <%= @course.name %>
+            </div>
+            <% end %>
+
+            <% if !current_user.instructor?(@course) %>
+                <div class="tabs">
+                    <% if !current_user.instructor?(@course) %>
+                        <%= link_to course_path(@course) do %>
+                            <div class="tab assignments <%= 'active' if controller.controller_name == 'assignments' %>"></div>
+                        <% end %>
+                        <%= link_to edit_user_path(current_user) do %>
+                            <div class="tab profile <%= 'active' if controller.controller_name == 'users' || controller.controller_name == 'registrations' %>"></div>
+                        <% end %>
+                    <% end %>
+                </div>
+            <% end %>
+
             <% if current_user.instructor?(@course) %>
                 <div id='newAssignmentBtn'>
                   <%= link_to "+ New Assignment", new_course_assignment_path(@course) %>
@@ -49,6 +71,21 @@
                         <% end %>
                     <% end %>
                 </li>
+                <% end %>
+
+                <% if !current_user.instructor?(@course) && (controller.controller_name == 'users' || controller.controller_name == 'registrations') %>
+                    <%= link_to edit_user_path(current_user) do %>
+                        <li class="<%= 'active' if controller.controller_name == 'users' %>">
+                            <div class="name=">Account Details</div>
+                            <div class="status"><%= current_user.name %></div>
+                        </li>
+                    <% end %>
+                    <%= link_to registrations_path do %>
+                        <li class="<%= 'active' if controller.controller_name == 'registrations' %>">
+                            <div class="name=">Course Enrollments</div>
+                            <div class="status"><%= current_user.courses.length.to_s + " Courses" %></div>
+                        </li>
+                    <% end %>
                 <% end %>
             </ul>
         </div>

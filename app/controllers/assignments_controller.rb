@@ -5,7 +5,7 @@ class AssignmentsController < ApplicationController
   # GET /assignments
   # GET /assignments.json
   def index
-    @assignments = Assignment.all
+    @assignments = Assignment.where(:course_id => @course.id)
 
     # Redirect to first assignment page or 
     # new assignment page if there are none
@@ -27,6 +27,7 @@ class AssignmentsController < ApplicationController
   def show
     @assignment = Assignment.find(params[:id])
     @submission = get_submission_for_assignment(@assignment)
+    @reviewing_tasks = @assignment.evaluations.forUser(current_user)
 
     if @submission.nil?
       @submission = Submission.new
@@ -89,7 +90,7 @@ class AssignmentsController < ApplicationController
 
     respond_to do |format|
       if @assignment.update_attributes(params[:assignment])
-        format.html { redirect_to @assignment, notice: 'Assignment was successfully updated.' }
+        format.html { redirect_to [@course, @assignment], notice: 'Assignment was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }

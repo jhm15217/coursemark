@@ -1,6 +1,10 @@
 <div id='submissionHeader'>
   <small style='display:block; float:left; margin-top:-18px; width:100%;'>
-    <%= link_to "&larr; #{@submission.assignment.name}".html_safe , course_assignment_path(@course, @assignment) %>
+    <% if current_user.instructor?(@course) %>
+      <%= link_to "&larr; #{@submission.assignment.name}".html_safe , course_assignment_submissions_path(@course, @assignment) %>
+    <% else %>
+      <%= link_to "&larr; #{@submission.assignment.name}".html_safe , course_assignment_path(@course, @assignment) %>
+    <% end %>
     <h1 class="name"><%= @submission.user.name %></h1>
     <div id='submissionDownloadBtn'>
       <a href='http://<%= request.host %><%= @submission.submission %>' >Download Submission</a>
@@ -9,7 +13,7 @@
 </div>
 
 <div id='submissionPDFWrapper'>
-  <embed src="http://agora.dev<%= @submission.submission %>" width="100%" height="100%" style="border: none;"></embed>
+  <embed src="http://<%= request.host %><%= @submission.submission %>" width="100%" height="100%" style="border: none;"></embed>
 </div>
 
 <div id='submissionsWrapper'>
@@ -73,7 +77,5 @@
   </div>
 
 </div>
-
-
 
 <%= link_to 'Edit', edit_course_assignment_submission_path(@course, @submission) %>

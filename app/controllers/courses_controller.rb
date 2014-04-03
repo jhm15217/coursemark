@@ -54,9 +54,17 @@ class CoursesController < ApplicationController
   # POST /courses.json
   def create
     @course = Course.new(params[:course])
+    @registration = Registration.new
+    @registration.active = true
+    @registration.user = current_user
 
     respond_to do |format|
       if @course.save
+        @registration.course = @course
+        @registration.save!
+        @registration.instructor = true
+        @registration.save!
+        
         format.html { redirect_to @course, notice: 'Course was successfully created.' }
         format.json { render json: @course, status: :created, location: @course }
       else
