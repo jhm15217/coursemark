@@ -378,6 +378,21 @@ textarea {
     text-decoration: none;
 }
 
+#main .button.destructive {
+  width:75px;
+  float:right;
+  margin:-50px 0 0 0;
+}
+
+#main .button.destructive:hover {
+  border: 1px solid #FF3A38;
+  background-color: #FF3A38;
+}
+
+#main .button.destructive:hover a {
+  color: white;
+}
+
 #main .questionType {
     float: left;
 }
@@ -732,7 +747,7 @@ textarea {
   margin-bottom: 8px;
 }
 
-.submissionStudentResponse, 
+.submissionStudentResponse,
 .submissionInstructorResponse {
   border-top: 1px solid #DFDFDF;
   margin-top:30px;
@@ -748,7 +763,7 @@ textarea {
     border: 1px solid #DFDFDF;
 }
 
-.new_submission, 
+.new_submission,
 .edit_submission {
     float: left;
     background: #FFF;
@@ -760,12 +775,12 @@ textarea {
     height: 144px;
 }
 
-.new_submission input, 
+.new_submission input,
 .edit_submission input {
     border: 0px;
 }
 
-#main .new_submission input[type=submit], 
+#main .new_submission input[type=submit],
 #main .edit_submission input[type=submit] {
     margin-bottom: 0px;
 }
