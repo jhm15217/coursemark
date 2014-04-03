@@ -30,6 +30,20 @@
                 <% end %>
               </select>
             </div>
+
+            <% if !current_user.instructor?(@course) %>
+                <div class="tabs">
+                    <% if !current_user.instructor?(@course) %>
+                        <%= link_to course_path(@course) do %>
+                            <div class="tab assignments <%= 'active' if controller.controller_name == 'assignments' %>"></div>
+                        <% end %>
+                        <%= link_to edit_user_path(current_user) do %>
+                            <div class="tab profile <%= 'active' if controller.controller_name == 'users' || controller.controller_name == 'registrations' %>"></div>
+                        <% end %>
+                    <% end %>
+                </div>
+            <% end %>
+
             <% if current_user.instructor?(@course) %>
                 <div id='newAssignmentBtn'>
                   <%= link_to "+ New Assignment", new_course_assignment_path(@course) %>
@@ -49,6 +63,21 @@
                         <% end %>
                     <% end %>
                 </li>
+                <% end %>
+
+                <% if !current_user.instructor?(@course) && (controller.controller_name == 'users' || controller.controller_name == 'registrations') %>
+                    <%= link_to edit_user_path(current_user) do %>
+                        <li class="<%= 'active' if controller.controller_name == 'users' %>">
+                            <div class="name=">Account Details</div>
+                            <div class="status"><%= current_user.name %></div>
+                        </li>
+                    <% end %>
+                    <%= link_to registrations_path do %>
+                        <li class="<%= 'active' if controller.controller_name == 'registrations' %>">
+                            <div class="name=">Course Enrollments</div>
+                            <div class="status"><%= current_user.courses.length.to_s + " Courses" %></div>
+                        </li>
+                    <% end %>
                 <% end %>
             </ul>
         </div>
