@@ -1,8 +1,6 @@
 <%= form_for(@registration) do |f| %>
   <% if @registration.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@registration.errors.count, "error") %> prohibited this registration from being saved:</h2>
-
       <ul>
       <% @registration.errors.full_messages.each do |msg| %>
         <li><%= msg %></li>
@@ -12,22 +10,12 @@
   <% end %>
 
   <div class="field">
-    <%= f.label :instructor %><br />
-    <%= f.check_box :instructor %>
-  </div>
-  <div class="field">
-    <%= f.label :active %><br />
-    <%= f.check_box :active %>
-  </div>
-  <div class="field">
-    <%= f.label :user_id %><br />
-    <%= f.collection_select :user_id, User.all, :id, :name, :prompt => "Select user..." %>
-  </div>
-  <div class="field">
-    <%= f.label :course_id %><br />
-    <%= f.collection_select :course_id, Course.all, :id, :name, :prompt => "Select course..." %>
-  </div>
+      <%= f.text_field :course_code, :placeholder => "Course code" %>   
+    </div>
   <div class="actions">
-    <%= f.submit %>
+    <%= f.submit "Join course" %>
+  </div>
+  <div class="actions newAccount">
+    <%= link_to "Create a new course", new_course_path, :class => "button"  %>
   </div>
 <% end %>

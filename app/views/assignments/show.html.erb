@@ -20,6 +20,16 @@
 	</div>
 <% end %>
 
+<div class="clearfix"></div>
+
+<div id="reviewing_tasks">
+  <% @reviewing_tasks.each_with_index do |task, index| %>
+    <div class="reviewing_task">
+      <%= link_to "Complete Review " + (index + 1).to_s, course_assignment_submission_path(@course, @assignment, task.submission) %>
+    </div>
+  <% end %>
+</div>
+
 <% if @evaluations && @evaluations[0] %>
 <div id="student_evaluation_view">
   <% @evaluations[0].responses.each do |eval| %>

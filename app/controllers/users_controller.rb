@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
-	skip_before_filter :require_login
-	layout false 
+	skip_before_filter :require_login, :except => :edit
+	layout false, :except => :edit
 	
 	def new  
 		@user = User.new
@@ -13,13 +13,13 @@ class UsersController < ApplicationController
 
 	def edit
     	@user = User.find(params[:id])
+    	@course = @user.courses.first
   	end
 
 	def create  
 		@user = User.new(params[:user])  
 		if @user.save  
-			flash[:notice] = "Registration successful."  
-			redirect_to root_url  
+			redirect_to new_registration_url  
 		else  
 			render :action => 'new'  
 		end  

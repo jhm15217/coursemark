@@ -1,3 +1,14 @@
-<h1>Edit account</h1>
+<div id="header">
+    <h1 class="name">Account Details</h1>
+    <div class="tabs">
+        <div class="tab logout">
+            <%= link_to logout_path do %>
+                Sign out
+            <% end %>
+        </div>
+    </div>
+</div>
 
-<%= render 'form' %>
+<div id="headerSpacer"></div>
+
+<%= render 'edit_form' %>

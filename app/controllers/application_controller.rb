@@ -6,9 +6,16 @@ class ApplicationController < ActionController::Base
   def get_assignments
     # TODO: This should be a scope or a method in a model
     # Getting the right assignments for the user
+
     if current_user
         @assignments = []
-        current_user.registrations.each do |registration|
+        @course_id = params[:course_id]
+        
+        if @course_id.nil?
+          @course_id = params[:id]
+        end
+        
+        current_user.registrations.where(:course_id => @course_id).each do |registration|
           if registration.instructor
             # if a user is an instructor for course, get drafts
             @assignments.concat(registration.course.assignments)

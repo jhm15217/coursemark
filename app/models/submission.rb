@@ -1,5 +1,5 @@
 class Submission < ActiveRecord::Base
-  attr_accessible :assignment_id, :submission, :submitted, :user_id, :instructor_approved
+  attr_accessible :assignment_id, :submission, :user_id, :instructor_approved
 
 	after_save :create_and_save_evaluations
 

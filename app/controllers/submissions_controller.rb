@@ -47,7 +47,6 @@ class SubmissionsController < ApplicationController
   def create
     @submission = Submission.new(params[:submission])
     @submission.user = current_user
-    @submission.submitted = DateTime.now
 
     respond_to do |format|
       if @submission.save
@@ -64,7 +63,6 @@ class SubmissionsController < ApplicationController
   # PUT /submissions/1.json
   def update
     @submission = Submission.find(params[:id])
-    @submission.submitted = DateTime.now
 
     respond_to do |format|
       if @submission.update_attributes(params[:submission])
@@ -105,7 +103,4 @@ class SubmissionsController < ApplicationController
     @evaluations = Evaluation.where(submission_id: params[:id])
   end
 
-  def get_responses
-
-  end
 end

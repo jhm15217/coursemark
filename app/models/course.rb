@@ -1,5 +1,6 @@
 class Course < ActiveRecord::Base
-  attr_accessible :name
+  before_create :create_unique_identifier
+  attr_accessible :name, :course_code
 
   # Relationships
   has_many :registrations
@@ -18,5 +19,11 @@ class Course < ActiveRecord::Base
 
   def get_instructors
   	User.joins(:courses).where("course_id = ?",self.id).where("instructor = 't'")
+  end
+
+  def create_unique_identifier
+    begin
+      self.course_code = SecureRandom.hex(4)
+    end while self.class.exists?(:course_code => course_code)
   end
 end

@@ -95,6 +95,7 @@ textarea {
     width: 100%;
     height: 55px;
     background: #343F53;
+    border-top: 1px solid #484957;
     border-bottom: 1px solid #484957;
 }
 
@@ -106,32 +107,94 @@ textarea {
 }
 
 #sidebar .tab.active {
-    background: #f39c12;
+    background-color: #e74c3c;
 }
 
 #sidebar .tab.assignments {
-    background: url(../img/assignments_icon.png) no-repeat center center;
+    background-image: url(../img/assignments_icon.png);
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 23px;
 }
 
-#sidebar .tab.assignments.active {
-    background-color: #f39c12;
-    background-image: url(../img/assignments_icon.png) no-repeat center center;
+#sidebar .tab.profile {
+    background-image: url(../img/user_icon.png);
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 23px;
 }
 
-#sidebar #courseSelector {
-    padding: 31px 20px;
-    height: 84px;
+#courseSelector {
+    color: #A0ABC0;
+    height: 22px;
+    padding-top: 7px;
+    padding-bottom: 28px;
+    padding-right: 9px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    margin: 10px 15px 10px 18px;
+    cursor: pointer;
+    background: url(../img/menu_icon.png);
+    background-repeat: no-repeat;
+    background-position: center left;
+    background-size: 20px;
+    padding-left: 32px;
 }
 
-#sidebar #courseSelector select {
-  width:100%;
+#courseSelector:hover {
+    color: #FFF;
+}
+
+#courseSelectorModal {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    background: rgba(0,0,0,0.6);
+    z-index: 3000;
+}
+
+#courseSelectorModal .modal {
+    width: 50%;
+    height: auto;
+    max-height: 450px;
+    background: #FFF;
+    border-radius: 6px;
+    margin: 150px auto auto auto;
+    padding: 30px 50px 40px 50px;
+    overflow-y: scroll;
+}
+
+#courseSelectorModal .modal h1 {
+    font-family: "HelveticaNeue-Light", "Helvetica Neue Light";
+    font-weight: normal;
+    font-size: 20pt;
+    margin-bottom: 25px;
+}
+
+#courseSelectorModal .course {
+    padding: 25px 20px 25px 20px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    border: 1px solid #DFDFDF;
+}
+
+#courseSelectorModal .course:hover {
+    border: 1px solid #000;
+}
+
+#courseSelectorModal a .course {
+    font-weight: normal;
+    color: #343F53;
 }
 
 #sidebar #newAssignmentBtn {
     padding-left: 20px;
     color: white;
     height: 30px;
-    padding-top: 14px;
+    padding-top: 15px;
     padding-bottom: 36px;
     border-top: 1px solid #484957;
     border-bottom: 1px solid #484957;
@@ -158,8 +221,6 @@ textarea {
 
 #sidebar li.active {
     background: #2c3447;
-    border-left: 5px solid #e74c3c;
-    padding: 23px 20px;
     color: #FFF;
 }
 
@@ -181,6 +242,7 @@ textarea {
     overflow-y: scroll;
     padding: 0px 50px 40px 50px;
     background: #F5F6F8;
+    overflow-x: hidden;
 }
 
 #main.no_sidebar_main {
@@ -528,6 +590,10 @@ textarea {
     padding-top: 190px;
 }
 
+.loginWrapper.newCourse {
+    padding-top: 300px;
+}
+
 .loginWrapper form {
     color: #FFF;
     width: 470px;
@@ -542,17 +608,18 @@ textarea {
     padding-left: 15px;
 }
 
-.loginWrapper .field:nth-child(3) input {
+.new_user .field:nth-child(2) input,
+.loginFields .field:nth-child(2) input {
     border-top: 0px;
 }
 
-.loginWrapper.newAccount .field:nth-child(3) input,
-.loginWrapper.newAccount .field:nth-child(6) input {
+.loginWrapper.newAccount .new_user .field:nth-child(3) input,
+.loginWrapper.newAccount .new_user .field:nth-child(6) input {
     border-top: 0px;
 }
 
-.loginWrapper.newAccount .field:nth-child(3) input,
-.loginWrapper.newAccount .field:nth-child(4) input {
+.loginWrapper.newAccount .new_user .field:nth-child(3) input,
+.loginWrapper.newAccount .new_user .field:nth-child(4) input {
     margin-bottom: 10px;
 }
 
@@ -636,7 +703,6 @@ textarea {
     width: 100%;
     height: 100%;
 }
-
 
 .submissionQuestionBox, .submissionGradeBox {
   background: #FFF;
@@ -772,6 +838,26 @@ textarea {
 
 #student_evaluation_view .submissionBox:nth-child(even) {
     margin-right: 20px;
+}
+
+#reviewing_tasks {
+    margin-top: 20px;
+}
+
+.reviewing_task {
+    float: left;
+    background: #FFF;
+    padding: 15px 25px 15px 25px;
+    width: auto;
+    border-radius: 6px;
+    border: 1px solid #DFDFDF;
+    margin-right: 20px;
+    margin-bottom: 20px;
+}
+
+.reviewing_task a {
+    background: none;
+    color: #343F53;
 }
 
 /* ==========================================================================
