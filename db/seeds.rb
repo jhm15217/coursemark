@@ -258,16 +258,16 @@ Scale.create!([
 
 # Need to come last
 Submission.create!([
-  {submitted: "2015-03-27 23:46:10", submission: nil, assignment_id: 1, user_id: 3, instructor_approved: nil},
-  {submitted: nil, submission: nil, assignment_id: 2, user_id: 3, instructor_approved: nil},
-  {submitted: nil, submission: nil, assignment_id: 1, user_id: 4, instructor_approved: nil},
-  {submitted: nil, submission: nil, assignment_id: 2, user_id: 4, instructor_approved: nil},
-  {submitted: nil, submission: nil, assignment_id: 1, user_id: 5, instructor_approved: nil},
-  {submitted: nil, submission: nil, assignment_id: 2, user_id: 5, instructor_approved: nil},
-  {submitted: nil, submission: nil, assignment_id: 1, user_id: 6, instructor_approved: nil},
-  {submitted: nil, submission: nil, assignment_id: 2, user_id: 6, instructor_approved: nil},
-  {submitted: nil, submission: nil, assignment_id: 1, user_id: 7, instructor_approved: nil},
-  {submitted: nil, submission: nil, assignment_id: 2, user_id: 7, instructor_approved: nil},
-  {submitted: nil, submission: nil, assignment_id: 1, user_id: 8, instructor_approved: nil},
-  {submitted: nil, submission: nil, assignment_id: 2, user_id: 8, instructor_approved: nil}
+  {submission: nil, assignment_id: 1, user_id: 3, instructor_approved: nil},
+  {submission: nil, assignment_id: 2, user_id: 3, instructor_approved: nil},
+  {submission: nil, assignment_id: 1, user_id: 4, instructor_approved: nil},
+  {submission: nil, assignment_id: 2, user_id: 4, instructor_approved: nil},
+  {submission: nil, assignment_id: 1, user_id: 5, instructor_approved: nil},
+  {submission: nil, assignment_id: 2, user_id: 5, instructor_approved: nil},
+  {submission: nil, assignment_id: 1, user_id: 6, instructor_approved: nil},
+  {submission: nil, assignment_id: 2, user_id: 6, instructor_approved: nil},
+  {submission: nil, assignment_id: 1, user_id: 7, instructor_approved: nil},
+  {submission: nil, assignment_id: 2, user_id: 7, instructor_approved: nil},
+  {submission: nil, assignment_id: 1, user_id: 8, instructor_approved: nil},
+  {submission: nil, assignment_id: 2, user_id: 8, instructor_approved: nil}
 ])

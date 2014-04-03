@@ -21,4 +21,8 @@ $( document ).ready(function() {
     window.location.href = $(this).children('a').attr('href');
   });
 
+  $('#courseSelector').click(function() {
+  	$('#courseSelectorModal').removeClass('hidden');
+  });
+
 });
