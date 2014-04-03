@@ -779,6 +779,26 @@ textarea {
     margin-right: 20px;
 }
 
+#reviewing_tasks {
+    margin-top: 20px;
+}
+
+.reviewing_task {
+    float: left;
+    background: #FFF;
+    padding: 15px 25px 15px 25px;
+    width: auto;
+    border-radius: 6px;
+    border: 1px solid #DFDFDF;
+    margin-right: 20px;
+    margin-bottom: 20px;
+}
+
+.reviewing_task a {
+    background: none;
+    color: #343F53;
+}
+
 /* ==========================================================================
    Media Queries
    ========================================================================== */

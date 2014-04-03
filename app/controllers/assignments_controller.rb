@@ -27,6 +27,7 @@ class AssignmentsController < ApplicationController
   def show
     @assignment = Assignment.find(params[:id])
     @submission = get_submission_for_assignment(@assignment)
+    @reviewing_tasks = @assignment.evaluations.forUser(current_user)
 
     if @submission.nil?
       @submission = Submission.new
