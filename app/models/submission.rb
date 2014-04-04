@@ -33,14 +33,19 @@ class Submission < ActiveRecord::Base
 					questions[response.question_id]  = question
 				end 
 			end
-			
-			raw = questions.map{ |k, v|
+			questions.map{ |k, v|
 				(v[:total].fdiv(v[:responses] * v[:max])) * v[:weight]
-			}.reduce(:+).round
-			raw.round
+			}.reduce(:+)
 		else
 			nil
 		end
+  end
+
+  def percentage
+  	grade = self.raw
+  	if grade
+  		grade.fdiv(self.assignment.totalPoints) * 100
+  	end
   end
 
   private 
