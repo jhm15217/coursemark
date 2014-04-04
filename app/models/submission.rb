@@ -17,26 +17,30 @@ class Submission < ActiveRecord::Base
 
   def raw
   	responses = self.responses
-  	questions = Hash.new
-  	for response in responses
-  		question = questions[response.question_id] 
-  		if question
-  			question[:responses] += 1
-  			question[:total] += response.scale.value
-  		else
-  			question = Hash.new
-  			question[:responses] = 1
-  			question[:total] = response.scale.value
-  			question[:weight] = response.question.question_weight
-  			question[:max] = response.question.scales.maximum(:value)
-  			questions[response.question_id]  = question
-  		end 
-  	end
-  	puts questions
-  	raw = questions.map{ |k, v|
-  		(v[:total].fdiv(v[:responses] * v[:max])) * v[:weight]
-  	}.reduce(:+)
-  	raw.round
+  	if responses.length > 0
+			questions = Hash.new
+			for response in responses
+				question = questions[response.question_id] 
+				if question
+					question[:responses] += 1
+					question[:total] += response.scale.value
+				else
+					question = Hash.new
+					question[:responses] = 1
+					question[:total] = response.scale.value
+					question[:weight] = response.question.question_weight
+					question[:max] = response.question.scales.maximum(:value)
+					questions[response.question_id]  = question
+				end 
+			end
+			
+			raw = questions.map{ |k, v|
+				(v[:total].fdiv(v[:responses] * v[:max])) * v[:weight]
+			}.reduce(:+).round
+			raw.round
+		else
+			nil
+		end
   end
 
   private 
