@@ -14,7 +14,7 @@
         <td><%= submission.user.first_name %></td>
         <td><%= submission.user.last_name %></td>
         <td><%= submission.created_at.to_s(:pretty) %></td>
-        <td>TBD</td>
+        <td><%= submission.raw %></td>
         <% if submission.instructor_approved %>
           <td><%= link_to 'See Reviews', [@course, @assignment, submission] %></td>
         <% else %>
