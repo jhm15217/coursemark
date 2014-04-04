@@ -176,8 +176,9 @@ for student in students2014
   end
 end
 
-for evaluation in Evaluation.all
-  if evaluation.submission.assignment.id = assignment1.id
+evaluations = Evaluation.all
+for evaluation in evaluations
+  if evaluation.submission.assignment_id == assignment1.id
     for question in evaluation.submission.assignment.questions
       response = Response.new
       response.question_id = question.id
