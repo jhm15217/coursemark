@@ -5,8 +5,6 @@ gem 'rails', '3.2.13'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
-gem 'sqlite3'
-
 # Gems used only in testing
 group :test do
 	gem 'shoulda', '3.5.0'
@@ -23,6 +21,7 @@ group :test do
 	gem 'simplecov', '0.8.2'
 	gem 'tconsole', '1.2.8'
 	gem 'bcrypt-ruby', '~> 3.0.0'
+	gem 'sqlite3'
 end
 
 # Gems used only in development
@@ -32,6 +31,12 @@ group :development do
   gem 'faker', '1.1.2'
   gem "seed_dump"
   gem 'binding_of_caller'
+  gem 'sqlite3'
+end
+
+group :production do
+  gem 'pg'
+  gem 'rails_12factor'
 end
 
 # Gems used only for assets and not required
@@ -74,3 +79,5 @@ gem 'cancan'
 
 # To use debugger
 # gem 'debugger'
+
+ruby '1.9.3'
