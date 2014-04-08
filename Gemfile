@@ -55,5 +55,6 @@ gem 'nested_form'
 gem 'authlogic'
 gem 'cancan'
 gem 'bcrypt-ruby', '~> 3.0.0'
+gem 'scrypt', '1.2.1'
 
 ruby '1.9.3'
