@@ -3,7 +3,7 @@ class ChangeRegistrationType < ActiveRecord::Migration
 	connection.execute(%q{
 	    alter table registrations
 	    alter column course_id
-	    type integer using cast(number as integer)
+	    type integer using cast(course_id as integer)
 	})
   end
 
