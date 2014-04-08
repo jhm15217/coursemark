@@ -20,7 +20,6 @@ group :test do
 	gem 'nokogiri', '1.6.1'
 	gem 'simplecov', '0.8.2'
 	gem 'tconsole', '1.2.8'
-	gem 'bcrypt-ruby', '~> 3.0.0'
 	gem 'sqlite3'
 end
 
@@ -55,5 +54,6 @@ gem 'validates_timeliness'
 gem 'nested_form'
 gem 'authlogic'
 gem 'cancan'
+gem 'bcrypt-ruby', '~> 3.0.0'
 
 ruby '1.9.3'
