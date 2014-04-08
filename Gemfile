@@ -21,7 +21,7 @@ group :test do
 	gem 'simplecov', '0.8.2'
 	gem 'tconsole', '1.2.8'
 	gem 'bcrypt-ruby', '~> 3.0.0'
-	gem 'sqlite3'
+	#gem 'sqlite3'
 end
 
 # Gems used only in development
@@ -31,7 +31,7 @@ group :development do
   gem 'faker', '1.1.2'
   gem "seed_dump"
   gem 'binding_of_caller'
-  gem 'sqlite3'
+  #gem 'sqlite3'
 end
 
 group :production do
