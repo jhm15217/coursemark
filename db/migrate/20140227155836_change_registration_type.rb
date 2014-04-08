@@ -1,6 +1,10 @@
 class ChangeRegistrationType < ActiveRecord::Migration
   def up
-  	change_column :registrations, :course_id, :integer
+	connection.execute(%q{
+	    alter table registrations
+	    alter column course_id
+	    type integer using cast(number as integer)
+	})
   end
 
   def down
