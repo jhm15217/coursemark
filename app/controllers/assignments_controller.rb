@@ -1,6 +1,7 @@
 class AssignmentsController < ApplicationController
   before_filter :get_course
   helper_method :get_submission_for_assignment
+  load_and_authorize_resource
 
   # GET /assignments
   # GET /assignments.json

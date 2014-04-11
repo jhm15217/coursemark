@@ -2,6 +2,8 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
   before_filter :get_assignments, :require_login
   helper_method :current_user
+  check_authorization
+  load_and_authorize_resource
 
   def get_assignments
     # TODO: This should be a scope or a method in a model
