@@ -5,8 +5,6 @@ gem 'rails', '3.2.13'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
-gem 'sqlite3'
-
 # Gems used only in testing
 group :test do
 	gem 'shoulda', '3.5.0'
@@ -22,7 +20,7 @@ group :test do
 	gem 'nokogiri', '1.6.1'
 	gem 'simplecov', '0.8.2'
 	gem 'tconsole', '1.2.8'
-	gem 'bcrypt-ruby', '~> 3.0.0'
+	gem 'sqlite3'
 end
 
 # Gems used only in development
@@ -32,6 +30,13 @@ group :development do
   gem 'faker', '1.1.2'
   gem "seed_dump"
   gem 'binding_of_caller'
+  gem 'sqlite3'
+end
+
+group :production do
+  gem 'thin'
+  gem 'rails_12factor'
+  gem 'pg'
 end
 
 # Gems used only for assets and not required
@@ -39,38 +44,17 @@ end
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
   gem 'coffee-rails', '~> 3.2.1'
-
-  # See https://github.com/sstephenson/execjs#readme for more supported runtimes
-  # gem 'therubyracer', :platforms => :ruby
-
   gem 'uglifier', '>= 1.0.3'
 end
 
-# File upload
 gem 'carrierwave'
 gem 'uuid'
-
 gem 'jquery-rails'
 gem 'validates_timeliness'
-
-# Nested forms
 gem 'nested_form'
-
 gem 'authlogic'
-
 gem 'cancan'
+gem 'bcrypt-ruby', '~> 3.0.0'
+gem 'scrypt', '1.2.1'
 
-# To use ActiveModel has_secure_password
-#gem 'bcrypt-ruby', '~> 3.0.0'
-
-# To use Jbuilder templates for JSON
-# gem 'jbuilder'
-
-# Use unicorn as the app server
-# gem 'unicorn'
-
-# Deploy with Capistrano
-# gem 'capistrano'
-
-# To use debugger
-# gem 'debugger'
+ruby '1.9.3'

@@ -7,7 +7,7 @@ class AssignmentsController < ApplicationController
   def index
     @assignments = Assignment.where(:course_id => @course.id)
 
-    # Redirect to first assignment page or 
+    # Redirect to first assignment page or
     # new assignment page if there are none
 
     if @assignments.length > 0
@@ -106,7 +106,7 @@ class AssignmentsController < ApplicationController
     @assignment.destroy
 
     respond_to do |format|
-      format.html { redirect_to assignments_url }
+      format.html { redirect_to course_path(@course) }
       format.json { head :no_content }
     end
   end

@@ -24,7 +24,7 @@
     <% if @submission.instructor_approved != false and @submission.instructor_approved != nil then %>
 <!--     GRADE IS APPROVED -->
       <div class='submissionGradeBox'>
-        <span>Grade: Approved</span>
+        <span>Grade: <%= @submission.percentage.round.to_s + "%" %></span>
         <div class='button fr'><%= link_to "Unapprove Grade",
               course_assignment_submission_path(@course, @assignment, @submission,
                         :submission => { :instructor_approved => false}),
@@ -34,7 +34,7 @@
     <% else %>
 <!--     GRADE IS NOT APPROVED -->
       <div class='submissionGradeBox'>
-        <span>Grade: Unapproved</span>
+        <span>Grade: <%= @submission.percentage.round.to_s + "%" %></span>
         <div class='button fr'><%= link_to "Approve Grade",
               course_assignment_submission_path(@course, @assignment, @submission,
                         :submission => { :instructor_approved => true}),
