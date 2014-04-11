@@ -1,5 +1,7 @@
 class RegistrationsController < ApplicationController
   layout false, :except => :index
+  load_and_authorize_resource
+
   
   # GET /registrations
   # GET /registrations.json
