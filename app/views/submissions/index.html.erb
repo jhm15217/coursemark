@@ -14,11 +14,11 @@
         <td><%= submission.user.first_name %></td>
         <td><%= submission.user.last_name %></td>
         <td><%= submission.created_at.to_s(:pretty) %></td>
-        <td>TBD</td>
+        <td><%= submission.percentage.round %>%</td>
         <% if submission.instructor_approved %>
-          <td><%= link_to 'See Reviews', [@course, @assignment, submission] %></td>
+          <td><%= link_to 'View Reviews', [@course, @assignment, submission] %></td>
         <% else %>
-          <td><%= link_to 'Begin Approval', [@course, @assignment, submission] %></td>
+          <td><%= link_to 'Needs Approval', [@course, @assignment, submission] %></td>
         <% end %>
       </tr>
       <% end %>

@@ -37,6 +37,10 @@ class Assignment < ActiveRecord::Base
     end
   end
 
+  def totalPoints
+    self.questions.map{|q| q.question_weight}.reduce(:+)
+  end
+
   private
   def update_evaluations
     self.submissions.each {|submission| submission.save!}
