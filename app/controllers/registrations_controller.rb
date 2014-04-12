@@ -4,11 +4,18 @@ class RegistrationsController < ApplicationController
   # GET /registrations
   # GET /registrations.json
   def index
-    @registrations = current_user.registrations
-    @course = current_user.courses.first
+    if params[:course]
+      @course = Course.find(params[:course])
+      @registrations = @course.registrations
+      @template = "registrations/roster"
+    else
+      @registrations = current_user.registrations
+      @course = current_user.courses.first
+      @template = "registrations/index"
+    end
 
     respond_to do |format|
-      format.html # index.html.erb
+      format.html { render :template => @template } # index.html.erb
       format.json { render json: @registrations }
     end
   end
