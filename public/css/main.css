@@ -438,11 +438,11 @@ textarea {
 }
 
 #main input[type=submit]:hover, .button:hover {
-    border: 1px solid #2ecc71;
+    border: 1px solid #333E54;
 }
 
 #main input[type=submit].selected, .button.selected {
-    border: 1px solid #2ecc71;
+    border: 1px solid #333E54;
 }
 
 #main .button a {
@@ -463,6 +463,15 @@ textarea {
 
 #main .button.destructive:hover a {
   color: white;
+}
+
+#courseCode {
+    background: #FFF;
+    padding: 25px;
+    width: 100%;
+    border-radius: 6px;
+    border: 1px solid #DFDFDF;
+    margin-bottom: 20px;
 }
 
 #main .questionType {
