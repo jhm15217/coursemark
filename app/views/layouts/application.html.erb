@@ -33,76 +33,36 @@
         </div>
 
         <div id="sidebar">
-            <div class="tabs">
-                <%= link_to course_path(@course) do %>
-                    <div class="tab assignments <%= 'active' if ['assignments', 'submissions', 'questions'].include?(controller.controller_name) %>"></div>
-                <% end %>
-                <%= link_to edit_user_path(current_user) do %>
-                    <div class="tab profile <%= 'active' if controller.controller_name == 'users' || controller.controller_name == 'registrations' %>"></div>
-                <% end %>
-            </div>
-
+            <div id="logo">Agora Peer Review</div>
             <% if current_user.courses.length > 1 %>
                 <div id='courseSelector'>
                   <%= @course.name %>
                 </div>
             <% end %>
 
-            <% if current_user.instructor?(@course) && ['assignments', 'submissions', 'questions'].include?(controller.controller_name)%>
-                <div id='newAssignmentBtn'>
-                  <%= link_to "+ New Assignment", new_course_assignment_path(@course) %>
-                </div>
-            <% end %>
             <ul>
-                <% if ['assignments', 'submissions', 'questions'].include?(controller.controller_name) %>
-                	<% @assignments.each do |assignment| %>
+                <li class="divider">Assignments</li>
+                <% if current_user.instructor?(@course) %>
+                    <li><%= link_to "+ New Assignment", new_course_assignment_path(@course) %></li>
+                <% end %>
+
+            	<% @assignments.each do |assignment| %>
                     <li class="<%= 'active' if @assignment && @assignment.id == assignment.id %>">
                     	<%= link_to course_assignment_path(@course, assignment) do %>
-    	                    <div class="name"><%= assignment.name %></div>
-                            <% if !current_user.instructor?(@course) && get_submission_for_assignment(assignment) %>
-                                <div class="status">Submitted</div>
-                            <% elsif !current_user.instructor?(@course) && @submission %>
-                                <div class="status">Not Submitted</div>
-                            <% else %>
-    	                       <div class="status"><%= assignment.draft ? 'Draft' : 'Published' %></div>
-                            <% end %>
+                            <div class="name"><%= assignment.name %></div>
                         <% end %>
                     </li>
-                    <% end %>
                 <% end %>
 
-                <% if !current_user.instructor?(@course) && (controller.controller_name == 'users' || controller.controller_name == 'registrations') %>
-                    <%= link_to edit_user_path(current_user) do %>
-                        <li class="<%= 'active' if controller.controller_name == 'users' %>">
-                            <div class="name=">My Account</div>
-                            <div class="status"><%= current_user.name %></div>
-                        </li>
-                    <% end %>
-                    <%= link_to registrations_path do %>
-                        <li class="<%= 'active' if controller.controller_name == 'registrations' %>">
-                            <div class="name=">My Courses</div>
-                            <div class="status"><%= current_user.courses.length.to_s + " Courses" %></div>
-                        </li>
-                    <% end %>
+                <% if @assignments.length == 0 %>
+                    <li class="empty">No assignments yet</li>
                 <% end %>
 
-                <% if current_user.instructor?(@course) && (controller.controller_name == 'users' || controller.controller_name == 'registrations') %>
-                    <%= link_to edit_user_path(current_user) do %>
-                        <li class="<%= 'active' if controller.controller_name == 'users' %>">
-                            <div class="name=">My Account</div>
-                            <div class="status"><%= current_user.name %></div>
-                        </li>
-                    <% end %>
+                <% if current_user.instructor?(@course) %>
+                    <li class="divider">Students</li>
                     <%= link_to registrations_path(:course => @course.id) do %>
                         <li class="<%= 'active' if controller.controller_name == 'registrations' %>">
-                            <div class="name=">My Students</div>
-                            <div class="status"><%= current_user.courses.length.to_s + " Courses" %></div>
-                        </li>
-                    <% end %>
-                    <%= link_to registrations_path do %>
-                        <li class="<%= 'active' if controller.controller_name == 'registrations' %>">
-                            <div class="name=">My Courses</div>
-                            <div class="status"><%= current_user.courses.length.to_s + " Courses" %></div>
+                            <div class="name=">Course Roster</div>
                         </li>
                     <% end %>
                 <% end %>

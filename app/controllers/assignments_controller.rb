@@ -11,7 +11,18 @@ class AssignmentsController < ApplicationController
     # new assignment page if there are none
 
     if @assignments.length > 0
-      @URL = course_assignment_url(@course, @assignments.first)
+
+      if !current_user.instructor?(@course)
+        @assignment = @assignments.published.first
+      else
+        @assignment = @assignments.first
+      end
+
+      if @assignment.nil?
+        @URL = edit_user_path(current_user, :course => @course.id)
+      else
+        @URL = course_assignment_url(@course, @assignments.first)
+      end
     else
       @URL = { :action => 'new' }
     end

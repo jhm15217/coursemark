@@ -6,11 +6,13 @@ class RegistrationsController < ApplicationController
   def index
     if params[:course]
       @course = Course.find(params[:course])
+      @assignments = @course.assignments
       @registrations = @course.registrations
       @template = "registrations/roster"
     else
       @registrations = current_user.registrations
       @course = current_user.courses.first
+      @assignments = @course.assignments
       @template = "registrations/index"
     end
 
