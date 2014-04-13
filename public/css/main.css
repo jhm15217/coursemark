@@ -87,8 +87,8 @@ textarea {
 }
 
 #sidebar a {
-    text-decoration:none;
-    color: #A0ABC0;
+    text-decoration: none;
+    color: #bdc3c7;
 }
 
 #sidebar .tabs {
@@ -125,21 +125,21 @@ textarea {
 }
 
 #courseSelector {
-    color: #A0ABC0;
-    height: 22px;
-    padding-top: 7px;
-    padding-bottom: 28px;
-    padding-right: 9px;
+    color: #bdc3c7;
+    height: 44px;
+    background: #2c3447;
+    padding-right: 15px;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    margin: 10px 15px 10px 18px;
+    padding-top: 11px;
     cursor: pointer;
-    background: url(../img/menu_icon.png);
+    background-image: url(../img/menu_icon.png);
     background-repeat: no-repeat;
-    background-position: center left;
+    background-position: 20px center;
     background-size: 20px;
-    padding-left: 32px;
+    padding-left: 50px;
+    font-size: 15px;
 }
 
 #courseSelector:hover {
@@ -163,7 +163,7 @@ textarea {
     background: #FFF;
     border-radius: 6px;
     margin: 150px auto auto auto;
-    padding: 30px 50px 40px 50px;
+    padding: 30px 40px 35px 40px;
     overflow-y: scroll;
 }
 
@@ -196,8 +196,6 @@ textarea {
     height: 30px;
     padding-top: 15px;
     padding-bottom: 36px;
-    border-top: 1px solid #484957;
-    border-bottom: 1px solid #484957;
 }
 
 #sidebar ul {
@@ -209,12 +207,20 @@ textarea {
 #sidebar li {
     list-style: none;
     width: 100%;
-    height: 85px;
-    padding: 23px 25px;
-    border-bottom: 1px solid #484957;
+    height: 45px;
+    padding: 12px 25px;
+    font-size: 15px;
 }
 
-#sidebar li:hover {
+#sidebar li.divider {
+    text-transform: uppercase;
+    font-size: 13px;
+    font-weight: bold;
+    height: 37px;
+    margin-top: 15px;
+}
+
+#sidebar li:hover:not(.divider) {
     background: #2c3447;
     color: #FFF;
 }
@@ -228,11 +234,14 @@ textarea {
     color: #FFF;
 }
 
-#sidebar .status {
-    text-transform: uppercase;
-    font-size: 8pt;
+#logo {
+    height: 41px;
+    background: #e74c3c;
+    color: rgba(255,255,255,0.9);
     font-weight: bold;
-    color: #778094;
+    text-align: left;
+    padding-top: 9px;
+    padding-left: 19px;
 }
 
 #main {
@@ -299,7 +308,7 @@ textarea {
     font-weight: bold;
 }
 
-#main .tab:hover {
+#main .tab:hover:not('.logout') {
     color: #e74c3c;
     border-bottom: 3px solid #95969C;
 }
@@ -318,8 +327,14 @@ textarea {
 }
 
 #main .tab.logout {
-    right: 394px;
     position: absolute;
+    top: 0px;
+    right: 394px;
+    width: 110px;
+    height: 85px;
+    padding-left: 35px;
+    padding-top: 23px;
+    border-left: 1px solid #DFDFDF;
 }
 
 #backBar {
@@ -629,12 +644,12 @@ textarea {
 }
 
 .loginWrapper.newAccount .new_user .field:nth-child(3) input,
-.loginWrapper.newAccount .new_user .field:nth-child(6) input {
+.loginWrapper.newAccount .new_user .field:nth-child(6) input,
+.loginWrapper.newAccount .new_user .field:nth-child(5) input {
     border-top: 0px;
 }
 
-.loginWrapper.newAccount .new_user .field:nth-child(3) input,
-.loginWrapper.newAccount .new_user .field:nth-child(4) input {
+.loginWrapper.newAccount .new_user .field:nth-child(3) input {
     margin-bottom: 10px;
 }
 

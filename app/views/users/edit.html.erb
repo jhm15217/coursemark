@@ -1,7 +1,10 @@
 <div id="header">
-    <h1 class="name">My Account</h1>
+    <h1 class="name">Account Settings</h1>
     <div class="tabs">
         <div class="tab logout">
+        	<%= link_to edit_user_path(current_user) do %>
+                Settings
+            <% end %>
             <%= link_to logout_path do %>
                 Sign out
             <% end %>
@@ -9,6 +12,32 @@
     </div>
 </div>
 
-<div id="headerSpacer"></div>
+<div id="headerSpacer" style="height:90px;"></div>
+
+<h2>Enrollments</h2>
+
+<table>
+  <tr>
+    <th>Course</th>
+    <th>Type</th>
+    <th>&nbsp;</th>
+  </tr>
+
+<% @registrations.each do |registration| %>
+  <tr>
+    <td><%= registration.course.name %></td>
+    <td><%= registration.instructor ? "Course Staff" : "Student"  %></td>
+    <td><%= link_to 'Remove', registration, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<div class="button" style="margin-bottom:60px;">
+  <%= link_to 'Add Course', new_registration_path %>
+</div>
+
+<h2>Login information</h2>
 
 <%= render 'edit_form' %>
