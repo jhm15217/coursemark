@@ -34,8 +34,14 @@
 
 <br />
 
+<% if current_user.instructor?(@course) %>
+  <div class="button">
+    <%= link_to 'Create Course', new_course_path %>
+  </div>
+<% end %>
+
 <div class="button" style="margin-bottom:60px;">
-  <%= link_to 'Add Course', new_registration_path %>
+  <%= link_to 'Join Course', new_registration_path %>
 </div>
 
 <h2>Login information</h2>
