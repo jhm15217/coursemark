@@ -28,6 +28,8 @@ class CoursesController < ApplicationController
 
     # Redirect to assignments page
 
+    puts "Redirecting to assignments page"
+
     respond_to do |format|
       format.html { redirect_to course_assignments_path(@course) }
       format.json { render json: @course }
