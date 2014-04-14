@@ -10,21 +10,25 @@ class ApplicationController < ActionController::Base
     # Getting the right assignments for the user
 
     if current_user
-        @assignments = []
-        @course_id = params[:course_id]
+      if (current_user.courses.length == 0)
+        redirect_to new_registration_url
+      end
 
-        if @course_id.nil?
-          @course_id = params[:id]
+      @assignments = []
+      @course_id = params[:course_id]
+
+      if @course_id.nil?
+        @course_id = params[:id]
+      end
+
+      current_user.registrations.where(:course_id => @course_id).each do |registration|
+        if registration.instructor
+          # if a user is an instructor for course, get drafts
+          @assignments.concat(registration.course.assignments)
+        else
+          # otherwise user is a student, get published assignments only
+          @assignments.concat(registration.course.assignments.published)
         end
-
-        current_user.registrations.where(:course_id => @course_id).each do |registration|
-          if registration.instructor
-            # if a user is an instructor for course, get drafts
-            @assignments.concat(registration.course.assignments)
-          else
-            # otherwise user is a student, get published assignments only
-            @assignments.concat(registration.course.assignments.published)
-          end
       end
     end
   end
