@@ -5,7 +5,7 @@
     <% else %>
       <%= link_to "&larr; #{@submission.assignment.name}".html_safe , course_assignment_path(@course, @assignment) %>
     <% end %>
-    <h1 class="name"><%= @submission.user.name %></h1>
+    <h1 class="name"> <% if current_user.instructor?(@course) %><%= @submission.user.name %><% end %></h1>
     <% if !@submission.submission.blank? %>
       <div id='submissionDownloadBtn'>
         <a href='http://<%= request.host %><%= @submission.submission %>' >Download Submission</a>
@@ -31,7 +31,7 @@
 <!--     GRADE IS APPROVED -->
       <div class='submissionGradeBox'>
         <span>Grade: <%= @submission.percentage.round.to_s + "%" %></span>
-        <div class='button fr'><%= link_to "Unapprove Grade",
+        <div class='button fr' style="margin-right: 0px;"><%= link_to "Unapprove Grade",
               course_assignment_submission_path(@course, @assignment, @submission,
                         :submission => { :instructor_approved => false}),
                         :method => :put %>
@@ -41,7 +41,7 @@
 <!--     GRADE IS NOT APPROVED -->
       <div class='submissionGradeBox'>
         <span>Grade: <%= @submission.percentage.round.to_s + "%" %></span>
-        <div class='button fr'><%= link_to "Approve Grade",
+        <div class='button fr' style="margin-right: 0px;"><%= link_to "Approve Grade",
               course_assignment_submission_path(@course, @assignment, @submission,
                         :submission => { :instructor_approved => true}),
               :method => :put %>
@@ -136,7 +136,6 @@
           </div>
         <% end %>
 
-
         <%= submit_tag "Submit" %>
       <% end %>
       <% end %> <!-- end false, temp hiding -->
@@ -150,7 +149,6 @@
       <div class='submissionQuestionBox'>
       <h2><%= eval.question.question_text %></h2>
       <div class='possiblePoints'>Possible Points: <%= eval.question.scales.map{|s| s.value}.reduce(:+) %></div>
-
         <% get_evaluations_for_submission_question(@submission, eval.question).each_with_index do |response, index| %>
             <div class='submissionBox'>
               <div class='submissionResponsePoints'><%= response.scale.value %></div>

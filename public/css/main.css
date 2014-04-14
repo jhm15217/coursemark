@@ -238,6 +238,9 @@ textarea {
     height: 41px;
     background: #e74c3c;
     color: rgba(255,255,255,0.9);
+    padding-left: 22px;
+    padding-top: 8px;
+    font-weight: bold;
 }
 
 #sidebar .status, .possiblePoints {
@@ -246,7 +249,9 @@ textarea {
     font-weight: bold;
     text-align: left;
     padding-top: 9px;
-    padding-left: 19px;
+    font-weight: normal;
+    opacity: .5;
+    margin-bottom: 9px;
 }
 
 .possiblePoints {
@@ -445,6 +450,7 @@ textarea {
 
 #main input[type=submit] {
     padding-top: 9px;
+    margin-right: 0px;
 }
 
 #main input[type=submit]:hover, .button:hover {
