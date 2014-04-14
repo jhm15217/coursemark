@@ -44,7 +44,9 @@
   <div class="actions">
     <%= f.submit %>
   </div>
-  <div class='button destructive'>
-    
-  </div>
+  <% if @assignment.id %>
+    <div class='button destructive'>
+      <%= link_to 'Delete', course_assignment_path(@course, @assignment), method: :delete, data: { confirm: 'Are you sure you want to delete this assignment?' } %>
+    </div>
+  <% end %>
 <% end %>
