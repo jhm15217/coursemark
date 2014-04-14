@@ -1,6 +1,5 @@
 class AssignmentsController < ApplicationController
   before_filter :get_course
-  helper_method :get_submission_for_assignment
 
   # GET /assignments
   # GET /assignments.json
@@ -38,7 +37,8 @@ class AssignmentsController < ApplicationController
   def show
     @assignment = Assignment.find(params[:id])
     @submission = get_submission_for_assignment(@assignment)
-    @reviewing_tasks = @assignment.evaluations.forUser(current_user)
+    # @reviewing_tasks = @assignment.evaluations.forUser(current_user)
+    @reviewing_tasks = reviews_for_user_to_complete(@assignment, current_user)
 
     if @submission.nil?
       @submission = Submission.new
@@ -128,8 +128,14 @@ class AssignmentsController < ApplicationController
     end
   end
 
-  def get_submission_for_assignment(assignment)
-    @submission = Submission.where(:assignment_id => assignment.id, :user_id => current_user.id)
-    return @submission[0]
+  def reviews_for_user_to_complete(assignment, current_user) 
+    evals = []
+    assignment.evaluations.forUser(current_user).each { |eval|  
+      complete = eval.responses.all? { |resp| resp.is_complete? }
+      if !complete then 
+        evals << eval
+      end
+    }
   end
+
 end
