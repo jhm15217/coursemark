@@ -1,4 +1,6 @@
 class RegistrationsController < ApplicationController
+  skip_before_filter :get_assignments, :except => [:index]
+  skip_before_filter :get_submission_for_assignment, :except => [:index]
   layout false, :except => :index
   
   # GET /registrations
