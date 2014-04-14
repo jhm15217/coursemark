@@ -54,7 +54,7 @@
       <% @submission.assignment.questions.each do |question| %>
         <div class='submissionQuestionBox' id='peer_review'>
         <h2><%= question.question_text %></h2>
-        <div class='possiblePoints'>Possible Points: <%= question.weight %></div>
+        <div class='possiblePoints'>Possible Points: <%= question.question_weight %></div>
         <%# response_for_question_by_peer(@current_user, @submission, question).first %>
         <% question.responses.each do |response| %>
 
@@ -96,7 +96,7 @@
     <% @evaluations[0].responses.each do |eval| %>
       <div class='submissionQuestionBox'>
       <h2><%= eval.question.question_text %></h2>
-      <div class='possiblePoints'>Possible Points: <%= eval.question.weight %></div>
+      <div class='possiblePoints'>Possible Points: <%= eval.question.question_weight %></div>
         <% get_evaluations_for_submission_question(@submission, eval.question).each_with_index do |response, index| %>
             <% if response.is_complete? %>
             <div class='submissionBox'>
