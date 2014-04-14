@@ -15,8 +15,19 @@ class Submission < ActiveRecord::Base
   validates_presence_of :assignment_id
   validates_presence_of :user_id
 
+  def completed_responses
+  	completed = []
+  	self.responses.each do |response|
+  		if response.is_complete?
+  			completed << response
+  		end
+  	end
+  	return completed
+  end
+
   def raw
-  	responses = self.responses
+  	# Get only completed responses
+  	responses = self.completed_responses
   	if responses.length > 0
 			questions = Hash.new
 			for response in responses
