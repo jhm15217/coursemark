@@ -81,9 +81,6 @@ textarea {
     background: #343F53;
     color: #A0ABC0;
     overflow-y: scroll;
-    -webkit-box-shadow: inset -72px 0px 7px -69px rgba(0,0,0,0.2);
-    -moz-box-shadow: inset -72px 0px 7px -69px rgba(0,0,0,0.2);
-    box-shadow: inset -72px 0px 7px -69px rgba(0,0,0,0.2);
 }
 
 #sidebar a {
@@ -394,9 +391,21 @@ textarea {
     border-radius: 6px;
 }
 
+#main table a {
+    color: #343F53;
+}
+
 #main table tr {
     height: 50px;
     border-bottom: 1px solid #DFDFDF;
+}
+
+#main .submissions tr {
+    background: #F5F6F8;
+}
+
+#main .submissions tr.highlighted {
+    background: #FFF;
 }
 
 #main table tr:last-child {

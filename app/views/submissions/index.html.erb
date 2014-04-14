@@ -6,7 +6,7 @@
 
 <% if @submissions.length > 0 %>
   <table class="submissions">
-      <tr>
+      <tr class="highlighted">
         <th>First name</th>
         <th>Last name</th>
         <th>Timestamp</th>
@@ -16,7 +16,7 @@
         <% end %>
       </tr>
       <% @submissions.each do |submission| %>
-      <tr>
+      <tr class="<%= if !submission.instructor_approved then "highlighted" end %>">
         <td><%= submission.user.first_name %></td>
         <td><%= submission.user.last_name %></td>
         <td><%= submission.created_at.to_s(:pretty) %></td>
