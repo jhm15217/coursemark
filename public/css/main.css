@@ -746,6 +746,7 @@ textarea {
   float: left;
   margin-left: -60px;
   position: absolute;
+  border-right: 1px solid #DFDFDF;
 }
 
 #submissionDownloadBtn {
