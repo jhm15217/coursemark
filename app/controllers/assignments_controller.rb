@@ -1,6 +1,6 @@
 class AssignmentsController < ApplicationController
   require 'csv'
-  before_filter :get_course, :require_registration
+  before_filter :get_course
 
   # GET /assignments
   # GET /assignments.json
@@ -161,12 +161,6 @@ class AssignmentsController < ApplicationController
         evals << eval
       end
     }
-  end
-
-  def require_registration
-    if (current_user.courses.length == 0)
-      redirect_to new_registration_url
-    end
   end
 
 end
