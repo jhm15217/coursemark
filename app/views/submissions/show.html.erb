@@ -40,7 +40,7 @@
     <% elsif current_user.instructor?(@course) %>
 <!--     GRADE IS NOT APPROVED -->
       <div class='submissionGradeBox'>
-        <span>Grade: <%= @submission.percentage.round.to_s + "%" %></span>
+        <span>Grade: <%= unless @submission.percentage.nil? then @submission.percentage.round.to_s + "%" end  %></span>
         <div class='button fr' style="margin-right: 0px;"><%= link_to "Approve Grade",
               course_assignment_submission_path(@course, @assignment, @submission,
                         :submission => { :instructor_approved => true}),
@@ -150,6 +150,7 @@
       <h2><%= eval.question.question_text %></h2>
       <div class='possiblePoints'>Possible Points: <%= eval.question.scales.map{|s| s.value}.reduce(:+) %></div>
         <% get_evaluations_for_submission_question(@submission, eval.question).each_with_index do |response, index| %>
+            <% if response.is_complete? %>
             <div class='submissionBox'>
               <div class='submissionResponsePoints'><%= response.scale.value %></div>
               <div class='submissionResponseFrom'>
@@ -187,6 +188,7 @@
                 </div> <!-- End Instructor Response -->
               <% end %>
             </div>
+            <% end %>
           <% end %>
         </div> <!-- end submissionQuestionBox -->
     <% end %>
