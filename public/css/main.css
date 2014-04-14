@@ -107,7 +107,7 @@ textarea {
 }
 
 #sidebar .tab.active {
-    background-color: #e74c3c;
+    background-color: #d35400;
 }
 
 #sidebar .tab.assignments {
@@ -236,7 +236,7 @@ textarea {
 
 #logo {
     height: 41px;
-    background: #e74c3c;
+    background: #d35400;
     color: rgba(255,255,255,0.9);
     padding-left: 22px;
     padding-top: 8px;
@@ -319,18 +319,18 @@ textarea {
 }
 
 #main .tab.active a {
-    color: #e74c3c;
+    color: #d35400;
     font-weight: bold;
 }
 
 #main .tab:hover:not('.logout') {
-    color: #e74c3c;
+    color: #d35400;
     border-bottom: 3px solid #95969C;
 }
 
 #main .tab.active {
-    color: #e74c3c;
-    border-bottom: 3px solid #e74c3c;
+    color: #d35400;
+    border-bottom: 3px solid #d35400;
 }
 
 #main .tab.active:hover {
@@ -473,8 +473,8 @@ textarea {
 }
 
 #main .button.destructive:hover {
-  border: 1px solid #FF3A38;
-  background-color: #FF3A38;
+  border: 1px solid #d35400;
+  background-color: #d35400;
 }
 
 #main .button.destructive:hover a {
@@ -625,7 +625,7 @@ textarea {
 }
 
 .highlight a {
-    color: #e74c3c;
+    color: #d35400;
 }
 
 .loginWrapper {
@@ -685,7 +685,7 @@ textarea {
 
 .loginWrapper .actions input {
     padding-left: 0px;
-    background: #e74c3c;
+    background: #d35400;
     color: #FFF;
 }
 
@@ -842,7 +842,7 @@ textarea {
   margin: -17px -50px 0 0;
   text-align: right;
   padding: 10px 15px 0 15px;
-  background: #e74c3c;
+  background: #d35400;
   border-bottom-left-radius: 6px;
   color: white;
 }
