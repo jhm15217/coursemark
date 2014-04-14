@@ -11,6 +11,7 @@ class AssignmentsController < ApplicationController
     # new assignment page if there are none
 
     if @assignments.length > 0
+      puts "Found assignment OH FUCK"
 
       if !current_user.instructor?(@course)
         @assignment = @assignments.published.first
@@ -24,6 +25,8 @@ class AssignmentsController < ApplicationController
         @URL = course_assignment_url(@course, @assignments.first)
       end
     else
+      puts "Looks ok to me"
+      
       @URL = { :action => 'new' }
     end
 
