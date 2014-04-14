@@ -916,10 +916,6 @@ textarea {
     margin-bottom: 0px;
 }
 
-#student_evaluation_view {
-    margin-top: 163px;
-}
-
 #student_evaluation_view .submissionBox {
     float: left;
     width: calc(50% - 10px);
@@ -993,8 +989,12 @@ textarea {
     width: auto;
     border-radius: 6px;
     border: 1px solid #DFDFDF;
-    margin-right: 20px;
+    margin-right: 21px;
     margin-bottom: 20px;
+}
+
+.reviewing_task:nth-child(5n) {
+    margin-right: 0px;
 }
 
 .reviewing_task a {
