@@ -1,4 +1,5 @@
 class AssignmentsController < ApplicationController
+  require 'csv'
   before_filter :get_course
 
   # GET /assignments
@@ -56,6 +57,27 @@ class AssignmentsController < ApplicationController
       format.html
       format.json { render json: @assignment }
     end
+  end
+
+  # get /assignments/1/export
+  def export
+    @assignment = Assignment.find(params[:assignment_id])
+    #@students = Course.find(@assignment.course_id).get_students
+
+    assignment_csv = CSV.generate do |csv|
+      csv << ["Name", "Points", "Possible", "Percentage"]
+      @assignment.submissions.each do |submission|
+        if !submission.percentage.blank? then 
+          percent = submission.percentage.round 
+        else 
+          percent = "" 
+        end
+        csv << [submission.user.name, submission.raw, @assignment.totalPoints, percent]
+      end
+    end
+
+    current_date = "#{Time.now.month}-#{Time.now.day}-#{Time.now.year}"
+    send_data(assignment_csv, :type => 'text/csv', :filename => "#{@assignment.course.name}: #{@assignment.name} (as of #{current_date})")
   end
 
   # GET /assignments/new
