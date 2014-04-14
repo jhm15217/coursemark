@@ -22,13 +22,15 @@
 
 <div class="clearfix"></div>
 
-<div id="reviewing_tasks">
-  <% @reviewing_tasks.each_with_index do |task, index| %>
-    <div class="reviewing_task">
-      <%= link_to "Complete Review " + (index + 1).to_s, course_assignment_submission_path(@course, @assignment, task.submission) %>
-    </div>
-  <% end %>
-</div>
+<% if Time.zone.now > @assignment.submission_due %>
+  <div id="reviewing_tasks">
+    <% @reviewing_tasks.each_with_index do |task, index| %>
+      <div class="reviewing_task">
+        <%= link_to "Complete Review " + (index + 1).to_s, course_assignment_submission_path(@course, @assignment, task.submission) %>
+      </div>
+    <% end %>
+  </div>
+<% end %>
 
 <div class="clearfix"></div>
 
