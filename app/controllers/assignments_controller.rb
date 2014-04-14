@@ -1,6 +1,6 @@
 class AssignmentsController < ApplicationController
+  require 'csv'
   before_filter :get_course
-  helper_method :get_submission_for_assignment
 
   # GET /assignments
   # GET /assignments.json
@@ -11,7 +11,18 @@ class AssignmentsController < ApplicationController
     # new assignment page if there are none
 
     if @assignments.length > 0
-      @URL = course_assignment_url(@course, @assignments.first)
+
+      if !current_user.instructor?(@course)
+        @assignment = @assignments.published.first
+      else
+        @assignment = @assignments.first
+      end
+
+      if @assignment.nil?
+        @URL = edit_user_path(current_user, :course => @course.id)
+      else
+        @URL = course_assignment_url(@course, @assignments.first)
+      end
     else
       @URL = { :action => 'new' }
     end
@@ -27,7 +38,8 @@ class AssignmentsController < ApplicationController
   def show
     @assignment = Assignment.find(params[:id])
     @submission = get_submission_for_assignment(@assignment)
-    @reviewing_tasks = @assignment.evaluations.forUser(current_user)
+    # @reviewing_tasks = @assignment.evaluations.forUser(current_user)
+    @reviewing_tasks = reviews_for_user_to_complete(@assignment, current_user)
 
     if @submission.nil?
       @submission = Submission.new
@@ -45,6 +57,27 @@ class AssignmentsController < ApplicationController
       format.html
       format.json { render json: @assignment }
     end
+  end
+
+  # get /assignments/1/export
+  def export
+    @assignment = Assignment.find(params[:assignment_id])
+    #@students = Course.find(@assignment.course_id).get_students
+
+    assignment_csv = CSV.generate do |csv|
+      csv << ["Name", "Points", "Possible", "Percentage"]
+      @assignment.submissions.each do |submission|
+        if !submission.percentage.blank? then 
+          percent = submission.percentage.round 
+        else 
+          percent = "" 
+        end
+        csv << [submission.user.name, submission.raw, @assignment.totalPoints, percent]
+      end
+    end
+
+    current_date = "#{Time.now.month}-#{Time.now.day}-#{Time.now.year}"
+    send_data(assignment_csv, :type => 'text/csv', :filename => "#{@assignment.course.name}: #{@assignment.name} (as of #{current_date})")
   end
 
   # GET /assignments/new
@@ -117,8 +150,14 @@ class AssignmentsController < ApplicationController
     end
   end
 
-  def get_submission_for_assignment(assignment)
-    @submission = Submission.where(:assignment_id => assignment.id, :user_id => current_user.id)
-    return @submission[0]
+  def reviews_for_user_to_complete(assignment, current_user) 
+    evals = []
+    assignment.evaluations.forUser(current_user).each { |eval|  
+      complete = eval.responses.all? { |resp| resp.is_complete? }
+      if !complete then 
+        evals << eval
+      end
+    }
   end
+
 end

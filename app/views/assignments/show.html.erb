@@ -36,8 +36,9 @@
     <div class='submissionQuestionBox clearfix'>
     <h2><%= eval.question.question_text %></h2>
       <% get_evaluations_for_submission_question(@submission, eval.question).each_with_index do |response, index| %>
+        <% if response.is_complete? %>
           <div class='submissionBox'>
-            <div class='submissionResponsePoints'><%= response.scale.value %></div>
+            <div class='submissionResponsePoints'><%= if !response.scale.nil? then response.scale.value else '--' end %></div>
             <div class='submissionResponseFrom'>Reviewer <%= index + 1 %></div>
             <div class='submissionPeerReview'><%= response.peer_review %></div>
             <div class='submissionInstructorResponse'>
@@ -58,6 +59,7 @@
               </div>
             <% end %>
           </div>
+        <% end %>
       <% end %>
     </div> <!-- end submissionQuestionBox -->
     <div class="clearfix"></div>

@@ -1,7 +1,7 @@
 class Submission < ActiveRecord::Base
   attr_accessible :assignment_id, :submission, :user_id, :instructor_approved
 
-	after_save :create_and_save_evaluations
+  after_save :create_and_save_evaluations
 
   mount_uploader :submission, SubmissionUploader
 
@@ -15,8 +15,19 @@ class Submission < ActiveRecord::Base
   validates_presence_of :assignment_id
   validates_presence_of :user_id
 
+  def completed_responses
+  	completed = []
+  	self.responses.each do |response|
+  		if response.is_complete?
+  			completed << response
+  		end
+  	end
+  	return completed
+  end
+
   def raw
-  	responses = self.responses
+  	# Get only completed responses
+  	responses = self.completed_responses
   	if responses.length > 0
 			questions = Hash.new
 			for response in responses
@@ -79,6 +90,15 @@ class Submission < ActiveRecord::Base
 					evaluation.submission_id = self.id
 					evaluation.user_id = evaluator.id
 					evaluation.save
+
+					# create a response for each question of the evaluation
+					self.assignment.questions.each { |question|  
+						response = Response.new
+						response.question_id = question.id
+						response.evaluation_id = evaluation.id
+						response.save
+					}
+
 					evaluationsLeft -= 1
 	  		end	
 	  		# Increase the review threshold incase we ran out of students and need more

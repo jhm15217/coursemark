@@ -19,7 +19,7 @@ class User < ActiveRecord::Base
 
   # Helpers
   def name 
-		self.first_name.concat(' ').concat(self.last_name)
+		self.first_name + ' ' + self.last_name
 	end
 
   def instructor?(course)

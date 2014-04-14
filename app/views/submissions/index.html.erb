@@ -1,28 +1,40 @@
 <%= render "assignments/header" %>
 
+<% if Time.zone.now <= @assignment.review_due %>
+  <div class="notice">Grades will be available for approval on <%= @assignment.review_due.to_s(:pretty) %></div>
+<% end %>
+
 <% if @submissions.length > 0 %>
   <table class="submissions">
-      <tr>
+      <tr class="highlighted">
         <th>First name</th>
         <th>Last name</th>
         <th>Timestamp</th>
-        <th>Grade</th>
-        <th></th>
+        <% if Time.zone.now > @assignment.review_due %>
+          <th>Grade</th>
+          <th></th>
+        <% end %>
       </tr>
       <% @submissions.each do |submission| %>
-      <tr>
+      <tr class="<%= if !submission.instructor_approved then "highlighted" end %>">
         <td><%= submission.user.first_name %></td>
         <td><%= submission.user.last_name %></td>
         <td><%= submission.created_at.to_s(:pretty) %></td>
-        <td><%= submission.percentage.round %>%</td>
-        <% if submission.instructor_approved %>
-          <td><%= link_to 'View Reviews', [@course, @assignment, submission] %></td>
-        <% else %>
-          <td><%= link_to 'Needs Approval', [@course, @assignment, submission] %></td>
+        <% if Time.zone.now > @assignment.review_due %>
+          <td><%= if !submission.percentage.blank? then submission.percentage.round else "--" end %>%</td>
+          <% if submission.instructor_approved %>
+            <td><%= link_to 'View Reviews', [@course, @assignment, submission] %></td>
+          <% else %>
+            <td><%= link_to 'Needs Approval', [@course, @assignment, submission] %></td>
+          <% end %>
         <% end %>
       </tr>
       <% end %>
   </table>
+  <br />
+  <div class='button'>
+    <%= link_to "Export Grades CSV", :controller => "assignments", :action => "export" %>
+  </div>
 <% else %>
   <h2 class="noData">No one has submitted yet.</h2>
 <% end %>

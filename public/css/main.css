@@ -81,14 +81,11 @@ textarea {
     background: #343F53;
     color: #A0ABC0;
     overflow-y: scroll;
-    -webkit-box-shadow: inset -72px 0px 7px -69px rgba(0,0,0,0.2);
-    -moz-box-shadow: inset -72px 0px 7px -69px rgba(0,0,0,0.2);
-    box-shadow: inset -72px 0px 7px -69px rgba(0,0,0,0.2);
 }
 
 #sidebar a {
-    text-decoration:none;
-    color: #A0ABC0;
+    text-decoration: none;
+    color: #bdc3c7;
 }
 
 #sidebar .tabs {
@@ -107,7 +104,7 @@ textarea {
 }
 
 #sidebar .tab.active {
-    background-color: #e74c3c;
+    background-color: #2ecc71;
 }
 
 #sidebar .tab.assignments {
@@ -125,21 +122,21 @@ textarea {
 }
 
 #courseSelector {
-    color: #A0ABC0;
-    height: 22px;
-    padding-top: 7px;
-    padding-bottom: 28px;
-    padding-right: 9px;
+    color: #bdc3c7;
+    height: 44px;
+    background: #2c3447;
+    padding-right: 15px;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    margin: 10px 15px 10px 18px;
+    padding-top: 11px;
     cursor: pointer;
-    background: url(../img/menu_icon.png);
+    background-image: url(../img/menu_icon.png);
     background-repeat: no-repeat;
-    background-position: center left;
+    background-position: 20px center;
     background-size: 20px;
-    padding-left: 32px;
+    padding-left: 50px;
+    font-size: 15px;
 }
 
 #courseSelector:hover {
@@ -163,7 +160,7 @@ textarea {
     background: #FFF;
     border-radius: 6px;
     margin: 150px auto auto auto;
-    padding: 30px 50px 40px 50px;
+    padding: 30px 40px 35px 40px;
     overflow-y: scroll;
 }
 
@@ -196,8 +193,6 @@ textarea {
     height: 30px;
     padding-top: 15px;
     padding-bottom: 36px;
-    border-top: 1px solid #484957;
-    border-bottom: 1px solid #484957;
 }
 
 #sidebar ul {
@@ -209,12 +204,20 @@ textarea {
 #sidebar li {
     list-style: none;
     width: 100%;
-    height: 85px;
-    padding: 23px 25px;
-    border-bottom: 1px solid #484957;
+    height: 45px;
+    padding: 12px 25px;
+    font-size: 15px;
 }
 
-#sidebar li:hover {
+#sidebar li.divider {
+    text-transform: uppercase;
+    font-size: 13px;
+    font-weight: bold;
+    height: 37px;
+    margin-top: 15px;
+}
+
+#sidebar li:hover:not(.divider) {
     background: #2c3447;
     color: #FFF;
 }
@@ -228,11 +231,29 @@ textarea {
     color: #FFF;
 }
 
-#sidebar .status {
+#logo {
+    height: 41px;
+    background: #2ecc71;
+    color: rgba(255,255,255,0.9);
+    padding-left: 22px;
+    padding-top: 9px;
+    font-weight: bold;
+}
+
+#sidebar .status, .possiblePoints {
     text-transform: uppercase;
     font-size: 8pt;
     font-weight: bold;
-    color: #778094;
+    text-align: left;
+    padding-top: 9px;
+    font-weight: normal;
+    opacity: .5;
+    margin-bottom: 9px;
+}
+
+.possiblePoints {
+  font-size: 10pt;
+  margin-top:-15px;
 }
 
 #main {
@@ -295,18 +316,18 @@ textarea {
 }
 
 #main .tab.active a {
-    color: #e74c3c;
+    color: #2ecc71;
     font-weight: bold;
 }
 
-#main .tab:hover {
-    color: #e74c3c;
+#main .tab:hover:not('.logout') {
+    color: #2ecc71;
     border-bottom: 3px solid #95969C;
 }
 
 #main .tab.active {
-    color: #e74c3c;
-    border-bottom: 3px solid #e74c3c;
+    color: #2ecc71;
+    border-bottom: 3px solid #2ecc71;
 }
 
 #main .tab.active:hover {
@@ -318,8 +339,14 @@ textarea {
 }
 
 #main .tab.logout {
-    right: 394px;
     position: absolute;
+    top: 0px;
+    right: 394px;
+    width: 110px;
+    height: 85px;
+    padding-left: 35px;
+    padding-top: 23px;
+    border-left: 1px solid #DFDFDF;
 }
 
 #backBar {
@@ -364,9 +391,21 @@ textarea {
     border-radius: 6px;
 }
 
+#main table a {
+    color: #343F53;
+}
+
 #main table tr {
     height: 50px;
     border-bottom: 1px solid #DFDFDF;
+}
+
+#main .submissions tr {
+    background: #F5F6F8;
+}
+
+#main .submissions tr.highlighted {
+    background: #FFF;
 }
 
 #main table tr:last-child {
@@ -420,14 +459,15 @@ textarea {
 
 #main input[type=submit] {
     padding-top: 9px;
+    margin-right: 0px;
 }
 
 #main input[type=submit]:hover, .button:hover {
-    border: 1px solid #2ecc71;
+    border: 1px solid #333E54;
 }
 
 #main input[type=submit].selected, .button.selected {
-    border: 1px solid #2ecc71;
+    border: 1px solid #333E54;
 }
 
 #main .button a {
@@ -442,12 +482,21 @@ textarea {
 }
 
 #main .button.destructive:hover {
-  border: 1px solid #FF3A38;
-  background-color: #FF3A38;
+  border: 1px solid #2ecc71;
+  background-color: #2ecc71;
 }
 
 #main .button.destructive:hover a {
   color: white;
+}
+
+.notice {
+    background: #FFF;
+    padding: 25px;
+    width: 100%;
+    border-radius: 6px;
+    border: 1px solid #DFDFDF;
+    margin-bottom: 20px;
 }
 
 #main .questionType {
@@ -457,6 +506,14 @@ textarea {
 #main .questionType a {
     color: #343F53;
     text-decoration: none;
+}
+
+#questionOptions .explanation {
+    color: #343F53;
+    font-size: 10pt;
+    font-weight: bold;
+    opacity: .5;
+    margin-bottom: 6px;
 }
 
 #main h4 {
@@ -527,7 +584,7 @@ textarea {
 
 #questionOptions input {
     margin-top: 5px;
-    margin-bottom: 15px;
+    margin-bottom: 0px;
     margin-left: 17px;
     width: 260px;
 }
@@ -585,7 +642,7 @@ textarea {
 }
 
 .highlight a {
-    color: #e74c3c;
+    color: #2ecc71;
 }
 
 .loginWrapper {
@@ -629,12 +686,12 @@ textarea {
 }
 
 .loginWrapper.newAccount .new_user .field:nth-child(3) input,
-.loginWrapper.newAccount .new_user .field:nth-child(6) input {
+.loginWrapper.newAccount .new_user .field:nth-child(6) input,
+.loginWrapper.newAccount .new_user .field:nth-child(5) input {
     border-top: 0px;
 }
 
-.loginWrapper.newAccount .new_user .field:nth-child(3) input,
-.loginWrapper.newAccount .new_user .field:nth-child(4) input {
+.loginWrapper.newAccount .new_user .field:nth-child(3) input {
     margin-bottom: 10px;
 }
 
@@ -645,7 +702,7 @@ textarea {
 
 .loginWrapper .actions input {
     padding-left: 0px;
-    background: #e74c3c;
+    background: #2ecc71;
     color: #FFF;
 }
 
@@ -703,6 +760,12 @@ textarea {
   margin-top: 43px;
 }
 
+#submissionsWrapperNoPDF {
+  width:100%;
+  margin:0px 0px 0px 0px;
+  padding-top: 40px !important;
+}
+
 #submissionsWrapper h1 {
   margin-left:10px;
 }
@@ -758,14 +821,19 @@ textarea {
   margin-bottom: 0.6em !important;
 }
 
-.submissionTextArea {
+.submissionTextArea, .reviewTextArea {
   width: 75%;
   height: 32px;
   border: 1px solid #DFDFDF;
   border-radius: 6px;
 }
 
-.submissionTextArea:focus {
+.reviewTextArea {
+  height: 75px;
+  width:100%;
+}
+
+.submissionTextArea:focus, .reviewTextArea:focus {
   -webkit-box-shadow: 0px 0px 5px 2px rgba(86, 171, 214, .75);
   -moz-box-shadow: 0px 0px 5px 2px rgba(86, 171, 214, .75);
   box-shadow: 0px 0px 5px 2px rgba(86, 171, 214, .75);
@@ -791,7 +859,7 @@ textarea {
   margin: -17px -50px 0 0;
   text-align: right;
   padding: 10px 15px 0 15px;
-  background: #e74c3c;
+  background: #2ecc71;
   border-bottom-left-radius: 6px;
   color: white;
 }
@@ -805,10 +873,15 @@ textarea {
 }
 
 .submissionStudentResponse,
-.submissionInstructorResponse {
+.submissionInstructorResponse,
+.peerReviewJustification{
   border-top: 1px solid #DFDFDF;
   margin-top:30px;
   padding-top:20px;
+}
+
+.peerReviewJustification {
+  display:inline-block;
 }
 
 .assignment_details {
@@ -853,6 +926,59 @@ textarea {
 
 #student_evaluation_view .submissionBox:nth-child(even) {
     margin-right: 20px;
+}
+
+#peer_review label {
+	display: inline-block;
+	cursor: pointer;
+	position: relative;
+	padding-left: 25px;
+	margin-right: 15px;
+	font-size: 13px;
+  opacity:1;
+}
+#peer_review input[type=radio] {
+	display: none;
+}
+#peer_review label:before {
+	content: "";
+	display: inline-block;
+
+	width: 16px;
+	height: 16px;
+
+	margin-right: 10px;
+	position: absolute;
+	left: 0;
+	bottom: 1px;
+	background-color: #aaa;
+	box-shadow: inset 0px 2px 3px 0px rgba(0, 0, 0, .3), 0px 1px 0px 0px rgba(255, 255, 255, .8);
+}
+
+#peer_review .radio_btn {
+  display: block;
+  border: solid 1px rgb(199, 198, 198);
+  border-radius: 6px;
+  padding: 5px 0 0 10px;
+  margin-top:5px;
+  margin-bottom:5px;
+  background-color: rgb(250, 247, 247);
+}
+
+#peer_review .radio_btn label {
+	margin-bottom: 10px;
+}
+#peer_review .radio_btn label:before {
+    border-radius: 3px;
+}
+
+#peer_review input[type=radio]:checked + label:before {
+	content: "\2713";
+	text-shadow: 1px 1px 1px rgba(0, 0, 0, .2);
+	font-size: 15px;
+	color: #f3f3f3;
+	text-align: center;
+    line-height: 15px;
 }
 
 #reviewing_tasks {

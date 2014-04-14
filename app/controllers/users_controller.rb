@@ -12,8 +12,14 @@ class UsersController < ApplicationController
 	end  
 
 	def edit
-    	@user = User.find(params[:id])
+    	@user = current_user
     	@course = @user.courses.first
+    	@registrations = current_user.registrations
+
+    	if params[:course]
+      		@course = Course.find(params[:course])
+      		@assignments = @course.assignments.published
+      	end
   	end
 
 	def create  
