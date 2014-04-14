@@ -26,7 +26,7 @@ class AssignmentsController < ApplicationController
       end
     else
       puts "Looks ok to me"
-      
+
       @URL = { :action => 'new' }
     end
 
@@ -90,6 +90,8 @@ class AssignmentsController < ApplicationController
     @assignment.name = "New Assignment"
     @assignment.reviews_required = 4
     @assignment.draft = true
+
+    puts "In the assignments new!"
 
     respond_to do |format|
       format.html # new.html.erb
