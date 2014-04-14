@@ -508,6 +508,14 @@ textarea {
     text-decoration: none;
 }
 
+#questionOptions .explanation {
+    color: #343F53;
+    font-size: 10pt;
+    font-weight: bold;
+    opacity: .5;
+    margin-bottom: 6px;
+}
+
 #main h4 {
     text-transform: uppercase;
     font-size: 10pt;
@@ -576,7 +584,7 @@ textarea {
 
 #questionOptions input {
     margin-top: 5px;
-    margin-bottom: 15px;
+    margin-bottom: 0px;
     margin-left: 17px;
     width: 260px;
 }
