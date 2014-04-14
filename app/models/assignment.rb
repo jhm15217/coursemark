@@ -28,11 +28,11 @@ class Assignment < ActiveRecord::Base
     if (self.id.nil?)
       return
     end
-    if Date.today <= (self.submission_due).to_date
+    if Time.zone.now <= self.submission_due
       return "Submissions due " + self.submission_due.to_s(:pretty)
-    elsif Date.today <= (self.review_due).to_date
+    elsif Time.zone.now <= self.review_due
       return "Reviews due " + self.review_due.to_s(:pretty)
-    elsif Date.today > (self.review_due).to_date
+    elsif Time.zone.now > self.review_due
       return "Reviews completed " + self.review_due.to_s(:pretty)
     end
   end
