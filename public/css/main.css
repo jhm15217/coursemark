@@ -239,7 +239,7 @@ textarea {
     background: #d35400;
     color: rgba(255,255,255,0.9);
     padding-left: 22px;
-    padding-top: 8px;
+    padding-top: 9px;
     font-weight: bold;
 }
 
@@ -481,7 +481,7 @@ textarea {
   color: white;
 }
 
-#courseCode {
+.notice {
     background: #FFF;
     padding: 25px;
     width: 100%;
