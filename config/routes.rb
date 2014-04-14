@@ -7,6 +7,8 @@ Agora::Application.routes.draw do
 
   resources :courses do
     resources :assignments do
+      get 'export', :controller => 'assignments', :action => 'export'
+
 
       resources :submissions do
         resources :evaluations
@@ -25,6 +27,7 @@ Agora::Application.routes.draw do
   get 'login', :controller => 'user_sessions', :action => 'new'  
   get 'logout', :controller => 'user_sessions', :action => 'destroy'  
   resources :user_sessions 
+
 
   root :to => 'courses#index'
 

@@ -26,6 +26,9 @@
             <% end %>
 
             <div class="tab logout">
+                <%= link_to edit_user_path(current_user, :course => @course.id) do %>
+                    Settings
+                <% end %>
                 <%= link_to logout_path do %>
                     Sign out
                 <% end %>
