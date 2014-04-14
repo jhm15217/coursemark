@@ -47,10 +47,6 @@ class ApplicationController < ActionController::Base
   def require_login
     if !current_user
       redirect_to login_url
-    else
-      if (current_user.courses.length == 0)
-        redirect_to new_registration_url
-      end
     end
   end
 end
