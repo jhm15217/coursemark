@@ -23,7 +23,11 @@ class AssignmentsController < ApplicationController
         @URL = course_assignment_url(@course, @assignments.first)
       end
     else
-      @URL = { :action => 'new' }
+      if current_user.instructor?(@course)
+        @URL = { :action => 'new' }
+      else
+        @URL = edit_user_path(current_user, :course => @course.id)
+      end
     end
 
     respond_to do |format|

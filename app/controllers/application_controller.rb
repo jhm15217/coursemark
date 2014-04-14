@@ -1,6 +1,6 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
-  before_filter :get_assignments, :require_login
+  before_filter :require_login, :get_assignments
   helper_method :current_user
   helper_method :get_submission_for_assignment
 
@@ -45,8 +45,12 @@ class ApplicationController < ActionController::Base
   end
 
   def require_login
-    unless current_user
+    if !current_user
       redirect_to login_url
+    else
+      if (current_user.courses.length == 0)
+        redirect_to new_registration_url
+      end
     end
   end
 end
