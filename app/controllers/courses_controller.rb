@@ -1,4 +1,6 @@
 class CoursesController < ApplicationController
+  skip_before_filter :get_assignments
+  skip_before_filter :get_submission_for_assignment
   layout false
 
   # GET /courses
