@@ -64,8 +64,11 @@
         <% question.scales.sort_by {|s| s.value}.each do |scale| %>
 
           <div class="radio_btn">
+            <!-- <%= question.question_weight %> -->
+            <!-- <%= question.scales.length %> -->
+            <!-- <%= scale.value %> -->
             <%= f.radio_button :scale_id, scale.id %>
-            <%= f.label "scale_id_#{scale.id}", "#{(question.question_weight / (question.scales.length - 1)) * scale.value} points - #{scale.description}" %>
+            <%= f.label "scale_id_#{scale.id}", "#{(question.question_weight / (question.scales.length)) * scale.value} points - #{scale.description}" %>
           </div>
         <% end %> <!-- end scale loop -->
         <% if question.written_response_required then %>
