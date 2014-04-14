@@ -61,7 +61,6 @@ class CoursesController < ApplicationController
     respond_to do |format|
       if @course.save
         @registration.course = @course
-        @registration.save!
         @registration.instructor = true
         @registration.save!
         
