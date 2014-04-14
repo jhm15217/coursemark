@@ -238,10 +238,20 @@ textarea {
     height: 41px;
     background: #e74c3c;
     color: rgba(255,255,255,0.9);
+}
+
+#sidebar .status, .possiblePoints {
+    text-transform: uppercase;
+    font-size: 8pt;
     font-weight: bold;
     text-align: left;
     padding-top: 9px;
     padding-left: 19px;
+}
+
+.possiblePoints {
+  font-size: 10pt;
+  margin-top:-15px;
 }
 
 #main {
@@ -727,6 +737,12 @@ textarea {
   margin-top: 43px;
 }
 
+#submissionsWrapperNoPDF {
+  width:100%;
+  margin:0px 0px 0px 0px;
+  padding-top: 40px !important;
+}
+
 #submissionsWrapper h1 {
   margin-left:10px;
 }
@@ -782,14 +798,19 @@ textarea {
   margin-bottom: 0.6em !important;
 }
 
-.submissionTextArea {
+.submissionTextArea, .reviewTextArea {
   width: 75%;
   height: 32px;
   border: 1px solid #DFDFDF;
   border-radius: 6px;
 }
 
-.submissionTextArea:focus {
+.reviewTextArea {
+  height: 75px;
+  width:100%;
+}
+
+.submissionTextArea:focus, .reviewTextArea:focus {
   -webkit-box-shadow: 0px 0px 5px 2px rgba(86, 171, 214, .75);
   -moz-box-shadow: 0px 0px 5px 2px rgba(86, 171, 214, .75);
   box-shadow: 0px 0px 5px 2px rgba(86, 171, 214, .75);
@@ -829,10 +850,15 @@ textarea {
 }
 
 .submissionStudentResponse,
-.submissionInstructorResponse {
+.submissionInstructorResponse,
+.peerReviewJustification{
   border-top: 1px solid #DFDFDF;
   margin-top:30px;
   padding-top:20px;
+}
+
+.peerReviewJustification {
+  display:inline-block;
 }
 
 .assignment_details {
@@ -877,6 +903,59 @@ textarea {
 
 #student_evaluation_view .submissionBox:nth-child(even) {
     margin-right: 20px;
+}
+
+#peer_review label {
+	display: inline-block;
+	cursor: pointer;
+	position: relative;
+	padding-left: 25px;
+	margin-right: 15px;
+	font-size: 13px;
+  opacity:1;
+}
+#peer_review input[type=radio] {
+	display: none;
+}
+#peer_review label:before {
+	content: "";
+	display: inline-block;
+
+	width: 16px;
+	height: 16px;
+
+	margin-right: 10px;
+	position: absolute;
+	left: 0;
+	bottom: 1px;
+	background-color: #aaa;
+	box-shadow: inset 0px 2px 3px 0px rgba(0, 0, 0, .3), 0px 1px 0px 0px rgba(255, 255, 255, .8);
+}
+
+#peer_review .radio_btn {
+  display: block;
+  border: solid 1px rgb(199, 198, 198);
+  border-radius: 6px;
+  padding: 5px 0 0 10px;
+  margin-top:5px;
+  margin-bottom:5px;
+  background-color: rgb(250, 247, 247);
+}
+
+#peer_review .radio_btn label {
+	margin-bottom: 10px;
+}
+#peer_review .radio_btn label:before {
+    border-radius: 3px;
+}
+
+#peer_review input[type=radio]:checked + label:before {
+	content: "\2713";
+	text-shadow: 1px 1px 1px rgba(0, 0, 0, .2);
+	font-size: 15px;
+	color: #f3f3f3;
+	text-align: center;
+    line-height: 15px;
 }
 
 #reviewing_tasks {

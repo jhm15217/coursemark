@@ -14,7 +14,7 @@
         <td><%= submission.user.first_name %></td>
         <td><%= submission.user.last_name %></td>
         <td><%= submission.created_at.to_s(:pretty) %></td>
-        <td><%= submission.percentage.round %>%</td>
+        <td><%= if !submission.percentage.blank? then submission.percentage.round else "--" end %>%</td>
         <% if submission.instructor_approved %>
           <td><%= link_to 'View Reviews', [@course, @assignment, submission] %></td>
         <% else %>

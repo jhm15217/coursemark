@@ -7,6 +7,14 @@ class Response < ActiveRecord::Base
   belongs_to :evaluation
 
   # Validations
-  validates_presence_of :question_id, :scale_id, :evaluation_id
+  validates_presence_of :question_id, :evaluation_id
+
+  def is_complete?
+  	if !self.scale_id.blank? && !self.peer_review.blank? then 
+  		return true
+  	else 
+  		return false
+  	end 
+  end 
 
 end
