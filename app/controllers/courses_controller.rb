@@ -4,7 +4,7 @@ class CoursesController < ApplicationController
   # GET /courses
   # GET /courses.json
   def index
-    @courses = Course.all
+    @courses = current_user.courses
 
     # Redirect to first course page or 
     # new course page if there are none
