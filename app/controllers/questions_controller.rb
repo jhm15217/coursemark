@@ -30,14 +30,14 @@ class QuestionsController < ApplicationController
     @type = params[:type]
 
     if @type == 'scale'
-      @question.scales.build(:value => 1, :description => 'Lowest Score Label')
+      @question.scales.build(:value => 0, :description => 'Lowest Score Label')
+      @question.scales.build(:value => 1)
       @question.scales.build(:value => 2)
       @question.scales.build(:value => 3)
-      @question.scales.build(:value => 4)
-      @question.scales.build(:value => 5, :description => 'Highest Score Label')
+      @question.scales.build(:value => 4, :description => 'Highest Score Label')
     elsif @type == 'yesno'
-      @question.scales.build(:value => 1, :description => 'No')
-      @question.scales.build(:value => 2, :description => 'Yes')
+      @question.scales.build(:value => 0, :description => 'No')
+      @question.scales.build(:value => 1, :description => 'Yes')
     end
 
     respond_to do |format|

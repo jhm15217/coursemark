@@ -1,7 +1,10 @@
-$(document).on('nested:fieldAdded nested:fieldRemoved', function(event) {
+$(document).on('nested:fieldAdded nested:fieldRemoved ready', function(event) {
   var fields = $('.field:visible .num input');
   $.each(fields, function(index, value) {
-  	$(value).val(index+1);
+  	$(value).val(index);
+  	//console.log([index, fields.length]);
+  	var percent = parseInt((100 / (fields.length-1)) * index);
+  	$(value).parent().parent().parent().children('.explanation').children('.percent').html(percent);
   });
 })
 
