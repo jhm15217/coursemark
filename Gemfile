@@ -56,5 +56,6 @@ gem 'authlogic'
 gem 'cancan'
 gem 'bcrypt-ruby', '~> 3.0.0'
 gem 'scrypt', '1.2.1'
+gem 'csv_shaper'
 
 ruby '1.9.3'
