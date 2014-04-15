@@ -1,10 +1,12 @@
 class CoursesController < ApplicationController
+  skip_before_filter :get_assignments
+  skip_before_filter :get_submission_for_assignment
   layout false
 
   # GET /courses
   # GET /courses.json
   def index
-    @courses = Course.all
+    @courses = current_user.courses
 
     # Redirect to first course page or 
     # new course page if there are none
@@ -61,7 +63,6 @@ class CoursesController < ApplicationController
     respond_to do |format|
       if @course.save
         @registration.course = @course
-        @registration.save!
         @registration.instructor = true
         @registration.save!
         
