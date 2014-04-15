@@ -662,6 +662,15 @@ textarea {
     padding-top: 250px;
 }
 
+.loginWrapper .error {
+    width: 470px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 20px;
+    color: #c0392b;
+    text-align: center;
+}
+
 .loginWrapper #error_explanation ul {
     list-style: none;
     padding: 0px;

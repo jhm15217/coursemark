@@ -2,6 +2,11 @@ class RegistrationsController < ApplicationController
   skip_before_filter :get_assignments, :except => [:index]
   skip_before_filter :get_submission_for_assignment, :except => [:index]
   layout false, :except => :index
+
+  # Exception Handling
+  class InvalidCourse < StandardError
+  end
+  rescue_from InvalidCourse, :with => :invalidCourse
   
   # GET /registrations
   # GET /registrations.json
@@ -60,7 +65,7 @@ class RegistrationsController < ApplicationController
     @registration.user = current_user
 
     # TODO: Throw an error if the course isnt found.
-    @registration.course = Course.where(:course_code => @registration.course_code)[0]
+    @registration.course = Course.where(:course_code => @registration.course_code).first or raise InvalidCourse
 
     respond_to do |format|
       if @registration.save
@@ -100,5 +105,10 @@ class RegistrationsController < ApplicationController
       format.html { redirect_to registrations_url }
       format.json { head :no_content }
     end
+  end
+
+  def invalidCourse(exception)
+    flash[:notice] = 'Invalid course code'
+    render 'new'
   end
 end
