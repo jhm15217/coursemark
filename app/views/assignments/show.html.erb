@@ -38,7 +38,7 @@
 
 <div class="clearfix"></div>
 
-<% if @evaluations && @evaluations[0] && (Time.zone.now >= @assignment.review_due) %>
+<% if @evaluations && (@submission.completed_responses.length > 0) && (Time.zone.now >= @assignment.review_due) %>
 <div id="student_evaluation_view">
   <% @evaluations[0].responses.each do |eval| %>
     <div class='submissionQuestionBox clearfix'>
