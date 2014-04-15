@@ -10,11 +10,19 @@ class Response < ActiveRecord::Base
   validates_presence_of :question_id, :evaluation_id
 
   def is_complete?
-  	if !self.scale_id.blank? && !self.peer_review.blank? then 
-  		return true
-  	else 
-  		return false
-  	end 
+    if self.question.written_response_required
+    	if !self.scale_id.blank? && !self.peer_review.blank? then 
+    		return true
+    	else 
+    		return false
+    	end
+    else
+      if !self.scale_id.blank? then 
+        return true
+      else 
+        return false
+      end
+    end
   end 
 
 end
