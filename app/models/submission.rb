@@ -14,6 +14,8 @@ class Submission < ActiveRecord::Base
   # Validations
   validates_presence_of :assignment_id
   validates_presence_of :user_id
+  validate :met_deadline, :on => :create
+
 
   def completed_responses
   	completed = []
@@ -59,7 +61,14 @@ class Submission < ActiveRecord::Base
   	end
   end
 
-  private 
+  private
+
+  def met_deadline
+  	if Time.now > self.assignment.submission_due
+      errors.add(:submission, "Deadline for assignment submission has passed.")
+    end	
+  end
+
   def create_and_save_evaluations
   	# only run if the number of evaluations isn't the number required
   	if self.evaluations.length != self.assignment.reviews_required
@@ -104,6 +113,6 @@ class Submission < ActiveRecord::Base
 	  		# Increase the review threshold incase we ran out of students and need more
 	 			reviewThreshold += 1
 	  	end while evaluationsLeft > 0
-	  end
-  end
+	end
+  	end
 end
