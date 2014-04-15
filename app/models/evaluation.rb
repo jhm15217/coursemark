@@ -22,5 +22,4 @@ class Evaluation < ActiveRecord::Base
 
     return true
   end
-
 end
