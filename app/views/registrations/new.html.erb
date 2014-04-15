@@ -22,6 +22,9 @@
         <![endif]-->
 
         <div class="loginWrapper">
+            <% if flash[:notice] %>
+                <div class="error"><%= flash[:notice] %></div>
+            <% end %>
             <%= render 'form' %>
           </div>
         </div>
