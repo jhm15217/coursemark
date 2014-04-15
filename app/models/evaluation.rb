@@ -13,4 +13,14 @@ class Evaluation < ActiveRecord::Base
   	self.user.name
   end
 
+  def is_complete?
+    self.responses.each do |response|
+      if (response.is_complete? == false)
+        return false
+      end
+    end
+
+    return true
+  end
+
 end

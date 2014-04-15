@@ -788,6 +788,7 @@ textarea {
   padding: 10px 20px 25px 20px;
   border-radius: 6px;
   margin-bottom: 20px;
+  margin-top: 20px;
   border: 1px solid #DFDFDF;
 }
 
@@ -991,6 +992,11 @@ textarea {
     border: 1px solid #DFDFDF;
     margin-right: 21px;
     margin-bottom: 20px;
+}
+
+.reviewing_task.highlighted {
+    background: rgba(231, 76, 60, 0.15);
+    border: 1px solid #E74C3C;
 }
 
 .reviewing_task:nth-child(5n) {
