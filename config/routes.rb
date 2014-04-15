@@ -1,8 +1,8 @@
 Agora::Application.routes.draw do
+  match 'registrations/add_to_course_staff' => 'registrations#add_to_course_staff'
+
   get "users/new"
-
   get "users/edit"
-
   get "user_sessions/new"
 
   resources :courses do
@@ -27,7 +27,6 @@ Agora::Application.routes.draw do
   get 'login', :controller => 'user_sessions', :action => 'new'  
   get 'logout', :controller => 'user_sessions', :action => 'destroy'  
   resources :user_sessions 
-
 
   root :to => 'courses#index'
 
