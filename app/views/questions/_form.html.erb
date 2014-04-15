@@ -2,8 +2,15 @@
   <%= javascript_include_tag "rubric.js" %>
 <% end %>
 
-
 <%= nested_form_for [@course, @assignment, @question] do |f| %>
+  <% if @question.errors.any? %>
+    <div id="error_explanation">
+      <% @question.errors.full_messages.each do |msg| %>
+        <p><%= msg %></p>
+      <% end %>
+    </div>
+  <% end %>
+
   <div class="field">
     <%= f.label :name, "Question" %><br />
     <%= f.text_area :question_text %>
