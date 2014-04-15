@@ -1,5 +1,12 @@
 class RegistrationsController < ApplicationController
+  skip_before_filter :get_assignments, :except => [:index]
+  skip_before_filter :get_submission_for_assignment, :except => [:index]
   layout false, :except => :index
+
+  # Exception Handling
+  class InvalidCourse < StandardError
+  end
+  rescue_from InvalidCourse, :with => :invalidCourse
   
   # GET /registrations
   # GET /registrations.json
@@ -7,10 +14,10 @@ class RegistrationsController < ApplicationController
     if params[:course]
       @course = Course.find(params[:course])
       @assignments = @course.assignments
-      @registrations = @course.registrations
+      @registrations = @course.registrations.sort_by{ |r| r.instructor ? 0 : 1 }
       @template = "registrations/roster"
     else
-      @registrations = current_user.registrations
+      @registrations = current_user.registrations.sort_by{ |r| r.instructor ? 0 : 1 }
       @course = current_user.courses.first
       @assignments = @course.assignments
       @template = "registrations/index"
@@ -49,6 +56,17 @@ class RegistrationsController < ApplicationController
     @registration = Registration.find(params[:id])
   end
 
+  def add_to_course_staff
+    @registration = Registration.find(params[:registration])
+
+    if current_user.instructor?(@registration.course)
+      @registration.instructor = true
+      @registration.save!
+    end
+
+    redirect_to :back
+  end
+
   # POST /registrations
   # POST /registrations.json
   def create
@@ -58,7 +76,7 @@ class RegistrationsController < ApplicationController
     @registration.user = current_user
 
     # TODO: Throw an error if the course isnt found.
-    @registration.course = Course.where(:course_code => @registration.course_code)[0]
+    @registration.course = Course.where(:course_code => @registration.course_code).first or raise InvalidCourse
 
     respond_to do |format|
       if @registration.save
@@ -98,5 +116,10 @@ class RegistrationsController < ApplicationController
       format.html { redirect_to registrations_url }
       format.json { head :no_content }
     end
+  end
+
+  def invalidCourse(exception)
+    flash[:notice] = 'Invalid course code'
+    redirect_to :action => "new"
   end
 end

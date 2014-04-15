@@ -22,6 +22,7 @@
     <th>Type</th>
     <th>Email</th>
     <th>&nbsp;</th>
+    <th>&nbsp;</th>
   </tr>
 
 <% @registrations.each do |registration| %>
@@ -29,7 +30,12 @@
     <td><%= registration.user.name %></td>
     <td><%= registration.instructor ? "Course Staff" : "Student"  %></td>
     <td><%= registration.user.email %></td>
-    <td><%= link_to 'Remove', registration, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+    <td><%= link_to 'Remove', registration, method: :delete, data: { confirm: 'Are you sure you wish to remove this student from the course?' } %></td>
+    <td>
+        <% if !registration.instructor %>
+        <%= link_to 'Add to Course Staff', registrations_add_to_course_staff_path(:registration => registration.id), data: { confirm: 'Are you sure you wish to add this user to the course staff?' } %>
+        <% end %>
+    </td>
   </tr>
 <% end %>
 </table>

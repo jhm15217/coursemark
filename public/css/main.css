@@ -559,6 +559,16 @@ textarea {
     border-radius: 6px;
 }
 
+#new_question .field_with_errors, #edit_question .field_with_errors {
+    display: inline-block;
+}
+
+#new_question #error_explanation, #edit_question #error_explanation {
+    color: red;
+    font-weight: bold;
+    margin-bottom: 32px;
+}
+
 #questionOptions {
     margin-top: 5px;
     margin-bottom: 24px;
@@ -650,6 +660,15 @@ textarea {
     width: 100%;
     background: #F5F6F8;
     padding-top: 250px;
+}
+
+.loginWrapper .error {
+    width: 470px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 20px;
+    color: #c0392b;
+    text-align: center;
 }
 
 .loginWrapper #error_explanation ul {
@@ -788,6 +807,7 @@ textarea {
   padding: 10px 20px 25px 20px;
   border-radius: 6px;
   margin-bottom: 20px;
+  margin-top: 20px;
   border: 1px solid #DFDFDF;
 }
 
@@ -991,6 +1011,11 @@ textarea {
     border: 1px solid #DFDFDF;
     margin-right: 21px;
     margin-bottom: 20px;
+}
+
+.reviewing_task.highlighted {
+    background: rgba(231, 76, 60, 0.15);
+    border: 1px solid #E74C3C;
 }
 
 .reviewing_task:nth-child(5n) {

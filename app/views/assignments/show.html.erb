@@ -22,17 +22,23 @@
 
 <div class="clearfix"></div>
 
-<div id="reviewing_tasks">
-  <% @reviewing_tasks.each_with_index do |task, index| %>
-    <div class="reviewing_task">
-      <%= link_to "Complete Review " + (index + 1).to_s, course_assignment_submission_path(@course, @assignment, task.submission) %>
-    </div>
-  <% end %>
-</div>
+<% if (Time.zone.now > @assignment.submission_due) && (Time.zone.now <= @assignment.review_due) %>
+  <div id="reviewing_tasks">
+    <% @reviewing_tasks.each_with_index do |task, index| %>
+      <div class="reviewing_task <%= if task.is_complete? == false then 'highlighted' end %>">
+        <% if task.is_complete? %>
+          <%= link_to "Edit Review " + (index + 1).to_s, course_assignment_submission_path(@course, @assignment, task.submission) %>
+        <% else %>
+          <%= link_to "Complete Review " + (index + 1).to_s, course_assignment_submission_path(@course, @assignment, task.submission) %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+<% end %>
 
 <div class="clearfix"></div>
 
-<% if @evaluations && @evaluations[0] && (Time.zone.now >= @assignment.review_due) %>
+<% if @evaluations && (@submission.completed_responses.length > 0) && (Time.zone.now >= @assignment.review_due) %>
 <div id="student_evaluation_view">
   <% @evaluations[0].responses.each do |eval| %>
     <div class='submissionQuestionBox clearfix'>

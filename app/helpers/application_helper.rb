@@ -10,5 +10,13 @@ module ApplicationHelper
 	      end
 	    end
 	    return rspns
-  end
+  	end
+
+  	def prettifyFloat x
+	  Float(x)
+	  i, f = x.to_i, x.to_f
+	  i == f ? i : f
+	rescue ArgumentError
+	  x
+	end
 end
