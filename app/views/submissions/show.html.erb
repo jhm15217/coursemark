@@ -100,7 +100,8 @@
         <% get_evaluations_for_submission_question(@submission, eval.question).each_with_index do |response, index| %>
             <% if response.is_complete? %>
             <div class='submissionBox'>
-              <div class='submissionResponsePoints'><%= response.scale.value %></div>
+              
+              <div class='submissionResponsePoints'><%= prettifyFloat((eval.question.question_weight / (eval.question.scales.length - 1.0)) * response.scale.value) %></div>
               <div class='submissionResponseFrom'>
                 <% if current_user.instructor?(@course) %>
                   <%= response.evaluation.user.name %>

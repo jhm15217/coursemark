@@ -43,10 +43,11 @@
   <% @evaluations[0].responses.each do |eval| %>
     <div class='submissionQuestionBox clearfix'>
     <h2><%= eval.question.question_text %></h2>
+    <div class='possiblePoints'>Possible Points: <%= eval.question.question_weight %></div>
       <% get_evaluations_for_submission_question(@submission, eval.question).each_with_index do |response, index| %>
         <% if response.is_complete? %>
           <div class='submissionBox'>
-            <div class='submissionResponsePoints'><%= if !response.scale.nil? then response.scale.value else '--' end %></div>
+            <div class='submissionResponsePoints'><%= if !response.scale.nil? then prettifyFloat((eval.question.question_weight / (eval.question.scales.length - 1.0)) * response.scale.value) else '--' end %></div>
             <div class='submissionResponseFrom'>Reviewer <%= index + 1 %></div>
             <div class='submissionPeerReview'><%= response.peer_review %></div>
             <div class='submissionInstructorResponse'>
