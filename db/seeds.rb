@@ -164,7 +164,7 @@ for student in students2014
     # not actually supplying a file to submit
     # submission.submission = params[:file]
     # submission.submission = File.open('')
-    submission.save
+    submission.save(:validate => false)
     # assignment.reviews_required.times do |i|
     #   evaluation = Evaluation.new
     #   evaluation.submission_id = submission.id
@@ -197,7 +197,7 @@ for evaluation in evaluations
       if rand(3) == 1
         response.student_response = lorem[0..rand(lorem.length)]
       end
-      response.save
+      response.save(:validate => false)
     end
   end
 end
