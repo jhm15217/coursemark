@@ -33,7 +33,7 @@
         </div>
 
         <div id="sidebar">
-            <div id="logo">Coursemark</div>
+            <div id="logo"><%= image_tag "coursemark.png", alt: "Coursemark" %></div>
             <% if current_user.courses.length > 1 %>
                 <div id='courseSelector'>
                   <%= @course.name %>
