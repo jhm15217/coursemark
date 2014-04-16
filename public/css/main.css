@@ -104,7 +104,7 @@ textarea {
 }
 
 #sidebar .tab.active {
-    background-color: #f39c12;
+    background-color: #2ecc71;
 }
 
 #sidebar .tab.assignments {
@@ -233,7 +233,7 @@ textarea {
 
 #logo {
     height: 41px;
-    background: #f39c12;/*#f39c12 */
+    background: #2ecc71;/*#2ecc71 */
     color: rgba(255,255,255,0.9);
     padding-left: 22px;
     padding-top: 6px;
@@ -242,7 +242,7 @@ textarea {
 
 #logo img {
     width: auto;
-    height:27px;
+    height: 20px;
 }
 
 #sidebar .status, .possiblePoints {
@@ -321,18 +321,18 @@ textarea {
 }
 
 #main .tab.active a {
-    color: #f39c12;
+    color: #2ecc71;
     font-weight: bold;
 }
 
 #main .tab:hover:not('.logout') {
-    color: #f39c12;
+    color: #2ecc71;
     border-bottom: 3px solid #95969C;
 }
 
 #main .tab.active {
-    color: #f39c12;
-    border-bottom: 3px solid #f39c12;
+    color: #2ecc71;
+    border-bottom: 3px solid #2ecc71;
 }
 
 #main .tab.active:hover {
@@ -487,8 +487,8 @@ textarea {
 }
 
 #main .button.destructive:hover {
-  border: 1px solid #f39c12;
-  background-color: #f39c12;
+  border: 1px solid #2ecc71;
+  background-color: #2ecc71;
 }
 
 #main .button.destructive:hover a {
@@ -657,14 +657,14 @@ textarea {
 }
 
 .highlight a {
-    color: #f39c12;
+    color: #2ecc71;
 }
 
 .loginWrapper {
     height: 100%;
     width: 100%;
-    background: #F5F6F8;
-    padding-top: 250px;
+    background: #2ecc71;
+    padding-top: 220px;
 }
 
 .loginWrapper .error {
@@ -687,7 +687,7 @@ textarea {
 }
 
 .loginWrapper.newCourse {
-    padding-top: 300px;
+    padding-top: 250px;
 }
 
 .loginWrapper form {
@@ -724,17 +724,33 @@ textarea {
     text-align: center;
 }
 
+.loginWrapper .logo {
+    width: 470px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+.loginWrapper .logo img {
+    width: 360px;
+}
+
 .loginWrapper .actions input {
     padding-left: 0px;
-    background: #f39c12;
-    color: #FFF;
+    background: #FFF;
+    color: #343F53;
 }
 
 .loginWrapper .actions.newAccount a {
     border: 0px;
     background: none;
     text-decoration: none;
-    color: #343F53;
+    color: #FFF;
+}
+
+.loginWrapper .actions.newAccount {
+    margin-top: 30px;
 }
 
 #submissionHeader {
@@ -885,7 +901,7 @@ textarea {
   margin: -17px -50px 0 0;
   text-align: right;
   padding: 10px 15px 0 15px;
-  background: #f39c12;
+  background: #2ecc71;
   border-bottom-left-radius: 6px;
   color: white;
 }
