@@ -944,7 +944,7 @@ textarea {
     margin-left: 20px;
     border-radius: 6px;
     border: 1px solid #DFDFDF;
-    height: 144px;
+    min-height: 144px;
 }
 
 .new_submission input,
