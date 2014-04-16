@@ -233,11 +233,16 @@ textarea {
 
 #logo {
     height: 41px;
-    background: #2ecc71;
+    background: #2ecc71;/*#2ecc71 */
     color: rgba(255,255,255,0.9);
     padding-left: 22px;
-    padding-top: 9px;
+    padding-top: 6px;
     font-weight: bold;
+}
+
+#logo img {
+    width: auto;
+    height: 20px;
 }
 
 #sidebar .status, .possiblePoints {
@@ -658,8 +663,8 @@ textarea {
 .loginWrapper {
     height: 100%;
     width: 100%;
-    background: #F5F6F8;
-    padding-top: 250px;
+    background: #2ecc71;
+    padding-top: 220px;
 }
 
 .loginWrapper .error {
@@ -682,7 +687,7 @@ textarea {
 }
 
 .loginWrapper.newCourse {
-    padding-top: 300px;
+    padding-top: 250px;
 }
 
 .loginWrapper form {
@@ -719,17 +724,33 @@ textarea {
     text-align: center;
 }
 
+.loginWrapper .logo {
+    width: 470px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+.loginWrapper .logo img {
+    width: 360px;
+}
+
 .loginWrapper .actions input {
     padding-left: 0px;
-    background: #2ecc71;
-    color: #FFF;
+    background: #FFF;
+    color: #343F53;
 }
 
 .loginWrapper .actions.newAccount a {
     border: 0px;
     background: none;
     text-decoration: none;
-    color: #343F53;
+    color: #FFF;
+}
+
+.loginWrapper .actions.newAccount {
+    margin-top: 30px;
 }
 
 #submissionHeader {
