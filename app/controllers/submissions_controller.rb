@@ -6,7 +6,7 @@ class SubmissionsController < ApplicationController
   # GET /submissions
   # GET /submissions.json
   def index
-    @submissions = @assignment.submissions
+    @submissions = @assignment.submissions.sort_by{ |s| s.user.last_name }
 
     respond_to do |format|
       format.html # index.html.erb
