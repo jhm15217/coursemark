@@ -35,14 +35,16 @@
 <br />
 
 <% if current_user.instructor?(@course) %>
-  <div class="button">
+  <div class="button" style="float:left;">
     <%= link_to 'Create Course', new_course_path %>
   </div>
 <% end %>
 
-<div class="button" style="margin-bottom:60px;">
+<div class="button" style="float:left;">
   <%= link_to 'Join Course', new_registration_path %>
 </div>
+
+<div class="clearfix"></div>
 
 <h2>Login information</h2>
 
