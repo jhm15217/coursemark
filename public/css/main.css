@@ -375,12 +375,51 @@ textarea {
     font-size: 11pt;
 }
 
+#main .assignmentStatus {
+    background: #FFF;
+    padding: 25px;
+    width: 50%;
+    border-radius: 6px;
+    border: 1px solid #DFDFDF;
+    float: left;
+}
+
+.assignmentStatus .checkPoint {
+    height: 50px;
+    padding-top: 15px;
+    border-bottom: 1px solid #DFDFDF;
+}
+
+.assignmentStatus .checkPoint.completed {
+    color: #2ecc71;
+    background-image: url(../img/checkmark.png);
+    background-repeat: no-repeat;
+    background-position: 0px center;
+    background-size: 20px;
+    padding-left: 27px;
+}
+
+.assignmentStatus h3, .edit_assignment h3 {
+    margin-top: 10px;
+    margin-bottom: 25px;
+}
+
+.new_assignment h3 {
+    display: none;
+}
+
+.assignmentStatus .checkPoint:nth-child(2) {
+    border-top: 1px solid #DFDFDF;
+}
+
 #main .edit_assignment, #main .new_assignment {
     background: #FFF;
     padding: 25px;
-    width: 405px;
+    width: calc(50% - 45px);
     border-radius: 6px;
     border: 1px solid #DFDFDF;
+    float: left;
+    margin-right: 45px;
 }
 
 #main .edit_assignment input[type=submit],
@@ -943,7 +982,7 @@ textarea {
     margin-left: 20px;
     border-radius: 6px;
     border: 1px solid #DFDFDF;
-    height: 144px;
+    min-height: 144px;
 }
 
 .new_submission input,
