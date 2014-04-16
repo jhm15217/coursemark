@@ -1,4 +1,6 @@
 <%= nested_form_for [@course, @assignment] do |f| %>
+  <h3>Assignment Settings</h3>
+
   <% if @assignment.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@assignment.errors.count, "error") %> prohibited this assignment from being saved:</h2>

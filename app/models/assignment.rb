@@ -41,6 +41,20 @@ class Assignment < ActiveRecord::Base
     self.questions.map{|q| q.question_weight}.reduce(:+)
   end
 
+  def allGradesApproved?
+    if (self.submissions.length == 0)
+      return false
+    end
+
+    self.submissions.each do |submission|
+      if (submission.instructor_approved != true)
+        return false
+      end
+    end
+
+    return true
+  end
+
   private
   def update_evaluations
     self.submissions.each {|submission| submission.save!}

@@ -1,8 +1,8 @@
 <%= render "assignments/header" %>
 
-<% if Time.zone.now <= @assignment.review_due %>
+<% if (Time.zone.now <= @assignment.review_due) && (@assignment.submissions.length > 0) %>
   <div class="notice">Grades will be available for approval on <%= @assignment.review_due.to_s(:pretty) %></div>
-<% else %>
+<% elsif (@assignment.allGradesApproved? == false) && (@assignment.submissions.length > 0) %>
   <div class="notice">Students will be able to see their grades after they have been approved</div>
 <% end %>
 
