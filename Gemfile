@@ -31,6 +31,7 @@ group :development do
   gem "seed_dump"
   gem 'binding_of_caller'
   gem 'sqlite3'
+  gem 'rails-erd'
 end
 
 group :production do
