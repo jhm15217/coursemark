@@ -9,7 +9,6 @@ class ApplicationController < ActionController::Base
     # Getting the right assignments for the user
 
     if current_user
-      puts current_user.registrations.length
       if (current_user.registrations.length == 0)
         redirect_to new_registration_url
         return

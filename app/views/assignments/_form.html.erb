@@ -3,13 +3,9 @@
 
   <% if @assignment.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@assignment.errors.count, "error") %> prohibited this assignment from being saved:</h2>
-
-      <ul>
       <% @assignment.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
+        <p><%= msg %></p>
       <% end %>
-      </ul>
     </div>
   <% end %>
   
@@ -19,32 +15,30 @@
   </div>
   <div class="field">
     <%= f.label :submission_due, "Submission Deadline" %><br />
-    <%= f.datetime_select :submission_due %>
+    <%= f.text_field :submission_due_date %> at
+    <%= f.time_select :submission_due_time, {minute_step: 15, ampm: true, :time_separator => ""} %>
   </div>
   <div class="field">
     <%= f.label :review_due, "Review Deadline" %><br />
-    <%= f.datetime_select :review_due %>
+    <%= f.text_field :review_due_date, :disabled => (Time.zone.now > @assignment.review_due) %> at
+    <%= f.time_select :review_due_time, {minute_step: 15, ampm: true, :time_separator => ""} %>
   </div>
   <div class="field">
     <%= f.label :reviews_required %><br />
-    <%= f.number_field :reviews_required %>
+    <%= f.number_field :reviews_required, :disabled => (Time.zone.now > @assignment.submission_due) %>
   </div>
-  <% if @assignment.draft %>
-    <div class="field">
-      <%= f.label :draft %>&nbsp;
-      <%= f.check_box :draft %>
-    </div>
-  <% else %>
-    <div class="field">
-      <%= f.label :draft %>&nbsp;
-      <%= f.check_box :draft, :disabled => true %>
-    </div>
-  <% end %>
   <div class="actions">
+    <div class="clearfix"></div>
     <%= f.submit %>
+    <% if @assignment.draft %>
+      <div class='button publish'>
+        <%= link_to 'Publish Assignment', assignments_publish_path(:assignment => @assignment.id), data: { confirm: 'Are you sure you wish to publish this assignment?' } %>
+      </div>
+    <% end %>
   </div>
+  <div class="clearfix"></div>
   <% if @assignment.id %>
-    <div class='button destructive'>
+    <div class="delete">
       <%= link_to 'Delete', course_assignment_path(@course, @assignment), method: :delete, data: { confirm: 'Are you sure you want to delete this assignment?' } %>
     </div>
   <% end %>
