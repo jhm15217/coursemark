@@ -375,6 +375,59 @@ textarea {
     font-size: 11pt;
 }
 
+#ui-datepicker-div {
+    width: 225px;
+}
+
+.new_assignment #error_explanation, 
+.edit_assignment #error_explanation {
+    color: #c0392b;
+}
+
+.edit_assignment input, .new_assignment input {
+    margin-top: 8px;
+    margin-bottom: 4px;
+}
+
+.edit_assignment .actions, .new_assignment .actions {
+    margin-top: -6px;
+}
+
+.edit_assignment input:disabled {
+    opacity: .6;
+}
+
+.edit_assignment .actions input, .new_assignment .actions input {
+    width: calc(50% - 10px) !important;
+    margin-right: 20px !important;
+    float: left;
+}
+
+.edit_assignment .actions .button, 
+.new_assignment .actions .button {
+    float: left;
+}
+
+#assignment_submission_due_time_5i,
+#assignment_review_due_time_5i {
+    display: none;
+}
+
+#assignment_submission_due_date,
+#assignment_review_due_date {
+    width: 106px;
+    margin-right: 7px;
+}
+
+#assignment_submission_due_time_4i,
+#assignment_review_due_time_4i {
+    margin-left: 7px;
+}
+
+#assignment_reviews_required {
+    width: 60px;
+}
+
 #main .assignmentStatus {
     background: #FFF;
     padding: 25px;
@@ -424,7 +477,13 @@ textarea {
 
 #main .edit_assignment input[type=submit],
 #main .new_assignment input[type=submit] {
-    margin-bottom: 0px;
+    margin-bottom: 15px;
+}
+
+#main .edit_assignment .delete a,
+#main .new_assignment .delete a {
+    color: #343F53;
+    opacity: .5;
 }
 
 #main table {
@@ -519,10 +578,14 @@ textarea {
     text-decoration: none;
 }
 
-#main .button.destructive {
-  width:75px;
-  float:right;
-  margin:-50px 0 0 0;
+#main .button.publish {
+  width: calc(50% - 10px);
+  float: left;
+  margin: 8px 0 0 0;
+}
+
+#new_assignment .button.publish {
+    display: none;
 }
 
 #main .button.destructive:hover {
@@ -711,7 +774,7 @@ textarea {
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 20px;
-    color: #c0392b;
+    color: #FFF;
     text-align: center;
 }
 

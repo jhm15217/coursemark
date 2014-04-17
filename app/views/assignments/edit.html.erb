@@ -7,7 +7,7 @@
 	<div class="checkPoint <%= if @assignment.questions.length > 0 then 'completed' end %>">Rubric created</div>
 	<div class="checkPoint <%= if !@assignment.draft then 'completed' end %>">Assignment published</div>
 	<div class="checkPoint <%= if Time.zone.now > @assignment.submission_due then 'completed' end %>">Submissions completed</div>
-	<div class="checkPoint <%= if Time.zone.now > @assignment.submission_due then 'completed' end %>">Peer reviews assigned</div>
-	<div class="checkPoint <%= if Time.zone.now > @assignment.review_due then 'completed' end %>">Peer reviews completed</div>
-	<div class="checkPoint <%= if @assignment.allGradesApproved? then 'completed' end %>">Grades approved</div>
+	<div class="checkPoint <%= if (Time.zone.now > @assignment.submission_due) && (@assignment.reviews_required > 0) then 'completed' end %>">Peer reviews assigned</div>
+	<div class="checkPoint <%= if (Time.zone.now > @assignment.review_due) && (@assignment.reviews_required > 0)  then 'completed' end %>">Peer reviews completed</div>
+	<div class="checkPoint <%= if (@assignment.allGradesApproved?) && (@assignment.reviews_required > 0) then 'completed' end %>">Grades approved</div>
 </div>

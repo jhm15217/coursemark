@@ -87,50 +87,55 @@ for enrollment in enrollments
   })
 end
 
-assignment1 = Assignment.create({
+assignment1 = Assignment.new(
   course_id: courseUCRE2014.id, 
   draft: false,
-  review_due: 2.years.ago,
+  review_due: 2.years.ago.beginning_of_hour,
   reviews_required: 5,
-  submission_due: 1.year.ago,
+  submission_due: 1.year.ago.beginning_of_hour,
   name: "Assignment 1 (Completed)"
-})
+)
+assignment1.save(:validate => false)
 
-assignment2 = Assignment.create({
+assignment2 = Assignment.new(
   course_id: courseUCRE2014.id, 
   draft: false,
-  review_due: 1.year.from_now,
+  review_due: 1.year.from_now.beginning_of_hour,
   reviews_required: 3,
-  submission_due: 1.year.ago,
+  submission_due: 1.year.ago.beginning_of_hour,
   name: "Assignment 2 (Reviewing)"
-})
+)
+assignment2.save(:validate => false)
 
-assignment3 = Assignment.create({
+assignment3 = Assignment.new(
   course_id: courseUCRE2014.id, 
   draft: false,
-  review_due: 2.year.from_now,
+  review_due: 2.year.from_now.beginning_of_hour,
   reviews_required: 5,
-  submission_due: 1.year.from_now,
+  submission_due: 1.year.from_now.beginning_of_hour,
   name: "Assignment 3 (Submitting)"
-})
+)
+assignment3.save(:validate => false)
 
-assignment4 = Assignment.create({
+assignment4 = Assignment.new(
   course_id: courseUCRE2014.id, 
   draft: true,
-  review_due: 2.year.from_now,
+  review_due: 2.year.from_now.beginning_of_hour,
   reviews_required: 5,
-  submission_due: 1.year.from_now,
+  submission_due: 1.year.from_now.beginning_of_hour,
   name: "Assignment 4 (Draft)"
-})
+)
+assignment4.save(:validate => false)
 
-assignment5 = Assignment.create({
+assignment5 = Assignment.new(
   course_id: courseUCRE2015.id, 
   draft: true,
-  review_due: 2.year.from_now,
+  review_due: 2.year.from_now.beginning_of_hour,
   reviews_required: 0,
-  submission_due: 1.year.from_now,
+  submission_due: 1.year.from_now.beginning_of_hour,
   name: "Assignment for 2015 (draft)"
-})
+)
+assignment5.save(:validate => false)
 
 assignments = [assignment1, assignment2, assignment3, assignment4]
 
@@ -164,7 +169,7 @@ for student in students2014
     # not actually supplying a file to submit
     # submission.submission = params[:file]
     # submission.submission = File.open('')
-    submission.save
+    submission.save(:validate => false)
     # assignment.reviews_required.times do |i|
     #   evaluation = Evaluation.new
     #   evaluation.submission_id = submission.id
@@ -197,7 +202,7 @@ for evaluation in evaluations
       if rand(3) == 1
         response.student_response = lorem[0..rand(lorem.length)]
       end
-      response.save
+      response.save(:validate => false)
     end
   end
 end

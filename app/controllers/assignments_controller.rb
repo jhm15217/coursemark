@@ -89,7 +89,6 @@ class AssignmentsController < ApplicationController
     @assignment = Assignment.new
     @assignment.name = "New Assignment"
     @assignment.reviews_required = 4
-    @assignment.draft = true
 
     respond_to do |format|
       format.html # new.html.erb
@@ -102,11 +101,43 @@ class AssignmentsController < ApplicationController
     @assignment = Assignment.find(params[:id])
   end
 
+  def publish
+    @assignment = Assignment.find(params[:assignment])
+
+    if current_user.instructor?(@assignment.course)
+      @assignment.draft = false;
+      @assignment.save!
+    end
+
+    redirect_to :back
+  end
+
   # POST /assignments
   # POST /assignments.json
   def create
+    if params['assignment']['submission_due_time(4i)']
+      params['assignment']['submission_due_time'] = params['assignment']['submission_due_time(4i)'] + ':' + params['assignment']['submission_due_time(5i)']
+      params['assignment'].delete 'submission_due_time(1i)'
+      params['assignment'].delete 'submission_due_time(5i)'
+      params['assignment'].delete 'submission_due_time(2i)'
+      params['assignment'].delete 'submission_due_time(3i)'
+      params['assignment'].delete 'submission_due_time(4i)'
+      params['assignment'].delete 'submission_due_time(5i)'
+    end
+
+    if params['assignment']['review_due_time(4i)']
+      params['assignment']['review_due_time'] = params['assignment']['review_due_time(4i)'] + ':' + params['assignment']['review_due_time(5i)']
+      params['assignment'].delete 'review_due_time(1i)'
+      params['assignment'].delete 'review_due_time(5i)'
+      params['assignment'].delete 'review_due_time(2i)'
+      params['assignment'].delete 'review_due_time(3i)'
+      params['assignment'].delete 'review_due_time(4i)'
+      params['assignment'].delete 'review_due_time(5i)'
+    end
+
     @assignment = Assignment.new(params[:assignment])
     @assignment.course_id = @course.id
+    @assignment.draft = true
 
     respond_to do |format|
       if @assignment.save
@@ -122,6 +153,22 @@ class AssignmentsController < ApplicationController
   # PUT /assignments/1
   # PUT /assignments/1.json
   def update
+    params['assignment']['submission_due_time'] = params['assignment']['submission_due_time(4i)'] + ':' + params['assignment']['submission_due_time(5i)']
+    params['assignment'].delete 'submission_due_time(1i)'
+    params['assignment'].delete 'submission_due_time(5i)'
+    params['assignment'].delete 'submission_due_time(2i)'
+    params['assignment'].delete 'submission_due_time(3i)'
+    params['assignment'].delete 'submission_due_time(4i)'
+    params['assignment'].delete 'submission_due_time(5i)'
+
+    params['assignment']['review_due_time'] = params['assignment']['review_due_time(4i)'] + ':' + params['assignment']['review_due_time(5i)']
+    params['assignment'].delete 'review_due_time(1i)'
+    params['assignment'].delete 'review_due_time(5i)'
+    params['assignment'].delete 'review_due_time(2i)'
+    params['assignment'].delete 'review_due_time(3i)'
+    params['assignment'].delete 'review_due_time(4i)'
+    params['assignment'].delete 'review_due_time(5i)'
+
     @assignment = Assignment.find(params[:id])
 
     respond_to do |format|
