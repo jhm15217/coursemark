@@ -8,6 +8,8 @@ class Response < ActiveRecord::Base
 
   # Validations
   validates_presence_of :question_id, :evaluation_id
+  validate :met_deadline, :if => :peer_review_changed?, :if => :scale_id_changed?
+
   validate :required_response
 
   def required_response
@@ -31,5 +33,12 @@ class Response < ActiveRecord::Base
       end
     end
   end 
+
+  private
+  def met_deadline
+    if Time.now > self.evaluation.submission.assignment.review_due
+      errors.add(:submission, "Deadline for evaluations has passed.")
+    end 
+  end
 
 end
