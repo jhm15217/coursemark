@@ -45,8 +45,6 @@ class Assignment < ActiveRecord::Base
 
   private
   def submission_deadline_not_passed
-    puts self.submission_due
-    puts self.submission_due_was
     if self.submission_due < Time.now and self.submission_due.to_i != self.submission_due_was.to_i
       errors.add(:submission_due, "Can't change submission deadline after it has passed")
     end
