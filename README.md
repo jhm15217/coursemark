@@ -1,4 +1,4 @@
-Project-Agora
+Coursemark
 =============
 
 Peer Review Software
