@@ -620,7 +620,8 @@ textarea {
     font-size: 10pt;
     font-weight: bold;
     opacity: .5;
-    margin-bottom: 6px;
+    margin-bottom: 2px;
+    margin-top: -2px;
 }
 
 #main h4 {
@@ -700,10 +701,10 @@ textarea {
 }
 
 #questionOptions input {
-    margin-top: 5px;
+    margin-top: 7px;
     margin-bottom: 0px;
     margin-left: 17px;
-    width: 260px;
+    width: 298px;
 }
 
 #question_question_weight {
@@ -719,6 +720,15 @@ textarea {
 #question_written_response_required {
     margin-left: 7px;
     margin-bottom: 25px;
+}
+
+.percentWrapper {
+    float: left;
+    width: 75px;
+}
+
+.percentWrapper .percent {
+    font-size: 20pt;
 }
 
 #rubricActions {
