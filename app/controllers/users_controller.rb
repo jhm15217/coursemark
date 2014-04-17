@@ -29,5 +29,19 @@ class UsersController < ApplicationController
 		else  
 			render :action => 'new'  
 		end  
-	end  
+	end
+
+	def update
+    @user = User.find(params[:id])
+
+    respond_to do |format|
+      if @user.update_attributes(params[:response])
+        format.html { redirect_to edit_user_url, notice: 'Profile was successfully updated.' }
+        format.json { head :no_content }
+      else
+        format.html { render action: "edit" }
+        format.json { render json: @response.errors, status: :unprocessable_entity }
+      end
+    end
+  end  
 end
