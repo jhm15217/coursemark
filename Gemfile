@@ -49,6 +49,7 @@ end
 
 gem 'carrierwave'
 gem 'uuid'
+gem 'jquery-ui-rails'
 gem 'jquery-rails'
 gem 'validates_timeliness'
 gem 'nested_form'
@@ -56,5 +57,6 @@ gem 'authlogic'
 gem 'cancan'
 gem 'bcrypt-ruby', '~> 3.0.0'
 gem 'scrypt', '1.2.1'
+gem 'jquery_datepicker'
 
 ruby '1.9.3'
