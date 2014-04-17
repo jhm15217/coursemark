@@ -20,12 +20,12 @@
   </div>
   <div class="field">
     <%= f.label :review_due, "Review Deadline" %><br />
-    <%= f.text_field :review_due_date, :disabled => (Time.zone.now > @assignment.review_due) %> at
+    <%= f.text_field :review_due_date, :disabled => @assignment.review_due && (Time.zone.now > @assignment.review_due) %> at
     <%= f.time_select :review_due_time, {minute_step: 15, ampm: true, :time_separator => ""} %>
   </div>
   <div class="field">
     <%= f.label :reviews_required %><br />
-    <%= f.number_field :reviews_required, :disabled => (Time.zone.now > @assignment.submission_due) %>
+    <%= f.number_field :reviews_required, :disabled => @assignment.review_due && (Time.zone.now > @assignment.submission_due) %>
   </div>
   <div class="actions">
     <div class="clearfix"></div>
