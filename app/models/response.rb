@@ -10,7 +10,13 @@ class Response < ActiveRecord::Base
   validates_presence_of :question_id, :evaluation_id
   validate :met_deadline, :if => :peer_review_changed?, :if => :scale_id_changed?
 
+  validate :required_response
 
+  def required_response
+    if self.peer_review.blank? && self.question.written_response_required
+      errors.add(:peer_review, "response required")
+    end
+  end
 
   def is_complete?
     if self.question.written_response_required

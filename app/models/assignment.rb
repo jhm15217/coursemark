@@ -43,6 +43,20 @@ class Assignment < ActiveRecord::Base
     self.questions.map{|q| q.question_weight}.reduce(:+)
   end
 
+  def allGradesApproved?
+    if (self.submissions.length == 0)
+      return false
+    end
+
+    self.submissions.each do |submission|
+      if (submission.instructor_approved != true)
+        return false
+      end
+    end
+
+    return true
+  end
+
   private
   def submission_deadline_not_passed
     if self.submission_due < Time.now and self.submission_due.to_i != self.submission_due_was.to_i

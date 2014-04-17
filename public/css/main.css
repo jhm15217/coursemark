@@ -104,7 +104,7 @@ textarea {
 }
 
 #sidebar .tab.active {
-    background-color: #2ecc71;
+    background-color: #2980b9;
 }
 
 #sidebar .tab.assignments {
@@ -233,11 +233,16 @@ textarea {
 
 #logo {
     height: 41px;
-    background: #2ecc71;
+    background: #2980b9;/*#2980b9 */
     color: rgba(255,255,255,0.9);
     padding-left: 22px;
-    padding-top: 9px;
+    padding-top: 6px;
     font-weight: bold;
+}
+
+#logo img {
+    width: auto;
+    height: 20px;
 }
 
 #sidebar .status, .possiblePoints {
@@ -316,18 +321,18 @@ textarea {
 }
 
 #main .tab.active a {
-    color: #2ecc71;
+    color: #2980b9;
     font-weight: bold;
 }
 
 #main .tab:hover:not('.logout') {
-    color: #2ecc71;
+    color: #2980b9;
     border-bottom: 3px solid #95969C;
 }
 
 #main .tab.active {
-    color: #2ecc71;
-    border-bottom: 3px solid #2ecc71;
+    color: #2980b9;
+    border-bottom: 3px solid #2980b9;
 }
 
 #main .tab.active:hover {
@@ -370,12 +375,51 @@ textarea {
     font-size: 11pt;
 }
 
+#main .assignmentStatus {
+    background: #FFF;
+    padding: 25px;
+    width: 50%;
+    border-radius: 6px;
+    border: 1px solid #DFDFDF;
+    float: left;
+}
+
+.assignmentStatus .checkPoint {
+    height: 50px;
+    padding-top: 15px;
+    border-bottom: 1px solid #DFDFDF;
+}
+
+.assignmentStatus .checkPoint.completed {
+    color: #2ecc71;
+    background-image: url(../img/checkmark.png);
+    background-repeat: no-repeat;
+    background-position: 0px center;
+    background-size: 20px;
+    padding-left: 27px;
+}
+
+.assignmentStatus h3, .edit_assignment h3 {
+    margin-top: 10px;
+    margin-bottom: 25px;
+}
+
+.new_assignment h3 {
+    display: none;
+}
+
+.assignmentStatus .checkPoint:nth-child(2) {
+    border-top: 1px solid #DFDFDF;
+}
+
 #main .edit_assignment, #main .new_assignment {
     background: #FFF;
     padding: 25px;
-    width: 405px;
+    width: calc(50% - 45px);
     border-radius: 6px;
     border: 1px solid #DFDFDF;
+    float: left;
+    margin-right: 45px;
 }
 
 #main .edit_assignment input[type=submit],
@@ -482,8 +526,8 @@ textarea {
 }
 
 #main .button.destructive:hover {
-  border: 1px solid #2ecc71;
-  background-color: #2ecc71;
+  border: 1px solid #2980b9;
+  background-color: #2980b9;
 }
 
 #main .button.destructive:hover a {
@@ -652,14 +696,14 @@ textarea {
 }
 
 .highlight a {
-    color: #2ecc71;
+    color: #2980b9;
 }
 
 .loginWrapper {
     height: 100%;
     width: 100%;
-    background: #F5F6F8;
-    padding-top: 250px;
+    background: #2980b9;
+    padding-top: 220px;
 }
 
 .loginWrapper .error {
@@ -682,7 +726,7 @@ textarea {
 }
 
 .loginWrapper.newCourse {
-    padding-top: 300px;
+    padding-top: 250px;
 }
 
 .loginWrapper form {
@@ -719,17 +763,33 @@ textarea {
     text-align: center;
 }
 
+.loginWrapper .logo {
+    width: 470px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+.loginWrapper .logo img {
+    width: 360px;
+}
+
 .loginWrapper .actions input {
     padding-left: 0px;
-    background: #2ecc71;
-    color: #FFF;
+    background: #FFF;
+    color: #343F53;
 }
 
 .loginWrapper .actions.newAccount a {
     border: 0px;
     background: none;
     text-decoration: none;
-    color: #343F53;
+    color: #FFF;
+}
+
+.loginWrapper .actions.newAccount {
+    margin-top: 30px;
 }
 
 #submissionHeader {
@@ -806,7 +866,6 @@ textarea {
   background: #FFF;
   padding: 10px 20px 25px 20px;
   border-radius: 6px;
-  margin-bottom: 20px;
   margin-top: 20px;
   border: 1px solid #DFDFDF;
 }
@@ -872,15 +931,15 @@ textarea {
   right: 0px;
   top: 0px;
   height: 50px;
-  width: auto;
+  width: 55px;
+  text-align: center;
   max-width: 100px;
   min-width: 45px;
   font-size: 22px;
   float: right;
   margin: -17px -50px 0 0;
-  text-align: right;
   padding: 10px 15px 0 15px;
-  background: #2ecc71;
+  background: #2980b9;
   border-bottom-left-radius: 6px;
   color: white;
 }
@@ -923,7 +982,7 @@ textarea {
     margin-left: 20px;
     border-radius: 6px;
     border: 1px solid #DFDFDF;
-    height: 144px;
+    min-height: 144px;
 }
 
 .new_submission input,
@@ -941,7 +1000,7 @@ textarea {
     width: calc(50% - 10px);
 }
 
-#student_evaluation_view .submissionBox:nth-child(even) {
+#student_evaluation_view .submissionBox:nth-child(odd) {
     margin-right: 20px;
 }
 
