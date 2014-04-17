@@ -89,7 +89,6 @@ class AssignmentsController < ApplicationController
     @assignment = Assignment.new
     @assignment.name = "New Assignment"
     @assignment.reviews_required = 4
-    @assignment.draft = true
 
     respond_to do |format|
       format.html # new.html.erb
@@ -127,17 +126,18 @@ class AssignmentsController < ApplicationController
     end
 
     if params['assignment']['review_due_time(4i)']
-    params['assignment']['review_due_time'] = params['assignment']['review_due_time(4i)'] + ':' + params['assignment']['review_due_time(5i)']
-    params['assignment'].delete 'review_due_time(1i)'
-    params['assignment'].delete 'review_due_time(5i)'
-    params['assignment'].delete 'review_due_time(2i)'
-    params['assignment'].delete 'review_due_time(3i)'
-    params['assignment'].delete 'review_due_time(4i)'
-    params['assignment'].delete 'review_due_time(5i)'
+      params['assignment']['review_due_time'] = params['assignment']['review_due_time(4i)'] + ':' + params['assignment']['review_due_time(5i)']
+      params['assignment'].delete 'review_due_time(1i)'
+      params['assignment'].delete 'review_due_time(5i)'
+      params['assignment'].delete 'review_due_time(2i)'
+      params['assignment'].delete 'review_due_time(3i)'
+      params['assignment'].delete 'review_due_time(4i)'
+      params['assignment'].delete 'review_due_time(5i)'
     end
 
     @assignment = Assignment.new(params[:assignment])
     @assignment.course_id = @course.id
+    @assignment.draft = true
 
     respond_to do |format|
       if @assignment.save
