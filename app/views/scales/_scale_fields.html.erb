@@ -1,6 +1,10 @@
 <div class="field">
-  <div class="num"><%= f.text_field :value %></div>
+	<div class="percentWrapper">
+		<div class="percent"></div>
+		<div class="explanation">of points</div>
+	</div>
+  <div class="num hidden"><%= f.text_field :value %></div>
   <%= f.text_field :description, :placeholder => "Optional Label" %>
+  <div class="clearfix"></div>
 </div>
-<div class="explanation">Student will receive <span class="percent"></span>% of points</div>
 <%= f.link_to_remove "Remove" %>
