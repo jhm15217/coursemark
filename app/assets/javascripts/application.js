@@ -12,8 +12,11 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require jquery.ui.datepicker
+//= require jquery-ui-timepicker-addon.js
+//= require_tree .
 
-$( document ).ready(function() {
+$(document).ready(function() {
 
   // Allows the entire tab div to be clickable and not just the text
   $("div.tab").click(function() {
@@ -22,6 +25,14 @@ $( document ).ready(function() {
 
   $('#courseSelector').click(function() {
   	$('#courseSelectorModal').removeClass('hidden');
+  });
+
+  $('#assignment_submission_due_date').datepicker({
+    dateFormat: "mm/dd/yy"
+  });
+
+  $('#assignment_review_due_date').datepicker({
+    dateFormat: "mm/dd/yy"
   });
 
 });
