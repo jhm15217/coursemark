@@ -937,7 +937,7 @@ textarea {
 
 .submissionQuestionBox, .submissionGradeBox {
   background: #FFF;
-  padding: 10px 20px 25px 20px;
+  padding: 10px 20px 15px 20px;
   border-radius: 6px;
   margin-top: 20px;
   border: 1px solid #DFDFDF;
@@ -1029,8 +1029,8 @@ textarea {
 .submissionInstructorResponse,
 .peerReviewJustification{
   border-top: 1px solid #DFDFDF;
-  margin-top:30px;
-  padding-top:20px;
+  margin-top: 9px;
+  padding-top: 20px;
 }
 
 .peerReviewJustification {
@@ -1055,12 +1055,24 @@ textarea {
     margin-left: 20px;
     border-radius: 6px;
     border: 1px solid #DFDFDF;
-    min-height: 144px;
+    height: 144px;
 }
 
 .new_submission input,
 .edit_submission input {
     border: 0px;
+}
+
+.new_submission a,
+.edit_submission a {
+    color: #343F53;
+}
+
+.new_submission .grade,
+.edit_submission .grade {
+    font-size: 34pt;
+    margin: 0px;
+    font-weight: lighter;
 }
 
 #main .new_submission input[type=submit],
@@ -1104,19 +1116,48 @@ textarea {
 	box-shadow: inset 0px 2px 3px 0px rgba(0, 0, 0, .3), 0px 1px 0px 0px rgba(255, 255, 255, .8);
 }
 
+#peer_review .possiblePoints {
+    margin-bottom: 20px;
+}
+
 #peer_review .radio_btn {
   display: block;
   border: solid 1px rgb(199, 198, 198);
-  border-radius: 6px;
+  border-bottom: 0px;
   padding: 5px 0 0 10px;
-  margin-top:5px;
-  margin-bottom:5px;
   background-color: rgb(250, 247, 247);
+}
+
+#peer_review .radio_btns .radio_btn:first-child {
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+}
+
+#peer_review .radio_btns .radio_btn:last-child {
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+    border: solid 1px rgb(199, 198, 198);
+    margin-bottom: 20px;
 }
 
 #peer_review .radio_btn label {
 	margin-bottom: 10px;
+    text-transform: none;
 }
+
+#peer_review a {
+    color: #343F53;
+}
+
+#peer_review textarea {
+    height: 90px;
+}
+
+#peer_review input {
+    margin-top: 20px;
+    margin-bottom: -1px;
+}
+
 #peer_review .radio_btn label:before {
     border-radius: 3px;
 }
@@ -1146,8 +1187,8 @@ textarea {
 }
 
 .reviewing_task.highlighted {
-    background: rgba(231, 76, 60, 0.15);
-    border: 1px solid #E74C3C;
+    background: rgba(46, 204, 113, 0.1);
+    border: 1px solid #2ecc71;
 }
 
 .reviewing_task:nth-child(5n) {
