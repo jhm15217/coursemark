@@ -1000,21 +1000,33 @@ textarea {
 }
 
 .submissionResponsePoints {
-  position: relative;
-  right: 0px;
-  top: 0px;
-  height: 50px;
-  width: 55px;
-  text-align: center;
-  max-width: 100px;
-  min-width: 45px;
-  font-size: 22px;
-  float: right;
-  margin: -17px -50px 0 0;
-  padding: 10px 15px 0 15px;
-  background: #2980b9;
-  border-bottom-left-radius: 6px;
-  color: white;
+    position: relative;
+    right: 0px;
+    top: 0px;
+    height: 50px;
+    width: 79px;
+    text-align: center;
+    max-width: 100px;
+    min-width: 45px;
+    font-size: 20px;
+    float: right;
+    margin: -17px -50px 0 0;
+    background: #2980b9;
+    border-bottom-left-radius: 6px;
+    color: white;
+    padding-top: 12px;
+}
+
+.submissionResponsePoints.high {
+    background: #2ecc71;
+}
+
+.submissionResponsePoints.mid {
+    background: #f39c12;
+}
+
+.submissionResponsePoints.low {
+    background: #e74c3c;
 }
 
 .submissionResponseFrom {
@@ -1029,7 +1041,7 @@ textarea {
 .submissionInstructorResponse,
 .peerReviewJustification{
   border-top: 1px solid #DFDFDF;
-  margin-top: 9px;
+  margin-top: 23px;
   padding-top: 20px;
 }
 
@@ -1069,10 +1081,15 @@ textarea {
 }
 
 .new_submission .grade,
-.edit_submission .grade {
+.edit_submission .grade,
+.submissionGradeBox .grade {
     font-size: 34pt;
     margin: 0px;
     font-weight: lighter;
+}
+
+.submissionGradeBox .grade {
+    font-size: 24pt;
 }
 
 #main .new_submission input[type=submit],

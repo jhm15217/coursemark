@@ -30,7 +30,7 @@
     <% if @submission.instructor_approved != false and @submission.instructor_approved != nil &&  current_user.instructor?(@course) then %>
 <!--     GRADE IS APPROVED -->
       <div class='submissionGradeBox'>
-        <span>Grade: <%= @submission.percentage.round.to_s + "%" %></span>
+        <span class="grade"><%= @submission.percentage.round.to_s + "%" %></span>
         <div class='button fr' style="margin-right: 0px;">
         <%= link_to "Unapprove Grade",
               course_assignment_submission_path(@course, @assignment, @submission,
@@ -41,7 +41,7 @@
     <% elsif current_user.instructor?(@course) %>
 <!--     GRADE IS NOT APPROVED -->
       <div class='submissionGradeBox'>
-        <span>Grade: <%= unless @submission.percentage.nil? then @submission.percentage.round.to_s + "%" end  %></span>
+        <span class="grade"><%= unless @submission.percentage.nil? then @submission.percentage.round.to_s + "%" end  %></span>
         <div class='button fr' style="margin-right: 0px;"><%= link_to "Approve Grade",
               course_assignment_submission_path(@course, @assignment, @submission,
                         :submission => { :instructor_approved => true}),
@@ -55,7 +55,7 @@
       <% @submission.assignment.questions.each do |question| %>
         <div class='submissionQuestionBox' id='peer_review'>
         <h2><%= question.question_text %></h2>
-        <div class='possiblePoints'>Possible Points: <%= question.question_weight %></div>
+        <div class='possiblePoints'><%= question.question_weight %> Points</div>
         <%# response_for_question_by_peer(@current_user, @submission, question).first %>
         <% question.responses.each do |response| %>
 
@@ -66,7 +66,7 @@
         <% question.scales.sort_by {|s| s.value}.each do |scale| %>
           <div class="radio_btn">
             <%= f.radio_button :scale_id, scale.id %>
-            <%= f.label "scale_id_#{scale.id}", "#{prettifyFloat((question.question_weight / (question.scales.length - 1.0)) * scale.value)} points - #{scale.description}" %>
+            <%= f.label "scale_id_#{scale.id}", "#{prettifyFloat(((50 / (question.scales.length - 1.0) * scale.value) + 50))}% - #{scale.description}" %>
           </div>
         <% end %> <!-- end scale loop -->
         </div>
@@ -98,12 +98,12 @@
     <% @evaluations[0].responses.each do |eval| %>
       <div class='submissionQuestionBox'>
       <h2><%= eval.question.question_text %></h2>
-      <div class='possiblePoints'>Possible Points: <%= eval.question.question_weight %></div>
+      <div class='possiblePoints'><%= eval.question.question_weight %> Points</div>
         <% get_evaluations_for_submission_question(@submission, eval.question).each_with_index do |response, index| %>
             <% if response.is_complete? %>
             <div class='submissionBox'>
               
-              <div class='submissionResponsePoints'><%= prettifyFloat((eval.question.question_weight / (eval.question.scales.length - 1.0)) * response.scale.value) %></div>
+              <div class='submissionResponsePoints <%= gradeColorFullScale(prettifyFloat(((eval.question.question_weight / (eval.question.scales.length - 1.0) * response.scale.value)))) %>'><%= prettifyFloat(((eval.question.question_weight / (eval.question.scales.length - 1.0) * response.scale.value))).to_s + '%' %></div>
               <div class='submissionResponseFrom'>
                 <% if current_user.instructor?(@course) %>
                   <%= response.evaluation.user.name %>

@@ -25,7 +25,7 @@
 <% else %>
   <div class="edit_submission">
     <% if Time.zone.now <= @assignment.review_due %>
-      <p>Your submission was submitted successfully on time.
+      <p>Your assignment was submitted on time.</p>
     <% else %>
       <p class="grade"><%= @submission.percentage.round %>%</p>
     <% end %>
@@ -57,11 +57,11 @@
   <% @evaluations[0].responses.each do |eval| %>
     <div class='submissionQuestionBox clearfix'>
     <h2><%= eval.question.question_text %></h2>
-    <div class='possiblePoints'>Possible Points: <%= eval.question.question_weight %></div>
+    <div class='possiblePoints'><%= eval.question.question_weight %> Points</div>
       <% get_evaluations_for_submission_question(@submission, eval.question).each_with_index do |response, index| %>
         <% if response.is_complete? %>
           <div class='submissionBox'>
-            <div class='submissionResponsePoints'><%= if !response.scale.nil? then prettifyFloat((eval.question.question_weight / (eval.question.scales.length - 1.0)) * response.scale.value) else '--' end %></div>
+            <div class='submissionResponsePoints <%= gradeColor(prettifyFloat(((50 / (eval.question.scales.length - 1.0) * response.scale.value) + 50))) %>'><%= if !response.scale.nil? then prettifyFloat(((50 / (eval.question.scales.length - 1.0) * response.scale.value) + 50)).to_s + '%' else '--' end %></div>
             <div class='submissionResponseFrom'>Reviewer <%= index + 1 %></div>
             <div class='submissionPeerReview'><%= response.peer_review %></div>
             <div class='submissionInstructorResponse'>

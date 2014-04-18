@@ -19,4 +19,28 @@ module ApplicationHelper
 	rescue ArgumentError
 	  x
 	end
+
+	# Takes in a grade (b/w 50-100), 
+	# returns an associated description
+	def gradeColor(grade) 
+		if grade > 85
+			return 'high'
+		elsif grade > 70
+			return 'mid'
+		else
+			return 'low'
+		end
+	end
+
+	# Takes in a grade (b/w 0-100), 
+	# returns an associated description
+	def gradeColorFullScale(grade) 
+		if grade > 80
+			return 'high'
+		elsif grade > 60
+			return 'mid'
+		else
+			return 'low'
+		end
+	end
 end
