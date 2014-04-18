@@ -31,7 +31,8 @@
 <!--     GRADE IS APPROVED -->
       <div class='submissionGradeBox'>
         <span>Grade: <%= @submission.percentage.round.to_s + "%" %></span>
-        <div class='button fr' style="margin-right: 0px;"><%= link_to "Unapprove Grade",
+        <div class='button fr' style="margin-right: 0px;">
+        <%= link_to "Unapprove Grade",
               course_assignment_submission_path(@course, @assignment, @submission,
                         :submission => { :instructor_approved => false}),
                         :method => :put %>
