@@ -62,27 +62,28 @@
         <% if response.evaluation.user_id == current_user.id && response.evaluation.submission_id == @submission.id %>
         <%= nested_form_for [@course, @assignment, question, response]  do |f| %>
 
+        <div class="radio_btns">
         <% question.scales.sort_by {|s| s.value}.each do |scale| %>
-
           <div class="radio_btn">
             <%= f.radio_button :scale_id, scale.id %>
             <%= f.label "scale_id_#{scale.id}", "#{prettifyFloat((question.question_weight / (question.scales.length - 1.0)) * scale.value)} points - #{scale.description}" %>
           </div>
         <% end %> <!-- end scale loop -->
+        </div>
         <% if question.written_response_required then %>
           <div class='peerReviewJustification'>
-            <div class='submissionResponseFrom'>Explanation (required)</div>
+            <div class='submissionResponseFrom'>Comment (required)</div>
             <!-- <textarea class="reviewTextArea fl" style='height:75px;' cols="40" name="q_response_<%= question.id %>" rows="20"></textarea> -->
             <%= f.text_area :peer_review, :html => {class: "reviewTextArea fl"} %>
           </div>
         <% else %>
-          <a href='#' id='awr_q_<%= question.id %>' onclick='add_written_response(<%= question.id %>)'>Add a written response (optional)</a>
+          <a href='#' id='awr_q_<%= question.id %>' onclick='add_written_response(<%= question.id %>)'>Add a comment</a>
           <div class='peerReviewJustification' style='display:none;' id='q_response_<%= question.id %>'>
-            <div class='submissionResponseFrom'>Explanation</div>
+            <div class='submissionResponseFrom'>Comment</div>
             <%= f.text_area :peer_review, :html => {class: "reviewTextArea fl"} %>          
           </div>
         <% end %>
-
+        <br>
         <%= f.submit "Save Response" %>
       <% end %> <!-- end form -->
 
@@ -147,8 +148,6 @@
   </div>
 
 </div>
-
-<%= link_to 'Edit', edit_course_assignment_submission_path(@course, @submission) %>
 
 <script>
   function add_written_response(question_id) {
