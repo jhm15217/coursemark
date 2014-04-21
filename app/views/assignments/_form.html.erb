@@ -3,8 +3,8 @@
 
   <% if @assignment.errors.any? %>
     <div id="error_explanation">
-      <% @assignment.errors.full_messages.each do |msg| %>
-        <p><%= msg %></p>
+      <% @assignment.errors.messages.values.each do |msg| %>
+        <p><%= msg[0] %></p>
       <% end %>
     </div>
   <% end %>

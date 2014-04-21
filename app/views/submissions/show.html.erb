@@ -30,8 +30,9 @@
     <% if @submission.instructor_approved != false and @submission.instructor_approved != nil &&  current_user.instructor?(@course) then %>
 <!--     GRADE IS APPROVED -->
       <div class='submissionGradeBox'>
-        <span>Grade: <%= @submission.percentage.round.to_s + "%" %></span>
-        <div class='button fr' style="margin-right: 0px;"><%= link_to "Unapprove Grade",
+        <span class="grade"><%= @submission.percentage.round.to_s + "%" %></span>
+        <div class='button fr' style="margin-right: 0px;">
+        <%= link_to "Unapprove Grade",
               course_assignment_submission_path(@course, @assignment, @submission,
                         :submission => { :instructor_approved => false}),
                         :method => :put %>
@@ -40,7 +41,7 @@
     <% elsif current_user.instructor?(@course) %>
 <!--     GRADE IS NOT APPROVED -->
       <div class='submissionGradeBox'>
-        <span>Grade: <%= unless @submission.percentage.nil? then @submission.percentage.round.to_s + "%" end  %></span>
+        <span class="grade"><%= unless @submission.percentage.nil? then @submission.percentage.round.to_s + "%" end  %></span>
         <div class='button fr' style="margin-right: 0px;"><%= link_to "Approve Grade",
               course_assignment_submission_path(@course, @assignment, @submission,
                         :submission => { :instructor_approved => true}),
@@ -54,35 +55,36 @@
       <% @submission.assignment.questions.each do |question| %>
         <div class='submissionQuestionBox' id='peer_review'>
         <h2><%= question.question_text %></h2>
-        <div class='possiblePoints'>Possible Points: <%= question.question_weight %></div>
+        <div class='possiblePoints'><%= question.question_weight %> Points</div>
         <%# response_for_question_by_peer(@current_user, @submission, question).first %>
         <% question.responses.each do |response| %>
 
         <% if response.evaluation.user_id == current_user.id && response.evaluation.submission_id == @submission.id %>
-        <%= nested_form_for [@course, @assignment, question, response]  do |f| %>
+        <%= nested_form_for [@course, @assignment, question, response], :remote => true  do |f| %>
 
+        <div class="radio_btns">
         <% question.scales.sort_by {|s| s.value}.each do |scale| %>
-
           <div class="radio_btn">
             <%= f.radio_button :scale_id, scale.id %>
-            <%= f.label "scale_id_#{scale.id}", "#{prettifyFloat((question.question_weight / (question.scales.length - 1.0)) * scale.value)} points - #{scale.description}" %>
+            <%= f.label "scale_id_#{scale.id}", "#{prettifyFloat(((50 / (question.scales.length - 1.0) * scale.value) + 50))}% - #{scale.description}" %>
           </div>
         <% end %> <!-- end scale loop -->
+        </div>
         <% if question.written_response_required then %>
           <div class='peerReviewJustification'>
-            <div class='submissionResponseFrom'>Explanation (required)</div>
+            <div class='submissionResponseFrom'>Comment (required)</div>
             <!-- <textarea class="reviewTextArea fl" style='height:75px;' cols="40" name="q_response_<%= question.id %>" rows="20"></textarea> -->
-            <%= f.text_area :peer_review, :html => {class: "reviewTextArea fl"} %>
+            <%= f.text_area :peer_review, :html => {class: "reviewTextArea fl"}, :required => true %>
           </div>
         <% else %>
-          <a href='#' id='awr_q_<%= question.id %>' onclick='add_written_response(<%= question.id %>)'>Add a written response (optional)</a>
+          <a href='#' id='awr_q_<%= question.id %>' onclick='add_written_response(<%= question.id %>)'>Add a comment</a>
           <div class='peerReviewJustification' style='display:none;' id='q_response_<%= question.id %>'>
-            <div class='submissionResponseFrom'>Explanation</div>
+            <div class='submissionResponseFrom'>Comment</div>
             <%= f.text_area :peer_review, :html => {class: "reviewTextArea fl"} %>          
           </div>
         <% end %>
-
-        <%= f.submit "Save Response" %>
+        <br>
+        <%# f.submit "Save Response" %>
       <% end %> <!-- end form -->
 
       <% end %>
@@ -90,18 +92,20 @@
     </div> <!-- end question box div -->
       <% end %> <!-- end question loop -->
 
+      <div id='submitFormsButton' class='button' onclick="submitForms()">Save Peer Review</div>
+
   <% else %> <!-- the user is either an instructor or the submitter -->
 
   <!--     EVALUATIONS -->
     <% @evaluations[0].responses.each do |eval| %>
       <div class='submissionQuestionBox'>
       <h2><%= eval.question.question_text %></h2>
-      <div class='possiblePoints'>Possible Points: <%= eval.question.question_weight %></div>
+      <div class='possiblePoints'><%= eval.question.question_weight %> Points</div>
         <% get_evaluations_for_submission_question(@submission, eval.question).each_with_index do |response, index| %>
             <% if response.is_complete? %>
             <div class='submissionBox'>
               
-              <div class='submissionResponsePoints'><%= prettifyFloat((eval.question.question_weight / (eval.question.scales.length - 1.0)) * response.scale.value) %></div>
+              <div class='submissionResponsePoints <%= gradeColorFullScale(prettifyFloat(((eval.question.question_weight / (eval.question.scales.length - 1.0) * response.scale.value)))) %>'><%= prettifyFloat(((eval.question.question_weight / (eval.question.scales.length - 1.0) * response.scale.value))).to_s + '%' %></div>
               <div class='submissionResponseFrom'>
                 <% if current_user.instructor?(@course) %>
                   <%= response.evaluation.user.name %>
@@ -147,11 +151,10 @@
 
 </div>
 
-<%= link_to 'Edit', edit_course_assignment_submission_path(@course, @submission) %>
-
 <script>
   function add_written_response(question_id) {
       $('#awr_q_'+question_id).hide();
       $('#q_response_'+question_id).css('display', 'inline-block');
   }
+  
 </script>
