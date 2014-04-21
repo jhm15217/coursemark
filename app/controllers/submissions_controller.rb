@@ -52,7 +52,7 @@ class SubmissionsController < ApplicationController
   def create
     @submission = Submission.new(params[:submission])
     @submission.user = current_user
-    @submission.submission = File.open('null')
+    @submission.submission = nil
 
     respond_to do |format|
       if @submission.save
