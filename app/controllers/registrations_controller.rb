@@ -7,6 +7,10 @@ class RegistrationsController < ApplicationController
   class InvalidCourse < StandardError
   end
   rescue_from InvalidCourse, :with => :invalidCourse
+
+  class ExistingRegistration < StandardError
+  end
+  rescue_from ExistingRegistration, :with => :existingRegistration
   
   # GET /registrations
   # GET /registrations.json
@@ -75,8 +79,14 @@ class RegistrationsController < ApplicationController
     @registration.instructor = false;
     @registration.user = current_user
 
-    # TODO: Throw an error if the course isnt found.
+    # Throw an error if the course isnt found.
     @registration.course = Course.where(:course_code => @registration.course_code).first or raise InvalidCourse
+
+    # Throw an error if the user is already registered.
+    @existing = Registration.where(:course_code => @registration.course_code, :user_id => current_user.id)
+    if (@existing.length > 0)
+      raise ExistingRegistration
+    end
 
     respond_to do |format|
       if @registration.save
@@ -120,6 +130,11 @@ class RegistrationsController < ApplicationController
 
   def invalidCourse(exception)
     flash[:notice] = 'Invalid course code'
+    redirect_to :action => "new"
+  end
+
+  def existingRegistration(exception)
+    flash[:notice] = 'Already registered for this course'
     redirect_to :action => "new"
   end
 end
