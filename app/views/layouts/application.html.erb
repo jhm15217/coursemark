@@ -57,7 +57,7 @@
                     </li>
                 <% end %>
 
-                <% if @assignments.length == 0 %>
+                <% if (@assignments.length == 0) && !current_user.instructor?(@course) %>
                     <li class="empty">No assignments yet</li>
                 <% end %>
 
