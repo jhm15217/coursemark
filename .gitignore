@@ -18,3 +18,5 @@
 /tmp
 
 *.pdf
+
+config/database.yml
