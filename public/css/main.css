@@ -124,7 +124,6 @@ textarea {
 #courseSelector {
     color: #bdc3c7;
     height: 44px;
-    background: #2c3447;
     padding-right: 15px;
     overflow: hidden;
     white-space: nowrap;
@@ -137,6 +136,7 @@ textarea {
     background-size: 20px;
     padding-left: 50px;
     font-size: 15px;
+    border-bottom: 1px solid rgba(223, 223, 223, 0.1);
 }
 
 #courseSelector:hover {
@@ -243,6 +243,17 @@ textarea {
 #logo img {
     width: auto;
     height: 20px;
+}
+
+#logo.big {
+    height: 84px;
+    padding-top: 27px;
+    border-bottom: 1px solid rgba(223, 223, 223, 0.15);
+    margin-bottom: 10px;
+}
+
+#logo.big img {
+    height: 27px;
 }
 
 #sidebar .status, .possiblePoints {
