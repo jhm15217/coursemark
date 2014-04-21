@@ -2,7 +2,8 @@ class CoursesController < ApplicationController
   skip_before_filter :get_assignments
   skip_before_filter :get_submission_for_assignment
   layout false
-
+  load_and_authorize_resource
+  
   # GET /courses
   # GET /courses.json
   def index
