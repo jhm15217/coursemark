@@ -20,3 +20,5 @@
 *.pdf
 
 config/database.yml
+
+*.yml
