@@ -36,7 +36,7 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
 
     respond_to do |format|
-      if @user.update_attributes(params[:response])
+      if @user.update_attributes(params[:user])
         format.html { redirect_to edit_user_url, notice: 'Profile was successfully updated.' }
         format.json { head :no_content }
       else
