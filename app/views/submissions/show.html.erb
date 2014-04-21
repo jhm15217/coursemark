@@ -60,7 +60,7 @@
         <% question.responses.each do |response| %>
 
         <% if response.evaluation.user_id == current_user.id && response.evaluation.submission_id == @submission.id %>
-        <%= nested_form_for [@course, @assignment, question, response]  do |f| %>
+        <%= nested_form_for [@course, @assignment, question, response], :remote => true  do |f| %>
 
         <div class="radio_btns">
         <% question.scales.sort_by {|s| s.value}.each do |scale| %>
@@ -74,7 +74,7 @@
           <div class='peerReviewJustification'>
             <div class='submissionResponseFrom'>Comment (required)</div>
             <!-- <textarea class="reviewTextArea fl" style='height:75px;' cols="40" name="q_response_<%= question.id %>" rows="20"></textarea> -->
-            <%= f.text_area :peer_review, :html => {class: "reviewTextArea fl"} %>
+            <%= f.text_area :peer_review, :html => {class: "reviewTextArea fl"}, :required => true %>
           </div>
         <% else %>
           <a href='#' id='awr_q_<%= question.id %>' onclick='add_written_response(<%= question.id %>)'>Add a comment</a>
@@ -84,13 +84,15 @@
           </div>
         <% end %>
         <br>
-        <%= f.submit "Save Response" %>
+        <%# f.submit "Save Response" %>
       <% end %> <!-- end form -->
 
       <% end %>
       <% end %> <!-- end responses loop -->
     </div> <!-- end question box div -->
       <% end %> <!-- end question loop -->
+
+      <div id='submitFormsButton' class='button' onclick="submitForms()">Save Peer Review</div>
 
   <% else %> <!-- the user is either an instructor or the submitter -->
 
@@ -154,4 +156,5 @@
       $('#awr_q_'+question_id).hide();
       $('#q_response_'+question_id).css('display', 'inline-block');
   }
+  
 </script>
