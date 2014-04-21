@@ -367,9 +367,9 @@ textarea {
 
 #backBar {
     width: calc(100% + 120px);
-    height: 40px;
+    height: 46px;
     margin: -45px 0px 30px -60px;
-    padding-top: 11px;
+    padding-top: 17px;
     padding-left: 60px;
     background: #FFF;
     border-bottom: 1px solid #DFDFDF;
@@ -391,8 +391,13 @@ textarea {
 }
 
 .new_assignment #error_explanation, 
-.edit_assignment #error_explanation {
+.edit_assignment #error_explanation,
+.edit_assignment .error {
     color: #c0392b;
+}
+
+.edit_assignment .error {
+    margin-bottom: 20px;
 }
 
 .edit_assignment input, .new_assignment input {
@@ -802,7 +807,7 @@ textarea {
 .loginWrapper #error_explanation ul {
     list-style: none;
     padding: 0px;
-    color: #343F53;
+    color: #FFF;
 }
 
 .loginWrapper.newAccount {

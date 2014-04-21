@@ -1,6 +1,10 @@
 <%= nested_form_for [@course, @assignment] do |f| %>
   <h3>Assignment Settings</h3>
 
+  <% if flash[:notice] %>
+      <div class="error"><%= flash[:notice] %></div>
+  <% end %>
+
   <% if @assignment.errors.any? %>
     <div id="error_explanation">
       <% @assignment.errors.messages.values.each do |msg| %>

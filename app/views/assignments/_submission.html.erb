@@ -11,10 +11,6 @@
     </div>
   <% end %>
 
-  <% if @submission.created_at %>
-    <p><a href='http://<%= request.host_with_port %><%= @submission.submission %>' >View Submission</a>
-    <br /> You can continue submitting until the deadline.</p>
-  <% end %>
   <div class="field">
     <%= f.file_field :submission, :accept => 'application/pdf', :required => true %>
   </div>
@@ -23,5 +19,8 @@
   </div>
   <div class="actions">
     <%= f.submit "Submit Assignment" %>
+    <% if @submission.created_at %>
+      <a style="margin-left: 20px;" href='http://<%= request.host_with_port %><%= @submission.submission %>' >View Submission</a>
+    <% end %>
   </div>
 <% end %>
