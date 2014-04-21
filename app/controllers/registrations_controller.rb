@@ -18,10 +18,10 @@ class RegistrationsController < ApplicationController
     if params[:course]
       @course = Course.find(params[:course])
       @assignments = @course.assignments
-      @registrations = @course.registrations.sort_by{ |r| r.instructor ? 0 : 1 }
+      @registrations = @course.registrations.where(:active => true).sort_by{ |r| r.instructor ? 0 : 1 }
       @template = "registrations/roster"
     else
-      @registrations = current_user.registrations.sort_by{ |r| r.instructor ? 0 : 1 }
+      @registrations = current_user.registrations.where(:active => true).sort_by{ |r| r.instructor ? 0 : 1 }
       @course = current_user.courses.first
       @assignments = @course.assignments
       @template = "registrations/index"
@@ -120,10 +120,17 @@ class RegistrationsController < ApplicationController
   def destroy
     @registration = Registration.find(params[:id])
     @registration.active = false;
+
+    if @registration.user_id != current_user.id
+      @redirectPath = :back
+    else 
+      @redirectPath = registrations_url
+    end
+
     @registration.save!
 
     respond_to do |format|
-      format.html { redirect_to registrations_url }
+      format.html { redirect_to @redirectPath }
       format.json { head :no_content }
     end
   end
