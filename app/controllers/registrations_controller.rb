@@ -3,6 +3,8 @@ class RegistrationsController < ApplicationController
   skip_before_filter :get_submission_for_assignment, :except => [:index]
   layout false, :except => :index
 
+  load_and_authorize_resource
+
   # Exception Handling
   class InvalidCourse < StandardError
   end
