@@ -41,7 +41,6 @@ class AssignmentsController < ApplicationController
   def show
     @assignment = Assignment.find(params[:id])
     @submission = get_submission_for_assignment(@assignment)
-    # @reviewing_tasks = @assignment.evaluations.forUser(current_user)
     @reviewing_tasks = reviews_for_user_to_complete(@assignment, current_user)
 
     if @submission.nil?
@@ -104,12 +103,18 @@ class AssignmentsController < ApplicationController
   def publish
     @assignment = Assignment.find(params[:assignment])
 
-    if current_user.instructor?(@assignment.course)
-      @assignment.draft = false;
-      @assignment.save!
+    if @assignment.questions.length == 0
+      flash[:notice] = 'You must first create a rubric'
+      @url = edit_course_assignment_path(@assignment.course, @assignment)
+    else
+      if current_user.instructor?(@assignment.course)
+        @assignment.draft = false;
+        @assignment.save!
+      end
+      @url = :back
     end
 
-    redirect_to :back
+    redirect_to @url
   end
 
   # POST /assignments

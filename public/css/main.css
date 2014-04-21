@@ -391,8 +391,13 @@ textarea {
 }
 
 .new_assignment #error_explanation, 
-.edit_assignment #error_explanation {
+.edit_assignment #error_explanation,
+.edit_assignment .error {
     color: #c0392b;
+}
+
+.edit_assignment .error {
+    margin-bottom: 20px;
 }
 
 .edit_assignment input, .new_assignment input {

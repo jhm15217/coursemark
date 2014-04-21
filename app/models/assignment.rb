@@ -115,7 +115,7 @@ class Assignment < ActiveRecord::Base
   end
 
   def reviews_required_feasible
-    if self.course.get_students.length < reviews_required
+    if (self.course.get_students.length - 1) < reviews_required
       errors.add(:reviews_required, "Too many reviews required for class size.")
     end
   end
