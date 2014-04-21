@@ -802,7 +802,7 @@ textarea {
 .loginWrapper #error_explanation ul {
     list-style: none;
     padding: 0px;
-    color: #343F53;
+    color: #FFF;
 }
 
 .loginWrapper.newAccount {

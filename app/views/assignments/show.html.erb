@@ -17,7 +17,7 @@
 <% elsif !@submission.created_at && (Time.zone.now > @assignment.submission_due) %>
 	<div class="edit_submission">
     <% if Time.zone.now <= @assignment.review_due %>
-		  <p>Submissions are no longer being accepted.</p>
+		  <p>Submission deadline has passed.</p>
     <% else %>
       <p class="grade"><%= @submission.percentage.round %>%</p>
     <% end %>

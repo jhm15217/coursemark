@@ -7,6 +7,10 @@ class RegistrationsController < ApplicationController
   class InvalidCourse < StandardError
   end
   rescue_from InvalidCourse, :with => :invalidCourse
+
+  class ExistingRegistration < StandardError
+  end
+  rescue_from ExistingRegistration, :with => :existingRegistration
   
   # GET /registrations
   # GET /registrations.json
@@ -14,10 +18,10 @@ class RegistrationsController < ApplicationController
     if params[:course]
       @course = Course.find(params[:course])
       @assignments = @course.assignments
-      @registrations = @course.registrations.sort_by{ |r| r.instructor ? 0 : 1 }
+      @registrations = @course.registrations.where(:active => true).sort_by{ |r| r.instructor ? 0 : 1 }
       @template = "registrations/roster"
     else
-      @registrations = current_user.registrations.sort_by{ |r| r.instructor ? 0 : 1 }
+      @registrations = current_user.registrations.where(:active => true).sort_by{ |r| r.instructor ? 0 : 1 }
       @course = current_user.courses.first
       @assignments = @course.assignments
       @template = "registrations/index"
@@ -75,8 +79,14 @@ class RegistrationsController < ApplicationController
     @registration.instructor = false;
     @registration.user = current_user
 
-    # TODO: Throw an error if the course isnt found.
+    # Throw an error if the course isnt found.
     @registration.course = Course.where(:course_code => @registration.course_code).first or raise InvalidCourse
+
+    # Throw an error if the user is already registered.
+    @existing = Registration.where(:course_code => @registration.course_code, :user_id => current_user.id)
+    if (@existing.length > 0)
+      raise ExistingRegistration
+    end
 
     respond_to do |format|
       if @registration.save
@@ -110,16 +120,28 @@ class RegistrationsController < ApplicationController
   def destroy
     @registration = Registration.find(params[:id])
     @registration.active = false;
+
+    if @registration.user_id != current_user.id
+      @redirectPath = :back
+    else 
+      @redirectPath = registrations_url
+    end
+
     @registration.save!
 
     respond_to do |format|
-      format.html { redirect_to registrations_url }
+      format.html { redirect_to @redirectPath }
       format.json { head :no_content }
     end
   end
 
   def invalidCourse(exception)
     flash[:notice] = 'Invalid course code'
+    redirect_to :action => "new"
+  end
+
+  def existingRegistration(exception)
+    flash[:notice] = 'Already registered for this course'
     redirect_to :action => "new"
   end
 end
