@@ -2,7 +2,6 @@ class SubmissionsController < ApplicationController
   before_filter :get_assignment, :get_course
   before_filter :get_evaluations, :only => :show
 
-
   # GET /submissions
   # GET /submissions.json
   def index
@@ -23,6 +22,12 @@ class SubmissionsController < ApplicationController
       format.html { render :layout => 'no_sidebar' } # show.html.erb
       format.json { render json: @submission }
     end
+  end
+
+  def view
+    @submission = Submission.where(:submission => params[:id].to_s).first
+    @filename = 'submission_' + @submission.id.to_s + '.pdf'
+    send_data(@submission.submission.file.read, :filename => @filename, :disposition => 'inline', :type => 'application/pdf')
   end
 
   # GET /submissions/new
