@@ -64,7 +64,7 @@ class AddTablesToDb < ActiveRecord::Migration
 	  end
 
 	  create_table "submissions", :force => true do |t|
-	    t.oid   "submission",          :null => false
+	    t.column   "submission", :oid, :null => false
 	    t.integer  "assignment_id"
 	    t.integer  "user_id"
 	    t.datetime "created_at",          :null => false
