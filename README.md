@@ -16,26 +16,26 @@ http://sourceforge.net/projects/pgsqlformac/files/PostgreSQL%20Unified%20Install
 
 6. Create a database.yml file in /config with the following contents:
 
-development:
-  adapter: postgresql
-  encoding: unicode
-  database: agora_test
-  pool: 5
-  username: MAC_USERNAME_HERE
-  password: MAC_PASSWORD_HERE
+	development:
+		adapter: postgresql
+		encoding: unicode
+		database: agora_test
+		pool: 5
+		username: MAC_USERNAME_HERE
+		password: MAC_PASSWORD_HERE
 
-test:
-  adapter: postgresql
-  encoding: unicode
-  database: agora_development
-  pool: 5
-  username: MAC_USERNAME_HERE
-  password: MAC_PASSWORD_HERE
+	test:
+		adapter: postgresql
+		encoding: unicode
+		database: agora_development
+		pool: 5
+		username: MAC_USERNAME_HERE
+		password: MAC_PASSWORD_HERE
 
-production:
-  adapter: postgresql
-  database: agora_production
-  pool: 5
-  timeout: 5000
+	production:
+		adapter: postgresql
+		database: agora_production
+		pool: 5
+		timeout: 5000
 
 7. Run rake db:reset
