@@ -2,6 +2,7 @@ Coursemark
 =============
 
 Database Setup
+
 1. Download PostgreSQL for Mac: 
 
 http://sourceforge.net/projects/pgsqlformac/files/PostgreSQL%20Unified%20Installer/9.2.4/pg4mac_924_r1c.dmg/download 
