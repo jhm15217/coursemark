@@ -37,3 +37,5 @@ production:
   database: agora_production
   pool: 5
   timeout: 5000
+
+7. Run rake db:reset
