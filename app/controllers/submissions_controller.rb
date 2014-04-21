@@ -50,10 +50,11 @@ class SubmissionsController < ApplicationController
   # POST /submissions
   # POST /submissions.json
   def create
+    puts "ATTEMPTING SAVE 1"
     @submission = Submission.new(params[:submission])
     @submission.user = current_user
 
-    puts "ATTEMPTING SAVE"
+    puts "ATTEMPTING SAVE 2"
 
     respond_to do |format|
       if @submission.save
