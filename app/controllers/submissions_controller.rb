@@ -1,6 +1,7 @@
 class SubmissionsController < ApplicationController
   before_filter :get_assignment, :get_course
   before_filter :get_evaluations, :only => :show
+  load_and_authorize_resource
 
   # GET /submissions
   # GET /submissions.json
