@@ -7,6 +7,7 @@ class RegistrationsController < ApplicationController
   class InvalidCourse < StandardError
   end
   rescue_from InvalidCourse, :with => :invalidCourse
+  load_and_authorize_resource
   
   # GET /registrations
   # GET /registrations.json
