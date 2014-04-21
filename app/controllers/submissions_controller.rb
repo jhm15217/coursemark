@@ -53,7 +53,7 @@ class SubmissionsController < ApplicationController
         format.html { redirect_to [@course, @assignment] }
         format.json { render json: @submission, status: :created, location: @submission }
       else
-        format.html { render action: "new" }
+        format.html { redirect_to [@course, @assignment] }
         format.json { render json: @submission.errors, status: :unprocessable_entity }
       end
     end
