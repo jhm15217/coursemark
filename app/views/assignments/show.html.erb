@@ -12,7 +12,7 @@
   </p>
 </div>
 
-<% if !@submission.created_at || (Time.zone.now <= @assignment.submission_due) %>
+<% if !@submission.created_at && (Time.zone.now <= @assignment.submission_due) %>
 	<%= render 'submission' %>
 <% elsif !@submission.created_at && (Time.zone.now > @assignment.submission_due) %>
 	<div class="edit_submission">
