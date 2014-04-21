@@ -34,7 +34,9 @@
         </div>
 
         <div id="sidebar">
-            <div id="logo"><%= image_tag "coursemark.png", alt: "Coursemark" %></div>
+            <div id="logo" class="<%= if current_user.courses.length <= 1 then 'big' end %>">
+                <%= image_tag "coursemark.png", alt: "Coursemark" %>
+            </div>
             <% if current_user.courses.length > 1 %>
                 <div id='courseSelector'>
                   <%= @course.name %>
@@ -75,7 +77,6 @@
         </div>
 
         <%= javascript_include_tag "application" %>
-        <%= javascript_include_tag "nested_form" %>
         <%= yield :javascript_includes %>
     </body>
 </html>

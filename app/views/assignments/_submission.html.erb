@@ -16,12 +16,12 @@
     <br /> You can continue submitting until the deadline.</p>
   <% end %>
   <div class="field">
-    <%= f.file_field :submission, :accept => 'application/pdf' %>
+    <%= f.file_field :submission, :accept => 'application/pdf', :required => true %>
   </div>
   <div class="field hidden">
     <%= f.collection_select :assignment_id, Assignment.all, :id, :name, :prompt => "Select assignment..." %>
   </div>
   <div class="actions">
-    <%= f.submit "Upload Submission" %>
+    <%= f.submit "Submit Assignment" %>
   </div>
 <% end %>
