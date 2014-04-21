@@ -63,6 +63,7 @@ class SubmissionsController < ApplicationController
         format.json { render json: @submission, status: :created, location: @submission }
       else
         puts "DIDNT SAVE"
+        puts @submission.errors
         format.html { redirect_to [@course, @assignment] }
         format.json { render json: @submission.errors, status: :unprocessable_entity }
       end
