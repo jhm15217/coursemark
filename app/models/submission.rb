@@ -1,8 +1,6 @@
 class Submission < ActiveRecord::Base
   attr_accessible :assignment_id, :submission, :user_id, :instructor_approved
-
   after_save :create_and_save_evaluations
-
   mount_uploader :submission, SubmissionUploader
 
   # Relationships
@@ -15,7 +13,6 @@ class Submission < ActiveRecord::Base
   validates_presence_of :assignment_id
   validates_presence_of :user_id
   validate :met_deadline, :on => :create
-
 
   def completed_responses
   	completed = []

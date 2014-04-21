@@ -5,6 +5,9 @@ gem 'rails', '3.2.13'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
+gem 'pg'
+gem 'carrierwave-postgresql'
+
 # Gems used only in testing
 group :test do
 	gem 'shoulda', '3.5.0'
@@ -20,7 +23,6 @@ group :test do
 	gem 'nokogiri', '1.6.1'
 	gem 'simplecov', '0.8.2'
 	gem 'tconsole', '1.2.8'
-	gem 'sqlite3'
 end
 
 # Gems used only in development
@@ -30,14 +32,12 @@ group :development do
   gem 'faker', '1.1.2'
   gem "seed_dump"
   gem 'binding_of_caller'
-  gem 'sqlite3'
   gem 'rails-erd'
 end
 
 group :production do
   gem 'thin'
   gem 'rails_12factor'
-  gem 'pg'
 end
 
 # Gems used only for assets and not required
