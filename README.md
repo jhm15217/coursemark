@@ -21,7 +21,7 @@ http://sourceforge.net/projects/pgsqlformac/files/PostgreSQL%20Unified%20Install
 development:
   adapter: postgresql
   encoding: unicode
-  database: agora_test
+  database: agora_development
   pool: 5
   username: MAC_USERNAME_HERE
   password: MAC_PASSWORD_HERE
@@ -29,7 +29,7 @@ development:
 test:
   adapter: postgresql
   encoding: unicode
-  database: agora_development
+  database: agora_test
   pool: 5
   username: MAC_USERNAME_HERE
   password: MAC_PASSWORD_HERE
