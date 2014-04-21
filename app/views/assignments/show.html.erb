@@ -12,14 +12,14 @@
   </p>
 </div>
 
-<% if !@submission.created_at || (Time.zone.now <= @assignment.submission_due) %>
+<% if !@submission.created_at && (Time.zone.now <= @assignment.submission_due) %>
 	<%= render 'submission' %>
 <% elsif !@submission.created_at && (Time.zone.now > @assignment.submission_due) %>
 	<div class="edit_submission">
     <% if Time.zone.now <= @assignment.review_due %>
 		  <p>Submission deadline has passed.</p>
     <% else %>
-      <p class="grade"><%= @submission.percentage.round %>%</p>
+      <p class="grade"><%= if @submission.percentage then @submission.percentage.round else '--' end %>%</p>
     <% end %>
 	</div>
 <% else %>
@@ -27,7 +27,7 @@
     <% if Time.zone.now <= @assignment.review_due %>
       <p>Your assignment was submitted on time.</p>
     <% else %>
-      <p class="grade"><%= @submission.percentage.round %>%</p>
+      <p class="grade"><%= if @submission.percentage then @submission.percentage.round else '--' end %>%</p>
     <% end %>
     <a href='http://<%= request.host_with_port %><%= @submission.submission %>' >View Submission</a>
     </p>

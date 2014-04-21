@@ -53,15 +53,12 @@ class SubmissionsController < ApplicationController
     @submission = Submission.new(params[:submission])
     @submission.user = current_user
 
-    puts "ATTEMPTING SAVE"
-
     respond_to do |format|
       if @submission.save
-        puts "SAVED"
         format.html { redirect_to [@course, @assignment] }
         format.json { render json: @submission, status: :created, location: @submission }
       else
-        puts "DIDNT SAVE"
+        puts @submission.errors.full_messages
         format.html { redirect_to [@course, @assignment] }
         format.json { render json: @submission.errors, status: :unprocessable_entity }
       end

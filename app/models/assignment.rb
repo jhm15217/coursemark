@@ -93,7 +93,6 @@ class Assignment < ActiveRecord::Base
     if !@submission_due_date.nil?
       @offset = Time.zone.now.to_s.split(' ')[2]
       self.submission_due = DateTime.parse("#{@submission_due_date} #{@submission_due_time + @offset}")
-      puts self.submission_due
       self.review_due = DateTime.parse("#{@review_due_date} #{@review_due_time + @offset}")
     end
   end
@@ -116,7 +115,7 @@ class Assignment < ActiveRecord::Base
   end
 
   def reviews_required_feasible
-    if self.course.get_students.length < reviews_required
+    if (self.course.get_students.length - 1) < reviews_required
       errors.add(:reviews_required, "Too many reviews required for class size.")
     end
   end
