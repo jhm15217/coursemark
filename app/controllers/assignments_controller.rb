@@ -14,23 +14,17 @@ class AssignmentsController < ApplicationController
     # new assignment page if there are none
 
     if @assignments.length > 0
-      @assignments.each { |x| puts x.id }
-
+      
       if !current_user.instructor?(@course)
-        puts "Not instructor"
         @assignment = @assignments.published.first
-        puts @assignment.id
-        puts @assignment.draft
       else
-        puts "Instructor"
         @assignment = @assignments.first
-        puts @assignment.id
       end
 
       if @assignment.nil?
         @URL = edit_user_path(current_user, :course => @course.id)
       else
-        @URL = course_assignment_url(@course, @assignments.first)
+        @URL = course_assignment_url(@course, @assignment)
       end
     else
       if current_user.instructor?(@course)
