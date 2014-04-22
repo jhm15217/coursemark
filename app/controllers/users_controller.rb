@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
 	skip_before_filter :require_login, :except => :edit
-	load_and_authorize_resource, :except => [:new]
 	layout false, :except => :edit
+	load_and_authorize_resource, :except => [:new]
 	
 	def new  
 		@user = User.new
