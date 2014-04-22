@@ -561,6 +561,7 @@ a {
 
 #main .noData a {
     color: #343F53;
+    text-decoration: underline;
 }
 
 #main h2 {
