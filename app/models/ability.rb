@@ -2,22 +2,15 @@ class Ability
   include CanCan::Ability
 
   def initialize(user)
-
-    #user ||= User.new 
-
-    #can :manage, :all   
-
+ 
     # universal
     can :destroy, UserSession
-    
     can :create, UserSession 
 
     can :new, Course
-
     can :create, Course
 
     can :new, User
-
     can :create, User
     
     can :edit, User do |u|
@@ -99,7 +92,7 @@ class Ability
     end
 
     can :show, Assignment do |a|
-      a.course.get_students.include? user
+      (a.course.get_students.include? user) && (!a.draft)
     end
 
     can :create, Submission do|s|
