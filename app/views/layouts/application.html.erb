@@ -34,9 +34,13 @@
         </div>
 
         <div id="sidebar">
-            <div id="logo" class="<%= if current_user.courses.length <= 1 then 'big' end %>">
-                <%= image_tag "coursemark.png", alt: "Coursemark" %>
-            </div>
+
+            <%= link_to root_url do %>
+                <div id="logo" class="<%= if current_user.courses.length <= 1 then 'big' end %>">
+                    <%= image_tag "coursemark.png", alt: "Coursemark" %>
+                </div>
+            <% end %>
+            
             <% if current_user.courses.length > 1 %>
                 <div id='courseSelector'>
                   <%= @course.name %>
