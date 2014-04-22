@@ -1,8 +1,8 @@
 Agora::Application.routes.draw do
+  get 'submission_submission/:id', :to => 'submissions#view'
   match 'registrations/add_to_course_staff' => 'registrations#add_to_course_staff'
   match 'assignments/publish' => 'assignments#publish'
 
-  get 'submission_submission/:id', :to => 'submissions#view'
   get "users/new"
   get "users/edit"
   get "user_sessions/new"
