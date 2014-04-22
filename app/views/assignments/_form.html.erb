@@ -35,9 +35,9 @@
     <div class="clearfix"></div>
     <%= f.submit %>
     <% if @assignment.draft %>
-      <div class='button publish'>
-        <%= link_to 'Publish Assignment', assignments_publish_path(:assignment => @assignment.id), data: { confirm: 'Are you sure you wish to publish this assignment?' } %>
-      </div>
+      <%= link_to assignments_publish_path(:assignment => @assignment.id), data: { confirm: 'Are you sure you wish to publish this assignment?' } do %>
+        <div class='button publish'>Publish Assignment</div>
+      <% end %>
     <% end %>
   </div>
   <div class="clearfix"></div>

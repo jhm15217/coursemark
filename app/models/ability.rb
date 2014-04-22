@@ -44,8 +44,6 @@ class Ability
       end
     end
 
-
-
     # instructor
     can :manage, Course do |c|
       c.get_instructors.include? user
@@ -81,7 +79,7 @@ class Ability
       else
         true
       end
-    end   
+    end
 
     # student
     can :index, Course do |c|

@@ -34,9 +34,11 @@
       <% end %>
   </table>
   <br />
-  <div class='button'>
-    <%= link_to "Export Grades CSV", :controller => "assignments", :action => "export" %>
-  </div>
+  <%= link_to :controller => "assignments", :action => "export" do %>
+    <div class='button'>
+      Export Grades CSV
+    </div>
+  <% end %>
 <% else %>
   <h2 class="noData">No one has submitted yet.</h2>
 <% end %>
