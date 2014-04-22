@@ -88,7 +88,7 @@ class SubmissionsController < ApplicationController
             end
           end
           if @nextSubmission.blank?
-            format.html { redirect_to [@course, @assignment]}
+            format.html { redirect_to course_assignment_submissions_path(@course, @assignment)}
           else
             format.html { redirect_to [@course, @assignment, @nextSubmission]}
           end
