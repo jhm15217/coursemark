@@ -1,5 +1,6 @@
 class QuestionsController < ApplicationController
   before_filter :get_assignment, :get_course
+  load_and_authorize_resource
 
   # GET /questions
   # GET /questions.json

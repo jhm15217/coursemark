@@ -17,9 +17,9 @@
 
 <br />
 
-<div class="button">
-  <%= link_to 'New Question',  new_course_assignment_question_path(@course, @assignment, :type => 'yesno') %>
-</div>
+<%= link_to new_course_assignment_question_path(@course, @assignment, :type => 'yesno') do %>
+  <div class="button">New question</div>
+<% end %>
 
 <% else %>
 

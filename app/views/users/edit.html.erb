@@ -27,7 +27,7 @@
   <tr>
     <td><%= registration.course.name %></td>
     <td><%= registration.instructor ? "Course Staff" : "Student"  %></td>
-    <td><%= link_to 'Remove', registration, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+    <td><%= link_to 'Leave Course', registration, method: :delete, data: { confirm: 'Are you sure?' } %></td>
   </tr>
 <% end %>
 </table>
