@@ -3,7 +3,6 @@ class ApplicationController < ActionController::Base
   before_filter :require_login, :get_assignments
   helper_method :current_user
   helper_method :get_submission_for_assignment
-  check_authorization
 
   def get_assignments
     # TODO: This should be a scope or a method in a model
@@ -40,6 +39,10 @@ class ApplicationController < ActionController::Base
   def get_submission_for_assignment(assignment)
     @submission = Submission.where(:assignment_id => assignment.id, :user_id => current_user.id)
     return @submission[0]
+  end
+
+  rescue_from CanCan::AccessDenied do |exception|
+    redirect_to root_url
   end
 
   private
