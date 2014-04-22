@@ -12,13 +12,13 @@ class Ability
 
     can :new, User
     can :create, User
-    # can :manage, User do |u|
-    #   if u.id
-    #     u.id == user.id
-    #   else
-    #     true
-    #   end
-    # end
+    can :manage, User do |u|
+      if u.id && user.id
+        u.id == user.id
+      else
+        true
+      end
+    end
     
     can :index, Registration do |r|
       r.user_id == user.id
