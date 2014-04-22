@@ -12,8 +12,7 @@ class Ability
 
     can :new, User
     can :create, User
-    
-    can :edit, User do |u|
+    can :manage, User do |u|
       u.id == user.id
     end
     
