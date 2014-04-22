@@ -1,6 +1,6 @@
 class UserSessionsController < ApplicationController
 	skip_before_filter :require_login
-	#load_and_authorize_resource
+	load_and_authorize_resource
 	layout false
 	
 	def new
