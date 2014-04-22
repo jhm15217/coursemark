@@ -1,5 +1,6 @@
 class ScalesController < ApplicationController
-before_filter :get_assignment, :get_course, :get_question
+  before_filter :get_assignment, :get_course, :get_question
+  load_and_authorize_resource
 
   # GET /scales
   # GET /scales.json

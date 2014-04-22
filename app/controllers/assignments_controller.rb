@@ -2,7 +2,7 @@ class AssignmentsController < ApplicationController
   require 'csv'
   before_filter :get_course
   helper_method :get_submission_for_assignment
-  load_and_authorize_resource
+  load_and_authorize_resource :except => [:new, :create]
 
   # GET /assignments
   # GET /assignments.json
@@ -87,6 +87,10 @@ class AssignmentsController < ApplicationController
   # GET /assignments/new
   # GET /assignments/new.json
   def new
+    if !current_user.instructor?(@course)
+      return
+    end
+
     @assignment = Assignment.new
     @assignment.name = "New Assignment"
     @assignment.reviews_required = 4
@@ -122,6 +126,10 @@ class AssignmentsController < ApplicationController
   # POST /assignments
   # POST /assignments.json
   def create
+    if !current_user.instructor?(@course)
+      return
+    end
+    
     if params['assignment']['submission_due_time(4i)']
       params['assignment']['submission_due_time'] = params['assignment']['submission_due_time(4i)'] + ':' + params['assignment']['submission_due_time(5i)']
       params['assignment'].delete 'submission_due_time(1i)'

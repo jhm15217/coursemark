@@ -70,6 +70,11 @@ textarea {
     padding: 0.2em 0;
 }
 
+a {
+    color: #343F53;
+    text-decoration: none;
+}
+
 /* ==========================================================================
    Agora custom styles
    ========================================================================== */
@@ -512,6 +517,7 @@ textarea {
 
 #main table a {
     color: #343F53;
+    text-decoration: underline;
 }
 
 #main table tr {

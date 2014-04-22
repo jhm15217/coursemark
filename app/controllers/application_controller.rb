@@ -4,7 +4,6 @@ class ApplicationController < ActionController::Base
   helper_method :current_user
   helper_method :get_submission_for_assignment
   check_authorization
-  load_and_authorize_resource
 
   def get_assignments
     # TODO: This should be a scope or a method in a model
