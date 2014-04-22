@@ -17,6 +17,8 @@ class Ability
     can :create, Course
 
     can :new, User
+
+    can :create, User
     
     can :edit, User do |u|
       u.id == user.id
