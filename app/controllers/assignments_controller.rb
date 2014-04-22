@@ -14,16 +14,17 @@ class AssignmentsController < ApplicationController
     # new assignment page if there are none
 
     if @assignments.length > 0
-      puts @assignments.to_s
+      @assignments.each { |x| puts x.id }
 
       if !current_user.instructor?(@course)
         puts "Not instructor"
         @assignment = @assignments.published.first
-        puts @assignment.to_s
+        puts @assignment.id
+        puts @assignment.draft
       else
         puts "Instructor"
         @assignment = @assignments.first
-        puts @assignment.to_s
+        puts @assignment.id
       end
 
       if @assignment.nil?
