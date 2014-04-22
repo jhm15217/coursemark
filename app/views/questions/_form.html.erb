@@ -28,7 +28,9 @@
   </div>
 
   <div class="actions" id="rubricActions">
-    <div class="button"><%= f.link_to_add "Add an option", :scales, :data => { :target => "#questionOptions" } %></div>
+    <%= f.link_to_add :scales, :data => { :target => "#questionOptions" } do %>
+      <div class="button">Add an option</div>
+    <% end %>
     <%= f.submit %>
   </div>
 <% end %>
