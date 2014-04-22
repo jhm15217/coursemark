@@ -41,4 +41,6 @@ production:
   timeout: 5000
 ```
 
-7. Run rake db:reset
+7. Run rake db:create
+
+8. Run rake db:reset
