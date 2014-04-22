@@ -1,11 +1,16 @@
 class SubmissionsController < ApplicationController
   before_filter :get_assignment, :get_course
   before_filter :get_evaluations, :only => :show
-  load_and_authorize_resource
+  load_and_authorize_resource :except => [:view]
+  skip_authorization_check :only => [:view]
 
   # GET /submissions
   # GET /submissions.json
   def index
+    if !current_user.instructor?(@course)
+      raise CanCan::AccessDenied.new("Not authorized!")
+    end
+
     @submissions = @assignment.submissions.sort_by{ |s| s.user.last_name }
 
     respond_to do |format|
@@ -26,6 +31,7 @@ class SubmissionsController < ApplicationController
   end
 
   def view
+    puts "OH HAI"
     @submission = Submission.where(:submission => params[:id].to_s).first
     @filename = 'submission_' + @submission.id.to_s + '.pdf'
     send_data(@submission.submission.file.read, :filename => @filename, :disposition => 'inline', :type => 'application/pdf')
