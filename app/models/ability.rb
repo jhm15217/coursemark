@@ -13,8 +13,8 @@ class Ability
     can :new, User
     can :create, User
     can :manage, User do |u|
-      if u.user_id
-        u.user_id == user.id
+      if u.id
+        u.id == user.id
       else
         true
       end
