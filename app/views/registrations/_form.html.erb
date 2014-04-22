@@ -16,7 +16,6 @@
     <%= f.submit "Join course" %>
   </div>
 
-  <%= link_to new_course_path, :class => "button" do %>
-    <div class="actions newAccount">Create a new course</div>
+  <div class="actions newAccount"><%= link_to "Create a new course", new_course_path, :class => "button" %></div>
   <% end %>
 <% end %>
