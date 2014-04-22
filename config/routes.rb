@@ -11,7 +11,6 @@ Agora::Application.routes.draw do
     resources :assignments do
       get 'export', :controller => 'assignments', :action => 'export'
 
-
       resources :submissions do
         resources :evaluations
       end
