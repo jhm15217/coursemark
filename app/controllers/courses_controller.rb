@@ -15,7 +15,7 @@ class CoursesController < ApplicationController
     if @courses.length > 0
       @URL = @courses.first
     else
-      @URL = { :action => 'new' }
+      @URL = registrations_path
     end
 
     respond_to do |format|

@@ -3,6 +3,7 @@ class AssignmentsController < ApplicationController
   before_filter :get_course
   helper_method :get_submission_for_assignment
   load_and_authorize_resource :except => [:new, :create]
+  skip_authorization_check :only => [:new, :create]
 
   # GET /assignments
   # GET /assignments.json
@@ -13,6 +14,7 @@ class AssignmentsController < ApplicationController
     # new assignment page if there are none
 
     if @assignments.length > 0
+
       if !current_user.instructor?(@course)
         @assignment = @assignments.published.first
       else
@@ -22,7 +24,7 @@ class AssignmentsController < ApplicationController
       if @assignment.nil?
         @URL = edit_user_path(current_user, :course => @course.id)
       else
-        @URL = course_assignment_url(@course, @assignments.first)
+        @URL = course_assignment_url(@course, @assignment)
       end
     else
       if current_user.instructor?(@course)
