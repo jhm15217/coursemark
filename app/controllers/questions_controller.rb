@@ -4,7 +4,11 @@ class QuestionsController < ApplicationController
 
   # GET /questions
   # GET /questions.json
-  def index
+  def index    
+    if !current_user.instructor?(@course)
+      raise CanCan::AccessDenied.new("Not authorized!")
+    end
+
     @questions = @assignment.questions
 
     respond_to do |format|
@@ -27,6 +31,10 @@ class QuestionsController < ApplicationController
   # GET /questions/new
   # GET /questions/new.json
   def new
+    if !current_user.instructor?(@course)
+      raise CanCan::AccessDenied.new("Not authorized!")
+    end
+
     @question = Question.new
     @type = params[:type]
 
@@ -55,6 +63,10 @@ class QuestionsController < ApplicationController
   # POST /questions
   # POST /questions.json
   def create
+    if !current_user.instructor?(@course)
+      raise CanCan::AccessDenied.new("Not authorized!")
+    end
+
     @question = Question.new(params[:question])
     @question.assignment = @assignment
 
@@ -72,6 +84,10 @@ class QuestionsController < ApplicationController
   # PUT /questions/1
   # PUT /questions/1.json
   def update
+    if !current_user.instructor?(@course)
+      raise CanCan::AccessDenied.new("Not authorized!")
+    end
+
     @question = Question.find(params[:id])
 
     @question.scales do |scale, i|
@@ -93,6 +109,10 @@ class QuestionsController < ApplicationController
   # DELETE /questions/1
   # DELETE /questions/1.json
   def destroy
+    if !current_user.instructor?(@course)
+      raise CanCan::AccessDenied.new("Not authorized!")
+    end
+    
     @question = Question.find(params[:id])
     @question.destroy
 
