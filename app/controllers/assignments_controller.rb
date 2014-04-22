@@ -14,7 +14,7 @@ class AssignmentsController < ApplicationController
     # new assignment page if there are none
 
     if @assignments.length > 0
-      
+
       if !current_user.instructor?(@course)
         @assignment = @assignments.published.first
       else
