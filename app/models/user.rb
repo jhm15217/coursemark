@@ -24,11 +24,9 @@ class User < ActiveRecord::Base
 
   def instructor?(course)
     self.registrations.each do |registration|
-      if registration.course == course
+      if registration.course_id == course.id
         if registration.instructor
-          if registration.user == self
-            return true
-          end
+          return true
         end
       end
     end
