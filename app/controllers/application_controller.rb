@@ -16,20 +16,23 @@ class ApplicationController < ActionController::Base
       end
 
       @assignments = []
-      @course_id = params[:course_id]
+      @course_id = params[:course_id] || params[:course]
 
       if @course_id.nil?
         @course_id = params[:id]
       end
 
-      current_user.registrations.where(:course_id => @course_id).each do |registration|
-        if registration.instructor
-          # if a user is an instructor for course, get drafts
-          @assignments.concat(registration.course.assignments)
-        else
-          # otherwise user is a student, get published assignments only
-          @assignments.concat(registration.course.assignments.published)
-        end
+      if ['users'].include?(params[:controller])
+        @course_id = current_user.courses.first.id
+      end
+
+      @registration = Registration.where(:course_id => @course_id, :user_id => current_user.id).first
+      if @registration.instructor
+        # if a user is an instructor for course, get drafts
+        @assignments = @registration.course.assignments
+      else
+        # otherwise user is a student, get published assignments only
+        @assignments = @registration.course.assignments.published
       end
     end
   end
