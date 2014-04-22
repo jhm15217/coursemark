@@ -27,10 +27,10 @@ class ApplicationController < ActionController::Base
       end
 
       @registration = Registration.where(:course_id => @course_id, :user_id => current_user.id).first
-      if @registration.instructor
+      if @registration && @registration.instructor
         # if a user is an instructor for course, get drafts
         @assignments = @registration.course.assignments
-      else
+      elsif @registration
         # otherwise user is a student, get published assignments only
         @assignments = @registration.course.assignments.published
       end
