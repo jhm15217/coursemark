@@ -122,6 +122,7 @@ class RegistrationsController < ApplicationController
     @registration = Registration.find(params[:id])
     #@registration.active = false;
 
+    # TODO: This should also delete all evaluations people were assigned of this user
     @registration.destroy
 
     respond_to do |format|
