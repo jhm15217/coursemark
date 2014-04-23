@@ -33,7 +33,7 @@ function submitForms() {
 
     // Checkbox change
     checkbox = $($(forms[i])[0]).find('input[name="response[scale_id]"]').change(function(){
-      $($(textarea).parent().parent().parent().find('.savedStatus')[0]).html('saving...');
+      $(textarea).parent().parent().parent().find('.savedStatus').html('saving...');
       $($(textarea).parent().parent()[0]).trigger('submit.rails');
     });
 
