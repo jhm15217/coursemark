@@ -91,7 +91,7 @@ class RegistrationsController < ApplicationController
 
     respond_to do |format|
       if @registration.save
-        format.html { redirect_to root_url }
+        format.html { redirect_to course_path(@registration.course) }
         format.json { render json: @registration, status: :created, location: @registration }
       else
         format.html { render action: "new" }
