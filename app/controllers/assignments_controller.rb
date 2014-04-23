@@ -196,8 +196,11 @@ class AssignmentsController < ApplicationController
 
     @assignment = Assignment.find(params[:id])
 
+    puts params[:assignment]
+
     respond_to do |format|
       if @assignment.update_attributes(params[:assignment])
+        puts "Update successful!"
         format.html { redirect_to [@course, @assignment], notice: 'Assignment was successfully updated.' }
         format.json { head :no_content }
       else
