@@ -107,6 +107,12 @@ class Ability
     end
 
     can :show, Submission do |s|
+      s.evaluations.each do |e|
+        if (e.user_id == user.id)
+          return true
+        end
+      end
+      
       s.user_id == user.id
     end
   end
