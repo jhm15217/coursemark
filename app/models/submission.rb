@@ -104,6 +104,7 @@ class Submission < ActiveRecord::Base
 						response = Response.new
 						response.question_id = question.id
 						response.evaluation_id = evaluation.id
+						puts response.valid?
 						response.save
 					}
 
