@@ -97,6 +97,10 @@ class AssignmentsController < ApplicationController
     @assignment.name = "New Assignment"
     @assignment.reviews_required = 4
 
+    if @course.get_students.length <= 4
+      @assignment.reviews_required = @course.get_students.length - 1
+    end
+
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @assignment }
