@@ -905,8 +905,8 @@ a {
     margin: 0px;
     text-align: center;
     width: calc(100% - 400px);
-    margin-top: -19px;
-    margin-left: 250px;
+    margin-top: -0;
+    margin-left: 120px;
 }
 
 #submissionHeader a {
