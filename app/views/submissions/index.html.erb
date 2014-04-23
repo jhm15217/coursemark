@@ -8,7 +8,8 @@
 
 <% if @submissions.length > 0 %>
   <table class="submissions">
-      <tr class="highlighted">
+      <tr>
+        <th></th>
         <th>First name</th>
         <th>Last name</th>
         <th>Timestamp</th>
@@ -18,7 +19,8 @@
         <% end %>
       </tr>
       <% @submissions.each do |submission| %>
-      <tr class="<%= if !submission.instructor_approved then "highlighted" end %>">
+      <tr class="<%= if submission.instructor_approved then "highlighted" end %>">
+        <td><% if submission.instructor_approved %><div class="checkmark"></div><% end %></td>
         <td><%= submission.user.first_name %></td>
         <td><%= submission.user.last_name %></td>
         <td><%= submission.created_at.to_s(:pretty) %></td>
@@ -35,7 +37,7 @@
   </table>
   <br />
   <%= link_to :controller => "assignments", :action => "export" do %>
-    <div class='button'>
+    <div class='button' style="float: left;">
       Export Grades CSV
     </div>
   <% end %>
