@@ -101,8 +101,8 @@ class AssignmentsController < ApplicationController
       @assignment.reviews_required = @course.get_students.length - 1
     end
 
-    if @course.get_students.length < 0
-      @assignment.reviews_required
+    if @assignment.reviews_required <= 0
+      @assignment.reviews_required = 1
     end
 
     respond_to do |format|
