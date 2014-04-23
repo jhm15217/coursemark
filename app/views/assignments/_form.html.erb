@@ -19,7 +19,7 @@
   </div>
   <div class="field">
     <%= f.label :submission_due, "Submission Deadline" %><br />
-    <%= f.text_field :submission_due_date %> at
+    <%= f.text_field :submission_due_date, :disabled => @assignment.submission_due && (Time.zone.now > @assignment.submission_due) %> at
     <%= f.time_select :submission_due_time, {minute_step: 15, ampm: true, :time_separator => ""} %>
   </div>
   <div class="field">

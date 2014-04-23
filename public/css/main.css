@@ -526,11 +526,25 @@ a {
 }
 
 #main .submissions tr {
-    background: #F5F6F8;
+    background: #FFF;
 }
 
-#main .submissions tr.highlighted {
-    background: #FFF;
+#main .submissions .highlighted a {
+    opacity: .6;
+}
+
+#main .submissions tr td:first-child,
+#main .submissions th td:first-child {
+    width: 75px;
+}
+
+#main .submissions .checkmark {
+    background-image: url(../img/checkmark.png);
+    background-repeat: no-repeat;
+    background-position: 0px center;
+    background-size: 20px;
+    width: 20px;
+    height: 20px;
 }
 
 #main table tr:last-child {

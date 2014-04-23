@@ -116,7 +116,7 @@
               <div class='submissionPeerReview'><%= if !response.peer_review.blank? then response.peer_review else "No written response provided." end %></div>
               <% if response.student_response != nil then %>
                 <div class='submissionStudentResponse'>
-                  <div class='submissionResponseFrom'>
+                  <div class='submissionResponseFrom' style="margin-top: 30px;">
                     <% if current_user.instructor?(@course) %>
                       <%= @submission.user.first_name %>'s Reply
                     <% elsif current_user.id == @submission.user.id then %>
