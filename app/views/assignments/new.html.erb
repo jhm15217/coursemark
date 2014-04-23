@@ -1,3 +1,17 @@
-<%= render "assignments/header" %>
+<div id="header">
+    <h1 class="name">New Assignment</h1>
+    <div class="tabs">
+        <div class="tab logout">
+        	<%= link_to edit_user_path(current_user) do %>
+                Settings
+            <% end %>
+            <%= link_to logout_path do %>
+                Sign out
+            <% end %>
+        </div>
+    </div>
+</div>
+
+<div id="headerSpacer" style="height:122px;"></div>
 
 <%= render 'form' %>
