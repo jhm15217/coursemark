@@ -19,7 +19,7 @@ class Assignment < ActiveRecord::Base
   
   # submission and review due dates can only be changed if they haven't passed
   validate :submission_deadline_not_passed
-  validate :review_deadline_not_passed
+  #validate :review_deadline_not_passed
 
   # make sure the number of reviews required is feasible given class size
   validate :reviews_required_feasible
