@@ -16,7 +16,7 @@ class RegistrationsController < ApplicationController
   # GET /registrations
   # GET /registrations.json
   def index
-    if params[:course]
+    if params[:course] && current_user.instructor?(Course.find(params[:course]))
       @course = Course.find(params[:course])
       @assignments = @course.assignments
       @registrations = @course.registrations.where(:active => true).sort_by{ |r| r.instructor ? 0 : 1 }
