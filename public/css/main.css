@@ -290,6 +290,7 @@ a {
 #main.no_sidebar_main {
   width:100%;
   padding: 0px 36px 40px 50px;
+  background: #343F53;
 }
 
 #header {
@@ -929,7 +930,7 @@ a {
 }
 
 #submissionPDFWrapper {
-  width: 55%;
+  width: 62%;
   height: calc(100% - 39px);
   min-height: 400px;
   margin-top: 37px;
@@ -945,7 +946,7 @@ a {
 }
 
 #submissionsWrapper {
-  width: 43%;
+  width: 35.5%;
   float: right;
   margin-left: 8px;
   margin-top: 43px;
@@ -1119,6 +1120,7 @@ a {
 .new_submission a,
 .edit_submission a {
     color: #343F53;
+    text-decoration: underline;
 }
 
 .new_submission .grade,
