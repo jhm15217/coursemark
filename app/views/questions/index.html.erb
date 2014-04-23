@@ -1,5 +1,9 @@
 <%= render "assignments/header" %>
 
+<% if (Time.zone.now >= @assignment.submission_due) %>
+  <div class="notice">Rubric questions cannot be added after the submission deadline</div>
+<% end %>
+
 <% if @questions and @questions.length > 0 %>
 
 <% @questions.each do |question| %>
@@ -17,8 +21,10 @@
 
 <br />
 
-<%= link_to new_course_assignment_question_path(@course, @assignment, :type => 'yesno') do %>
-  <div class="button">New question</div>
+<% if (Time.zone.now < @assignment.submission_due) %>
+  <%= link_to new_course_assignment_question_path(@course, @assignment, :type => 'yesno') do %>
+    <div class="button">New question</div>
+  <% end %>
 <% end %>
 
 <% else %>
