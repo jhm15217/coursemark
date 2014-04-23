@@ -24,7 +24,7 @@ class SubmissionsController < ApplicationController
   def show
     @submission = Submission.find(params[:id])
     @questions = @submission.assignment.questions.sort_by {|obj| obj.created_at }
-    @repsonses = @evaluations[0].responses.sort_by {|obj| obj.created_at }
+    @responses = @evaluations[0].responses.sort_by {|obj| obj.created_at }
 
     respond_to do |format|
       format.html { render :layout => 'no_sidebar' } # show.html.erb
