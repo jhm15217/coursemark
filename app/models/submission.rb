@@ -98,15 +98,12 @@ class Submission < ActiveRecord::Base
 					evaluation.save
 
 					# create a response for each question of the evaluation
-					puts self.assignment.questions
 					self.assignment.questions.each { |question|  
 						puts question.question_text
 						response = Response.new
 						response.question_id = question.id
 						response.evaluation_id = evaluation.id
-						puts response.valid?
 						response.save!
-						puts response.errors.full_messages
 					}
 
 					evaluationsLeft -= 1
