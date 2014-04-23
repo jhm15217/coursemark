@@ -27,7 +27,7 @@
     <% if Time.zone.now <= @assignment.review_due %>
       <p>Your assignment was submitted on time.</p>
     <% else %>
-      <p class="grade"><%= if @submission.percentage then @submission.percentage.round else '--' end %>%</p>
+      <p class="grade"><%= if @submission.percentage && @submission.instructor_approved then @submission.percentage.round.to_s + '%' else 'Grade Pending' end %></p>
     <% end %>
     <a href='http://<%= request.host_with_port %><%= @submission.submission %>' >View Submission</a>
     </p>
@@ -65,7 +65,7 @@
             <div class='submissionResponseFrom'>Reviewer <%= index + 1 %></div>
             <div class='submissionPeerReview'><%= response.peer_review %></div>
             <div class='submissionInstructorResponse'>
-              <div class='submissionResponseFrom'>Your Reply</div>
+              <div class='submissionResponseFrom' style="margin-top: 20px;">Your Reply</div>
               <% if response.student_response != nil then %>
                   <%= response.student_response %>
               <% else %>
@@ -77,7 +77,7 @@
             </div> <!-- End Student Response -->
             <% if response.instructor_response != nil then %>
               <div class='submissionStudentResponse'>
-                <div class='submissionResponseFrom'>Instructor's Reply</div>
+                <div class='submissionResponseFrom' style="margin-top: 60px;">Instructor's Reply</div>
                 <%= response.instructor_response %>
               </div>
             <% end %>
