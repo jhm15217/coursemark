@@ -58,7 +58,7 @@ class Submission < ActiveRecord::Base
   	end
   end
 
-  private
+  #private
 
   def met_deadline
   	if Time.now > self.assignment.submission_due
@@ -99,10 +99,11 @@ class Submission < ActiveRecord::Base
 
 					# create a response for each question of the evaluation
 					self.assignment.questions.each { |question|  
+						puts question.question_text
 						response = Response.new
 						response.question_id = question.id
 						response.evaluation_id = evaluation.id
-						response.save
+						response.save!
 					}
 
 					evaluationsLeft -= 1

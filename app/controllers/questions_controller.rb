@@ -9,7 +9,7 @@ class QuestionsController < ApplicationController
       raise CanCan::AccessDenied.new("Not authorized!")
     end
 
-    @questions = @assignment.questions
+    @questions = @assignment.questions.sort_by{ |q| q.created_at }
 
     respond_to do |format|
       format.html # index.html.erb
