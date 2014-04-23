@@ -19,7 +19,7 @@ class Assignment < ActiveRecord::Base
   
   # submission and review due dates can only be changed if they haven't passed
   validate :submission_deadline_not_passed
-  #validate :review_deadline_not_passed
+  validate :review_deadline_not_passed
 
   # make sure the number of reviews required is feasible given class size
   validate :reviews_required_feasible
@@ -87,6 +87,7 @@ class Assignment < ActiveRecord::Base
 
   def review_due_time=(time)
     @review_due_time = Time.parse(time.to_s).strftime("%H:%M:%S")
+    puts "New review time: " + @review_due_time.to_s
   end
   
   def make_dates
@@ -94,6 +95,7 @@ class Assignment < ActiveRecord::Base
       @offset = Time.zone.now.to_s.split(' ')[2]
       self.submission_due = DateTime.parse("#{@submission_due_date} #{@submission_due_time + @offset}")
       self.review_due = DateTime.parse("#{@review_due_date} #{@review_due_time + @offset}")
+      puts "New review due: " + self.review_due.to_s
     end
   end
 
