@@ -1063,9 +1063,7 @@ a {
 .submissionStudentResponse,
 .submissionInstructorResponse,
 .peerReviewJustification{
-  border-top: 1px solid #DFDFDF;
-  margin-top: 23px;
-  padding-top: 20px;
+    margin-bottom: 11px;
 }
 
 #submitFormsButton {

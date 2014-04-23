@@ -74,7 +74,9 @@ class Ability
     end
 
     can :manage, Response do |r|
-      if r.evaluation.submission.assignment.course  
+      if r.evaluation.user_id == user.id
+        true
+      elsif r.evaluation.submission.assignment.course  
         r.evaluation.submission.assignment.course.get_instructors.include? user  
       else
         true
