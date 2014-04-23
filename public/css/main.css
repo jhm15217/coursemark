@@ -473,13 +473,9 @@ a {
     padding-left: 27px;
 }
 
-.assignmentStatus h3, .edit_assignment h3 {
+.assignmentStatus h3, .edit_assignment h3, .new_assignment h3 {
     margin-top: 10px;
     margin-bottom: 25px;
-}
-
-.new_assignment h3 {
-    display: none;
 }
 
 .assignmentStatus .checkPoint:nth-child(2) {
