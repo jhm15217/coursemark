@@ -52,7 +52,7 @@
 
   <% if current_user.id != @submission.user.id && !current_user.instructor?(@course) %>
 
-      <% @submission.assignment.questions.each do |question| %>
+      <% @questions.each do |question| %>
         <div class='submissionQuestionBox' id='peer_review'>
         <h2><%= question.question_text %></h2>
         <div class='possiblePoints'><%= question.question_weight %> Points</div>
@@ -97,7 +97,7 @@
   <% else %> <!-- the user is either an instructor or the submitter -->
 
   <!--     EVALUATIONS -->
-    <% @evaluations[0].responses.each do |eval| %>
+    <% @responses.each do |eval| %>
       <div class='submissionQuestionBox'>
       <h2><%= eval.question.question_text %></h2>
       <div class='possiblePoints'><%= eval.question.question_weight %> Points</div>
