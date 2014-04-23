@@ -87,14 +87,12 @@ class Assignment < ActiveRecord::Base
 
   def review_due_time=(time)
     @review_due_time = Time.parse(time.to_s).strftime("%H:%M:%S")
-    puts "New review time: " + @review_due_time.to_s
   end
   
   def make_dates
     @offset = Time.zone.now.to_s.split(' ')[2]
     self.submission_due = DateTime.parse("#{@submission_due_date} #{@submission_due_time + @offset}")
     self.review_due = DateTime.parse("#{@review_due_date} #{@review_due_time + @offset}")
-    puts "New review due: " + self.review_due.to_s
   end
 
   private
