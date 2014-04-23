@@ -1119,6 +1119,7 @@ a {
 .new_submission a,
 .edit_submission a {
     color: #343F53;
+    text-decoration: underline;
 }
 
 .new_submission .grade,
