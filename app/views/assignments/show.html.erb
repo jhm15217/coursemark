@@ -27,7 +27,7 @@
     <% if Time.zone.now <= @assignment.review_due %>
       <p>Your assignment was submitted on time.</p>
     <% else %>
-      <p class="grade"><%= if @submission.percentage && @submission.instructor_approved then @submission.percentage.round else '--' end %>%</p>
+      <p class="grade"><%= if @submission.percentage && @submission.instructor_approved then @submission.percentage.round.to_s + '%' else 'Grade Pending' end %></p>
     <% end %>
     <a href='http://<%= request.host_with_port %><%= @submission.submission %>' >View Submission</a>
     </p>
