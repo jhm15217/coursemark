@@ -755,6 +755,11 @@ a {
     margin-bottom: 25px;
 }
 
+.savedStatus {
+    font-size: 12px;
+    text-transform: uppercase;
+}
+
 .percentWrapper {
     float: left;
     width: 75px;
