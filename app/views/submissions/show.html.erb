@@ -89,10 +89,11 @@
 
       <% end %>
       <% end %> <!-- end responses loop -->
+      <div class='savedStatus'></div>
     </div> <!-- end question box div -->
       <% end %> <!-- end question loop -->
 
-      <div id='submitFormsButton' class='button' onclick="submitForms()">Finish Peer Review</div>
+      <div id='submitFormsButton' class='button'><%= link_to "Finish Peer Review" , course_assignment_path(@course, @assignment) %></div>
 
   <% else %> <!-- the user is either an instructor or the submitter -->
 
@@ -156,5 +157,6 @@
       $('#awr_q_'+question_id).hide();
       $('#q_response_'+question_id).css('display', 'inline-block');
   }
+
   
 </script>
