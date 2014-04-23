@@ -105,7 +105,8 @@ class Submission < ActiveRecord::Base
 						response.question_id = question.id
 						response.evaluation_id = evaluation.id
 						puts response.valid?
-						response.save
+						response.save!
+						puts response.errors.full_messages
 					}
 
 					evaluationsLeft -= 1
