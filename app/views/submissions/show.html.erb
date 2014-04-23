@@ -128,7 +128,7 @@
                 </div>
               <% end %>
               <% if response.instructor_response != nil || current_user.instructor?(@course) %>
-                <div class='submissionInstructorResponse'>
+                <div class='submissionInstructorResponse' style="margin-top:25px; margin-bottom:-3px;">
                   <div class='submissionResponseFrom'>Instructor</div>
                   <% if response.instructor_response != nil then %>
                       <%= response.instructor_response %>
