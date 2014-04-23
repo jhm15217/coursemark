@@ -33,8 +33,8 @@ images/ui-icons_cd0a0a_256x240.png: images/ui-icons_cd0a0a_256x240-2969ddba6d0a9
 images/ui-icons_cd0a0a_256x240/index.png: images/ui-icons_cd0a0a_256x240-2969ddba6d0a9c62603a4aa85a363cda.png
 rails.png: rails-a3386665c05a2d82f711a4aaa72d247c.png
 rails/index.png: rails-a3386665c05a2d82f711a4aaa72d247c.png
-application.js: application-a33ae4a6367fef474df5db2c6cc8bbbd.js
-application/index.js: application-a33ae4a6367fef474df5db2c6cc8bbbd.js
+application.js: application-3ac4236a7c73588e7fc5a80aa05bc95c.js
+application/index.js: application-3ac4236a7c73588e7fc5a80aa05bc95c.js
 application.css: application-7cdd56826ed281ce4daf17bb30c4c3b6.css
 application/index.css: application-7cdd56826ed281ce4daf17bb30c4c3b6.css
 jquery.min.map: jquery.min-388372ef65cc311f6a3df4a6ceac8d22.map
