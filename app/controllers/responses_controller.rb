@@ -63,8 +63,8 @@ class ResponsesController < ApplicationController
 
     respond_to do |format|
       if @response.update_attributes(params[:response])
-        format.html { redirect_to course_assignment_submission_path(@course, @assignment, @response.evaluation.submission), notice: 'Response was successfully updated.' }
-        format.json { head :no_content }
+        #format.html { redirect_to course_assignment_submission_path(@course, @assignment, @response.evaluation.submission), notice: 'Response was successfully updated.' }
+        format.json { render json: @response}
       else
         format.html { redirect_to course_assignment_submission_path(@course, @assignment, @response.evaluation.submission), notice: "#{@response.errors.full_messages.join(' ')}"}
         format.json { render json: @response.errors, status: :unprocessable_entity }
