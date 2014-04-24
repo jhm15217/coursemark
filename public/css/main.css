@@ -759,6 +759,8 @@ a {
 .savedStatus {
     font-size: 12px;
     text-transform: uppercase;
+    margin-top: 10px;
+    opacity: 0.6;
 }
 
 .percentWrapper {
