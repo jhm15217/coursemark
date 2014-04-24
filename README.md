@@ -1,21 +1,27 @@
 Coursemark
 =============
 
-Database Setup
+Coursemark is a Ruby on Rails based peer grading suite for courses of all sizes. Coursemark allows instructors to create courses, assignments, and grading rubrics. After students have registered for a course, they can begin submitting their assignments online. Coursemark then automatically and anonymously distributes peer grading tasks to students, allowing students to evaluate the work of their peers. After peer grading has finished, Coursemark computes grades and releases feedback to students.
 
-1. Download PostgreSQL for Mac: 
+Running Coursemark locally (on Mac OS X)
+
+1. Install Ruby on Rails from http://railsinstaller.org/
+
+2. Download the Coursemark repo from Github
+
+3. Download PostgreSQL for Mac: 
 
 http://sourceforge.net/projects/pgsqlformac/files/PostgreSQL%20Unified%20Installer/9.2.4/pg4mac_924_r1c.dmg/download 
 
-2. Run in the installer from the server directory of the DMG
+4. Run installer from the server directory of the disk image
 
-3. Run sudo -u postgres /Library/PostgreSQL/bin/createuser
+5. Run "sudo -u postgres /Library/PostgreSQL/bin/createuser"
 
-4. Enter your Mac OS X username. Agree to make the user a superuser.
+6. Enter your Mac OS X username. Agree to make the user a superuser.
 
-5. Run bundle install
+7. Run "bundle install" from the Coursemark root directory
 
-6. Create a database.yml file in /config with the following contents:
+8. Create a database.yml file in /config with the following contents:
 
 ```
 development:
@@ -41,6 +47,36 @@ production:
   timeout: 5000
 ```
 
-7. Run rake db:create
+9. Run "bundle install" from the Coursemark root directory
 
-8. Run rake db:reset
+10. Run "rake db:create" from the Coursemark root directory
+
+11. Run "rake db:reset" from the Coursemark root directory
+
+Deploying Coursemark to Heroku
+
+1. Create a Heroku account at www.heroku.com
+
+2. Download the Heroku toolbelt from https://toolbelt.heroku.com
+
+3. Run "heroku login" from the Coursemark root directory
+
+4. Enter your heroku login credentials
+
+5. If asked to generate a new SSH key, say yes
+
+6. Run "heroku create --addons heroku-postgresql" from the Coursemark root directory
+
+7. Run "git push heroku master" to push the app to Heroku
+
+8. Run "heroku ps:scale web=1" to start a Heroku dyno
+
+9. Run "heroku pg:reset SHARED_DATABASE --confirm APP_NAME_HERE" to reset the database on Heroku
+
+10. Run "heroku run rake db:migrate" to migrate the database on Heroku
+
+11. Run "heroku restart" to restart the app's dyno on Heroku
+
+12. Run "heroku open" to launch the app in your browser
+
+13. You can change the name of the app from the Heroku web console
