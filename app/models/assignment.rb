@@ -1,7 +1,7 @@
 class Assignment < ActiveRecord::Base
   attr_accessible :course_id, :draft, :review_due, :reviews_required, :submission_due, :name, :submission_due_date, :submission_due_time, :review_due_date, :review_due_time
   after_update :update_evaluations, :if => :reviews_required_changed?
-  before_save :make_dates
+  before_validation :make_dates
 
   # Relationships
   belongs_to :course
