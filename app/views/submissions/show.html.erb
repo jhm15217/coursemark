@@ -106,7 +106,7 @@
             <% if response.is_complete? %>
             <div class='submissionBox'>
               
-              <div class='submissionResponsePoints <%= gradeColorFullScale(prettifyFloat(((response.question.question_weight / (response.question.scales.length - 1.0) * response.scale.value)))) %>'><%= prettifyFloat(((response.question.question_weight / (response.question.scales.length - 1.0) * response.scale.value))).to_s + '%' %></div>
+              <div class='submissionResponsePoints <%= gradeColorFullScale(prettifyFloat(((100 / (response.question.scales.length - 1.0) * response.scale.value)))) %>'><%= prettifyFloat(((100 / (response.question.scales.length - 1.0) * response.scale.value))).to_s + '%' %></div>
               <div class='submissionResponseFrom'>
                 <% if current_user.instructor?(@course) %>
                   <%= response.evaluation.user.name %>
