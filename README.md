@@ -1,5 +1,4 @@
 #Coursemark
-=============
 
 Coursemark is a Ruby on Rails based peer grading suite for courses of all sizes. Coursemark allows instructors to create courses, assignments, and grading rubrics. After students have registered for a course, they can begin submitting their assignments online. Coursemark then automatically and anonymously distributes peer grading tasks to students, allowing students to evaluate the work of their peers. After peer grading has finished, Coursemark computes grades and releases feedback to students.
 
