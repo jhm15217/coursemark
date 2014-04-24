@@ -65,23 +65,22 @@
             <div class='submissionResponseFrom'>Reviewer <%= index + 1 %></div>
             <div class='submissionPeerReview'><%= if response.peer_review.blank? then 'No comment provided' else response.peer_review end %></div>
             
-            <% if !response.student_response.blank? %>
             <div class='submissionInstructorResponse'>
-              <div class='submissionResponseFrom' style="margin-top: 20px;">Your Reply</div>
               <% if !response.student_response.blank? then %>
+                  <div class='submissionResponseFrom' style="margin-top: 20px;">Your Reply</div>
                   <%= response.student_response %>
-              <% elsif !@submission.instructor_approved %>
+              <% elsif response.instructor_response.blank? && !@submission.instructor_approved %>
+                <div class='submissionResponseFrom' style="margin-top: 20px;">Your Reply</div>
                 <%= nested_form_for [@course, @assignment, eval.question, response]  do |f| %>
                   <%= f.text_area :student_response, class: 'submissionTextArea fl'  %>
                   <%= f.submit "Reply", class: 'submissionTextAreaReply fr' %>
                 <% end %>
               <% end %>
             </div> <!-- End Student Response -->
-            <% end %>
 
             <% if response.instructor_response != nil then %>
               <div class='submissionStudentResponse'>
-                <div class='submissionResponseFrom' style="margin-top: 60px;">Instructor's Reply</div>
+                <div class='submissionResponseFrom' style="margin-top: 25px;">Instructor's Reply</div>
                 <%= response.instructor_response %>
               </div>
             <% end %>
