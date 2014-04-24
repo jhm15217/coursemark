@@ -33,8 +33,13 @@ class SubmissionsController < ApplicationController
   end
 
   def view
-    puts "OH HAI"
     @submission = Submission.where(:submission => params[:id].to_s).first
+    @evaluators = @submission.evaluations.pluck(:user_id)
+
+    if (!current_user.instructor?(@submission.assignment.course) && (current_user.id != @submission.user_id) && (!@evaluators.include?(current_user.id)))
+      raise CanCan::AccessDenied.new("Not authorized!")
+    end
+
     @filename = 'submission_' + @submission.id.to_s + '.pdf'
     send_data(@submission.submission.file.read, :filename => @filename, :disposition => 'inline', :type => 'application/pdf')
   end
