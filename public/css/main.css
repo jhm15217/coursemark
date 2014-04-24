@@ -1083,8 +1083,9 @@ a {
 
 .submissionStudentResponse,
 .submissionInstructorResponse,
-.peerReviewJustification{
+.peerReviewJustification {
     margin-bottom: 11px;
+    word-wrap: break-word;
 }
 
 #submitFormsButton {
