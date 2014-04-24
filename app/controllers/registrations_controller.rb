@@ -2,7 +2,7 @@ class RegistrationsController < ApplicationController
   skip_before_filter :get_assignments, :except => [:index]
   skip_before_filter :get_submission_for_assignment, :except => [:index]
   layout false, :except => :index
-  load_and_authorize_resource
+  load_and_authorize_resource :except => [:add_to_course_staff]
 
   # Exception Handling
   class InvalidCourse < StandardError
@@ -64,9 +64,7 @@ class RegistrationsController < ApplicationController
   def add_to_course_staff
     @registration = Registration.find(params[:registration])
 
-    puts "oh hai"
     if current_user.instructor?(@registration.course)
-      puts "saving as instructor"
       @registration.instructor = true
       @registration.save!
     end
