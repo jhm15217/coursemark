@@ -102,7 +102,7 @@ class AssignmentsController < ApplicationController
     end
 
     if @assignment.reviews_required <= 0
-      @assignment.reviews_required = 1
+      @assignment.reviews_required = 0
     end
 
     respond_to do |format|

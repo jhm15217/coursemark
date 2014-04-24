@@ -1,6 +1,6 @@
 class ResponsesController < ApplicationController
   before_filter :get_assignment, :get_course, :get_question
-  load_and_authorize_resource
+  load_and_authorize_resource :except => [:update]
 
   # GET /responses
   # GET /responses.json
@@ -61,12 +61,22 @@ class ResponsesController < ApplicationController
   def update
     @response = Response.find(params[:id])
 
+    if ((!current_user.instructor?(@course)) && (current_user.id != @response.evaluation.user_id) && (current_user.id != @response.evaluation.submission.user_id))
+      raise CanCan::AccessDenied.new("Not authorized!")
+    end
+
+    if (current_user.instructor?(@course))
+      @URL = course_assignment_submission_path(@course, @assignment, @response.evaluation.submission)
+    else
+      @URL = course_assignment_path(@course, @assignment)
+    end
+
     respond_to do |format|
       if @response.update_attributes(params[:response])
-        #format.html { redirect_to course_assignment_submission_path(@course, @assignment, @response.evaluation.submission), notice: 'Response was successfully updated.' }
+        format.html { redirect_to @URL, notice: "#{@response.errors.full_messages.join(' ')}"}
         format.json { render json: @response}
       else
-        format.html { redirect_to course_assignment_submission_path(@course, @assignment, @response.evaluation.submission), notice: "#{@response.errors.full_messages.join(' ')}"}
+        format.html { redirect_to @URL, notice: "#{@response.errors.full_messages.join(' ')}"}
         format.json { render json: @response.errors, status: :unprocessable_entity }
       end
     end
