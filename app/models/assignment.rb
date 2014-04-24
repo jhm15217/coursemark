@@ -1,7 +1,7 @@
 class Assignment < ActiveRecord::Base
   attr_accessible :course_id, :draft, :review_due, :reviews_required, :submission_due, :name, :submission_due_date, :submission_due_time, :review_due_date, :review_due_time
   after_update :update_evaluations, :if => :reviews_required_changed?
-  before_validation :make_dates
+  before_save :make_dates
 
   # Relationships
   belongs_to :course
@@ -91,8 +91,13 @@ class Assignment < ActiveRecord::Base
   
   def make_dates
     @offset = Time.zone.now.to_s.split(' ')[2]
-    self.submission_due = DateTime.parse("#{@submission_due_date} #{@submission_due_time + @offset}")
-    self.review_due = DateTime.parse("#{@review_due_date} #{@review_due_time + @offset}")
+
+    if (!@offset.nil? && !@submission_due_date.nil? && !@submission_due_time.nil? && !@review_due_date.nil? && !@review_due_time.nil?)
+
+      self.submission_due = DateTime.parse("#{@submission_due_date} #{@submission_due_time + @offset}")
+      self.review_due = DateTime.parse("#{@review_due_date} #{@review_due_time + @offset}")
+
+    end
   end
 
   private
