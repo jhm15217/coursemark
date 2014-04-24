@@ -63,7 +63,7 @@
           <div class='submissionBox'>
             <div class='submissionResponsePoints <%= gradeColor(prettifyFloat(((50 / (eval.question.scales.length - 1.0) * response.scale.value) + 50))) %>'><%= if !response.scale.nil? then prettifyFloat(((50 / (eval.question.scales.length - 1.0) * response.scale.value) + 50)).to_s + '%' else '--' end %></div>
             <div class='submissionResponseFrom'>Reviewer <%= index + 1 %></div>
-            <div class='submissionPeerReview'><%= response.peer_review %></div>
+            <div class='submissionPeerReview'><%= if response.peer_review.blank? then 'No comment provided' else response.peer_review end %></div>
             
             <% if !@submission.instructor_approved || !response.student_response.blank? %>
             <div class='submissionInstructorResponse'>
