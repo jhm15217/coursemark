@@ -462,6 +462,7 @@ a {
     border-radius: 6px;
     border: 1px solid #DFDFDF;
     float: left;
+    min-width: 360px;
 }
 
 .assignmentStatus .checkPoint {
@@ -497,6 +498,7 @@ a {
     border: 1px solid #DFDFDF;
     float: left;
     margin-right: 45px;
+    min-width: 360px;
 }
 
 #main .edit_assignment input[type=submit],
