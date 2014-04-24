@@ -23,11 +23,11 @@ http://sourceforge.net/projects/pgsqlformac/files/PostgreSQL%20Unified%20Install
 
 4. Run installer from the server directory of the disk image
 
-5. Run "sudo -u postgres /Library/PostgreSQL/bin/createuser"
+5. Run `sudo -u postgres /Library/PostgreSQL/bin/createuser`
 
 6. Enter your Mac OS X username. Agree to make the user a superuser.
 
-7. Run "bundle install" from the Coursemark root directory
+7. Run `bundle install` from the Coursemark root directory
 
 8. Create a database.yml file in /config with the following contents:
 
@@ -55,11 +55,11 @@ production:
   timeout: 5000
 ```
 
-9. Run "bundle install" from the Coursemark root directory
+9. Run `bundle install` from the Coursemark root directory
 
-10. Run "rake db:create" from the Coursemark root directory
+10. Run `rake db:create` from the Coursemark root directory
 
-11. Run "rake db:reset" from the Coursemark root directory
+11. Run `rake db:reset` from the Coursemark root directory
 
 ###Deploying Coursemark to Heroku
 
@@ -67,24 +67,24 @@ production:
 
 2. Download the Heroku toolbelt from https://toolbelt.heroku.com
 
-3. Run "heroku login" from the Coursemark root directory
+3. Run `heroku login` from the Coursemark root directory
 
 4. Enter your heroku login credentials
 
 5. If asked to generate a new SSH key, say yes
 
-6. Run "heroku create --addons heroku-postgresql" from the Coursemark root directory
+6. Run `heroku create --addons heroku-postgresql` from the Coursemark root directory
 
-7. Run "git push heroku master" to push the app to Heroku
+7. Run `git push heroku master` to push the app to Heroku
 
-8. Run "heroku ps:scale web=1" to start a Heroku dyno
+8. Run `heroku ps:scale web=1` to start a Heroku dyno
 
-9. Run "heroku pg:reset SHARED_DATABASE --confirm APP_NAME_HERE" to reset the database on Heroku
+9. Run `heroku pg:reset SHARED_DATABASE --confirm APP_NAME_HERE` to reset the database on Heroku
 
-10. Run "heroku run rake db:migrate" to migrate the database on Heroku
+10. Run `heroku run rake db:migrate` to migrate the database on Heroku
 
-11. Run "heroku restart" to restart the app's dyno on Heroku
+11. Run `heroku restart` to restart the app's dyno on Heroku
 
-12. Run "heroku open" to launch the app in your browser
+12. Run `heroku open` to launch the app in your browser
 
 13. You can change the name of the app from the Heroku web console
