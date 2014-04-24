@@ -4,7 +4,6 @@
 Coursemark is a Ruby on Rails based peer grading suite for courses of all sizes. Coursemark allows instructors to create courses, assignments, and grading rubrics. After students have registered for a course, they can begin submitting their assignments online. Coursemark then automatically and anonymously distributes peer grading tasks to students, allowing students to evaluate the work of their peers. After peer grading has finished, Coursemark computes grades and releases feedback to students.
 
 ###App Structure
-=============
 
 The bulk of the application logic exists in the /app directory. An ERD of the application exists in the /doc directory. Although the app follows Rails conventions very closely, there are a few things to note:
 
@@ -14,7 +13,6 @@ The bulk of the application logic exists in the /app directory. An ERD of the ap
 
 
 ###Running Coursemark locally (on Mac OS X)
-=============
 
 1. Install Ruby on Rails from http://railsinstaller.org/
 
@@ -65,7 +63,6 @@ production:
 11. Run "rake db:reset" from the Coursemark root directory
 
 ###Deploying Coursemark to Heroku
-=============
 
 1. Create a Heroku account at www.heroku.com
 
