@@ -64,7 +64,9 @@ class RegistrationsController < ApplicationController
   def add_to_course_staff
     @registration = Registration.find(params[:registration])
 
+    puts "oh hai"
     if current_user.instructor?(@registration.course)
+      puts "saving as instructor"
       @registration.instructor = true
       @registration.save!
     end
