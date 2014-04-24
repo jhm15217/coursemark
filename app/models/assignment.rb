@@ -75,8 +75,6 @@ class Assignment < ActiveRecord::Base
  
   def submission_due_date=(date)
     @submission_due_date = Date.strptime(date, "%m/%d/%Y").strftime("%Y-%m-%d")
-    puts "Submission due date"
-    puts @submission_due_date
   end
  
   def submission_due_time=(time)
@@ -94,8 +92,6 @@ class Assignment < ActiveRecord::Base
   def make_dates
     @offset = Time.zone.now.to_s.split(' ')[2]
     self.submission_due = DateTime.parse("#{@submission_due_date} #{@submission_due_time + @offset}")
-    puts "Submission due"
-    puts self.submission_due
     self.review_due = DateTime.parse("#{@review_due_date} #{@review_due_time + @offset}")
   end
 
