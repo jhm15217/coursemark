@@ -115,7 +115,7 @@
                 <% end %>
               </div>
               <div class='submissionPeerReview'><%= if !response.peer_review.blank? then response.peer_review else "No written response provided." end %></div>
-              <% if response.student_response != nil then %>
+              <% if !response.student_response.blank? then %>
                 <div class='submissionStudentResponse'>
                   <div class='submissionResponseFrom' style="margin-top: 30px;">
                     <% if current_user.instructor?(@course) %>
@@ -131,7 +131,7 @@
               <% if response.instructor_response != nil || current_user.instructor?(@course) %>
                 <div class='submissionInstructorResponse' style="margin-top:25px; margin-bottom:-3px;">
                   <div class='submissionResponseFrom'>Instructor</div>
-                  <% if response.instructor_response != nil then %>
+                  <% if !response.instructor_response.blank? then %>
                       <%= response.instructor_response %>
                   <% elsif current_user.instructor?(@course) %>
                     <%= nested_form_for [@course, @assignment, eval.question, response]  do |f| %>
