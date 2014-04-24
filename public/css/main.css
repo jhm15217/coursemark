@@ -435,10 +435,10 @@ a {
     float: left;
 }
 
-#assignment_submission_due_time_5i,
+/*#assignment_submission_due_time_5i,
 #assignment_review_due_time_5i {
     display: none;
-}
+}*/
 
 #assignment_submission_due_date,
 #assignment_review_due_date {
