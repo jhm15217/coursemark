@@ -3,6 +3,7 @@
    ========================================================================== */
 
 * {
+    -moz-box-sizing: border-box;
     box-sizing: border-box;
 }
 
@@ -279,6 +280,7 @@ a {
 
 #main {
     float: left;
+    width: -moz-calc(100% - 290px);
     width: calc(100% - 290px);
     height: 100%;
     overflow-y: scroll;
@@ -295,6 +297,7 @@ a {
 
 #header {
     position: fixed;
+    width: -moz-calc(100% + 120px);
     width: calc(100% + 120px);
     height: 85px;
     margin: 0px 0px 45px -50px;
@@ -372,6 +375,7 @@ a {
 }
 
 #backBar {
+    width: -moz-calc(100% + 120px);
     width: calc(100% + 120px);
     height: 46px;
     margin: -45px 0px 30px -60px;
@@ -420,6 +424,7 @@ a {
 }
 
 .edit_assignment .actions input, .new_assignment .actions input {
+    width: -moz-calc(50% - 10px) !important;
     width: calc(50% - 10px) !important;
     margin-right: 20px !important;
     float: left;
@@ -486,6 +491,7 @@ a {
 #main .edit_assignment, #main .new_assignment {
     background: #FFF;
     padding: 25px;
+    width: -moz-calc(50% - 45px);
     width: calc(50% - 45px);
     border-radius: 6px;
     border: 1px solid #DFDFDF;
@@ -613,6 +619,7 @@ a {
 }
 
 #main .button.publish {
+  width: -moz-calc(50% - 10px);
   width: calc(50% - 10px);
   float: left;
   margin: 8px 0 0 0;
@@ -922,6 +929,7 @@ a {
     font-size: 13px;
     margin: 0px;
     text-align: center;
+    width: -moz-calc(100% - 400px);
     width: calc(100% - 400px);
     margin-top: -0;
     margin-left: 120px;
@@ -933,6 +941,7 @@ a {
 
 #submissionPDFWrapper {
   width: 62%;
+  height: -moz-calc(100% - 39px);
   height: calc(100% - 39px);
   min-height: 400px;
   margin-top: 37px;
@@ -1097,6 +1106,7 @@ a {
     float: left;
     background: #FFF;
     padding: 25px;
+    width: -moz-calc(50% - 10px);
     width: calc(50% - 10px);
     border-radius: 6px;
     border: 1px solid #DFDFDF;
@@ -1107,6 +1117,7 @@ a {
     float: left;
     background: #FFF;
     padding: 25px;
+    width: -moz-calc(50% - 10px);
     width: calc(50% - 10px);
     margin-left: 20px;
     border-radius: 6px;
@@ -1144,6 +1155,7 @@ a {
 
 #student_evaluation_view .submissionBox {
     float: left;
+    width: -moz-calc(50% - 10px);
     width: calc(50% - 10px);
 }
 
