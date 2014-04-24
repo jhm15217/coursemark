@@ -68,7 +68,7 @@
             <% if !@submission.instructor_approved || !response.student_response.blank? %>
             <div class='submissionInstructorResponse'>
               <div class='submissionResponseFrom' style="margin-top: 20px;">Your Reply</div>
-              <% if response.student_response != nil then %>
+              <% if !response.student_response.blank? then %>
                   <%= response.student_response %>
               <% else %>
                 <%= nested_form_for [@course, @assignment, eval.question, response]  do |f| %>
