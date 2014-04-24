@@ -25,7 +25,7 @@ class Ability
     end
 
     can :destroy, Registration do |r|
-      r.user_id == user.id
+      (r.user_id == user.id) || (user.instructor?(Course.find(r.course)))
     end
 
     can :new, Registration do |r|
