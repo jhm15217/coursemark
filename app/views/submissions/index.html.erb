@@ -36,10 +36,12 @@
       <% end %>
   </table>
   <br />
-  <%= link_to :controller => "assignments", :action => "export" do %>
-    <div class='button' style="float: left;">
-      Export Grades CSV
-    </div>
+  <% if @assignment.allGradesApproved? %>
+    <%= link_to :controller => "assignments", :action => "export" do %>
+      <div class='button' style="float: left;">
+        Export Grades CSV
+      </div>
+    <% end %>
   <% end %>
 <% else %>
   <h2 class="noData">No one has submitted yet.</h2>
