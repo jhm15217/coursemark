@@ -19,12 +19,12 @@
   </div>
   <div class="field">
     <%= f.label :submission_due, "Submission Deadline" %><br />
-    <%= f.text_field :submission_due_date, :disabled => @assignment.submission_due && (Time.zone.now > @assignment.submission_due) %> at
+    <%= f.text_field :submission_due_date %> at
     <%= f.time_select :submission_due_time, {minute_step: 15, ampm: true, :time_separator => ""} %>
   </div>
   <div class="field">
     <%= f.label :review_due, "Review Deadline" %><br />
-    <%= f.text_field :review_due_date, :disabled => @assignment.review_due && (Time.zone.now > @assignment.review_due) %> at
+    <%= f.text_field :review_due_date %> at
     <%= f.time_select :review_due_time, {minute_step: 15, ampm: true, :time_separator => ""} %>
   </div>
   <div class="field">

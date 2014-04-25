@@ -2,7 +2,7 @@ class RegistrationsController < ApplicationController
   skip_before_filter :get_assignments, :except => [:index]
   skip_before_filter :get_submission_for_assignment, :except => [:index]
   layout false, :except => :index
-  load_and_authorize_resource
+  load_and_authorize_resource :except => [:add_to_course_staff]
 
   # Exception Handling
   class InvalidCourse < StandardError
