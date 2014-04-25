@@ -24,6 +24,15 @@ class Submission < ActiveRecord::Base
   	return completed
   end
 
+  def evaluations_assigned
+  	self.assignment.evaluations.forUser(self.user)
+  end
+
+  def evaluations_completed
+  	self.assignment.evaluations.forUser(self.user).select {|evaluation| evaluation.is_complete?}
+  end
+
+
   def raw
   	# Get only completed responses
   	responses = self.completed_responses
