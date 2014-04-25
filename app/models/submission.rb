@@ -24,6 +24,15 @@ class Submission < ActiveRecord::Base
   	return completed
   end
 
+  def evaluations_assigned
+  	self.assignment.evaluations.forUser(self.user)
+  end
+
+  def evaluations_completed
+  	self.assignment.evaluations.forUser(self.user).select {|evaluation| evaluation.is_complete?}
+  end
+
+
   def raw
   	# Get only completed responses
   	responses = self.completed_responses
@@ -99,7 +108,6 @@ class Submission < ActiveRecord::Base
 
 					# create a response for each question of the evaluation
 					self.assignment.questions.each { |question|  
-						puts question.question_text
 						response = Response.new
 						response.question_id = question.id
 						response.evaluation_id = evaluation.id

@@ -13,6 +13,9 @@
         <th>First name</th>
         <th>Last name</th>
         <th>Timestamp</th>
+        <% if Time.zone.now > @assignment.submission_due %>
+          <th>Reviews completed</th>
+        <% end %>
         <% if Time.zone.now > @assignment.review_due %>
           <th>Grade</th>
           <th></th>
@@ -24,6 +27,9 @@
         <td><%= submission.user.first_name %></td>
         <td><%= submission.user.last_name %></td>
         <td><%= submission.created_at.to_s(:pretty) %></td>
+        <% if Time.zone.now > @assignment.submission_due %>
+          <td><%= submission.evaluations_completed.length %> / <%= submission.evaluations_assigned.length %></td>
+        <% end %>
         <% if Time.zone.now > @assignment.review_due %>
           <td><%= if !submission.percentage.blank? then submission.percentage.round else "--" end %>%</td>
           <% if submission.instructor_approved %>
@@ -45,4 +51,27 @@
   <% end %>
 <% else %>
   <h2 class="noData">No one has submitted yet.</h2>
+<% end %>
+
+<% if @assignment.missing_submissions.length > 0 %>
+  <table class="submissions">
+      <tr>
+        <th>First name</th>
+        <th>Last name</th>
+        <% if Time.zone.now > @assignment.submission_due %>
+          <th>Reviews completed</th>
+        <% end %>
+      </tr>
+      <% @assignment.missing_submissions.each do |user| %>
+      <tr>
+        <td><%= user.first_name %></td>
+        <td><%= user.last_name %></td>
+        <% if Time.zone.now > @assignment.submission_due %>
+          <td><%= submission.evaluations_completed.length %> / <%= submission.evaluations_assigned.length %></td>
+        <% end %>
+      </tr>
+      <% end %>
+  </table>
+<% else %>
+  <h2 class="noData">Everyone has submitted!</h2>
 <% end %>
