@@ -65,7 +65,7 @@
         <td><%= user.first_name %></td>
         <td><%= user.last_name %></td>
         <% if Time.zone.now > @assignment.submission_due %>
-          <td><%= submission.evaluations_completed.length %> / <%= submission.evaluations_assigned.length %></td>
+          <td><%= (@assignment.evaluations.forUser(user).select {|evaluation| evaluation.is_complete?}).length %> / <%= @assignment.evaluations.forUser(user).length %></td>
         <% end %>
       </tr>
       <% end %>
