@@ -22,7 +22,7 @@ class Assignment < ActiveRecord::Base
   validate :review_deadline_not_passed
 
   # make sure the number of reviews required is feasible given class size
-  validate :reviews_required_feasible
+  validate :reviews_required_feasible, :unless => :draft
   # only allow changes to reviews_required if we are still taking submissions
   validate :submissions_open, :on => :update, :if => :reviews_required_changed?
 
