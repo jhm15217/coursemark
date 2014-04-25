@@ -13,7 +13,7 @@
         <th>First name</th>
         <th>Last name</th>
         <th>Timestamp</th>
-        <% if Time.zone.now > @assignment.submission_due %>
+        <% if Time.zone.now > @assignment.review_due %>
           <th>Reviews completed</th>
         <% end %>
         <% if Time.zone.now > @assignment.review_due %>
@@ -27,8 +27,8 @@
         <td><%= submission.user.first_name %></td>
         <td><%= submission.user.last_name %></td>
         <td><%= submission.created_at.to_s(:pretty) %></td>
-        <% if Time.zone.now > @assignment.submission_due %>
-          <td><%= submission.evaluations_completed.length %> / <%= submission.evaluations_assigned.length %></td>
+        <% if Time.zone.now > @assignment.review_due %>
+          <td class="<%= if submission.evaluations_completed.length != submission.evaluations_assigned.length then 'notCompleted' end %>"><%= submission.evaluations_completed.length %> / <%= submission.evaluations_assigned.length %></td>
         <% end %>
         <% if Time.zone.now > @assignment.review_due %>
           <td><%= if !submission.percentage.blank? then submission.percentage.round else "--" end %>%</td>
@@ -40,36 +40,33 @@
         <% end %>
       </tr>
       <% end %>
+
+      <% if Time.zone.now > @assignment.submission_due %>
+        <% @assignment.missing_submissions.each do |user| %>
+        <tr>
+          <td></td>
+          <td><%= user.first_name %></td>
+          <td><%= user.last_name %></td>
+          <td class="notCompleted">Didn't submit</td>
+          <% if Time.zone.now > @assignment.review_due %>
+            <td class="<%= if (@assignment.evaluations.forUser(user).select {|evaluation| evaluation.is_complete?}).length != @assignment.evaluations.forUser(user).length then 'notCompleted' end %>"><%= (@assignment.evaluations.forUser(user).select {|evaluation| evaluation.is_complete?}).length %> / <%= @assignment.evaluations.forUser(user).length %></td>
+          <% end %>
+          <% if Time.zone.now > @assignment.review_due %>
+            <td>---</td>
+            <td></td>
+          <% end %>
+        </tr>
+        <% end %>
+      <% end %>
   </table>
   <br />
-  <%= link_to :controller => "assignments", :action => "export" do %>
-    <div class='button' style="float: left;">
-      Export Grades CSV
-    </div>
+  <% if @assignment.allGradesApproved? %>
+    <%= link_to :controller => "assignments", :action => "export" do %>
+      <div class='button' style="float: left;">
+        Export Grades CSV
+      </div>
+    <% end %>
   <% end %>
 <% else %>
   <h2 class="noData">No one has submitted yet.</h2>
-<% end %>
-
-<% if @assignment.missing_submissions.length > 0 %>
-  <table class="submissions">
-      <tr>
-        <th>First name</th>
-        <th>Last name</th>
-        <% if Time.zone.now > @assignment.submission_due %>
-          <th>Reviews completed</th>
-        <% end %>
-      </tr>
-      <% @assignment.missing_submissions.each do |user| %>
-      <tr>
-        <td><%= user.first_name %></td>
-        <td><%= user.last_name %></td>
-        <% if Time.zone.now > @assignment.submission_due %>
-          <td><%= (@assignment.evaluations.forUser(user).select {|evaluation| evaluation.is_complete?}).length %> / <%= @assignment.evaluations.forUser(user).length %></td>
-        <% end %>
-      </tr>
-      <% end %>
-  </table>
-<% else %>
-  <h2 class="noData">Everyone has submitted!</h2>
 <% end %>

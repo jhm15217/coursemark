@@ -102,7 +102,7 @@ class AssignmentsController < ApplicationController
     end
 
     if @assignment.reviews_required <= 0
-      @assignment.reviews_required = 1
+      @assignment.reviews_required = 0
     end
 
     respond_to do |format|
@@ -196,11 +196,8 @@ class AssignmentsController < ApplicationController
 
     @assignment = Assignment.find(params[:id])
 
-    puts params[:assignment]
-
     respond_to do |format|
       if @assignment.update_attributes(params[:assignment])
-        puts "Update successful!"
         format.html { redirect_to [@course, @assignment], notice: 'Assignment was successfully updated.' }
         format.json { head :no_content }
       else
