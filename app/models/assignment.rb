@@ -57,6 +57,10 @@ class Assignment < ActiveRecord::Base
     return true
   end
 
+  def missing_submissions
+    self.course.get_students - (self.submissions.map {|submission| submission.user})
+  end
+
   def submission_due_date
     submission_due.strftime("%m/%d/%Y") if submission_due.present?
   end
