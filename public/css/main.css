@@ -572,6 +572,11 @@ a {
     height: 58px;
 }
 
+#main td.notCompleted {
+    color: #c0392b;
+    font-weight: bold;
+}
+
 #main .noData {
     text-align: center;
     opacity: 0.3;
