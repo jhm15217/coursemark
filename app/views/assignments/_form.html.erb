@@ -20,12 +20,12 @@
   <div class="field">
     <%= f.label :submission_due, "Submission Deadline" %><br />
     <%= f.text_field :submission_due_date %> at
-    <%= f.time_select :submission_due_time, {minute_step: 15, ampm: true, :time_separator => ""} %>
+    <%= f.time_select :submission_due_time, {minute_step: 5, ampm: true, :time_separator => ""} %>
   </div>
   <div class="field">
     <%= f.label :review_due, "Review Deadline" %><br />
     <%= f.text_field :review_due_date %> at
-    <%= f.time_select :review_due_time, {minute_step: 15, ampm: true, :time_separator => ""} %>
+    <%= f.time_select :review_due_time, {minute_step: 5, ampm: true, :time_separator => ""} %>
   </div>
   <div class="field">
     <%= f.label :reviews_required %><br />
