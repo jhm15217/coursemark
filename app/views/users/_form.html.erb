@@ -25,8 +25,9 @@
     <div class="field">
       <%= f.password_field :password_confirmation, :placeholder => "Password Confirmation" %> 
     </div>
+    <%= hidden_field_tag 'course', request.GET[:course] %>
     <div class="actions">
-      <%= f.submit "Create account" %>
+      <%= f.submit "Create account", :course => params[:code] %>
     </div>
   </div>
 <% end %>
