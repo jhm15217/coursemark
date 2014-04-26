@@ -31,22 +31,17 @@
 <!--     GRADE IS APPROVED -->
       <div class='submissionGradeBox'>
         <span class="grade"><%= @submission.percentage.round.to_s + "%" %></span>
-        <div class='button fr' style="margin-right: 0px;">
-        <%= link_to "Unapprove Grade",
-              course_assignment_submission_path(@course, @assignment, @submission,
-                        :submission => { :instructor_approved => false}),
-                        :method => :put %>
-        </div>
+        <%= link_to course_assignment_submission_path(@course, @assignment, @submission, :submission => { :instructor_approved => false}), :method => :put do %>
+          <div class='button fr' style="margin-right: 0px;">Unapprove Grade</div>
+        <% end %>
       </div>
     <% elsif current_user.instructor?(@course) %>
 <!--     GRADE IS NOT APPROVED -->
       <div class='submissionGradeBox'>
         <span class="grade"><%= unless @submission.percentage.nil? then @submission.percentage.round.to_s + "%" end  %></span>
-        <div class='button fr' style="margin-right: 0px;"><%= link_to "Approve Grade",
-              course_assignment_submission_path(@course, @assignment, @submission,
-                        :submission => { :instructor_approved => true}),
-              :method => :put %>
-        </div>
+        <%= link_to course_assignment_submission_path(@course, @assignment, @submission, :submission => { :instructor_approved => true}), :method => :put do %>
+          <div class='button fr' style="margin-right: 0px;">Approve Grade</div>
+        <% end %>
       </div>
     <% end %>
 
@@ -93,7 +88,9 @@
     </div> <!-- end question box div -->
       <% end %> <!-- end question loop -->
 
-      <div id='submitFormsButton' class='button'><%= link_to "Finish Peer Review" , course_assignment_path(@course, @assignment) %></div>
+      <%= link_to course_assignment_path(@course, @assignment) do %>
+        <div id='submitFormsButton' class='button'>Finish Peer Review</div>
+      <% end %>
 
   <% else %> <!-- the user is either an instructor or the submitter -->
 
@@ -157,6 +154,4 @@
       $('#awr_q_'+question_id).hide();
       $('#q_response_'+question_id).css('display', 'inline-block');
   }
-
-  
 </script>
