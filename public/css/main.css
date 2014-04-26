@@ -110,7 +110,7 @@ a {
 }
 
 #sidebar .tab.active {
-    background-color: #2980b9;
+    background-color: #e67e22;
 }
 
 #sidebar .tab.assignments {
@@ -239,7 +239,7 @@ a {
 
 #logo {
     height: 41px;
-    background: #2980b9;/*#2980b9 */
+    background: #e67e22;/*#e67e22 */
     color: rgba(255,255,255,0.9);
     padding-left: 22px;
     padding-top: 6px;
@@ -341,18 +341,18 @@ a {
 }
 
 #main .tab.active a {
-    color: #2980b9;
+    color: #e67e22;
     font-weight: bold;
 }
 
 #main .tab:hover:not('.logout') {
-    color: #2980b9;
+    color: #e67e22;
     border-bottom: 3px solid #95969C;
 }
 
 #main .tab.active {
-    color: #2980b9;
-    border-bottom: 3px solid #2980b9;
+    color: #e67e22;
+    border-bottom: 3px solid #e67e22;
 }
 
 #main .tab.active:hover {
@@ -637,8 +637,8 @@ a {
 }
 
 #main .button.destructive:hover {
-  border: 1px solid #2980b9;
-  background-color: #2980b9;
+  border: 1px solid #e67e22;
+  background-color: #e67e22;
 }
 
 #main .button.destructive:hover a {
@@ -824,7 +824,7 @@ a {
 }
 
 .highlight a {
-    color: #2980b9;
+    color: #e67e22;
 }
 
 .loginWrapper {
@@ -1062,7 +1062,7 @@ a {
     font-size: 20px;
     float: right;
     margin: -17px -50px 0 0;
-    background: #2980b9;
+    background: #e67e22;
     border-bottom-left-radius: 6px;
     color: white;
     padding-top: 12px;
