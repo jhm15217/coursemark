@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
 	skip_before_filter :require_login, :except => :edit
-	layout false, :except => :edit
+	layout false, :except => [:edit, :update]
 	load_and_authorize_resource
 	
 	def new  
@@ -34,6 +34,8 @@ class UsersController < ApplicationController
 
 	def update
     @user = User.find(params[:id])
+    @course = @user.courses.first
+    @registrations = current_user.registrations
 
     respond_to do |format|
       if @user.update_attributes(params[:user])
