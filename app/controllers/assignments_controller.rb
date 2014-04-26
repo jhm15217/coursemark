@@ -116,23 +116,6 @@ class AssignmentsController < ApplicationController
     @assignment = Assignment.find(params[:id])
   end
 
-  def publish
-    @assignment = Assignment.find(params[:assignment])
-
-    if @assignment.questions.length == 0
-      flash[:notice] = 'You must first create a rubric'
-      @url = edit_course_assignment_path(@assignment.course, @assignment)
-    else
-      if current_user.instructor?(@assignment.course)
-        @assignment.draft = false;
-        @assignment.save!
-      end
-      @url = :back
-    end
-
-    redirect_to @url
-  end
-
   # POST /assignments
   # POST /assignments.json
   def create
@@ -196,9 +179,20 @@ class AssignmentsController < ApplicationController
 
     @assignment = Assignment.find(params[:id])
 
+    @URL = course_assignment_path(@course, @assignment)
+
+    if params['publish']
+      if @assignment.questions.length == 0
+        flash[:notice] = 'You must first create a rubric'
+        @url = edit_course_assignment_path(@assignment.course, @assignment)
+      else
+        @assignment.draft = false
+      end
+    end
+
     respond_to do |format|
       if @assignment.update_attributes(params[:assignment])
-        format.html { redirect_to [@course, @assignment], notice: 'Assignment was successfully updated.' }
+        format.html { redirect_to @URL, notice: 'Assignment was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
