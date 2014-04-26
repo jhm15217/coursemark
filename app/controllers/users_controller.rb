@@ -4,12 +4,33 @@ class UsersController < ApplicationController
 	load_and_authorize_resource
 	
 	def new  
-		@user = User.new
+		if current_user
+			if !request.GET['course'].blank?
+				@registration = Registration.new()
+				@registration.active = true;
+    			@registration.instructor = false;
+    			@registration.user = @user
+    			@registration.course_code = params['course']
+				@registration.course = Course.where(:course_code => params['course']).first or raise InvalidCourse
+					
+				respond_to do |format|
+					if @registration.save
+	        			format.html { redirect_to course_path(@registration.course) }
+	        			format.json { render json: @registration, status: :created, location: @registration }
+	        		else 
+						format.html { render action: "new" }
+	        			format.json { render json: @registration.errors, status: :unprocessable_entity }
+	        		end
+	        	end 
+        	end
+	    else
+			@user = User.new
 
-		respond_to do |format|
-	      format.html # new.html.erb
-	      format.json { render json: @course }
-	    end
+			respond_to do |format|
+		      format.html # new.html.erb
+		      format.json { render json: @user }
+		    end
+		end
 	end  
 
 	def edit
@@ -26,7 +47,26 @@ class UsersController < ApplicationController
 	def create  
 		@user = User.new(params[:user])  
 		if @user.save  
-			redirect_to new_registration_url  
+			if !params['course'].blank?
+				@registration = Registration.new()
+				@registration.active = true;
+    			@registration.instructor = false;
+    			@registration.user = @user
+    			@registration.course_code = params['course']
+				@registration.course = Course.where(:course_code => params['course']).first or raise InvalidCourse
+					
+			respond_to do |format|
+				if @registration.save
+        			format.html { redirect_to course_path(@registration.course) }
+        			format.json { render json: @registration, status: :created, location: @registration }
+        		else 
+					format.html { render action: "new" }
+        			format.json { render json: @registration.errors, status: :unprocessable_entity }
+        		end
+        	end 
+			else 
+				redirect_to new_registration_url  
+			end
 		else  
 			render :action => 'new'  
 		end  
