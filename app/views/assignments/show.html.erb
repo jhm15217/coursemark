@@ -29,7 +29,7 @@
     <% else %>
       <p class="grade"><%= if @submission.percentage && @submission.instructor_approved then @submission.percentage.round.to_s + '%' else 'Grade Pending' end %></p>
     <% end %>
-    <a href='http://<%= request.host_with_port %><%= @submission.submission %>' >View Submission</a>
+    <a href='http://<%= request.host_with_port %><%= @submission.submission %>'>&#10004; Submitted on time</a>
     </p>
   </div>
 <% end %>
