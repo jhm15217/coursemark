@@ -9,6 +9,7 @@ class Response < ActiveRecord::Base
   # Validations
   validates_presence_of :question_id, :evaluation_id
   validate :met_deadline, :if => :peer_review_changed?, :if => :scale_id_changed?
+  validate :response_allowed, :if => :student_response_changed?
 
   def is_complete?
     if self.question.written_response_required
@@ -31,6 +32,12 @@ class Response < ActiveRecord::Base
     if Time.now > self.evaluation.submission.assignment.review_due
       errors.add(:submission, "Deadline for evaluations has passed.")
     end 
+  end
+
+  def response_allowed
+    if self.evaluation.submission.instructor_approved 
+      errors.add(:student_response, "The grade has already been approved by an instructor.")
+    end
   end
 
 end
