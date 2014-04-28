@@ -32,7 +32,6 @@ class Submission < ActiveRecord::Base
   	self.assignment.evaluations.forUser(self.user).select {|evaluation| evaluation.is_complete?}
   end
 
-
   def raw
   	# Get only completed responses
   	responses = self.completed_responses
