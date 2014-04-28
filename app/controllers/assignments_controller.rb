@@ -69,16 +69,51 @@ class AssignmentsController < ApplicationController
   def export
     @assignment = Assignment.find(params[:assignment_id])
     #@students = Course.find(@assignment.course_id).get_students
-
+    header_row = ["Name", "Total Points", "Total Possible Points", "Percentage"]
+    @assignment.questions.each { |question|  
+      header_row << question.question_text
+      header_row << "Possible Points"
+      @assignment.reviews_required.times { |index|  
+        header_row << "Reviewer #{index+1}"
+      }
+    }
     assignment_csv = CSV.generate do |csv|
-      csv << ["Name", "Points", "Possible", "Percentage"]
+      csv << header_row
       @assignment.submissions.each do |submission|
+        this_sub = []
         if !submission.percentage.blank? then 
           percent = submission.percentage.round 
         else 
           percent = "" 
         end
-        csv << [submission.user.name, submission.raw, @assignment.totalPoints, percent]
+        this_sub = [submission.user.name, submission.raw, @assignment.totalPoints, percent]
+
+        # for each of the questions in the assignment 
+        submission.evaluations[0].responses.sort_by {|obj| obj.created_at }.uniq{|x| x.question_id}.each do |res|                
+            
+            points_for_q = []
+
+            # get responses for a student's submission
+            get_evaluations_for_submission_question(submission, res.question).each_with_index do |response, index|
+              if response.is_complete?
+                  points = (((100 / (response.question.scales.length - 1.0) * response.scale.value)) / 100 ) * res.question.question_weight
+                  #points = (response.question.question_weight / (response.question.scales.length - 1.0) * response.scale.value)
+                  points_for_q << points       
+              end
+            end
+            # average points someone got for question
+            this_sub << (points_for_q.inject(:+).to_f / points_for_q.length) #.inject{ |sum, el| sum + el }.to_f / points_for_q.size
+
+            # total possible points
+            this_sub << res.question.question_weight
+
+            # for each peer response, record their grade of the assignment
+            points_for_q.each do |point|
+              this_sub << point
+            end 
+        end
+
+        csv << this_sub
       end
     end
 
@@ -227,6 +262,19 @@ class AssignmentsController < ApplicationController
         evals << eval
       end
     }
+  end
+
+  def get_evaluations_for_submission_question(submission, question)
+    rspns = []
+    evaluations = Evaluation.where(submission_id: submission)
+    evaluations.each do |eval|
+      eval.responses.each do |resp|
+        if resp.question == question then
+          rspns << resp
+        end
+      end
+    end
+    return rspns
   end
 
 end
