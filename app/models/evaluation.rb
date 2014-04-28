@@ -5,6 +5,7 @@ class Evaluation < ActiveRecord::Base
   has_many :responses, dependent: :destroy
   belongs_to :submission
   belongs_to :user
+  has_many :questions, :through => :responses
 
   # Scopes
   scope :forUser, ->(user) {where("evaluations.user_id = ?", user.id)}
