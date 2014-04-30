@@ -30,7 +30,7 @@
     <% if @submission.instructor_approved != false and @submission.instructor_approved != nil &&  current_user.instructor?(@course) then %>
 <!--     GRADE IS APPROVED -->
       <div class='submissionGradeBox'>
-        <span class="grade"><%= @submission.percentage.round.to_s + "%" %></span>
+        <span class="grade"><%= unless @submission.percentage.nil? then @submission.percentage.round.to_s + "%" end %></span>
         <%= link_to course_assignment_submission_path(@course, @assignment, @submission, :submission => { :instructor_approved => false}), :method => :put do %>
           <div class='button fr' style="margin-right: 0px;">Unapprove Grade</div>
         <% end %>
