@@ -34,13 +34,13 @@
 
 <br />
 
-<div class="button" style="float:left;">
-  <%= link_to 'Create Course', new_course_path %>
-</div>
+<%= link_to new_course_path do %>
+  <div class="button" style="float:left;">Create Course</div>
+<% end %>
 
-<div class="button" style="float:left;">
-  <%= link_to 'Join Course', new_registration_path %>
-</div>
+<%= link_to new_registration_path do %>
+  <div class="button" style="float:left;">Join Course</div>
+<% end %>
 
 <div class="clearfix"></div>
 
