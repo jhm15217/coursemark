@@ -24,12 +24,19 @@ class Submission < ActiveRecord::Base
   	return completed
   end
 
+  # evaluations assigned to the user who submitted this submission
   def evaluations_assigned
   	self.assignment.evaluations.forUser(self.user)
   end
 
+  # evaluations completed to the user who submitted this submission
   def evaluations_completed
   	self.assignment.evaluations.forUser(self.user).select {|evaluation| evaluation.is_complete?}
+  end
+
+  # evaluations for this submission that were incomplete
+  def evaluations_incomplete_for_submission
+  	self.evaluations.select {|evaluation| not evaluation.is_complete?}
   end
 
   def raw
@@ -51,6 +58,16 @@ class Submission < ActiveRecord::Base
 					questions[response.question_id]  = question
 				end 
 			end
+			
+			totalQuestionWeight = questions.map{|k, v| v[:weight]}.reduce(:+)
+
+			# if the total points of questions responded to doesn't equal
+			# the number of points in the assignment, not all questions were
+			# answered and the grade will be wrong
+			if totalQuestionWeight != self.assignment.totalPoints
+				nil
+			end
+
 			questions.map{ |k, v|
 				(v[:total].fdiv(v[:responses] * v[:max])) * v[:weight]
 			}.reduce(:+)
