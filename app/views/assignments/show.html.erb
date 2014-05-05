@@ -27,9 +27,9 @@
     <% if Time.zone.now <= @assignment.review_due %>
       <p>Your assignment was submitted on time.</p>
     <% else %>
-      <p class="grade"><%= if @submission.percentage && @submission.instructor_approved then @submission.percentage.round.to_s + '%' else 'Grade Pending' end %></p>
+      <p class="grade" style="<%= if (!@submission.percentage || !@submission.instructor_approved) then 'font-size: 24pt; margin-top: 10px;' end %>"><%= if @submission.percentage && @submission.instructor_approved then @submission.percentage.round.to_s + '%' else 'Grade Pending' end %></p>
     <% end %>
-    <a href='http://<%= request.host_with_port %><%= @submission.submission %>' >View Submission</a>
+    <a href='http://<%= request.host_with_port %><%= @submission.submission %>' style="color:#343F53;">View Submission</a>
     </p>
   </div>
 <% end %>

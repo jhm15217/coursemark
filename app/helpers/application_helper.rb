@@ -20,6 +20,11 @@ module ApplicationHelper
 	  x
 	end
 
+	def prettifyFloat(x, precision = 2)
+		x = x.round(1)
+    	(("%.#{precision}f" % x).split(/\./).last == '0' * precision and x.to_i or x)
+  	end
+
 	# Takes in a grade (b/w 50-100), 
 	# returns an associated description
 	def gradeColor(grade) 
