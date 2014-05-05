@@ -1004,6 +1004,13 @@ a {
   height:72px;
 }
 
+.submissionGradeBox.warning {
+    height: 109px;
+    padding-top: 20px;
+    background: rgba(230, 126, 34, 0.05);
+    border: 1px solid #e67e22;
+}
+
 .submissionGradeBox span {
   text-transform:uppercase;
   font-color:#48494B;
