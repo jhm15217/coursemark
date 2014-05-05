@@ -39,6 +39,7 @@ development:
   pool: 5
   username: MAC_USERNAME_HERE
   password: MAC_PASSWORD_HERE
+  host: localhost
 
 test:
   adapter: postgresql
@@ -47,6 +48,7 @@ test:
   pool: 5
   username: MAC_USERNAME_HERE
   password: MAC_PASSWORD_HERE
+  host: localhost
 
 production:
   adapter: postgresql
