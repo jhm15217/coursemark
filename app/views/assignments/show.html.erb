@@ -2,6 +2,7 @@
 
 <div class="assignmentStatus">
     <h3>Assignment Progress</h3>
+    <div class="checkPoint completed %>">Assignment released</div>
     <div class="checkPoint <%= if (Time.zone.now > @assignment.submission_due) then 'completed' end %>">Assignment due on <%= @assignment.submission_due.to_s(:pretty) %></div>
     <div class="checkPoint <%= if (Time.zone.now > @assignment.submission_due) && (@assignment.reviews_required > 0) then 'completed' end %>">Peer reviews assigned</div>
     <div class="checkPoint <%= if (Time.zone.now > @assignment.review_due) && (@assignment.reviews_required > 0)  then 'completed' end %>">Peer reviews due on <%= @assignment.review_due.to_s(:pretty) %></div>

@@ -469,6 +469,7 @@ a {
     height: 50px;
     padding-top: 15px;
     border-bottom: 1px solid #DFDFDF;
+    color: rgba(52, 63, 83, 0.4);
 }
 
 .assignmentStatus .checkPoint.completed {
