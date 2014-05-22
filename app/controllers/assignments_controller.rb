@@ -28,7 +28,6 @@ class AssignmentsController < ApplicationController
       end
     else
       if current_user.instructor?(@course)
-        #@URL = { :action => 'new' }
         @URL = registrations_path(:course => @course.id)
       else
         @URL = edit_user_path(current_user, :course => @course.id)
