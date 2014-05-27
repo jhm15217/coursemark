@@ -12,6 +12,7 @@
         <th></th>
         <th>First name</th>
         <th>Last name</th>
+        <th>Email</th>
         <th>Timestamp</th>
         <% if Time.zone.now > @assignment.review_due %>
           <th>Reviews completed</th>
@@ -26,6 +27,7 @@
         <td><% if submission.instructor_approved %><div class="checkmark"></div><% end %></td>
         <td><%= submission.user.first_name %></td>
         <td><%= submission.user.last_name %></td>
+        <td><%= submission.user.email %></td>
         <td><%= submission.created_at.to_s(:pretty) %></td>
         <% if Time.zone.now > @assignment.review_due %>
           <td class="<%= if submission.evaluations_completed.length != submission.evaluations_assigned.length then 'notCompleted' end %>"><%= submission.evaluations_completed.length %> / <%= submission.evaluations_assigned.length %></td>
@@ -47,6 +49,7 @@
           <td></td>
           <td><%= user.first_name %></td>
           <td><%= user.last_name %></td>
+          <td><%= user.email %></td>
           <td class="notCompleted">Didn't submit</td>
           <% if Time.zone.now > @assignment.review_due %>
             <td class="<%= if (@assignment.evaluations.forUser(user).select {|evaluation| evaluation.is_complete?}).length != @assignment.evaluations.forUser(user).length then 'notCompleted' end %>"><%= (@assignment.evaluations.forUser(user).select {|evaluation| evaluation.is_complete?}).length %> / <%= @assignment.evaluations.forUser(user).length %></td>
