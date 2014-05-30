@@ -27,7 +27,7 @@
 
   <div id='submissionBoxesWrapper'>
 <!--     GRADE -->
-    <% if @submission.instructor_approved != false and @submission.instructor_approved != nil &&  current_user.instructor?(@course) then %>
+    <% if @submission.instructor_approved != false and @submission.instructor_approved != nil && current_user.instructor?(@course) then %>
 <!--     GRADE IS APPROVED -->
       <div class='submissionGradeBox'>
         <span class="grade"><%= unless @submission.percentage.nil? then @submission.percentage.round.to_s + "%" end %></span>
@@ -45,7 +45,7 @@
       </div>
     <% end %>
 
-    <% if current_user.instructor?(@course) && (Time.zone.now >= @assignment.review_due) %>
+    <% if current_user.instructor?(@course) && (Time.zone.now >= @assignment.review_due) && !@submission.percentage.nil?%>
     <div class='submissionGradeBox warning'>
       This student's submission could not be automatically graded. Their submission did not receive the required number of complete reviews.
     </div>
