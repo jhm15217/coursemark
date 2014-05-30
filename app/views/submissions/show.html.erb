@@ -45,7 +45,7 @@
       </div>
     <% end %>
 
-    <% if current_user.instructor?(@course) && (Time.zone.now >= @assignment.review_due) && !@submission.percentage.nil?%>
+    <% if current_user.instructor?(@course) && (Time.zone.now >= @assignment.review_due) && @submission.percentage.nil?%>
     <div class='submissionGradeBox warning'>
       This student's submission could not be automatically graded. Their submission did not receive the required number of complete reviews.
     </div>
