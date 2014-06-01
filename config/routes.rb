@@ -16,6 +16,8 @@ Agora::Application.routes.draw do
         resources :evaluations
       end
 
+      resources :reviews
+
       resources :questions do
         resources :responses
         resources :scales

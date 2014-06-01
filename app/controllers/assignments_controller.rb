@@ -183,7 +183,6 @@ class AssignmentsController < ApplicationController
     @assignment = Assignment.new(params[:assignment])
     @assignment.course_id = @course.id
     @assignment.draft = true
-    @assignment.manual_assignment = !@assignment.manual_assignment
 
     respond_to do |format|
       if @assignment.save
@@ -216,7 +215,6 @@ class AssignmentsController < ApplicationController
     params['assignment'].delete 'review_due_time(5i)'
 
     @assignment = Assignment.find(params[:id])
-
     @URL = course_assignment_path(@course, @assignment)
 
     if params['publish']
