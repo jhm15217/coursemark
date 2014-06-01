@@ -1,0 +1,16 @@
+<%= render "assignments/header" %>
+
+<% if @assignment.course.users.where("instructor = 'f'").length > 0 %>
+  <table class="submissions">
+      <tr>
+        <th></th>
+        <th>Name</th>
+        <% @assignment.reviews_required.times do |n| %>
+        <th>Review <%= n+1 %></th>
+        <% end %>
+      </tr>
+  </table>
+  <br />
+<% else %>
+  <h2 class="noData">No one has enrolled yet.</h2>
+<% end %>

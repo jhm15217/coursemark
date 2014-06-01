@@ -32,7 +32,7 @@
     <%= f.number_field :reviews_required, :disabled => @assignment.review_due && (Time.zone.now > @assignment.submission_due) %>
   </div>
   <div class="field">
-    <%= f.label :manual_assignment, "Auto assign reviewers" %>&nbsp;
+    <%= f.label :manual_assignment, "Manually assign peer reviews" %>&nbsp;
     <%= f.check_box :manual_assignment, :disabled => @assignment.review_due && (Time.zone.now > @assignment.submission_due) %>
   </div>
   <div class="actions">
