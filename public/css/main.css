@@ -210,7 +210,8 @@ a {
 #sidebar li {
     list-style: none;
     width: 100%;
-    height: 45px;
+    min-height: 45px;
+    height: auto;
     padding: 12px 25px;
     font-size: 15px;
 }
@@ -319,6 +320,10 @@ a {
     font-weight: normal;
     font-size: 20pt;
     float: left;
+    max-width: 450px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 #main .tabs {
@@ -1174,30 +1179,30 @@ a {
 }
 
 #peer_review label {
-	display: inline-block;
-	cursor: pointer;
-	position: relative;
-	padding-left: 25px;
-	margin-right: 15px;
-	font-size: 13px;
+    display: inline-block;
+    cursor: pointer;
+    position: relative;
+    padding-left: 25px;
+    margin-right: 15px;
+    font-size: 13px;
   opacity:1;
 }
 #peer_review input[type=radio] {
-	display: none;
+    display: none;
 }
 #peer_review label:before {
-	content: "";
-	display: inline-block;
+    content: "";
+    display: inline-block;
 
-	width: 16px;
-	height: 16px;
+    width: 16px;
+    height: 16px;
 
-	margin-right: 10px;
-	position: absolute;
-	left: 0;
-	bottom: 1px;
-	background-color: #aaa;
-	box-shadow: inset 0px 2px 3px 0px rgba(0, 0, 0, .3), 0px 1px 0px 0px rgba(255, 255, 255, .8);
+    margin-right: 10px;
+    position: absolute;
+    left: 0;
+    bottom: 1px;
+    background-color: #aaa;
+    box-shadow: inset 0px 2px 3px 0px rgba(0, 0, 0, .3), 0px 1px 0px 0px rgba(255, 255, 255, .8);
 }
 
 #peer_review .possiblePoints {
@@ -1225,7 +1230,7 @@ a {
 }
 
 #peer_review .radio_btn label {
-	margin-bottom: 10px;
+    margin-bottom: 10px;
     text-transform: none;
 }
 
@@ -1247,11 +1252,11 @@ a {
 }
 
 #peer_review input[type=radio]:checked + label:before {
-	content: "\2713";
-	text-shadow: 1px 1px 1px rgba(0, 0, 0, .2);
-	font-size: 15px;
-	color: #f3f3f3;
-	text-align: center;
+    content: "\2713";
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, .2);
+    font-size: 15px;
+    color: #f3f3f3;
+    text-align: center;
     line-height: 15px;
 }
 

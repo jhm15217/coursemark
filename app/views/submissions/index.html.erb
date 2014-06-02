@@ -10,8 +10,7 @@
   <table class="submissions">
       <tr>
         <th></th>
-        <th>First name</th>
-        <th>Last name</th>
+        <th>Name</th>
         <th>Email</th>
         <th>Timestamp</th>
         <% if Time.zone.now > @assignment.review_due %>
@@ -20,13 +19,14 @@
         <% if Time.zone.now > @assignment.review_due %>
           <th>Grade</th>
           <th></th>
+        <% else %>
+          <th></th>
         <% end %>
       </tr>
       <% @submissions.each do |submission| %>
       <tr class="<%= if submission.instructor_approved then "highlighted" end %>">
         <td><% if submission.instructor_approved %><div class="checkmark"></div><% end %></td>
-        <td><%= submission.user.first_name %></td>
-        <td><%= submission.user.last_name %></td>
+        <td><%= submission.user.name %></td>
         <td><%= submission.user.email %></td>
         <td><%= submission.created_at.to_s(:pretty) %></td>
         <% if Time.zone.now > @assignment.review_due %>
@@ -39,6 +39,8 @@
           <% else %>
             <td><%= link_to 'Needs Approval', [@course, @assignment, submission] %></td>
           <% end %>
+        <% else %>
+            <td><a href='http://<%= request.host_with_port %><%= submission.submission %>'>View Submission</a></td>
         <% end %>
       </tr>
       <% end %>
@@ -47,8 +49,7 @@
         <% @assignment.missing_submissions.each do |user| %>
         <tr>
           <td></td>
-          <td><%= user.first_name %></td>
-          <td><%= user.last_name %></td>
+          <td><%= user.name %></td>
           <td><%= user.email %></td>
           <td class="notCompleted">Didn't submit</td>
           <% if Time.zone.now > @assignment.review_due %>
