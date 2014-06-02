@@ -19,6 +19,8 @@
         <% if Time.zone.now > @assignment.review_due %>
           <th>Grade</th>
           <th></th>
+        <% else %>
+          <th></th>
         <% end %>
       </tr>
       <% @submissions.each do |submission| %>
@@ -37,6 +39,8 @@
           <% else %>
             <td><%= link_to 'Needs Approval', [@course, @assignment, submission] %></td>
           <% end %>
+        <% else %>
+            <td><a href='http://<%= request.host_with_port %><%= submission.submission %>'>View Submission</a></td>
         <% end %>
       </tr>
       <% end %>
