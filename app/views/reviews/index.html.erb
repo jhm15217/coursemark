@@ -1,14 +1,27 @@
 <%= render "assignments/header" %>
 
-<% if @assignment.course.users.where("instructor = 'f'").length > 0 %>
-  <table class="submissions">
+<% if @students.length > 0 %>
+  <table class="reviews">
       <tr>
-        <th></th>
         <th>Name</th>
         <% @assignment.reviews_required.times do |n| %>
-        <th>Review <%= n+1 %></th>
+          <th>Reviewer <%= n+1 %></th>
         <% end %>
       </tr>
+      <% @students.each do |student| %>
+      <tr>
+        <td><%= student.name %></td>
+        <% @assignment.reviews_required.times do |n| %>
+          <td>
+            <select>
+              <% @students.each do |s| %>
+                <option><%= s.name %></option>
+              <% end %>
+            </select>
+          </td>
+        <% end %>
+      </tr>
+      <% end %>
   </table>
   <br />
 <% else %>

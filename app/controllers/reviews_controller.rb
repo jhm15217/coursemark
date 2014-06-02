@@ -4,6 +4,8 @@ class ReviewsController < ApplicationController
   def index
   	authorize! :manage, :reviews
   	
+    @students = @assignment.course.users.where("instructor = 'f'")
+
   	respond_to do |format|
       format.html # index.html.erb
     end
