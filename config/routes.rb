@@ -16,7 +16,9 @@ Agora::Application.routes.draw do
         resources :evaluations
       end
 
-      resources :reviews
+      resources :reviews do
+        get :assign_reviews, :on => :collection
+      end
 
       resources :questions do
         resources :responses

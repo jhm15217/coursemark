@@ -1,6 +1,26 @@
 <%= render "assignments/header" %>
 
-<div class="notice">This allows you to modify the peer reviewing tasks randomly assigned by Coursemark.</div>
+<% if @assignment.manual_assignment %>
+  <div class="notice">
+    <% if (Time.zone.now >= @assignment.submission_due) %>
+      Random peer review assignments can be edited below.
+    <% else %>
+      Peer reviews will be available for assignment on <%= @assignment.submission_due.to_s(:pretty) %>
+    <% end %>
+
+    <% if (Time.zone.now >= @assignment.submission_due) %>
+      <% if !@assignment.reviewers_assigned %>
+        <%= link_to assign_reviews_course_assignment_reviews_path(@course, @assignment) do %>
+          <div class='button fr' style="margin-right: -12px; margin-top: -13px;">Assign Reviews</div>
+        <% end %>
+      <% else %>
+        <%= link_to assign_reviews_course_assignment_reviews_path(@course, @assignment) do %>
+          <div class='button fr' style="margin-right: -12px; margin-top: -13px;">Unassign Reviews</div>
+        <% end %>
+      <% end %>
+    <% end %>
+  </div>
+<% end %>
 
 <% if @students.length > 0 %>
   <table class="reviews">
@@ -15,11 +35,18 @@
         <td><%= student.name %></td>
         <% @assignment.reviews_required.times do |n| %>
           <td>
-            <select>
-              <% @students.each do |s| %>
-                <option><%= s.name %></option>
-              <% end %>
-            </select>
+            <% if @assignment.manual_assignment && !@assignment.reviewers_assigned && (Time.zone.now >= @assignment.submission_due) %>
+              <select>
+                <option value="" selected disabled>Unassigned</option>
+                <% @students.each do |s| %>
+                  <option><%= s.name %></option>
+                <% end %>
+              </select>
+            <% elsif (Time.zone.now < @assignment.submission_due) %>
+              --
+            <% else %>
+              Assigned
+            <% end %>
           </td>
         <% end %>
       </tr>
