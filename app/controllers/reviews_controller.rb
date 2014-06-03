@@ -11,6 +11,20 @@ class ReviewsController < ApplicationController
     end
   end
 
+  def assign_reviews
+    authorize! :manage, :reviews
+
+    @assignment.reviewers_assigned = !@assignment.reviewers_assigned
+
+    if @assignment.reviewers_assigned.nil?
+      @assignment.reviewers_assigned = true
+    end
+
+    @assignment.save!
+
+    redirect_to action: 'index'
+  end
+
   def get_assignment
     if params[:assignment_id]
       @assignment = Assignment.find(params[:assignment_id])
