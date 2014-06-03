@@ -140,7 +140,7 @@ class AssignmentsController < ApplicationController
       @assignment.reviews_required = 0
     end
 
-    @assignment.manual_assignment = true
+    @assignment.manual_assignment = false
 
     respond_to do |format|
       format.html # new.html.erb
