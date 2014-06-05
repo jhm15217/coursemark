@@ -25,6 +25,35 @@ class ReviewsController < ApplicationController
     redirect_to action: 'index'
   end
 
+  def edit_review
+    authorize! :manage, :reviews
+
+    # Find existing evaluation
+    @s = @assignment.submissions.where('user_id = ' + params['submitterID'])[0]
+    @e = @s.evaluations.where('user_id = ' + params['oldReviewerID'])[0]
+
+    # Delete existing evaluation
+    if @e then @e.destroy end
+
+    # Create new evaluation
+    @e = Evaluation.new
+    @e.submission = @s
+    @e.user_id = params['newReviewerID']
+    @e.save!
+
+    # Create empty evaluation responses
+    @assignment.questions.each { |question|  
+      response = Response.new
+      response.question_id = question.id
+      response.evaluation_id = @e.id
+      response.save!
+    }
+
+    puts params
+
+    redirect_to action: 'index'
+  end
+
   def get_assignment
     if params[:assignment_id]
       @assignment = Assignment.find(params[:assignment_id])
