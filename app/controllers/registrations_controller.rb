@@ -18,13 +18,13 @@ class RegistrationsController < ApplicationController
   def index
     if params[:course] && current_user.instructor?(Course.find(params[:course]))
       @course = Course.find(params[:course])
-      @assignments = @course.assignments
+      @assignments = @course.assignments.sort_by {|obj| obj.created_at }
       @registrations = @course.registrations.where(:active => true).sort_by{ |r| r.instructor ? 0 : 1 }
       @template = "registrations/roster"
     else
       @registrations = current_user.registrations.where(:active => true).sort_by{ |r| r.instructor ? 0 : 1 }
       @course = current_user.courses.first
-      @assignments = @course.assignments
+      @assignments = @course.assignments.sort_by {|obj| obj.created_at }
       @template = "registrations/index"
     end
 
