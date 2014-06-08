@@ -96,6 +96,8 @@ class Submission < ActiveRecord::Base
   	if self.evaluations.length != self.assignment.reviews_required
 	  	self.evaluations.delete_all
 	  	courseStudents = self.assignment.course.get_students.without_user(self.user)
+	  	puts "FUCK LOOK HERE"
+	  	puts courseStudents
 	  	evaluations = self.assignment.evaluations
 	  	evaluationCounts = Hash.new
 	  	# create hashmap that maps student id's to the number

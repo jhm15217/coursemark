@@ -28,10 +28,10 @@ class ApplicationController < ActionController::Base
       @registration = Registration.where(:course_id => @course_id, :user_id => current_user.id).first
       if @registration && @registration.instructor
         # if a user is an instructor for course, get drafts
-        @assignments = @registration.course.assignments
+        @assignments = @registration.course.assignments.sort_by {|obj| obj.created_at }
       elsif @registration
         # otherwise user is a student, get published assignments only
-        @assignments = @registration.course.assignments.published
+        @assignments = @registration.course.assignments.published.sort_by {|obj| obj.created_at }
       end
     end
   end

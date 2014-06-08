@@ -140,6 +140,8 @@ class AssignmentsController < ApplicationController
       @assignment.reviews_required = 0
     end
 
+    @assignment.manual_assignment = false
+
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @assignment }
@@ -213,7 +215,6 @@ class AssignmentsController < ApplicationController
     params['assignment'].delete 'review_due_time(5i)'
 
     @assignment = Assignment.find(params[:id])
-
     @URL = course_assignment_path(@course, @assignment)
 
     if params['publish']

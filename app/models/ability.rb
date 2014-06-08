@@ -65,6 +65,10 @@ class Ability
       end
     end
 
+    can :manage, :reviews do |r|
+      true
+    end
+
     can :manage, Submission do |s|
       if s.assignment  
         (s.assignment.course.get_instructors.include? user) || (s.user.id == user.id)
