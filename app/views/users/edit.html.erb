@@ -25,7 +25,7 @@
 
 <% @registrations.each do |registration| %>
   <tr>
-    <td><%= link_to course_path(registration.course) do %><%= registration.course.name %><% end %></td>
+    <td><%= registration.course.name %></td>
     <td><%= registration.instructor ? "Course Staff" : "Student"  %></td>
     <td><%= link_to 'Leave Course', registration, method: :delete, data: { confirm: 'Are you sure?' } %></td>
   </tr>

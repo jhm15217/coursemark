@@ -16,11 +16,6 @@ Agora::Application.routes.draw do
         resources :evaluations
       end
 
-      resources :reviews do
-        get :assign_reviews, :on => :collection
-        post :edit_review, :on => :collection
-      end
-
       resources :questions do
         resources :responses
         resources :scales
@@ -29,15 +24,35 @@ Agora::Application.routes.draw do
     end
   end
 
+  resources :password_resets, only: [:new, :create, :update]
+
   resources :registrations
-  resources :users
+
+  resources :users do
+    resources :emails, only: [:index, :show, :destroy]
+    member do
+      get :received
+      post :resend_confirm_email
+    end
+  end
+
   get 'login', :controller => 'user_sessions', :action => 'new'  
   get 'logout', :controller => 'user_sessions', :action => 'destroy'  
   resources :user_sessions 
 
   root :to => 'courses#index'
 
-  # The priority is based upon order of creation:
+  match 'users/:id/reset_password/:confirmation_token',
+        to: 'password_resets#edit',
+        as: :reset_password
+  match '/signin',  to: 'user_sessions#new'
+  match '/email_confirmation', to: 'static_pages#email_confirmation_sent'
+  match 'users/:id/confirm/:confirmation_token',
+        to: 'users#confirm_email',
+        as: :confirm_email
+
+
+# The priority is based upon order of creation:
   # first created -> highest priority.
 
   # Sample of regular route:

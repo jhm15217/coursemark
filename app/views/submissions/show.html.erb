@@ -27,7 +27,7 @@
 
   <div id='submissionBoxesWrapper'>
 <!--     GRADE -->
-    <% if @submission.instructor_approved != false and @submission.instructor_approved != nil && current_user.instructor?(@course) then %>
+    <% if @submission.instructor_approved != false and @submission.instructor_approved != nil &&  current_user.instructor?(@course) then %>
 <!--     GRADE IS APPROVED -->
       <div class='submissionGradeBox'>
         <span class="grade"><%= unless @submission.percentage.nil? then @submission.percentage.round.to_s + "%" end %></span>
@@ -43,12 +43,6 @@
           <div class='button fr' style="margin-right: 0px;">Approve Grade</div>
         <% end %>
       </div>
-    <% end %>
-
-    <% if current_user.instructor?(@course) && (Time.zone.now >= @assignment.review_due) && @submission.percentage.nil?%>
-    <div class='submissionGradeBox warning'>
-      This student's submission could not be automatically graded. Their submission did not receive the required number of complete reviews.
-    </div>
     <% end %>
 
   <% if current_user.id != @submission.user.id && !current_user.instructor?(@course) %>
@@ -122,18 +116,18 @@
                 <div class='submissionStudentResponse'>
                   <div class='submissionResponseFrom' style="margin-top: 30px;">
                     <% if current_user.instructor?(@course) %>
-                      <%= @submission.user.first_name %>'s Dispute
+                      <%= @submission.user.first_name %>'s Reply
                     <% elsif current_user.id == @submission.user.id then %>
-                      Your Dispute
+                      Your Reply
                     <% else %>
-                      Author's Dispute
+                      Author's Reply
                     <% end %></div>
                   <%= response.student_response %>
                 </div>
               <% end %>
               <% if response.instructor_response != nil || current_user.instructor?(@course) %>
                 <div class='submissionInstructorResponse' style="margin-top:25px; margin-bottom:-3px;">
-                  <div class='submissionResponseFrom'>Your Reply</div>
+                  <div class='submissionResponseFrom'>Instructor</div>
                   <% if !response.instructor_response.blank? then %>
                       <%= response.instructor_response %>
                   <% elsif current_user.instructor?(@course) %>
