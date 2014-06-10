@@ -1,7 +1,6 @@
 class RegistrationsController < ApplicationController
   skip_before_filter :get_assignments, :except => [:index]
   skip_before_filter :get_submission_for_assignment, :except => [:index]
-  layout false, :except => :index
   load_and_authorize_resource :except => [:add_to_course_staff]
 
   # Exception Handling
@@ -18,13 +17,13 @@ class RegistrationsController < ApplicationController
   def index
     if params[:course] && current_user.instructor?(Course.find(params[:course]))
       @course = Course.find(params[:course])
-      @assignments = @course.assignments.sort_by {|obj| obj.created_at }
+      @assignments = @course.assignments
       @registrations = @course.registrations.where(:active => true).sort_by{ |r| r.instructor ? 0 : 1 }
       @template = "registrations/roster"
     else
       @registrations = current_user.registrations.where(:active => true).sort_by{ |r| r.instructor ? 0 : 1 }
       @course = current_user.courses.first
-      @assignments = @course.assignments.sort_by {|obj| obj.created_at }
+      @assignments = @course.assignments
       @template = "registrations/index"
     end
 
@@ -51,7 +50,7 @@ class RegistrationsController < ApplicationController
     @registration = Registration.new
 
     respond_to do |format|
-      format.html # new.html.erb
+      format.html { render :layout => 'startup_page' }
       format.json { render json: @registration }
     end
   end
@@ -132,12 +131,12 @@ class RegistrationsController < ApplicationController
   end
 
   def invalidCourse(exception)
-    flash[:notice] = 'Invalid course code'
+    flash[:error] = 'There is no course with that code.'
     redirect_to :action => "new"
   end
 
   def existingRegistration(exception)
-    flash[:notice] = 'Already registered for this course'
+    flash[:error] = 'Your are already registered for this course'
     redirect_to :action => "new"
   end
 end

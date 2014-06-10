@@ -35,5 +35,32 @@ Agora::Application.configure do
   config.assets.compress = false
 
   # Expands the lines which load the assets
-  config.assets.debug = false
+  config.assets.debug = true
+
+  # Mailer
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+    :address              => "smtp.gmail.com",
+    :port                 => 587,
+    :domain               => 'gmail.com',
+    :user_name            => 'kevinjschaefer',
+    :password             => 'password',
+    :authentication       => 'plain',
+    :enable_starttls_auto => true  }
+  config.action_mailer.perform_deliveries = true
+  config.action_mailer.raise_delivery_errors = true
+
+  # Mailer
+  # config.action_mailer.delivery_method = :smtp
+  # config.action_mailer.smtp_settings = {
+  #     :port           => ENV["WR_PORT"],
+  #     :address        => ENV["WR_ADDRESS"],
+  #     :user_name      => ENV["WR_USER_NAME"],
+  #     :password       => ENV["WR_PASSWORD"],
+  #     :domain               => ENV["WR_DOMAIN"],
+  #     :authentication       => :plain,
+  #     :enable_starttls_auto => true  }
+  # config.action_mailer.perform_deliveries = true
+  # config.action_mailer.raise_delivery_errors = true
+
 end

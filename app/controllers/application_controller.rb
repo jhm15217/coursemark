@@ -1,8 +1,14 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
-  before_filter :require_login, :get_assignments
+  before_filter :require_login, :except => [:create ]
+  before_filter :get_assignments
   helper_method :current_user
   helper_method :get_submission_for_assignment
+
+  def redirect_to(*args)
+    flash.keep
+    super
+  end
 
   def get_assignments
     # TODO: This should be a scope or a method in a model
@@ -28,10 +34,10 @@ class ApplicationController < ActionController::Base
       @registration = Registration.where(:course_id => @course_id, :user_id => current_user.id).first
       if @registration && @registration.instructor
         # if a user is an instructor for course, get drafts
-        @assignments = @registration.course.assignments.sort_by {|obj| obj.created_at }
+        @assignments = @registration.course.assignments
       elsif @registration
         # otherwise user is a student, get published assignments only
-        @assignments = @registration.course.assignments.published.sort_by {|obj| obj.created_at }
+        @assignments = @registration.course.assignments.published
       end
     end
   end

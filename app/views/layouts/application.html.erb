@@ -9,7 +9,6 @@
         <title>Coursemark</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width">
-
         <link rel="stylesheet" href="/css/normalize.min.css">
         <link rel="stylesheet" href="/css/main.css">
         <link rel="stylesheet" href="/css/datepickers.css">
@@ -76,8 +75,12 @@
             </ul>
         </div>
 
+
         <div id="main">
-            <%= yield %>
+          <% flash.each do |key, value| %>
+              <%= content_tag(:div, value, class: "alert alert-#{key} center") %>
+          <% end %>
+          <%= yield %>
         </div>
 
         <%= javascript_include_tag "application" %>

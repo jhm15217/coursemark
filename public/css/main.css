@@ -31,6 +31,25 @@ body {
     font-family: "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
 }
 
+#user_email {
+    background: #ffffff;
+    color: #000000;
+}
+#user_password {
+    background: #ffffff;
+    color: #000000;
+}
+
+#user_password_confirmation {
+    background: #ffffff;
+    color: #000000;
+}
+
+#user_session_password {
+    background: #ffffff;
+    color: #000000;
+}
+
 ::-moz-selection {
     background: #b3d4fc;
     text-shadow: none;
@@ -51,7 +70,7 @@ hr {
 }
 
 img {
-    vertical-align: middle;
+    vertical-align: top;
 }
 
 fieldset {
@@ -114,14 +133,14 @@ a {
 }
 
 #sidebar .tab.assignments {
-    background-image: url(../img/assignments_icon.png);
+    background-image: url(/assets/assignments_icon.png);
     background-repeat: no-repeat;
     background-position: center center;
     background-size: 23px;
 }
 
 #sidebar .tab.profile {
-    background-image: url(../img/user_icon.png);
+    background-image: url(/assets/user_icon.png);
     background-repeat: no-repeat;
     background-position: center center;
     background-size: 23px;
@@ -136,7 +155,7 @@ a {
     text-overflow: ellipsis;
     padding-top: 11px;
     cursor: pointer;
-    background-image: url(../img/menu_icon.png);
+    background-image: url(/assets/menu_icon.png);
     background-repeat: no-repeat;
     background-position: 20px center;
     background-size: 20px;
@@ -210,8 +229,7 @@ a {
 #sidebar li {
     list-style: none;
     width: 100%;
-    min-height: 45px;
-    height: auto;
+    height: 45px;
     padding: 12px 25px;
     font-size: 15px;
 }
@@ -292,7 +310,7 @@ a {
 
 #main.no_sidebar_main {
   width:100%;
-  padding: 0px 36px 40px 50px;
+  padding: 0px 0px 0px 0px;
   background: #F5F6F8;
 }
 
@@ -320,10 +338,6 @@ a {
     font-weight: normal;
     font-size: 20pt;
     float: left;
-    max-width: 450px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
 }
 
 #main .tabs {
@@ -474,12 +488,11 @@ a {
     height: 50px;
     padding-top: 15px;
     border-bottom: 1px solid #DFDFDF;
-    color: rgba(52, 63, 83, 0.4);
 }
 
 .assignmentStatus .checkPoint.completed {
     color: #2ecc71;
-    background-image: url(../img/checkmark.png);
+    background-image: url(/assets/checkmark.png);
     background-repeat: no-repeat;
     background-position: 0px center;
     background-size: 20px;
@@ -544,18 +557,16 @@ a {
     opacity: .6;
 }
 
-#main .submissions tr td:first-child,
-#main .submissions th td:first-child {
-    width: 75px;
-}
 
 #main .submissions .checkmark {
-    background-image: url(../img/checkmark.png);
+    background-image: url(/assets/checkmark.png);
     background-repeat: no-repeat;
-    background-position: 0px center;
+    background-position: 0px 3px;
     background-size: 20px;
     width: 20px;
     height: 20px;
+    display: inline-block;
+    margin-left: 10px;
 }
 
 #main table tr:last-child {
@@ -599,13 +610,12 @@ a {
     margin-top: 1.6em;
     margin-bottom: 1.6em;
 }
-
 #main input[type=submit], .button {
     width: 215px;
     height: 50px;
-    background: #FFF;
     border-radius: 5px;
     border: 1px solid #d5d5d5;
+    background: #FFF;
     text-align: center;
     margin-right: 15px;
     margin-bottom: 20px;
@@ -693,6 +703,28 @@ a {
 
 #main .field {
     margin-bottom: 15px;
+}
+
+#main .loginFields .field,
+#main .newAccountFields .field {
+    margin-bottom: 0px;
+}
+
+#main .newAccountFields input {
+    border-bottom: 0px;
+}
+
+#main .newAccountFields #user_first_name,
+#main .newAccountFields #user_password_confirmation {
+    border: 1px solid #d5d5d5;
+}
+
+#main .newAccountFields .actions input {
+    border: 1px solid #d5d5d5;
+}
+
+.passwordResetBtn {
+    width: 470px !important;
 }
 
 #main .num {
@@ -783,7 +815,19 @@ a {
     opacity: 0.6;
 }
 
+.alert {
+    color: #FFF;
+    text-align: center;
+    width: 400px;
+    margin: 13px auto;
+}
+
+.alert-error {
+    color: red;
+}
+
 .percentWrapper {
+
     float: left;
     width: 75px;
 }
@@ -837,7 +881,8 @@ a {
     height: 100%;
     width: 100%;
     background: #343F53;
-    padding-top: 220px;
+    color: #FFF;
+    padding-top: 200px;
 }
 
 .loginWrapper .error {
@@ -852,7 +897,7 @@ a {
 .loginWrapper #error_explanation ul {
     list-style: none;
     padding: 0px;
-    color: #FFF;
+    color: #ff0000;
 }
 
 .loginWrapper.newAccount {
@@ -875,6 +920,10 @@ a {
     width: 100%;
     height: 50px;
     padding-left: 15px;
+}
+
+#main .loginFields input, #main .newAccountFields input {
+    width: 470px;
 }
 
 .new_user .field:nth-child(2) input,
@@ -1010,13 +1059,6 @@ a {
   height:72px;
 }
 
-.submissionGradeBox.warning {
-    height: 109px;
-    padding-top: 20px;
-    background: rgba(230, 126, 34, 0.05);
-    border: 1px solid #e67e22;
-}
-
 .submissionGradeBox span {
   text-transform:uppercase;
   font-color:#48494B;
@@ -1132,8 +1174,8 @@ a {
     float: left;
     background: #FFF;
     padding: 25px;
-    width: -moz-calc(50% - 20px);
-    width: calc(50% - 20px);
+    width: -moz-calc(50% - 10px);
+    width: calc(50% - 10px);
     margin-left: 20px;
     border-radius: 6px;
     border: 1px solid #DFDFDF;
@@ -1179,30 +1221,30 @@ a {
 }
 
 #peer_review label {
-    display: inline-block;
-    cursor: pointer;
-    position: relative;
-    padding-left: 25px;
-    margin-right: 15px;
-    font-size: 13px;
+	display: inline-block;
+	cursor: pointer;
+	position: relative;
+	padding-left: 25px;
+	margin-right: 15px;
+	font-size: 13px;
   opacity:1;
 }
 #peer_review input[type=radio] {
-    display: none;
+	display: none;
 }
 #peer_review label:before {
-    content: "";
-    display: inline-block;
+	content: "";
+	display: inline-block;
 
-    width: 16px;
-    height: 16px;
+	width: 16px;
+	height: 16px;
 
-    margin-right: 10px;
-    position: absolute;
-    left: 0;
-    bottom: 1px;
-    background-color: #aaa;
-    box-shadow: inset 0px 2px 3px 0px rgba(0, 0, 0, .3), 0px 1px 0px 0px rgba(255, 255, 255, .8);
+	margin-right: 10px;
+	position: absolute;
+	left: 0;
+	bottom: 1px;
+	background-color: #aaa;
+	box-shadow: inset 0px 2px 3px 0px rgba(0, 0, 0, .3), 0px 1px 0px 0px rgba(255, 255, 255, .8);
 }
 
 #peer_review .possiblePoints {
@@ -1230,7 +1272,7 @@ a {
 }
 
 #peer_review .radio_btn label {
-    margin-bottom: 10px;
+	margin-bottom: 10px;
     text-transform: none;
 }
 
@@ -1252,11 +1294,11 @@ a {
 }
 
 #peer_review input[type=radio]:checked + label:before {
-    content: "\2713";
-    text-shadow: 1px 1px 1px rgba(0, 0, 0, .2);
-    font-size: 15px;
-    color: #f3f3f3;
-    text-align: center;
+	content: "\2713";
+	text-shadow: 1px 1px 1px rgba(0, 0, 0, .2);
+	font-size: 15px;
+	color: #f3f3f3;
+	text-align: center;
     line-height: 15px;
 }
 
@@ -1372,6 +1414,13 @@ a {
 .clearfix {
     *zoom: 1;
 }
+
+.flash {
+    text-align: center;
+    background-color: gray;
+    color: red;
+}
+
 
 /* ==========================================================================
    Print styles

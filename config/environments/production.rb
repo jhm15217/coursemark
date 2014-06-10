@@ -1,6 +1,8 @@
 Agora::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
 
+  # Disable delivery errors, bad email addresses will be ignored
+  # config.action_mailer.raise_delivery_errors = false
   # Code is not reloaded between requests
   config.cache_classes = true
 
@@ -64,4 +66,16 @@ Agora::Application.configure do
   # Log the query plan for queries taking more than this (works
   # with SQLite, MySQL, and PostgreSQL)
   # config.active_record.auto_explain_threshold_in_seconds = 0.5
+
+  # Mailer
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+    :port           => '25',
+    :address        => ENV['POSTMARK_SMTP_SERVER'],
+    :user_name      => ENV['POSTMARK_API_KEY'],
+    :password       => ENV['POSTMARK_API_KEY'],
+    :domain         => 'coursemark.org',
+    :authentication => :plain }
+  config.action_mailer.perform_deliveries = true
+
 end
