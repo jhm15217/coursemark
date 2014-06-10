@@ -28,7 +28,7 @@ class AssignmentsController < ApplicationController
       end
     else
       if current_user.instructor?(@course)
-        @URL = registrations_path(:course => @course.id)
+        @URL = { :action => 'new' }
       else
         @URL = edit_user_path(current_user, :course => @course.id)
       end
@@ -140,8 +140,6 @@ class AssignmentsController < ApplicationController
       @assignment.reviews_required = 0
     end
 
-    @assignment.manual_assignment = false
-
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @assignment }
@@ -215,11 +213,12 @@ class AssignmentsController < ApplicationController
     params['assignment'].delete 'review_due_time(5i)'
 
     @assignment = Assignment.find(params[:id])
+
     @URL = course_assignment_path(@course, @assignment)
 
     if params['publish']
       if @assignment.questions.length == 0
-        flash[:notice] = 'You must first create a rubric'
+        flash[:error] = 'You must first create a rubric'
         @url = edit_course_assignment_path(@assignment.course, @assignment)
       else
         @assignment.draft = false

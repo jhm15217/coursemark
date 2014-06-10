@@ -12,8 +12,12 @@ class Ability
 
     can :new, User
     can :create, User
+    can :confirm_email, User
     can :manage, User do |u|
-      if u.id && user.id
+      if not user
+        puts "No user vs. ", u.id
+      end
+      if user && u.id && user.id
         u.id == user.id
       else
         true
@@ -65,13 +69,9 @@ class Ability
       end
     end
 
-    can :manage, :reviews do |r|
-      true
-    end
-
     can :manage, Submission do |s|
       if s.assignment  
-        (s.assignment.course.get_instructors.include? user) || (s.user.id == user.id)
+        s.assignment.course.get_instructors.include? user
       else
         true
       end
