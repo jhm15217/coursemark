@@ -7,6 +7,11 @@ gem 'rails', '3.2.13'
 
 gem 'pg'
 gem 'carrierwave-postgresql'
+gem 'haml', '~> 4.0'
+gem 'haml-rails'
+gem 'thin'
+gem 'bootstrap'
+gem 'bootstrap-sass'
 
 # Gems used only in testing
 group :test do
@@ -33,6 +38,9 @@ group :development do
   gem "seed_dump"
   gem 'binding_of_caller'
   gem 'rails-erd'
+  gem 'debugger', '1.6.7'
+  gem 'debugger-xml'
+  gem 'builder', '3.0.4'
 end
 
 group :production do

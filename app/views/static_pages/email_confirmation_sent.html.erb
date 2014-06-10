@@ -1,0 +1,12 @@
+<% provide(:title, "Email Confirmation Sent") %>
+  <div class="span8 offset2" style = "width:450px; margin: 0 auto; text-align: center">
+  Please check your inbox for an email confirmation and click the link.
+  The email may take several minutes to be received.
+  </div>
+  <br/>
+  <center>
+  Still haven't received your email?
+  <%= button_to "Resend Email", resend_confirm_email_user_path(@user.id), class: "button", style: "text-align: center; padding: 10px; margin-top: 20px;" %>
+  </center>
+
+

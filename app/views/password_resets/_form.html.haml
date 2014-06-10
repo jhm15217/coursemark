@@ -1,0 +1,6 @@
+.row
+.span6.offset3
+  = form_tag password_resets_path, :method => :post do
+    .field
+      = text_field_tag :email, params[:email], :placeholder => "Email"
+    .actions= submit_tag "Send a password reset", class: "btn btn-primary passwordResetBtn"

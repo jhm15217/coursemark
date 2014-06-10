@@ -1,0 +1,11 @@
+.loginWrapper
+- unless flash[:error]
+  %p
+    Thank you, #{@user.first_name}, for registering with Coursemark.
+  %p
+    Click
+    = link_to "here", signin_path
+    to sign in.
+-else
+  %h2
+    No touching what isn't yours.

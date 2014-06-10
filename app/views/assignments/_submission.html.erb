@@ -20,7 +20,7 @@
   <div class="actions">
     <%= f.submit "Submit Assignment" %>
     <% if @submission.created_at %>
-      <a style="margin-left: 20px;" href='http://<%= request.host_with_port %><%= @submission.submission %>'>&#10004; View submission</a>
+      <a style="margin-left: 20px;" href='http://<%= request.host_with_port %><%= @submission.submission %>'>&#10004; Submitted on time</a>
     <% end %>
   </div>
 <% end %>

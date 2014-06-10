@@ -1,16 +1,19 @@
 class UsersController < ApplicationController
-	skip_before_filter :require_login, :except => :edit
-	layout false, :except => [:edit, :update]
+	skip_before_filter :require_login, :except => [:edit, :update]
 	load_and_authorize_resource
-	
-	def new  
+
+  def index
+  end
+
+  # GET
+  def new
 		if current_user
 			if !request.GET['course'].blank?
 				@registration = Registration.new()
 				@registration.active = true;
-    			@registration.instructor = false;
-    			@registration.user = @user
-    			@registration.course_code = params['course']
+        @registration.instructor = false;
+        @registration.user = @user
+        @registration.course_code = params['course']
 				@registration.course = Course.where(:course_code => params['course']).first or raise InvalidCourse
 					
 				respond_to do |format|
@@ -18,7 +21,7 @@ class UsersController < ApplicationController
 	        			format.html { redirect_to course_path(@registration.course) }
 	        			format.json { render json: @registration, status: :created, location: @registration }
 	        		else 
-						format.html { render action: "new" }
+						    format.html { render action: "new" }
 	        			format.json { render json: @registration.errors, status: :unprocessable_entity }
 	        		end
 	        	end 
@@ -26,12 +29,12 @@ class UsersController < ApplicationController
 	    else
 			@user = User.new
 
-			respond_to do |format|
-		      format.html # new.html.erb
-		      format.json { render json: @user }
-		    end
+      respond_to do |format|
+        format.html { render :layout => 'startup_page' }
+        format.json { render json: @course }
+      end
 		end
-	end  
+	end
 
 	def edit
     	@user = current_user
@@ -44,35 +47,34 @@ class UsersController < ApplicationController
       	end
   	end
 
-	def create  
-		@user = User.new(params[:user])  
-		if @user.save  
-			if !params['course'].blank?
-				@registration = Registration.new()
-				@registration.active = true;
-    			@registration.instructor = false;
-    			@registration.user = @user
-    			@registration.course_code = params['course']
-				@registration.course = Course.where(:course_code => params['course']).first or raise InvalidCourse
-					
-			respond_to do |format|
-				if @registration.save
-        			format.html { redirect_to course_path(@registration.course) }
-        			format.json { render json: @registration, status: :created, location: @registration }
-        		else 
-					format.html { render action: "new" }
-        			format.json { render json: @registration.errors, status: :unprocessable_entity }
-        		end
-        	end 
-			else 
-				redirect_to new_registration_url  
-			end
-		else  
-			render :action => 'new'  
-		end  
-	end
+  # POST
+  def create
+    # Checks if user started to register
+    if !User.find_by_email(params[:user][:email])
+      @user = User.new(params[:user])
+      if @user.save
+        respond_to do |format|
+          # Tell the UserMailer to send a welcome Email after save
+          flash[:success] = "Welcome to Coursemark."
+          UserMailer.welcome_email(@user).deliver
+          # UserMailer.delay.welcome_email(@user)
+          format.html { redirect_to(email_confirmation_path(id: @user.id)) }
+        end
+      else
+        respond_to do |format|
+          format.html { render action: 'new', :layout => 'startup_page', flash: {error: 'Password and/or confirmation is wrong.' }}
+        end
+      end
+    else
+      respond_to do |format|
+        format.html {
+          flash.now[:error] = 'That email has already been registered.'
+          render action: 'new', :layout => 'startup_page'}
+      end
+    end
+  end
 
-	def update
+  def update
     @user = User.find(params[:id])
     @course = @user.courses.first
     @registrations = current_user.registrations
@@ -86,5 +88,31 @@ class UsersController < ApplicationController
         format.json { render json: @response.errors, status: :unprocessable_entity }
       end
     end
-  end  
+  end
+
+  # GET
+  # Confirms the email address of a user by matching confirmation token
+  def confirm_email
+    confirmation_token = params[:confirmation_token]
+    @user = User.find_by_id(params[:id])
+    if @user.confirmed
+      redirect_to root_path, notice: "You already validated your email"
+    elsif @user.confirmation_token == confirmation_token
+      @user.confirmed = true
+      @user.save(validate: false)
+      redirect_to login_path, flash: {success: "Your email is confirmed. Please login."}
+    else
+      redirect_to root_path, flash: { error: "Access denied"}
+    end
+  end
+
+  # POST
+  def resend_confirm_email
+    @user = User.find(params[:id])
+    UserMailer.welcome_email(@user).deliver
+    redirect_to email_confirmation_path(id: @user.id)
+  end
+
+
+
 end

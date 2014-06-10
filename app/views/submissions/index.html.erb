@@ -9,9 +9,8 @@
 <% if @submissions.length > 0 %>
   <table class="submissions">
       <tr>
-        <th></th>
-        <th>Name</th>
-        <th>Email</th>
+        <th>First name</th>
+        <th>Last name</th>
         <th>Timestamp</th>
         <% if Time.zone.now > @assignment.review_due %>
           <th>Reviews completed</th>
@@ -19,28 +18,26 @@
         <% if Time.zone.now > @assignment.review_due %>
           <th>Grade</th>
           <th></th>
-        <% else %>
-          <th></th>
         <% end %>
       </tr>
       <% @submissions.each do |submission| %>
       <tr class="<%= if submission.instructor_approved then "highlighted" end %>">
-        <td><% if submission.instructor_approved %><div class="checkmark"></div><% end %></td>
-        <td><%= submission.user.name %></td>
-        <td><%= submission.user.email %></td>
+        <td><%= submission.user.first_name %></td>
+        <td><%= submission.user.last_name %></td>
         <td><%= submission.created_at.to_s(:pretty) %></td>
         <% if Time.zone.now > @assignment.review_due %>
           <td class="<%= if submission.evaluations_completed.length != submission.evaluations_assigned.length then 'notCompleted' end %>"><%= submission.evaluations_completed.length %> / <%= submission.evaluations_assigned.length %></td>
         <% end %>
         <% if Time.zone.now > @assignment.review_due %>
-          <td><%= if !submission.percentage.blank? then submission.percentage.round else "--" end %>%</td>
+          <td>
+            <%= if !submission.percentage.blank? then submission.percentage.round else "--" end %>%
+            <% if submission.instructor_approved %><div class="checkmark"></div><% end %>
+          </td>
           <% if submission.instructor_approved %>
             <td><%= link_to 'View Reviews', [@course, @assignment, submission] %></td>
           <% else %>
             <td><%= link_to 'Needs Approval', [@course, @assignment, submission] %></td>
           <% end %>
-        <% else %>
-            <td><a href='http://<%= request.host_with_port %><%= submission.submission %>'>View Submission</a></td>
         <% end %>
       </tr>
       <% end %>
@@ -48,9 +45,8 @@
       <% if Time.zone.now > @assignment.submission_due %>
         <% @assignment.missing_submissions.each do |user| %>
         <tr>
-          <td></td>
-          <td><%= user.name %></td>
-          <td><%= user.email %></td>
+          <td><%= user.first_name %></td>
+          <td><%= user.last_name %></td>
           <td class="notCompleted">Didn't submit</td>
           <% if Time.zone.now > @assignment.review_due %>
             <td class="<%= if (@assignment.evaluations.forUser(user).select {|evaluation| evaluation.is_complete?}).length != @assignment.evaluations.forUser(user).length then 'notCompleted' end %>"><%= (@assignment.evaluations.forUser(user).select {|evaluation| evaluation.is_complete?}).length %> / <%= @assignment.evaluations.forUser(user).length %></td>

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+  </head>
+  <body>
+    <h1>Welcome to Coursemark, <%= @user.first_name %></h1>
+    <p>
+      Your username is: <%= @user.email %>.<br/>
+    </p>
+    <p>
+      To complete your registration, please confirm your email address by following this link:
+      <br />
+      <%= @url %>
+    </p>
+  </body>
+</html>
