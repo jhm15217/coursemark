@@ -1,0 +1,71 @@
+<%= render "assignments/header" %>
+
+<% if @assignment.submissions.length == 0 %>
+  <h2 class="noData">No one has submitted yet.</h2>
+<% else %>
+  <% if @assignment.manual_assignment %>
+    <div class="notice">
+      <% if @assignment.reviewers_assigned %>
+        Reviews are currently being completed by students.
+      <% else %>
+        <% if (Time.zone.now >= @assignment.submission_due) %>
+          When finished editing peer review assignments, click "Assign Reviews."
+        <% else %>
+          Peer reviews will be available for assignment on <%= @assignment.submission_due.to_s(:pretty) %>
+        <% end %>
+      <% end %>
+
+      <% if (Time.zone.now >= @assignment.submission_due) %>
+        <% if !@assignment.reviewers_assigned %>
+          <%= link_to assign_reviews_course_assignment_reviews_path(@course, @assignment) do %>
+            <div class='button fr' style="margin-right: -12px; margin-top: -13px;">Assign Reviews</div>
+          <% end %>
+        <% else %>
+          <%= link_to assign_reviews_course_assignment_reviews_path(@course, @assignment) do %>
+            <div class='button fr' style="margin-right: -12px; margin-top: -13px;">Unassign Reviews</div>
+          <% end %>
+        <% end %>
+      <% end %>
+    </div>
+  <% end %>
+
+  <% if @students.length > 0 %>
+    <table class="reviews">
+        <tr>
+          <th>Name</th>
+          <% @assignment.reviews_required.times do |n| %>
+            <th>Reviewer <%= n+1 %></th>
+          <% end %>
+        </tr>
+        <% @students.each do |student| %>
+          <% if student.submissions.where('assignment_id = ' + @assignment.id.to_s)[0] %>
+            <tr>
+              <td><%= student.name %></td>
+              <% student.submissions.where('assignment_id = ' + @assignment.id.to_s)[0].evaluations.each do |e| %>
+                <td>
+                  <% if @assignment.manual_assignment && !@assignment.reviewers_assigned && (Time.zone.now >= @assignment.submission_due) %>
+                    <select data-student="<%= student.id %>" data-current="<%= e.user.id %>">
+                      <% @students.each do |s| %>
+                        <% if s.id != student.id %>
+                          <option data-student="<%= s.id %>" <%= if s.id == e.user.id then 'selected' end %>>
+                            <%= s.name %>
+                          </option>
+                        <% end %>
+                      <% end %>
+                    </select>
+                  <% elsif (Time.zone.now < @assignment.submission_due) %>
+                    --
+                  <% else %>
+                    <%= e.user.name %>
+                  <% end %>
+                </td>
+              <% end %>
+            </tr>
+          <% end %>
+        <% end %>
+    </table>
+    <br />
+  <% else %>
+    <h2 class="noData">No one has enrolled yet.</h2>
+  <% end %>
+<% end %>

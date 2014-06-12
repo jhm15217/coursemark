@@ -11,6 +11,12 @@
                 <% end %>
             </div>
 
+            <div class="tab <%= 'active' if controller.controller_name == 'reviews' %>">
+                <%= link_to course_assignment_reviews_path(@course, @assignment) do %>
+                    Reviews
+                <% end %>
+            </div>
+
             <div class="tab <%= 'active' if controller.controller_name == 'submissions' %>">
                 <%= link_to course_assignment_submissions_path(@course, @assignment) do %>
                     Submissions

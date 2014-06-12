@@ -20,6 +20,11 @@ Agora::Application.routes.draw do
         resources :responses
         resources :scales
       end
+
+      resources :reviews do
+        get :assign_reviews, :on => :collection
+        post :edit_review, :on => :collection
+      end
       
     end
   end
