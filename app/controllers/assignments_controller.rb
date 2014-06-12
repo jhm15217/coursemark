@@ -184,7 +184,7 @@ class AssignmentsController < ApplicationController
 
     respond_to do |format|
       if @assignment.save
-        format.html { redirect_to [@course, @assignment], notice: 'Assignment was successfully created.' }
+        format.html { redirect_to [@course, @assignment] }
         format.json { render json: @assignment, status: :created, location: @assignment }
       else
         format.html { render action: "new" }

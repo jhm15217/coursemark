@@ -61,6 +61,10 @@ class Ability
       end
     end
 
+    can :manage, :reviews do |r|
+      true
+    end
+
     can :manage, Question do |q|
       if q.assignment
         q.assignment.course.get_instructors.include? user
