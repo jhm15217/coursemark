@@ -1,6 +1,6 @@
 <%= render "assignments/header" %>
 
-<div class="assignmentStatus">
+<div class="assignmentStatus" style="width: 49%;">
     <h3>Assignment Progress</h3>
     <div class="checkPoint completed %>">Assignment released</div>
     <div class="checkPoint <%= if (Time.zone.now > @assignment.submission_due) then 'completed' end %>">Assignment due on <%= @assignment.submission_due.to_s(:pretty) %></div>
@@ -26,7 +26,7 @@
     <% else %>
       <p class="grade" style="<%= if (!@submission.percentage || !@submission.instructor_approved) then 'font-size: 24pt; margin-top: 10px;' end %>"><%= if @submission.percentage && @submission.instructor_approved then @submission.percentage.round.to_s + '%' else 'Grade Pending' end %></p>
     <% end %>
-    <a href='http://<%= request.host_with_port %><%= @submission.submission %>' style="color:#343F53;">View Submission</a>
+    <a href='<%= @submission.attachment.url %>' style="color:#343F53;">View Submission</a>
     </p>
   </div>
 <% end %>

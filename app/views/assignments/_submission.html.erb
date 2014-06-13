@@ -12,7 +12,7 @@
   <% end %>
 
   <div class="field">
-    <%= f.file_field :submission, :accept => 'application/pdf', :required => true %>
+    <%= f.file_field :attachment, :required => true %>
   </div>
   <div class="field hidden">
     <%= f.collection_select :assignment_id, Assignment.all, :id, :name, :prompt => "Select assignment..." %>
@@ -20,7 +20,7 @@
   <div class="actions">
     <%= f.submit "Submit Assignment" %>
     <% if @submission.created_at %>
-      <a style="margin-left: 20px;" href='http://<%= request.host_with_port %><%= @submission.submission %>'>&#10004; Submitted on time</a>
+      <a style="margin-left: 20px;" href='<%= @submission.attachment.url %>'>&#10004; Submitted on time</a>
     <% end %>
   </div>
 <% end %>

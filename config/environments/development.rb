@@ -63,4 +63,15 @@ Agora::Application.configure do
   # config.action_mailer.perform_deliveries = true
   # config.action_mailer.raise_delivery_errors = true
 
+  # Uploader
+  config.paperclip_defaults = {
+    :storage => :s3,
+    :s3_protocol => 'http',
+    :s3_credentials => {
+      :bucket => 'coursemark',
+      :access_key_id => 'AKIAIBG367S6EBEZVF5A',
+      :secret_access_key => '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'
+    }
+  }
+
 end
