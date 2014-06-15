@@ -68,9 +68,9 @@ Agora::Application.configure do
     :storage => :s3,
     :s3_protocol => 'http',
     :s3_credentials => {
-      :bucket => 'coursemark',
-      :access_key_id => 'AKIAIBG367S6EBEZVF5A',
-      :secret_access_key => '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'
+      :bucket => 'Coursemark',
+      :access_key_id => 'AKIAJUAJULX2PQPERHLA',
+      :secret_access_key => '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'
     }
   }
 

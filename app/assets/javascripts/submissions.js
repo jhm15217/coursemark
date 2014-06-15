@@ -5,6 +5,7 @@ $('form').on('ajax:success', function(event, data, status, xhr) {
   $($(this).parent().find('.savedStatus')[0]).html('✓ response saved');
   console.log("Status: ", status);
 });
+
 $('form').on('ajax:error', function(event, data, status, xhr) {
   $($(this).parent().find('.savedStatus')[0]).html('trouble saving...retrying');
   console.log("Status: ", status, "   - please try again.");
@@ -35,17 +36,31 @@ function submitForms() {
     var checkbox = $(forms[i]).find('input[name="response[scale_id]"]').parent().parent();
     checkbox.change(function(){
       console.log('changed radio button');
+
+      var commentRequired = $(this).parent().find('.peerReviewJustification textarea').attr('required');
+      var existingComment = $(this).parent().find('.peerReviewJustification textarea').val();
+
+      if (commentRequired && !existingComment) {
+        $(this).parent().find('.peerReviewJustification textarea').val(' ');
+      }
+
       $(this).parent().parent().find('.savedStatus').html('saving...');
       $($(this).parent()[0]).trigger('submit.rails');
+    
     });
 
     // Textarea change
       $(textarea).typing({
         start: function (event, $elem) {
-            console.log($elem);
             $($elem.parent().parent().parent().find('.savedStatus')[0]).html('typing...');
         },
         stop: function (event, $elem) {
+            var existingComment = $($elem).val();
+
+            if (!existingComment) {
+              $($elem).val(' ');
+            }
+
             $($elem.parent().parent().parent().find('.savedStatus')[0]).html('saving...');
             $($elem.parent().parent()[0]).trigger('submit.rails');
         },
