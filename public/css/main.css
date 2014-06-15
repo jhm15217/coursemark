@@ -221,6 +221,7 @@ a {
 }
 
 #sidebar ul {
+    width: 290px;
     padding: 0px;
     margin: 0px;
     overflow-y: scroll;
@@ -1182,7 +1183,7 @@ a {
     height: 144px;
 }
 
-.new_submission input,
+.new_submission input,                                                                                                                                                                              u
 .edit_submission input {
     border: 0px;
 }

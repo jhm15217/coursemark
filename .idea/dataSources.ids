@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="dataSourceStorage">
+  <data-source source="LOCAL" name="Rails Coursemark-transparency: development" uuid="ea4e81d1-49ba-421c-a95d-300a9d538511">
+    <database-info product="" version="" jdbc-version="" driver-name="" driver-version=""/>
+  </data-source>
+  <data-source source="LOCAL" name="Rails Coursemark-transparency: test" uuid="6c7ef942-2f29-45f7-a034-d859cf5499a1">
+    <database-info product="" version="" jdbc-version="" driver-name="" driver-version=""/>
+  </data-source>
+  <data-source source="LOCAL" name="Rails Coursemark-transparency: production" uuid="847f222b-93c5-4e52-a23a-024ba0ebd4f4">
+    <database-info product="" version="" jdbc-version="" driver-name="" driver-version=""/>
+  </data-source>
+</component>
