@@ -57,15 +57,6 @@ class User < ActiveRecord::Base
     self.confirmation_token = SecureRandom.urlsafe_base64
   end
 
-  def get_submission(assignment)
-    self.submissions.each do |submission|
-      if submission.assignment_id == assignment.id
-        return submission
-      end
-    end
-    return nil
-  end
-
   # Active Record Callbacks
   before_save { |user|
     user.email = email.downcase
