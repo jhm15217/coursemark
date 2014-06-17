@@ -9,15 +9,11 @@
     <div class="checkPoint <%= if (@submission.instructor_approved) && (@assignment.reviews_required > 0) then 'completed' end %>">Grade approved</div>
 </div>
 
-<% if !@submission.created_at || (Time.zone.now < @assignment.submission_due) %>
+<% if !@submission.created_at && (Time.zone.now < @assignment.submission_due) %>
   <%= render 'submission' %>
 <% elsif !@submission.created_at && (Time.zone.now >= @assignment.submission_due) %>
   <div class="edit_submission">
-    <% if Time.zone.now <= @assignment.review_due %>
-      <p>Submission deadline has passed.</p>
-    <% else %>
-      <p class="grade"><%= if @submission.percentage then @submission.percentage.round else '--' end %>%</p>
-    <% end %>
+    <p>Submission deadline has passed.</p>
   </div>
 <% else %>
   <div class="edit_submission">
