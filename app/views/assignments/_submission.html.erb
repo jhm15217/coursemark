@@ -18,9 +18,6 @@
     <%= f.collection_select :assignment_id, Assignment.all, :id, :name, :prompt => "Select assignment..." %>
   </div>
   <div class="actions">
-    <%= f.submit "Submit Assignment" %>
-    <% if @submission.created_at %>
-      <a style="margin-left: 20px;" href='http://<%= request.host_with_port %><%= @submission.submission %>'>&#10004; Submitted on time</a>
-    <% end %>
+    <%= f.submit (@submission.created_at ? "Resubmit" : "Submit" ) %>
   </div>
 <% end %>

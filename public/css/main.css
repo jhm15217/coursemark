@@ -818,6 +818,7 @@ a {
 
 .alert {
     color: #FFF;
+    background: #343F53;
     text-align: center;
     width: 400px;
     margin: 13px auto;
@@ -1175,8 +1176,8 @@ a {
     float: left;
     background: #FFF;
     padding: 25px;
-    width: -moz-calc(50% - 10px);
-    width: calc(50% - 10px);
+    width: -moz-calc 400px;
+    width: 400px;
     margin-left: 20px;
     border-radius: 6px;
     border: 1px solid #DFDFDF;
