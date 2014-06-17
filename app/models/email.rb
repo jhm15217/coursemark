@@ -1,4 +1,4 @@
-require 'emails_helper'
+#require 'emails_helper'
 # == Schema Information
 #
 # Table name: emails
