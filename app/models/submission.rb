@@ -75,6 +75,12 @@ class Submission < ActiveRecord::Base
   end
 
   def create_and_save_evaluations
+  	# if reviews_required has since become infeasible
+  	while ((self.assignment.course.get_students.length - 1) < self.assignment.reviews_required)
+  		self.assignment.reviews_required = self.assignment.reviews_required - 1
+  		self.assignment.save!
+  	end
+
   	# only run if the number of evaluations isn't the number required
   	if self.evaluations.length != self.assignment.reviews_required
 	  	self.evaluations.delete_all
@@ -118,6 +124,6 @@ class Submission < ActiveRecord::Base
 	  		# Increase the review threshold incase we ran out of students and need more
 	 			reviewThreshold += 1
 	  	end while evaluationsLeft > 0
-	end
   	end
+  end
 end
