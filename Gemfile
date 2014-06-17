@@ -25,7 +25,6 @@ group :test do
 	gem 'database_cleaner', '1.2.0'
 	gem 'launchy', '2.4.2'
 	gem 'email_spec', '1.5.0'
-	gem 'nokogiri', '1.6.1'
 	gem 'simplecov', '0.8.2'
 	gem 'tconsole', '1.2.8'
 end
@@ -56,7 +55,9 @@ group :assets do
   gem 'uglifier', '>= 1.0.3'
 end
 
-gem 'carrierwave'
+gem 'nokogiri'
+gem 'paperclip'
+gem 'aws-sdk'
 gem 'uuid'
 gem 'jquery-ui-rails'
 gem 'jquery-rails'
