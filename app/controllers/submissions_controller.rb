@@ -87,23 +87,7 @@ class SubmissionsController < ApplicationController
 
     respond_to do |format|
       if @submission.update_attributes(params[:submission])
-        if @submission.instructor_approved
-          @submissions = @assignment.submissions.sort_by{ |s| s.user.last_name }
-          @submissions.each do |sub|
-            if !sub.instructor_approved || sub.instructor_approved.blank?
-              @nextSubmission = sub
-              break
-            end
-          end
-          if @nextSubmission.blank?
-            format.html { redirect_to course_assignment_submissions_path(@course, @assignment)}
-          else
-            format.html { redirect_to [@course, @assignment, @nextSubmission]}
-          end
-        else 
-          format.html { redirect_to [@course, @submission.assignment] }
-          format.json { head :no_content }
-        end
+        format.html { redirect_to [@course, @assignment, @submission]}
       else
         puts @submission.errors.full_messages
         format.html { render action: "edit" }
