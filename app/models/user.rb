@@ -57,6 +57,10 @@ class User < ActiveRecord::Base
     self.confirmation_token = SecureRandom.urlsafe_base64
   end
 
+  def get_submission(assignment)
+    Submission.where(:assignment_id => assignment.id, :user_id => self.id).first
+  end
+
   # Active Record Callbacks
   before_save { |user|
     user.email = email.downcase
