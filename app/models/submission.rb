@@ -1,7 +1,7 @@
 class Submission < ActiveRecord::Base
-  attr_accessible :assignment_id, :submission, :user_id, :instructor_approved
+  attr_accessible :assignment_id, :attachment, :user_id, :instructor_approved
+  has_attached_file :attachment
   after_save :create_and_save_evaluations
-  mount_uploader :submission, SubmissionUploader
 
   # Relationships
   belongs_to :user
@@ -13,6 +13,8 @@ class Submission < ActiveRecord::Base
   validates_presence_of :assignment_id
   validates_presence_of :user_id
   validate :met_deadline, :on => :create
+  validates_attachment_size :attachment, :less_than => 15.megabytes
+  validates_attachment_content_type :attachment, :content_type => ["application/pdf"]
 
   def completed_responses
   	completed = []
@@ -66,8 +68,6 @@ class Submission < ActiveRecord::Base
   	end
   end
 
-  #private
-
   def met_deadline
   	if Time.now > self.assignment.submission_due
       errors.add(:submission, "Deadline for assignment submission has passed.")
@@ -90,7 +90,7 @@ class Submission < ActiveRecord::Base
 	  	evaluationsLeft = self.assignment.reviews_required
 	  	evaluatorPool = []
 	  	begin
-	  		# get students that have the lowest number of evaluations alreaddy assigned
+	  		# get students that have the lowest number of evaluations already assigned
 	  		evaluatorPool.concat(courseStudents.select { |student|
 	  			evaluationCounts[student.id] == reviewThreshold
 	  		})
@@ -101,19 +101,19 @@ class Submission < ActiveRecord::Base
 	  		while evaluatorPool.length > 0 && evaluationsLeft > 0
 	  			evaluator = evaluatorPool.pop
 	  			evaluation = Evaluation.new
-					evaluation.submission_id = self.id
-					evaluation.user_id = evaluator.id
-					evaluation.save
+				evaluation.submission_id = self.id
+				evaluation.user_id = evaluator.id
+				evaluation.save
 
-					# create a response for each question of the evaluation
-					self.assignment.questions.each { |question|  
-						response = Response.new
-						response.question_id = question.id
-						response.evaluation_id = evaluation.id
-						response.save!
-					}
+				# create a response for each question of the evaluation
+				self.assignment.questions.each { |question|  
+					response = Response.new
+					response.question_id = question.id
+					response.evaluation_id = evaluation.id
+					response.save!
+				}
 
-					evaluationsLeft -= 1
+				evaluationsLeft -= 1
 	  		end	
 	  		# Increase the review threshold incase we ran out of students and need more
 	 			reviewThreshold += 1

@@ -6,17 +6,17 @@
       <%= link_to "&larr; #{@submission.assignment.name}".html_safe , course_assignment_path(@course, @assignment) %>
     <% end %>
     <h1 class="name"> <% if current_user.instructor?(@course) %><%= @submission.user.name %><% end %></h1>
-    <% if !@submission.submission.blank? %>
+    <% if !@submission.attachment.blank? %>
       <div id='submissionDownloadBtn'>
-        <a href='http://<%= request.host_with_port %><%= @submission.submission %>' >Download Submission</a>
+        <a href='<%= @submission.attachment.url %>' >Download Submission</a>
       </div>
     <% end %>
   </small>
 </div>
 
-<% if !@submission.submission.blank? %>
+<% if !@submission.attachment.blank? %>
 <div id='submissionPDFWrapper'>
-  <embed src="http://<%= request.host_with_port %><%= @submission.submission %>" width="100%" height="100%" style="border: none;"></embed>
+  <embed src="<%= @submission.attachment.url %>" width="100%" height="100%" style="border: none;"></embed>
 </div>
 
 <div id='submissionsWrapper'>

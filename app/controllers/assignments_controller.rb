@@ -227,7 +227,7 @@ class AssignmentsController < ApplicationController
 
     respond_to do |format|
       if @assignment.update_attributes(params[:assignment])
-        format.html { redirect_to @URL, notice: 'Assignment was successfully updated.' }
+        format.html { redirect_to @URL }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
