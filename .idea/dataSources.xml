@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" hash="2687682275">
+    <data-source source="LOCAL" name="Rails Coursemark: development" uuid="07440ad3-7e6c-44b3-8672-f16b48e2d2ae">
+      <driver-ref>postgresql</driver-ref>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://127.0.0.1/agora_development</jdbc-url>
+      <user-name>jhm</user-name>
+      <user-password>dffadfd9dfc5dfc7dfc7dfcbdf9bdf84</user-password>
+      <libraries />
+    </data-source>
+    <data-source source="LOCAL" name="Rails Coursemark: test" uuid="a02d24ec-9941-48f1-9b0a-38eac7c53f8a">
+      <driver-ref>postgresql</driver-ref>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://127.0.0.1/agora_test</jdbc-url>
+      <user-name>jhm</user-name>
+      <user-password>dffadfd9dfc5dfc7dfc7dfcbdf9bdf84</user-password>
+      <libraries />
+    </data-source>
+    <data-source source="LOCAL" name="Rails Coursemark: production" uuid="0efde020-45ba-4910-939e-dd2533ec42b7">
+      <driver-ref>postgresql</driver-ref>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://127.0.0.1/agora_production</jdbc-url>
+      <libraries />
+    </data-source>
+  </component>
+</project>
+
