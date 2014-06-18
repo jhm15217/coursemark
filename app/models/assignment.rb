@@ -8,6 +8,7 @@ class Assignment < ActiveRecord::Base
   has_many :submissions
   has_many :questions
   has_many :evaluations, :through => :submissions
+  has_many :groups
 
   scope :published, -> { where(draft: false) }
 
