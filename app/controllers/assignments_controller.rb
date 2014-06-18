@@ -68,7 +68,7 @@ class AssignmentsController < ApplicationController
   # get /assignments/1/export
   def export
     @assignment = Assignment.find(params[:assignment_id])
-    #@students = Course.find(@assignment.course_id).get_students
+    @students = Course.find(@assignment.course_id).get_students.sort_by { |s| s.first_name }.sort_by { |s| s.last_name }
     header_row = ["Name", "Total Points", "Total Possible Points", "Percentage"]
     @assignment.questions.each { |question|  
       header_row << question.question_text
@@ -77,28 +77,32 @@ class AssignmentsController < ApplicationController
         header_row << "Reviewer #{index+1}"
       }
     }
+    header_row << "Reviews Finished"
+    header_row << "Reviews Required"
     assignment_csv = CSV.generate do |csv|
       csv << header_row
-      @assignment.submissions.each do |submission|
-        this_sub = []
-        if !submission.percentage.blank? then 
-          percent = submission.percentage.round 
-        else 
-          percent = "" 
-        end
-        this_sub = [submission.user.name, submission.raw, @assignment.totalPoints, percent]
+      @students.each do |student|
+        submission = @assignment.submissions.select { |sub| sub.user.id == student.id }
+        puts submission.inspect
+        submission = submission.length == 0 ? nil : submission[0]
+        if submission then
+          if !submission.percentage.blank? then
+            percent = submission.percentage.round
+          else
+            percent = ""
+          end
+          this_sub = [student.name, submission.raw, @assignment.totalPoints, percent]
+          # for each of the questions in the assignment
+          submission.evaluations[0].responses.sort_by { |obj| obj.created_at }.uniq { |x| x.question_id }.each do |res|
 
-        # for each of the questions in the assignment 
-        submission.evaluations[0].responses.sort_by {|obj| obj.created_at }.uniq{|x| x.question_id}.each do |res|                
-            
             points_for_q = []
 
             # get responses for a student's submission
             get_evaluations_for_submission_question(submission, res.question).each_with_index do |response, index|
               if response.is_complete?
-                  points = (((100 / (response.question.scales.length - 1.0) * response.scale.value)) / 100 ) * res.question.question_weight
-                  #points = (response.question.question_weight / (response.question.scales.length - 1.0) * response.scale.value)
-                  points_for_q << points       
+                points = (((100 / (response.question.scales.length - 1.0) * response.scale.value)) / 100) * res.question.question_weight
+                #points = (response.question.question_weight / (response.question.scales.length - 1.0) * response.scale.value)
+                points_for_q << points
               end
             end
             # average points someone got for question
@@ -110,15 +114,21 @@ class AssignmentsController < ApplicationController
             # for each peer response, record their grade of the assignment
             points_for_q.each do |point|
               this_sub << point
-            end 
+            end
+          end
+        else
+          this_sub = [student.name, 0, @assignment.totalPoints, 0] + ([0, 0] + [0]*@assignment.reviews_required)*@assignment.questions.length
         end
+
+        this_sub << @assignment.evaluations.forUser(student).select { |evaluation| evaluation.is_complete? }.length
+        this_sub << @assignment.evaluations.forUser(student).length
 
         csv << this_sub
       end
     end
 
     current_date = "#{Time.now.month}-#{Time.now.day}-#{Time.now.year}"
-    send_data(assignment_csv, :type => 'text/csv', :filename => "#{@assignment.course.name}: #{@assignment.name} (as of #{current_date})")
+    send_data(assignment_csv, :type => 'text/csv', :filename => "#{@assignment.course.name}: #{@assignment.name} (as of #{current_date}).csv")
   end
 
   # GET /assignments/new
