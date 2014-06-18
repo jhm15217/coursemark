@@ -235,6 +235,12 @@ class AssignmentsController < ApplicationController
       end
     end
 
+    if params['group']
+      CSV.foreach('path/to/' + params['group']['attachment']) do |row|
+        puts row.inspect
+      end
+    end
+
     respond_to do |format|
       if @assignment.update_attributes(params[:assignment])
         format.html { redirect_to @URL }
