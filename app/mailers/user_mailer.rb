@@ -11,7 +11,7 @@ class UserMailer < ActionMailer::Base
 
   reset_email_counts
 
-  default from: "notifications@coursemark.org"
+  default from: "james.morris@cmu.edu"
   #ActionMailer::Base.raise_delivery_errors = false  # until I figure out how to catch
 
   # Constants

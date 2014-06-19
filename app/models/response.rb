@@ -12,7 +12,7 @@ class Response < ActiveRecord::Base
   validate :response_allowed, :if => :student_response_changed?
 
   def is_complete?
-    if self.question.written_response_required
+    if self.question && self.question.written_response_required
     	if !self.scale_id.blank? && !self.peer_review.blank? then 
     		return true
     	else 
