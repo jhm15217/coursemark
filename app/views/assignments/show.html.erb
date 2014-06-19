@@ -27,7 +27,7 @@
               <div class="reviewing_task"><%= 'Review ' + (index + 1).to_s + ' Finished' %></div>
           <% else %>
             <%= link_to course_assignment_submission_path(@course, @assignment, task.submission) do %>
-              <div class="reviewing_task highlighted" %> <%='Complete Review ' + (index + 1).to_s %></div>
+              <div class="reviewing_task highlighted" > <%='Complete Review ' + (index + 1).to_s %></div>
             <% end %>
           <% end %>
       <% end %>
