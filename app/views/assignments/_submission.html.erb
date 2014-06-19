@@ -12,12 +12,16 @@
   <% end %>
 
   <div class="field">
-    <%= f.file_field :submission, :accept => 'application/pdf', :required => true %>
+    <%= f.file_field :submission, :accept => 'application/pdf', :required => true, :style => 'border: 0px' %>
   </div>
   <div class="field hidden">
     <%= f.collection_select :assignment_id, Assignment.all, :id, :name, :prompt => "Select assignment..." %>
   </div>
   <div class="actions">
     <%= f.submit (@submission.created_at ? "Resubmit" : "Submit" ) %>
+
+    <% if @submission.created_at %>
+      <a href='http://<%= request.host_with_port %><%= @submission.submission %>' style="color:#343F53; display: block; margin-top: 15px;">View Uploaded Submission</a>
+    <% end %>
   </div>
 <% end %>

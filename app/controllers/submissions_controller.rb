@@ -24,7 +24,7 @@ class SubmissionsController < ApplicationController
   def show
     @submission = Submission.find(params[:id])
     @questions = @submission.assignment.questions.sort_by {|obj| obj.created_at }
-    evaluation = @evaluations[0]
+    evaluation = @evaluations.where(:user_id => current_user.id)[0]
     @responses = evaluation.responses.sort_by {|obj| obj.created_at }
 
     if params[:finish]
