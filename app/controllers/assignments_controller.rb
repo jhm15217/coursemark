@@ -236,9 +236,20 @@ class AssignmentsController < ApplicationController
     end
 
     if params['group']
-      CSV.foreach('path/to/' + params['group']['attachment']) do |row|
-        puts row.inspect
+      CSV.foreach('/Users/jhm/Desktop/' + params['group']['attachment']) do |row|
+        team_name = row[3]
+        student = User.find_all_by_last_name(row[0]).select{|x| x.first_name == row[1]}[0]
+        puts "student: " + student.inspect
+        memberships = @assignment.memberships.select{|m| m.team == team_name and m.user_id == student.id }
+        puts "memberships: " + memberships.inspect
+        if memberships.length == 0 then
+          membership = Membership.new(team:team_name, user_id: student.id, assignment_id: @assignment.id)
+          membership.save!
+        else
+          membership = memberships[0]
+        end
       end
+      puts 'Membership: ' +  Membership.all.inspect
     end
 
     respond_to do |format|

@@ -100,7 +100,8 @@ class SubmissionsController < ApplicationController
           else
             format.html { redirect_to [@course, @assignment, @nextSubmission]}
           end
-        else 
+        else
+          puts "redirect"
           format.html { redirect_to [@course, @submission.assignment] }
           format.json { head :no_content }
         end
