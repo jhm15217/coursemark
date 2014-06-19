@@ -27,7 +27,7 @@
 
   <div id='submissionBoxesWrapper'>
 <!--     GRADE -->
-    <% if @submission.instructor_approved != false and @submission.instructor_approved != nil &&  current_user.instructor?(@course) then %>
+    <% if @submission.instructor_approved != false and @submission.instructor_approved != nil &&  current_user.instructor?(@course) && (Time.zone.now > @assignment.review_due) then %>
 <!--     GRADE IS APPROVED -->
       <div class='submissionGradeBox'>
         <span class="grade"><%= unless @submission.percentage.nil? then @submission.percentage.round.to_s + "%" end %></span>
@@ -35,7 +35,7 @@
           <div class='button fr' style="margin-right: 0px;">Unapprove Grade</div>
         <% end %>
       </div>
-    <% elsif current_user.instructor?(@course) %>
+    <% elsif current_user.instructor?(@course) && (Time.zone.now > @assignment.review_due) %>
 <!--     GRADE IS NOT APPROVED -->
       <div class='submissionGradeBox'>
         <span class="grade"><%= unless @submission.percentage.nil? then @submission.percentage.round.to_s + "%" end  %></span>
