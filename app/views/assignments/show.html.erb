@@ -43,11 +43,7 @@
             <% end %>
           <% else %>
             <%= link_to course_assignment_submission_path(@course, @assignment, task.submission) do %>
-                  <<<<<<< Updated upstream
-              <div class="reviewing_task <%= if task.is_complete? == false then 'highlighted' end %>"><%= 'Complete Review' + (index + 1).to_s %></div>
-                  =======
                   <div class="reviewing_task highlighted"> <%= 'Complete Review ' + (index + 1).to_s %></div>
-                  >>>>>>> Stashed changes
             <% end %>
           <% end %>
       <% end %>

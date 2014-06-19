@@ -16,9 +16,9 @@ class AssignmentsController < ApplicationController
     if @assignments.length > 0
 
       if !current_user.instructor?(@course)
-        @assignment = @assignments.published.first
+        @assignment = @assignments.published.last
       else
-        @assignment = @assignments.first
+        @assignment = @assignments.last
       end
 
       if @assignment.nil?
@@ -236,14 +236,26 @@ class AssignmentsController < ApplicationController
     end
 
     if params['group']
+      Membership.delete_all
       CSV.foreach('/Users/jhm/Desktop/' + params['group']['attachment']) do |row|
         team_name = row[3]
         student = User.find_all_by_last_name(row[0]).select{|x| x.first_name == row[1]}[0]
         puts "student: " + student.inspect
         memberships = @assignment.memberships.select{|m| m.team == team_name and m.user_id == student.id }
-        puts "memberships: " + memberships.inspect
-        if memberships.length == 0 then
-          membership = Membership.new(team:team_name, user_id: student.id, assignment_id: @assignment.id)
+        membership = memberships.length == 0 ? nil : memberships.first
+        #membership = Membership.find(@assignment, student.id, team_name)
+        puts "membership: " + membership.inspect
+        if !membership then
+          # create new pseudo-user
+          pseudo_users = User.find_all_by_last_name("Team").select{|x| x.first_name == team_name}
+          if pseudo_users.length > 0
+            pseudo_user = pseudo_users.first
+          else
+            pseudo_user = User.new(first_name: team_name, last_name: "Team", pseudo: true)
+            pseudo_user.save!(validate: false)
+          end
+          puts "pseudo_user: " + pseudo_user.inspect
+          membership = Membership.new(team:team_name, user_id: student.id, assignment_id: @assignment.id, pseudo_user_id: pseudo_user.id)
           membership.save!
         else
           membership = memberships[0]

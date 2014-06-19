@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140619033224) do
+ActiveRecord::Schema.define(:version => 20140619183834) do
 
   create_table "assignments", :force => true do |t|
     t.datetime "submission_due"
@@ -45,8 +45,9 @@ ActiveRecord::Schema.define(:version => 20140619033224) do
     t.string   "team"
     t.integer  "user_id"
     t.integer  "assignment_id"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
+    t.integer  "pseudo_user_id"
   end
 
   create_table "questions", :force => true do |t|
@@ -128,6 +129,7 @@ ActiveRecord::Schema.define(:version => 20140619033224) do
     t.boolean  "confirmed"
     t.string   "confirmation_token"
     t.datetime "password_reset_sent_at"
+    t.boolean  "pseudo"
   end
 
 end
