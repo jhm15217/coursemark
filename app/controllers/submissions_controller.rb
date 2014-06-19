@@ -65,10 +65,12 @@ class SubmissionsController < ApplicationController
   # POST /submissions.json
   def create
     @submission = Submission.new(params[:submission])
-    @submission.user = current_user
+    memberships = @assignment.memberships.select{|m| m.user_id == current_user.id}
+    @submission.user = memberships.length == 0 ? current_user  : User.find(memberships[0].pseudo_user_id)
 
     respond_to do |format|
       if @submission.save
+        puts "save succeeded"   +  @submission.inspect
         format.html { redirect_to [@course, @submission.assignment] }
         format.json { render json: @submission, status: :created, location: @submission }
       else
