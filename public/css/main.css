@@ -262,7 +262,7 @@ a {
     background: #e67e22;/*#e67e22 */
     color: rgba(255,255,255,0.9);
     padding-left: 22px;
-    padding-top: 6px;
+    padding-top: 9px;
     font-weight: bold;
 }
 
@@ -1181,7 +1181,11 @@ a {
     margin-left: 20px;
     border-radius: 6px;
     border: 1px solid #DFDFDF;
-    height: 144px;
+    height: 180px;
+}
+
+.edit_submission.afterDeadline {
+    height: 80px;
 }
 
 .new_submission input,                                                                                                                                                                              u

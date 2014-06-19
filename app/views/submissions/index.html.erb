@@ -6,9 +6,9 @@
     <th>Last name</th>
     <th>Submitted</th>
     <th>Reviews Received</th>
+    <th>Reviews Finished</th>
     <th>Grade</th>
     <th></th>
-    <th>Reviews Finished</th>
   </tr>
   <% @assignment.course.get_students.sort_by{ |u| u.first_name }.sort_by{ |u| u.last_name }.each do |student| %>
       <tr>
@@ -18,18 +18,19 @@
         <% if submission %>
             <td><%= submission ? submission.created_at.to_s(:pretty) : '--' %></td>
             <td><%= @assignment.evaluations.forSubmission(submission).select {|evaluation| evaluation.finished?}.length %> / <%= @assignment.evaluations.forSubmission(submission).length %></td>
+            <td><%= @assignment.evaluations.forUser(student).select {|evaluation| evaluation.finished?}.length %> / <%= @assignment.evaluations.forUser(student).length %></td>
             <td>
-              <%= if !submission.percentage.blank? then submission.percentage.round else "--" end %>
+              <%= if !submission.percentage.blank? then submission.percentage.round.to_s + '%' else "--" end %>
               <% if submission.instructor_approved %><div class="checkmark"></div><% end %>
             </td>
             <td><%= link_to 'View Reviews', [@course, @assignment, submission] %></td>
         <% else %>
             <td>--</td>
-            <td></td>
-            <td></td>
+            <td>--</td>
+            <td><%= @assignment.evaluations.forUser(student).select {|evaluation| evaluation.finished?}.length %> / <%= @assignment.evaluations.forUser(student).length %></td>
+            <td>--</td>
             <td></td>
         <% end %>
-        <td><%= @assignment.evaluations.forUser(student).select {|evaluation| evaluation.finished?}.length %> / <%= @assignment.evaluations.forUser(student).length %></td>
       </tr>
   <% end %>
 
