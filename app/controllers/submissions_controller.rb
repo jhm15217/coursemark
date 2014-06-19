@@ -25,7 +25,7 @@ class SubmissionsController < ApplicationController
     @submission = Submission.find(params[:id])
     @questions = @submission.assignment.questions.sort_by {|obj| obj.created_at }
     evaluation = @evaluations.where(:user_id => current_user.id)[0]
-    @responses = evaluation.responses.sort_by {|obj| obj.created_at }
+    @responses = @evaluations[0].responses.sort_by {|obj| obj.created_at }
 
     if params[:finish]
       if evaluation.is_complete?
@@ -100,7 +100,7 @@ class SubmissionsController < ApplicationController
 
     respond_to do |format|
       if @submission.update_attributes(params[:submission])
-        format.html { redirect_to [@course, @assignment, @submission]}
+        format.html { redirect_to [@course, @submission.assignment]}
       else
         puts @submission.errors.full_messages
         format.html { render action: "edit" }
