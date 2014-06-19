@@ -24,7 +24,20 @@ class SubmissionsController < ApplicationController
   def show
     @submission = Submission.find(params[:id])
     @questions = @submission.assignment.questions.sort_by {|obj| obj.created_at }
-    @responses = @evaluations[0].responses.sort_by {|obj| obj.created_at }
+    evaluation = @evaluations.where(:user_id => current_user.id)[0]
+    @responses = evaluation.responses.sort_by {|obj| obj.created_at }
+
+    if params[:finish]
+      if evaluation.is_complete?
+        evaluation.finished = true
+        evaluation.save!
+        redirect_to  course_assignment_path ({id: params[:assignment_id]} ) and return
+      else
+        flash[:error] = "Please answer all the questions."
+        redirect_to :back and return
+        return
+      end
+    end
 
     respond_to do |format|
       format.html { render :layout => 'no_sidebar' } # show.html.erb
