@@ -1,4 +1,7 @@
 Agora::Application.routes.draw do
+  resources :memberships
+
+
   resources :groups
 
 

@@ -23,6 +23,7 @@ class User < ActiveRecord::Base
   has_many :registrations
   has_many :courses, :through => :registrations
   has_many :assignments, :through => :courses
+  has_many :memberships
 
   # Get all users except the given user
   scope :without_user, ->(user) {where("user_id != ?", user.id)}
