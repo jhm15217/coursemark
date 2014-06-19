@@ -76,7 +76,7 @@ class UsersController < ApplicationController
 
   def update
     @user = User.find(params[:id])
-    @course = @user.courses.first
+    @course = @user.courses.last!
     @registrations = current_user.registrations
 
     respond_to do |format|

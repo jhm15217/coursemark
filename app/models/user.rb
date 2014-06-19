@@ -11,11 +11,13 @@
 #  confirmed              :boolean         default(FALSE)
 #  confirmation_token     :string(255)
 #  password_reset_sent_at :datetime
+#  pseudo                 :boolean
+#  pseudo                 :boolean
 
 
 class User < ActiveRecord::Base
   acts_as_authentic
-  attr_accessible :email, :first_name, :last_name, :password, :password_confirmation
+  attr_accessible :email, :first_name, :last_name, :password, :password_confirmation, :pseudo
 
   # Relationships
   has_many :evaluations
@@ -60,7 +62,7 @@ class User < ActiveRecord::Base
 
   # Active Record Callbacks
   before_save { |user|
-    user.email = email.downcase
+    user.email = email ? email.downcase : nil
     if user.new_record?
       user.generate_confirmation_token
     end
