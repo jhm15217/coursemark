@@ -1,5 +1,5 @@
 class Evaluation < ActiveRecord::Base
-  attr_accessible :submission_id, :user_id
+  attr_accessible :submission_id, :user_id, :finished
 
   # Relationships
   has_many :responses, dependent: :destroy
@@ -9,18 +9,14 @@ class Evaluation < ActiveRecord::Base
 
   # Scopes
   scope :forUser, ->(user) {where("evaluations.user_id = ?", user.id)}
+  scope :forSubmission,
+        ->(submission) {where("evaluations.submission_id = ?", submission.id)}
 
   def user_name
-  	self.user.name
+    self.user.name
   end
 
   def is_complete?
-    self.responses.each do |response|
-      if (response.is_complete? == false)
-        return false
-      end
-    end
-
-    return true
+    return self.responses.all? { |response| response.is_complete? }
   end
 end

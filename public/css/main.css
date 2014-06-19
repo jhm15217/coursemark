@@ -221,6 +221,7 @@ a {
 }
 
 #sidebar ul {
+    width: 290px;
     padding: 0px;
     margin: 0px;
     overflow-y: scroll;
@@ -261,7 +262,7 @@ a {
     background: #e67e22;/*#e67e22 */
     color: rgba(255,255,255,0.9);
     padding-left: 22px;
-    padding-top: 6px;
+    padding-top: 9px;
     font-weight: bold;
 }
 
@@ -817,6 +818,7 @@ a {
 
 .alert {
     color: #FFF;
+    background: #343F53;
     text-align: center;
     width: 400px;
     margin: 13px auto;
@@ -1174,15 +1176,19 @@ a {
     float: left;
     background: #FFF;
     padding: 25px;
-    width: -moz-calc(50% - 10px);
-    width: calc(50% - 10px);
+    width: -moz-calc 400px;
+    width: 400px;
     margin-left: 20px;
     border-radius: 6px;
     border: 1px solid #DFDFDF;
-    height: 144px;
+    height: 180px;
 }
 
-.new_submission input,
+.edit_submission.afterDeadline {
+    height: 80px;
+}
+
+.new_submission input,                                                                                                                                                                              u
 .edit_submission input {
     border: 0px;
 }
