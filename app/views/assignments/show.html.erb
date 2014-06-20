@@ -9,25 +9,11 @@
     <div class="checkPoint <%= if (@submission.instructor_approved) && (@assignment.reviews_required > 0) then 'completed' end %>">Grade approved</div>
 </div>
 
-<% if !@submission.created_at || (Time.zone.now < @assignment.submission_due) %>
+<% if (Time.zone.now < @assignment.submission_due) %>
   <%= render 'submission' %>
-<% elsif !@submission.created_at && (Time.zone.now >= @assignment.submission_due) %>
-  <div class="edit_submission">
-    <% if Time.zone.now <= @assignment.review_due %>
-      <p>Submission deadline has passed.</p>
-    <% else %>
-      <p class="grade"><%= if @submission.percentage then @submission.percentage.round else '--' end %>%</p>
-    <% end %>
-  </div>
 <% else %>
-  <div class="edit_submission">
-    <% if Time.zone.now <= @assignment.review_due %>
-      <p>Your assignment was submitted on time.</p>
-    <% else %>
-      <p class="grade" style="<%= if (!@submission.percentage || !@submission.instructor_approved) then 'font-size: 24pt; margin-top: 10px;' end %>"><%= if @submission.percentage && @submission.instructor_approved then @submission.percentage.round.to_s + '%' else 'Grade Pending' end %></p>
-    <% end %>
-    <a href='<%= @submission.attachment.url %>' style="color:#343F53;">View Submission</a>
-    </p>
+  <div class="edit_submission afterDeadline">
+    <a href='<%= @submission.attachment.url %>' style="color:#343F53;">View Uploaded Submission</a>
   </div>
 <% end %>
 
@@ -37,13 +23,11 @@
   <% if (Time.zone.now > @assignment.submission_due) && (Time.zone.now <= @assignment.review_due) %>
     <div id="reviewing_tasks">
       <% @reviewing_tasks.each_with_index do |task, index| %>
-          <% if task.is_complete? %>
-            <%= link_to course_assignment_submission_path(@course, @assignment, task.submission) do %>
-              <div class="reviewing_task <%= if task.is_complete? == false then 'highlighted' end %>"><%= 'Edit Review' + (index + 1).to_s %></div>
-            <% end %>
+          <% if task.finished? %>
+              <div class="reviewing_task"><%= 'Review ' + (index + 1).to_s + ' Finished' %></div>
           <% else %>
             <%= link_to course_assignment_submission_path(@course, @assignment, task.submission) do %>
-                  <div class="reviewing_task highlighted"> <%= 'Complete Review ' + (index + 1).to_s %></div>
+              <div class="reviewing_task highlighted" > <%='Complete Review ' + (index + 1).to_s %></div>
             <% end %>
           <% end %>
       <% end %>
@@ -53,14 +37,14 @@
 
 <div class="clearfix"></div>
 
-<% if @evaluations && (@submission.completed_responses.length > 0) && (Time.zone.now >= @assignment.review_due) %>
+<% if @evaluations && (@submission.completed_responses.length > 0) %>
 <div id="student_evaluation_view">
   <% @evaluations[0].responses.sort_by {|obj| obj.created_at }.each do |eval| %>
     <div class='submissionQuestionBox clearfix'>
     <h2><%= eval.question.question_text %></h2>
     <div class='possiblePoints'><%= eval.question.question_weight %> Points</div>
       <% get_evaluations_for_submission_question(@submission, eval.question).each_with_index do |response, index| %>
-        <% if response.is_complete? %>
+        <% if response.evaluation.finished? %>
           <div class='submissionBox'>
             <div class='submissionResponsePoints <%= gradeColorFullScale(prettifyFloat(((100 / (response.question.scales.length - 1.0) * response.scale.value)))) %>'><%= if !response.scale.nil? then prettifyFloat(((100 / (response.question.scales.length - 1.0) * response.scale.value))).to_s + '%' else '--' end %></div>
             <div class='submissionResponseFrom'>Reviewer <%= index + 1 %></div>
@@ -68,13 +52,13 @@
             
             <div class='submissionInstructorResponse'>
               <% if !response.student_response.blank? then %>
-                  <div class='submissionResponseFrom' style="margin-top: 20px;">Your Dispute</div>
+                  <div class='submissionResponseFrom' style="margin-top: 20px;">Your Rebuttal</div>
                   <%= response.student_response %>
               <% elsif response.instructor_response.blank? && !@submission.instructor_approved %>
-                <div class='submissionResponseFrom' style="margin-top: 20px;">Your Dispute</div>
+                <div class='submissionResponseFrom' style="margin-top: 20px;">Your Rebuttal</div>
                 <%= nested_form_for [@course, @assignment, eval.question, response]  do |f| %>
                   <%= f.text_area :student_response, class: 'submissionTextArea fl'  %>
-                  <%= f.submit "Dispute", class: 'submissionTextAreaReply fr' %>
+                  <%= f.submit "Rebut", class: 'submissionTextAreaReply fr' %>
                 <% end %>
               <% end %>
             </div> <!-- End Student Response -->

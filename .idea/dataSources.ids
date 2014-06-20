@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component name="dataSourceStorage">
-  <data-source source="LOCAL" name="Rails Coursemark: development" uuid="07440ad3-7e6c-44b3-8672-f16b48e2d2ae">
+  <data-source source="LOCAL" name="Rails Coursemark: development" uuid="8a068728-5948-439d-a998-4efff4532e87">
     <database-info product="" version="" jdbc-version="" driver-name="" driver-version=""/>
   </data-source>
-  <data-source source="LOCAL" name="Rails Coursemark: test" uuid="a02d24ec-9941-48f1-9b0a-38eac7c53f8a">
+  <data-source source="LOCAL" name="Rails Coursemark: test" uuid="9b3a9b1d-e572-4353-ab1a-d28105cba1f9">
     <database-info product="" version="" jdbc-version="" driver-name="" driver-version=""/>
   </data-source>
-  <data-source source="LOCAL" name="Rails Coursemark: production" uuid="0efde020-45ba-4910-939e-dd2533ec42b7">
+  <data-source source="LOCAL" name="Rails Coursemark: production" uuid="e35fa291-f9e2-4115-b28b-15936e11a474">
     <database-info product="" version="" jdbc-version="" driver-name="" driver-version=""/>
   </data-source>
 </component>

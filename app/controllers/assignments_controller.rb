@@ -70,10 +70,10 @@ class AssignmentsController < ApplicationController
     @assignment = Assignment.find(params[:assignment_id])
     @students = Course.find(@assignment.course_id).get_students.sort_by { |s| s.first_name }.sort_by { |s| s.last_name }
     header_row = ["Name", "Total Points", "Total Possible Points", "Percentage"]
-    @assignment.questions.each { |question|  
+    @assignment.questions.each { |question|
       header_row << question.question_text
       header_row << "Possible Points"
-      @assignment.reviews_required.times { |index|  
+      @assignment.reviews_required.times { |index|
         header_row << "Reviewer #{index+1}"
       }
     }
@@ -167,7 +167,7 @@ class AssignmentsController < ApplicationController
     if !current_user.instructor?(@course)
       return
     end
-    
+
     if params['assignment']['submission_due_time(4i)']
       params['assignment']['submission_due_time'] = params['assignment']['submission_due_time(4i)'] + ':' + params['assignment']['submission_due_time(5i)']
       params['assignment'].delete 'submission_due_time(1i)'
@@ -236,7 +236,6 @@ class AssignmentsController < ApplicationController
     end
 
     if params['group']
-      Membership.delete_all
       CSV.foreach('/Users/jhm/Desktop/' + params['group']['attachment']) do |row|
         team_name = row[3]
         student = User.find_all_by_last_name(row[0]).select{|x| x.first_name == row[1]}[0]
@@ -253,6 +252,8 @@ class AssignmentsController < ApplicationController
           else
             pseudo_user = User.new(first_name: team_name, last_name: "Team", pseudo: true)
             pseudo_user.save!(validate: false)
+            register_pseudo_user(@course.id, pseudo_user)
+            puts "registration"
           end
           puts "pseudo_user: " + pseudo_user.inspect
           membership = Membership.new(team:team_name, user_id: student.id, assignment_id: @assignment.id, pseudo_user_id: pseudo_user.id)
@@ -275,8 +276,21 @@ class AssignmentsController < ApplicationController
     end
   end
 
-  # DELETE /assignments/1
-  # DELETE /assignments/1.json
+  def register_pseudo_user(course_id,user)
+    registration = Registration.new()
+    registration.active = true
+    registration.instructor = false
+    registration.course_id = course_id
+    registration.user = user
+    # Throw an error if the user is already registered.
+    if (Registration.where(:user_id => user.id).length > 0)
+      raise ExistingRegistration
+    end
+    @registration.save!
+  end
+
+# DELETE /assignments/1
+# DELETE /assignments/1.json
   def destroy
     @assignment = Assignment.find(params[:id])
     @assignment.destroy
@@ -293,11 +307,11 @@ class AssignmentsController < ApplicationController
     end
   end
 
-  def reviews_for_user_to_complete(assignment, current_user) 
+  def reviews_for_user_to_complete(assignment, current_user)
     evals = []
-    assignment.evaluations.forUser(current_user).each { |eval|  
+    assignment.evaluations.forUser(current_user).each { |eval|
       complete = eval.responses.all? { |resp| resp.is_complete? }
-      if !complete then 
+      if !complete then
         evals << eval
       end
     }

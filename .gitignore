@@ -20,4 +20,8 @@
 *.pdf
 
 config/database.yml
+config/environments/development.rb
+
+
+
 database.yml

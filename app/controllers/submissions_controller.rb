@@ -24,7 +24,20 @@ class SubmissionsController < ApplicationController
   def show
     @submission = Submission.find(params[:id])
     @questions = @submission.assignment.questions.sort_by {|obj| obj.created_at }
+    evaluation = @evaluations.where(:user_id => current_user.id)[0]
     @responses = @evaluations[0].responses.sort_by {|obj| obj.created_at }
+
+    if params[:finish]
+      if evaluation.is_complete?
+        evaluation.finished = true
+        evaluation.save!
+        redirect_to  course_assignment_path ({id: params[:assignment_id]} ) and return
+      else
+        flash[:error] = "Please answer all the questions."
+        redirect_to :back and return
+        return
+      end
+    end
 
     respond_to do |format|
       format.html { render :layout => 'no_sidebar' } # show.html.erb
@@ -65,12 +78,10 @@ class SubmissionsController < ApplicationController
   # POST /submissions.json
   def create
     @submission = Submission.new(params[:submission])
-    memberships = @assignment.memberships.select{|m| m.user_id == current_user.id}
-    @submission.user = memberships.length == 0 ? current_user  : User.find(memberships[0].pseudo_user_id)
+    @submission.user = current_user
 
     respond_to do |format|
       if @submission.save
-        puts "save succeeded"   +  @submission.inspect
         format.html { redirect_to [@course, @submission.assignment] }
         format.json { render json: @submission, status: :created, location: @submission }
       else
@@ -89,24 +100,7 @@ class SubmissionsController < ApplicationController
 
     respond_to do |format|
       if @submission.update_attributes(params[:submission])
-        if @submission.instructor_approved
-          @submissions = @assignment.submissions.sort_by{ |s| s.user.last_name }
-          @submissions.each do |sub|
-            if !sub.instructor_approved || sub.instructor_approved.blank?
-              @nextSubmission = sub
-              break
-            end
-          end
-          if @nextSubmission.blank?
-            format.html { redirect_to course_assignment_submissions_path(@course, @assignment)}
-          else
-            format.html { redirect_to [@course, @assignment, @nextSubmission]}
-          end
-        else
-          puts "redirect"
-          format.html { redirect_to [@course, @submission.assignment] }
-          format.json { head :no_content }
-        end
+        format.html { redirect_to [@course, @submission.assignment]}
       else
         puts @submission.errors.full_messages
         format.html { render action: "edit" }
