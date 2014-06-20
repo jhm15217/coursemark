@@ -10,7 +10,7 @@
     <th>Grade</th>
     <th></th>
   </tr>
-  <% @assignment.course.get_students.sort_by{ |u| u.first_name }.sort_by{ |u| u.last_name }.each do |student| %>
+  <% @assignment.course.get_students.sort_by{ |u| u.first_name }.sort_by{ |u| u.last_name }.sort_by{ |u| u.pseudo ? 0 : 1 }.each do |student| %>
       <tr>
         <td><%= student.first_name %></td>
         <td><%= student.last_name %></td>

@@ -286,7 +286,7 @@ class AssignmentsController < ApplicationController
     if (Registration.where(:user_id => user.id).length > 0)
       raise ExistingRegistration
     end
-    @registration.save!
+    registration.save!
   end
 
 # DELETE /assignments/1
