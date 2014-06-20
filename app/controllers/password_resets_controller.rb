@@ -11,7 +11,7 @@ class PasswordResetsController < ApplicationController
     @user =  User.find_by_email(params[:email])
     if @user && @user.confirmed
       @user.send_password_reset
-      redirect_to email_confirmation_path(id: @user.id), flash: { notice: "Email sent with password reset instructions." }
+      redirect_to email_confirmation_path(id: @user.id)
     else
       flash.now[:error] = "Sorry, that email is not registered"
       render 'new', :layout => 'startup_page'
