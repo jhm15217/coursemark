@@ -12,7 +12,7 @@
 #  confirmation_token     :string(255)
 #  password_reset_sent_at :datetime
 #  pseudo                 :boolean
-#  pseudo                 :boolean
+
 
 
 class User < ActiveRecord::Base
@@ -62,6 +62,11 @@ class User < ActiveRecord::Base
 
   def get_submission(assignment)
     Submission.where(:assignment_id => assignment.id, :user_id => self.id).first
+  end
+
+  def team_id(assignment)
+    ms = assignment.memberships.select{|m| m.user_id == self.id }
+    return ms.length == 0 ? self.id : ms.first.pseudo_user_id
   end
 
   # Active Record Callbacks

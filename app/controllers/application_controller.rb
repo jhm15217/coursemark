@@ -56,7 +56,17 @@ class ApplicationController < ActionController::Base
     redirect_to root_url
   end
 
-  private
+  def submitting_user(assignment)
+    memberships = assignment.memberships.select{|m| m.user_id == current_user.id}
+    if memberships.length == 0
+      return current_user
+    else # This is a team assignment
+      return User.find(memberships.first.pseudo_user_id)
+    end
+  end
+
+    private
+
   def current_user_session
     return @current_user_session if defined?(@current_user_session)
     @current_user_session = UserSession.find
