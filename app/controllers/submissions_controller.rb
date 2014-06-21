@@ -78,7 +78,7 @@ class SubmissionsController < ApplicationController
   # POST /submissions.json
   def create
     @submission = Submission.new(params[:submission])
-    @submission.user = current_user
+    @submission.user = submitting_user(current_user)
 
     respond_to do |format|
       if @submission.save

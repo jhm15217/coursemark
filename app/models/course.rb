@@ -14,7 +14,7 @@ class Course < ActiveRecord::Base
   # Here are these instead
   # The SQL for the booleans on instructor might not work when noto n SQLite
   def get_students
-  	User.joins(:courses).where("course_id = ?",self.id).where("instructor = 'f'")
+  	User.joins(:courses).where("course_id = ?",self.id).where("instructor = 'f' and pseudo = 'f'")
   end
 
   def get_instructors

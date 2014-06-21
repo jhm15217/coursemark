@@ -158,7 +158,6 @@ class AssignmentsController < ApplicationController
 
   # GET /assignments/1/edit
   def edit
-    @assignment = Assignment.find(params[:id])
   end
 
   # POST /assignments
@@ -235,36 +234,6 @@ class AssignmentsController < ApplicationController
       end
     end
 
-    if params['group']
-      CSV.foreach('/Users/jhm/Desktop/' + params['group']['attachment']) do |row|
-        team_name = row[3]
-        student = User.find_all_by_last_name(row[0]).select{|x| x.first_name == row[1]}[0]
-        puts "student: " + student.inspect
-        memberships = @assignment.memberships.select{|m| m.team == team_name and m.user_id == student.id }
-        membership = memberships.length == 0 ? nil : memberships.first
-        #membership = Membership.find(@assignment, student.id, team_name)
-        puts "membership: " + membership.inspect
-        if !membership then
-          # create new pseudo-user
-          pseudo_users = User.find_all_by_last_name("Team").select{|x| x.first_name == team_name}
-          if pseudo_users.length > 0
-            pseudo_user = pseudo_users.first
-          else
-            pseudo_user = User.new(first_name: team_name, last_name: "Team", pseudo: true)
-            pseudo_user.save!(validate: false)
-            register_pseudo_user(@course.id, pseudo_user)
-            puts "registration"
-          end
-          puts "pseudo_user: " + pseudo_user.inspect
-          membership = Membership.new(team:team_name, user_id: student.id, assignment_id: @assignment.id, pseudo_user_id: pseudo_user.id)
-          membership.save!
-        else
-          membership = memberships[0]
-        end
-      end
-      puts 'Membership: ' +  Membership.all.inspect
-    end
-
     respond_to do |format|
       if @assignment.update_attributes(params[:assignment])
         format.html { redirect_to @URL }
@@ -274,19 +243,6 @@ class AssignmentsController < ApplicationController
         format.json { render json: @assignment.errors, status: :unprocessable_entity }
       end
     end
-  end
-
-  def register_pseudo_user(course_id,user)
-    registration = Registration.new()
-    registration.active = true
-    registration.instructor = false
-    registration.course_id = course_id
-    registration.user = user
-    # Throw an error if the user is already registered.
-    if (Registration.where(:user_id => user.id).length > 0)
-      raise ExistingRegistration
-    end
-    registration.save!
   end
 
 # DELETE /assignments/1

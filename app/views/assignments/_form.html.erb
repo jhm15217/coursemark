@@ -27,13 +27,6 @@
       <%= f.label :reviews_required %><br />
       <%= f.number_field :reviews_required, :disabled => @assignment.review_due && (Time.zone.now > @assignment.submission_due) %>
     </div>
-    <label for="group_assignment">Group Assignment</label>
-    <div class="field">
-      <input id="group_attachment" name="group[attachment]" required="required" type="file" />
-    </div>
-    <div class="actions">
-      <input name="create_group" type="submit" value="Upload CSV File" />
-    </div>
     <div class="clearfix"></div>
     <div class="field">
       <%= f.label :manual_assignment, "Manually assign peer reviews" %>&nbsp;
@@ -53,3 +46,6 @@
         </div>
     <% end %>
 <% end %>
+<form method="get" action="/courses/<%= @course.id.to_s %>/assignments/<%= @assignment.id.to_s %>/memberships" class="button_to" >
+        <div><input value="Teams" type="submit" /></div>
+</form>
