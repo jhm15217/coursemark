@@ -104,7 +104,6 @@
             <div class='submissionQuestionBox'>
               <h2><%= eval.question.question_text %></h2>
               <div class='possiblePoints'><%= eval.question.question_weight %> Points</div>
-              <%= puts 'XXX '  + @submission.inspect %>
               <% get_evaluations_for_submission_question(@submission, eval.question).each_with_index do |response, index| %>
                   <%= puts response.inspect %>
                   <% if response.evaluation.finished? %>

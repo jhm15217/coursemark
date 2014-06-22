@@ -29,7 +29,12 @@
     </div>
     <div class="clearfix"></div>
     <div class="field">
-      <%= f.label :manual_assignment, "Manually assign peer reviews" %>&nbsp;
+      <%= f.label :team_submissions, "Team Submissions" %>&nbsp;
+      <%= f.check_box :team, :disabled => @assignment.review_due && (Time.zone.now > @assignment.submission_due) %>
+    </div>
+    <div class="clearfix"></div>
+    <div class="field">
+      <%= f.label :manual_assignment, "Manually assigned reviews" %>&nbsp;
       <%= f.check_box :manual_assignment, :disabled => @assignment.review_due && (Time.zone.now > @assignment.submission_due) %>
     </div>
     <div class="actions">
@@ -46,6 +51,3 @@
         </div>
     <% end %>
 <% end %>
-<form method="get" action="/courses/<%= @course.id.to_s %>/assignments/<%= @assignment.id.to_s %>/memberships" class="button_to" >
-        <div><input value="Teams" type="submit" /></div>
-</form>

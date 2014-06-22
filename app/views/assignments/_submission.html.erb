@@ -19,9 +19,5 @@
   </div>
   <div class="actions">
     <%= f.submit (@submission.created_at ? "Resubmit" : "Submit" ) %>
-
-    <% if @submission.created_at %>
-      <a href='<%= @submission.attachment.url %>' style="color:#343F53; display: block; margin-top: 15px;">View Uploaded Submission</a>
-    <% end %>
   </div>
 <% end %>

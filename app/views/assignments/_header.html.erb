@@ -23,13 +23,21 @@
                 <% end %>
             </div>
 
-            <div class="tab <%= 'active' if controller.controller_name == 'questions' %>">
+              <div class="tab <%= 'active' if controller.controller_name == 'questions' %>">
                 <%= link_to course_assignment_questions_path(@course, @assignment) do %>
                     Rubric
                 <% end %>
-            </div>
+              </div>
 
-            <% end %>
+              <% if @assignment.team %>
+                <div class="tab <%= 'active' if controller.controller_name == 'memberships' %>">
+                  <%= link_to course_assignment_memberships_path(@course, @assignment) do %>
+                    Teams
+                <% end %>
+                </div>
+              <% end %>
+
+        <% end %>
 
             <div class="tab logout">
                 <%= link_to edit_user_path(current_user, :course => @course.id) do %>
