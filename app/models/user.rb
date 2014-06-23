@@ -64,7 +64,7 @@ class User < ActiveRecord::Base
     Submission.where(:assignment_id => assignment.id, :user_id => self.id).first
   end
 
-  def team_id(assignment)
+  def submitting_id(assignment)
     ms = assignment.memberships.select{|m| m.user_id == self.id }
     return ms.length == 0 ? self.id : ms.first.pseudo_user_id
   end

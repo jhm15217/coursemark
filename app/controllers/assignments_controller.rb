@@ -228,7 +228,7 @@ class AssignmentsController < ApplicationController
     if params['publish']
       if @assignment.questions.length == 0
         flash[:error] = 'You must first create a rubric'
-        @url = edit_course_assignment_path(@assignment.course, @assignment)
+        @URL = edit_course_assignment_path(@assignment.course, @assignment)
       else
         @assignment.draft = false
       end
