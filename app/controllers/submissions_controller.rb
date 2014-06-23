@@ -12,7 +12,7 @@ class SubmissionsController < ApplicationController
     end
 
     @submissions = @assignment.submissions.sort_by{ |s| s.user.last_name }
-    @students =  @course.get_students.select{|s| !s.pseudo or @assignment.memberships.select{|m| m.pseudo_user_id == s.id}.length > 0 }
+    @students =  @assignment.get_students  # @assignment version culls pseudo_users not used in this assignment
 
     respond_to do |format|
       format.html # index.html.erb
