@@ -73,7 +73,7 @@ class MembershipsController < ApplicationController
     end
 
     respond_to do |format|
-      format.html { render 'index', notice: 'Team memberships were recorded.' }
+      format.html { redirect_to course_assignment_memberships_path(@course,@assignment), notice: 'Team memberships were recorded.' }
       format.json { render json: @membership, status: :created, location: @membership }
     end
   end

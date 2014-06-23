@@ -84,7 +84,7 @@ class Submission < ActiveRecord::Base
   	# only run if the number of evaluations isn't the number required
   	if self.evaluations.length != self.assignment.reviews_required
 	  	self.evaluations.delete_all
-	  	courseStudents = self.assignment.course.get_real_students.select{|s| s.team_id(assignment) != self.user_id }
+	  	courseStudents = self.assignment.course.get_real_students.select{|s| s.submitting_id(assignment) != self.user_id }
 	  	evaluations = self.assignment.evaluations
 	  	evaluationCounts = Hash.new
 	  	# create hashmap that maps student id's to the number
