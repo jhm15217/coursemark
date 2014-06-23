@@ -43,6 +43,7 @@ class ApplicationController < ActionController::Base
   end
 
   def get_submission_for_assignment(assignment)
+    # return current_user.submitting_user(assignment).submissions.first!
     memberships = assignment.memberships.select{|m| m.user_id == current_user.id}
     if memberships.length == 0
       @submission = Submission.where(:assignment_id => assignment.id, :user_id => current_user.id)
@@ -57,12 +58,7 @@ class ApplicationController < ActionController::Base
   end
 
   def submitting_user(assignment)
-    memberships = assignment.memberships.select{|m| m.user_id == current_user.id}
-    if memberships.length == 0
-      return current_user
-    else # This is a team assignment
-      return User.find(memberships.first.pseudo_user_id)
-    end
+    User.find(current_user.submitting_id(assignment))
   end
 
     private

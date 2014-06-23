@@ -12,6 +12,7 @@ class SubmissionsController < ApplicationController
     end
 
     @submissions = @assignment.submissions.sort_by{ |s| s.user.last_name }
+    @students =  @course.get_students.select{|s| !s.pseudo or @assignment.memberships.select{|m| m.pseudo_user_id == s.id}.length > 0 }
 
     respond_to do |format|
       format.html # index.html.erb
@@ -78,7 +79,7 @@ class SubmissionsController < ApplicationController
   # POST /submissions.json
   def create
     @submission = Submission.new(params[:submission])
-    @submission.user = submitting_user(current_user)
+    @submission.user = submitting_user(@assignment)
 
     respond_to do |format|
       if @submission.save
@@ -86,7 +87,7 @@ class SubmissionsController < ApplicationController
         format.json { render json: @submission, status: :created, location: @submission }
       else
         puts @submission.errors.full_messages
-        format.html { redirect_to [@course, @assignment] }
+        format.html { redirect_to [@course, @assignment], flash: {error: "Store of submission failed!"} }
         format.json { render json: @submission.errors, status: :unprocessable_entity }
       end
     end
