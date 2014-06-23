@@ -60,14 +60,16 @@ class ResponsesController < ApplicationController
   # PUT /responses/1.json
   def update
     @response = Response.find(params[:id])
+    submitter_id =  current_user.submitting_id(get_assignment)
 
-    if ((!current_user.instructor?(@course)) && (current_user.id != @response.evaluation.user_id) && (current_user.id != @response.evaluation.submission.user_id))
+    if ((!current_user.instructor?(@course)) && (current_user.id != @response.evaluation.user_id) && (submitter_id != @response.evaluation.submission.user_id))
       raise CanCan::AccessDenied.new("Not authorized!")
     end
 
     if (current_user.instructor?(@course))
       @URL = course_assignment_submission_path(@course, @assignment, @response.evaluation.submission)
-    else
+    elsif (submitter_id == @response.evaluation.submission.user_id) and params[:response]
+      @response.student_response =  params[:response][:student_response]
       @URL = course_assignment_path(@course, @assignment)
     end
 

@@ -50,8 +50,8 @@
       <% end %>
   <% end %>
 
-  <% if current_user.submitting_id(@assignment) != @submission.user.id  and !current_user.instructor?(@course) %>
-      <!-- This user is a reviewer >
+  <% if current_user.submitting_id(@assignment) != @submission.user.id  and !current_user.instructor?(@course) and !@submission.evaluations.select{|e| e.user_id == current_user.id}.all?{|e| e.finished }%>
+      <!-- This user is a reviewer who hasn't finished  >
       <% @questions.each do |question| %>
         <div class='submissionQuestionBox' id='peer_review'>
         <h2><%= question.question_text %></h2>
@@ -96,7 +96,7 @@
           <div id='submitFormsButton' class='button'>Finish Peer Review</div>
       <% end %>
 
-  <% else %> <!-- the user is either an instructor or the submitter -->
+  <% else %> <!-- the user is either an instructor, the submitter, or a reviewer who is finished -->
 
       <!--     EVALUATIONS -->
       <% @responses.each do |eval| %>
@@ -110,22 +110,26 @@
                       <div class='submissionResponseFrom'>
                         <% if current_user.instructor?(@course) %>
                             <%= response.evaluation.user.name %>
+                        <% elsif current_user.submitting_id(@assignment) != @submission.user.id %>
+                            Your Review
                         <% else %>
                             Reviewer <%= index + 1 %>
                         <% end %>
                       </div>
                       <div class='submissionPeerReview'><%= if !response.peer_review.blank? then response.peer_review else "No written response provided." end %></div>
                       <% if !response.student_response.blank? then %>
+                          <% puts "response: " + response.student_response.inspect %>
                           <div class='submissionStudentResponse'>
                             <div class='submissionResponseFrom' style="margin-top: 30px;">
                               <% if current_user.instructor?(@course) %>
                                   <%= @submission.user.first_name %>'s Reply
-                              <% elsif current_user.id == @submission.user.id then %>
+                              <% elsif current_user.submitting_id(@assignment) == @submission.user.id then %>
                                   Your Reply
                               <% else %>
                                   Author's Reply
-                              <% end %></div>
-                            <%= response.student_response %>
+                              <% end %>
+                            </div>
+                            <p> <%= response.student_response.html_safe.gsub(/\n/,'<br>').html_safe %> </p>
                           </div>
                       <% end %>
                       <% if response.instructor_response != nil || current_user.instructor?(@course) %>

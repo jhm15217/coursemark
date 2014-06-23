@@ -27,13 +27,9 @@
   <% if (Time.zone.now > @assignment.submission_due) && (Time.zone.now <= @assignment.review_due) %>
     <div id="reviewing_tasks">
       <% @reviewing_tasks.each_with_index do |task, index| %>
-          <% if task.finished? %>
-              <div class="reviewing_task"><%= 'Review ' + (index + 1).to_s + ' Finished' %></div>
-          <% else %>
-            <%= link_to course_assignment_submission_path(@course, @assignment, task.submission) do %>
-              <div class="reviewing_task highlighted" > <%='Complete Review ' + (index + 1).to_s %></div>
-            <% end %>
-          <% end %>
+        <%= link_to course_assignment_submission_path(@course, @assignment, task.submission) do %>
+          <div class="reviewing_task highlighted" > <%= (task.finished? ? 'See' : 'Complete') + ' Review ' + (index + 1).to_s %></div>
+        <% end %>
       <% end %>
     </div>
   <% end %>
@@ -55,11 +51,9 @@
             <div class='submissionPeerReview'><%= if response.peer_review.blank? then 'No comment provided' else response.peer_review end %></div>
             
             <div class='submissionInstructorResponse'>
-              <% if !response.student_response.blank? then %>
-                  <div class='submissionResponseFrom' style="margin-top: 20px;">Your Rebuttal</div>
-                  <%= response.student_response %>
-              <% elsif response.instructor_response.blank? && !@submission.instructor_approved %>
+              <% if !@submission.instructor_approved %>
                 <div class='submissionResponseFrom' style="margin-top: 20px;">Your Rebuttal</div>
+                  <% puts "form" + response.inspect %>
                 <%= nested_form_for [@course, @assignment, eval.question, response]  do |f| %>
                   <%= f.text_area :student_response, class: 'submissionTextArea fl'  %>
                   <%= f.submit "Rebut", class: 'submissionTextAreaReply fr' %>
