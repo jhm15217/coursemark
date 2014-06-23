@@ -109,6 +109,12 @@ class Assignment < ActiveRecord::Base
     self.course.get_students.select{|s| !s.pseudo or self.memberships.select{|m| m.pseudo_user_id == s.id}.length > 0 }
   end
 
+  def reviews_for_user_to_complete(user)
+    self.evaluations.forUser(user).select { |eval| !eval.finished  }
+  end
+
+
+
   private
   def submission_deadline_not_passed
     if self.submission_due < Time.now and self.submission_due.to_i != self.submission_due_was.to_i

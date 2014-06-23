@@ -44,19 +44,19 @@ class AssignmentsController < ApplicationController
   # GET /assignments/1.json
   def show
     @assignment = Assignment.find(params[:id])
+    if current_user.instructor?(@course)
+      redirect_to(edit_course_assignment_url(@course, @assignment))
+      return
+    end
+
     @submission = get_submission_for_assignment(@assignment)
-    @reviewing_tasks = reviews_for_user_to_complete(@assignment, current_user)
+    @reviewing_tasks = @assignment.evaluations.forUser(current_user)
 
     if @submission.nil?
       @submission = Submission.new
       @submission.assignment = @assignment
     else
       @evaluations = Evaluation.where(submission_id: @submission.id)
-    end
-
-    if current_user.instructor?(@course)
-      redirect_to(edit_course_assignment_url(@course, @assignment))
-      return
     end
 
     respond_to do |format|
@@ -261,16 +261,6 @@ class AssignmentsController < ApplicationController
     if params[:course_id]
       @course = Course.find(params[:course_id])
     end
-  end
-
-  def reviews_for_user_to_complete(assignment, current_user)
-    evals = []
-    assignment.evaluations.forUser(current_user).each { |eval|
-      complete = eval.responses.all? { |resp| resp.is_complete? }
-      if !complete then
-        evals << eval
-      end
-    }
   end
 
   def get_evaluations_for_submission_question(submission, question)
