@@ -24,11 +24,11 @@
 <div class="clearfix"></div>
 
 <% if (@assignment.manual_assignment && @assignment.reviewers_assigned) || !@assignment.manual_assignment %>
-  <% if (Time.zone.now > @assignment.submission_due) && (Time.zone.now <= @assignment.review_due) %>
+  <% if (Time.zone.now > @assignment.submission_due)  %>
     <div id="reviewing_tasks">
       <% @reviewing_tasks.each_with_index do |task, index| %>
         <%= link_to course_assignment_submission_path(@course, @assignment, task.submission) do %>
-          <div class="reviewing_task highlighted" > <%= (task.finished? ? 'See' : 'Complete') + ' Review ' + (index + 1).to_s %></div>
+          <div class="reviewing_task highlighted" > <%= ((task.finished? or Time.zone.now <= @assignment.review_due) ? 'See' : 'Complete') + ' Review ' + (index + 1).to_s %></div>
         <% end %>
       <% end %>
     </div>
@@ -53,15 +53,17 @@
             <div class='submissionInstructorResponse'>
               <% if !@submission.instructor_approved %>
                 <div class='submissionResponseFrom' style="margin-top: 20px;">Your Rebuttal</div>
-                  <% puts "form" + response.inspect %>
                 <%= nested_form_for [@course, @assignment, eval.question, response]  do |f| %>
                   <%= f.text_area :student_response, class: 'submissionTextArea fl'  %>
                   <%= f.submit "Rebut", class: 'submissionTextAreaReply fr' %>
                 <% end %>
+              <% elsif response.student_response %>
+                <div class='submissionResponseFrom' style="margin-top: 20px;">Your Rebuttal</div>
+                <p> <%= response.student_response.html_safe.gsub(/\n/,'<br>').html_safe %> </p>
               <% end %>
             </div> <!-- End Student Response -->
 
-            <% if response.instructor_response != nil then %>
+            <% if response.instructor_response then %>
               <div class='submissionStudentResponse'>
                 <div class='submissionResponseFrom' style="margin-top: 25px;">Instructor's Reply</div>
                 <%= response.instructor_response %>
