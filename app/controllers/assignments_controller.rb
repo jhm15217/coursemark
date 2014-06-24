@@ -65,72 +65,6 @@ class AssignmentsController < ApplicationController
     end
   end
 
-  # get /assignments/1/export
-  def export
-    @assignment = Assignment.find(params[:assignment_id])
-    @students = Course.find(@assignment.course_id).get_students.sort_by { |s| s.first_name }.sort_by { |s| s.last_name }
-    header_row = ["Name", "Total Points", "Total Possible Points", "Percentage"]
-    @assignment.questions.each { |question|
-      header_row << question.question_text
-      header_row << "Possible Points"
-      @assignment.reviews_required.times { |index|
-        header_row << "Reviewer #{index+1}"
-      }
-    }
-    header_row << "Reviews Finished"
-    header_row << "Reviews Required"
-    assignment_csv = CSV.generate do |csv|
-      csv << header_row
-      @students.each do |student|
-        submission = @assignment.submissions.select { |sub| sub.user.id == student.id }
-        puts submission.inspect
-        submission = submission.length == 0 ? nil : submission[0]
-        if submission then
-          if !submission.percentage.blank? then
-            percent = submission.percentage.round
-          else
-            percent = ""
-          end
-          this_sub = [student.name, submission.raw, @assignment.totalPoints, percent]
-          # for each of the questions in the assignment
-          submission.evaluations[0].responses.sort_by { |obj| obj.created_at }.uniq { |x| x.question_id }.each do |res|
-
-            points_for_q = []
-
-            # get responses for a student's submission
-            get_evaluations_for_submission_question(submission, res.question).each_with_index do |response, index|
-              if response.is_complete?
-                points = (((100 / (response.question.scales.length - 1.0) * response.scale.value)) / 100) * res.question.question_weight
-                #points = (response.question.question_weight / (response.question.scales.length - 1.0) * response.scale.value)
-                points_for_q << points
-              end
-            end
-            # average points someone got for question
-            this_sub << (points_for_q.inject(:+).to_f / points_for_q.length) #.inject{ |sum, el| sum + el }.to_f / points_for_q.size
-
-            # total possible points
-            this_sub << res.question.question_weight
-
-            # for each peer response, record their grade of the assignment
-            points_for_q.each do |point|
-              this_sub << point
-            end
-          end
-        else
-          this_sub = [student.name, 0, @assignment.totalPoints, 0] + ([0, 0] + [0]*@assignment.reviews_required)*@assignment.questions.length
-        end
-
-        this_sub << @assignment.evaluations.forUser(student).select { |evaluation| evaluation.is_complete? }.length
-        this_sub << @assignment.evaluations.forUser(student).length
-
-        csv << this_sub
-      end
-    end
-
-    current_date = "#{Time.now.month}-#{Time.now.day}-#{Time.now.year}"
-    send_data(assignment_csv, :type => 'text/csv', :filename => "#{@assignment.course.name}: #{@assignment.name} (as of #{current_date}).csv")
-  end
-
   # GET /assignments/new
   # GET /assignments/new.json
   def new
@@ -154,6 +88,12 @@ class AssignmentsController < ApplicationController
       format.html # new.html.erb
       format.json { render json: @assignment }
     end
+  end
+
+  def export
+    @assignment = Assignment.find(params[:assignment_id])
+    current_date = "#{Time.now.month}-#{Time.now.day}-#{Time.now.year}"
+    send_data(@assignment.export, :type => 'text/csv', :filename => "#{@assignment.course.name}: #{@assignment.name} (as of #{current_date}).csv")
   end
 
   # GET /assignments/1/edit
@@ -261,19 +201,6 @@ class AssignmentsController < ApplicationController
     if params[:course_id]
       @course = Course.find(params[:course_id])
     end
-  end
-
-  def get_evaluations_for_submission_question(submission, question)
-    rspns = []
-    evaluations = Evaluation.where(submission_id: submission)
-    evaluations.each do |eval|
-      eval.responses.each do |resp|
-        if resp.question == question then
-          rspns << resp
-        end
-      end
-    end
-    return rspns
   end
 
 end

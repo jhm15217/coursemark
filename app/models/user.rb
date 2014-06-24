@@ -65,8 +65,8 @@ class User < ActiveRecord::Base
   end
 
   def submitting_id(assignment)
-    ms = assignment.memberships.select{|m| m.user_id == self.id }
-    return ms.length == 0 ? self.id : ms.first.pseudo_user_id
+    ms = assignment.memberships.select{|m| m.user_id == self.id }.first
+    return ms ? ms.pseudo_user_id : self.id
   end
 
   # Active Record Callbacks
