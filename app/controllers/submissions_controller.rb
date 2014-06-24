@@ -101,7 +101,7 @@ class SubmissionsController < ApplicationController
 
     respond_to do |format|
       if @submission.update_attributes(params[:submission])
-        format.html { redirect_to [@course, @submission.assignment]}
+        format.html { redirect_to :back}
       else
         puts @submission.errors.full_messages
         format.html { render action: "edit" }

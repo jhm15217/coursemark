@@ -50,8 +50,11 @@
       <% end %>
   <% end %>
 
-  <% if current_user.submitting_id(@assignment) != @submission.user.id  and !current_user.instructor?(@course) and !@submission.evaluations.select{|e| e.user_id == current_user.id}.all?{|e| e.finished }%>
-      <!-- This user is a reviewer who hasn't finished  >
+  <% if !(current_user.submitting_id(@assignment) == @submission.user.id  or
+          current_user.instructor?(@course) or
+          @submission.evaluations.select{|e| e.user_id == current_user.id}.all?{|e| e.finished } or
+          Time.zone.now < @assignment.review_due_date) %>
+      <!-- This user is a reviewer who hasn't finished but has time  >
       <% @questions.each do |question| %>
         <div class='submissionQuestionBox' id='peer_review'>
         <h2><%= question.question_text %></h2>
@@ -96,7 +99,7 @@
           <div id='submitFormsButton' class='button'>Finish Peer Review</div>
       <% end %>
 
-  <% else %> <!-- the user is either an instructor, the submitter, or a reviewer who is finished -->
+  <% else %> <!-- the user is either an instructor, the submitter, or a reviewer who is finished or out of time -->
 
       <!--     EVALUATIONS -->
       <% @responses.each do |eval| %>
@@ -117,8 +120,9 @@
                         <% end %>
                       </div>
                       <div class='submissionPeerReview'><%= if !response.peer_review.blank? then response.peer_review else "No written response provided." end %></div>
+                      <% puts "testing student response" %>
                       <% if !response.student_response.blank? then %>
-                          <% puts "response: " + response.student_response.inspect %>
+                          <%puts "Not blank" %>
                           <div class='submissionStudentResponse'>
                             <div class='submissionResponseFrom' style="margin-top: 30px;">
                               <% if current_user.instructor?(@course) %>
@@ -132,19 +136,20 @@
                             <p> <%= response.student_response.html_safe.gsub(/\n/,'<br>').html_safe %> </p>
                           </div>
                       <% end %>
-                      <% if response.instructor_response != nil || current_user.instructor?(@course) %>
-                          <div class='submissionInstructorResponse' style="margin-top:25px; margin-bottom:-3px;">
-                            <div class='submissionResponseFrom'>Instructor</div>
-                            <% if !response.instructor_response.blank? then %>
-                                <%= response.instructor_response %>
-                            <% elsif current_user.instructor?(@course) %>
-                                <%= nested_form_for [@course, @assignment, eval.question, response]  do |f| %>
-                                    <%= f.text_area :instructor_response, class: 'submissionTextArea fl'  %>
-                                    <%= f.submit "Reply", class: 'submissionTextAreaReply fr' %>
-                                <% end %>
+                      <% if current_user.instructor?(@course) and !@submission.instructor_approved? %>
+                        <div class='submissionInstructorResponse' style="margin-top:25px; margin-bottom:-3px;">
+                        <div class='submissionResponseFrom'>Instructor Comment</div>
+                            <%= nested_form_for [@course, @assignment, eval.question, response]  do |f| %>
+                                <%= f.text_area :instructor_response, class: 'submissionTextArea fl'  %>
+                                <%= f.submit "Reply", class: 'submissionTextAreaReply fr' %>
                             <% end %>
-                          </div> <!-- End Instructor Response -->
-                      <% end %>
+                        </div>
+                       <% elsif response.instructor_response %>
+                          <div class='submissionInstructorResponse' style="margin-top:25px; margin-bottom:-3px;">
+                          <div class='submissionResponseFrom'>Instructor Comment</div>
+                                <%= response.instructor_response %>
+                         </div>
+                       <% end %> <!-- End Instructor Response -->
                     </div>
                 <% end %>
             <% end %>
