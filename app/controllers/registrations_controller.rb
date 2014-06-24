@@ -18,7 +18,7 @@ class RegistrationsController < ApplicationController
     if params[:course] && current_user.instructor?(Course.find(params[:course]))
       @course = Course.find(params[:course])
       @assignments = @course.assignments
-      @registrations = @course.registrations.where(:active => true).sort_by{ |r| r.instructor ? 0 : 1 }
+      @registrations = @course.registrations.where(:active => true).select{|r| !r.user.pseudo}.sort_by{|r| r.user.first_name }.sort_by{|r| r.user.last_name }.sort_by{ |r| r.instructor ? 0 : 1 }
       @template = "registrations/roster"
     else
       @registrations = current_user.registrations.where(:active => true).sort_by{ |r| r.instructor ? 0 : 1 }

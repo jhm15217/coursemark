@@ -11,8 +11,8 @@ class SubmissionsController < ApplicationController
       raise CanCan::AccessDenied.new("Not authorized!")
     end
 
-    @submissions = @assignment.submissions.sort_by{ |s| s.user.last_name }
-    @students =  @assignment.get_students  # @assignment version culls pseudo_users not used in this assignment
+    @submissions = @assignment.submissions
+    @students =  sorted(@assignment.get_students_for_assignment)  # @assignment version culls pseudo_users not used in this assignment
 
     respond_to do |format|
       format.html # index.html.erb

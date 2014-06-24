@@ -61,7 +61,27 @@ class ApplicationController < ActionController::Base
     User.find(current_user.submitting_id(assignment))
   end
 
-    private
+  def iff(a,b)
+    a ? b : !b
+  end
+
+  def compare_users(a,b)
+    !iff(a.pseudo,b.pseudo) ? (a.pseudo ? -1 : 1) :
+        a.last_name != b.last_name ? a.last_name <=> b.last_name :
+            a.first_name != b.first_name ? a.first_name <=> b.first_name :
+                0
+  end
+
+  def sorted(users)
+    users.sort { |a,b| compare_users(a,b) }
+  end
+
+  def sorted_registrations(r)
+    r.sort { |a,b|
+      !iff(a.instructor, b.instructor)  ? (a.instructor ? -1 : 1) :  compare_users(a.user, b.user) }
+  end
+
+  private
 
   def current_user_session
     return @current_user_session if defined?(@current_user_session)

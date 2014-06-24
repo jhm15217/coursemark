@@ -106,7 +106,7 @@ class Assignment < ActiveRecord::Base
     end
   end
 
-  def get_students
+  def get_students_for_assignment
     self.course.get_students.select{|s| !s.pseudo or self.memberships.select{|m| m.pseudo_user_id == s.id}.length > 0 }
   end
 
@@ -116,7 +116,7 @@ class Assignment < ActiveRecord::Base
 
   # get /assignments/1/export
   def export
-    @students = Course.find(course_id).get_students.sort_by { |s| s.first_name }.sort_by { |s| s.last_name }.sort_by{|s| s.pseudo ? 0 : 1}
+    @students = Course.find(course_id).get_students_for_assignment.sort_by { |s| s.first_name }.sort_by { |s| s.last_name }.sort_by{|s| s.pseudo ? 0 : 1}
     header_row = ["Name", "Total Points", "Total Possible Points", "Percentage"]
     questions.each { |question|
       header_row << question.question_text
