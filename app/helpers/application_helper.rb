@@ -35,4 +35,5 @@ module ApplicationHelper
 			return 'low'
 		end
 	end
+
 end

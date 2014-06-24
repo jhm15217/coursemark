@@ -69,14 +69,13 @@ class User < ActiveRecord::Base
     return ms ? ms.pseudo_user_id : self.id
   end
 
+
   # Active Record Callbacks
   before_save { |user|
     user.email = email ? email.downcase : nil
     if user.new_record?
       user.generate_confirmation_token
     end
-
-
   }
 
   #Validations
