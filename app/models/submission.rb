@@ -126,4 +126,10 @@ class Submission < ActiveRecord::Base
 	  	end while evaluationsLeft > 0
   	end
   end
+
+  def get_responses_for_question(question)
+    responses.select{|resp| resp.question == question }
+  end
+
+
 end

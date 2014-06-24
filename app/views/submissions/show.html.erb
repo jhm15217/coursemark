@@ -103,7 +103,7 @@
           <div class='submissionQuestionBox'>
             <h2><%= eval.question.question_text %></h2>
             <div class='possiblePoints'><%= eval.question.question_weight %> Points</div>
-            <% get_evaluations_for_submission_question(@submission, eval.question).each_with_index do |response, index| %>
+            <% @submission.get_responses_for_question(eval.question).each_with_index do |response, index| %>
                 <% if response.evaluation.finished? %>
                     <div class='submissionBox'>
                       <div class='submissionResponsePoints <%= gradeColorFullScale(prettifyFloat(((100 / (response.question.scales.length - 1.0) * response.scale.value)))) %>'><%= prettifyFloat(((100 / (response.question.scales.length - 1.0) * response.scale.value))).to_s + '%' %></div>
