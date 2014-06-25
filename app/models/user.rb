@@ -11,11 +11,13 @@
 #  confirmed              :boolean         default(FALSE)
 #  confirmation_token     :string(255)
 #  password_reset_sent_at :datetime
+#  pseudo                 :boolean
+
 
 
 class User < ActiveRecord::Base
   acts_as_authentic
-  attr_accessible :email, :first_name, :last_name, :password, :password_confirmation
+  attr_accessible :email, :first_name, :last_name, :password, :password_confirmation, :pseudo
 
   # Relationships
   has_many :evaluations
@@ -23,6 +25,7 @@ class User < ActiveRecord::Base
   has_many :registrations
   has_many :courses, :through => :registrations
   has_many :assignments, :through => :courses
+  has_many :memberships
 
   # Get all users except the given user
   scope :without_user, ->(user) {where("user_id != ?", user.id)}
@@ -61,14 +64,18 @@ class User < ActiveRecord::Base
     Submission.where(:assignment_id => assignment.id, :user_id => self.id).first
   end
 
+  def submitting_id(assignment)
+    ms = assignment.memberships.select{|m| m.user_id == self.id }.first
+    return ms ? ms.pseudo_user_id : self.id
+  end
+
+
   # Active Record Callbacks
   before_save { |user|
-    user.email = email.downcase
+    user.email = email ? email.downcase : nil
     if user.new_record?
       user.generate_confirmation_token
     end
-
-
   }
 
   #Validations
