@@ -1,4 +1,10 @@
 Agora::Application.routes.draw do
+  resources :memberships
+
+
+  resources :groups
+
+
   get 'submission_submission/:id', :to => 'submissions#view'
   get 'register', :to => 'users#new'
   match 'registrations/add_to_course_staff' => 'registrations#add_to_course_staff'
@@ -11,7 +17,7 @@ Agora::Application.routes.draw do
   resources :courses do
     resources :assignments do
       get 'export', :controller => 'assignments', :action => 'export'
-
+      resources :memberships
       resources :submissions do
         resources :evaluations
       end

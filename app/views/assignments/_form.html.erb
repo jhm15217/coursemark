@@ -1,47 +1,53 @@
 <%= nested_form_for [@course, @assignment] do |f| %>
-  <h3>Assignment Settings</h3>
+    <h3>Assignment Settings</h3>
 
-  <% if @assignment.errors.any? %>
-    <div id="error_explanation">
-      <% @assignment.errors.messages.values.each do |msg| %>
-        <p><%= msg[0] %></p>
+    <% if @assignment.errors.any? %>
+        <div id="error_explanation">
+          <% @assignment.errors.messages.values.each do |msg| %>
+              <p><%= msg[0] %></p>
+          <% end %>
+        </div>
+    <% end %>
+
+    <div class="field">
+      <%= f.label :name, "Assignment Name" %><br />
+      <%= f.text_field :name %>
+    </div>
+    <div class="field">
+      <%= f.label :submission_due, "Submission Deadline" %><br />
+      <%= f.text_field :submission_due_date %> at
+      <%= f.time_select :submission_due_time, {minute_step: 5, ampm: true, :time_separator => ""} %>
+    </div>
+    <div class="field">
+      <%= f.label :review_due, "Review Deadline" %><br />
+      <%= f.text_field :review_due_date %> at
+      <%= f.time_select :review_due_time, {minute_step: 5, ampm: true, :time_separator => ""} %>
+    </div>
+    <div class="field">
+      <%= f.label :reviews_required %><br />
+      <%= f.number_field :reviews_required, :disabled => @assignment.review_due && (Time.zone.now > @assignment.submission_due) %>
+    </div>
+    <div class="clearfix"></div>
+    <div class="field">
+      <%= f.label :team_submissions, "Team Submissions" %>&nbsp;
+      <%= f.check_box :team, :disabled => @assignment.review_due && (Time.zone.now > @assignment.submission_due) %>
+    </div>
+    <div class="clearfix"></div>
+    <div class="field">
+      <%= f.label :manual_assignment, "Manually assigned reviews" %>&nbsp;
+      <%= f.check_box :manual_assignment, :disabled => @assignment.review_due && (Time.zone.now > @assignment.submission_due) %>
+    </div>
+    <div class="actions">
+      <div class="clearfix"></div>
+      <%= f.submit %>
+      <% if @assignment.draft %>
+          <%= f.submit name: 'publish', value: 'Publish Assignment', :style => 'margin-right: 0px !important' %>
       <% end %>
     </div>
-  <% end %>
-  
-  <div class="field">
-    <%= f.label :name, "Assignment Name" %><br />
-    <%= f.text_field :name %>
-  </div>
-  <div class="field">
-    <%= f.label :submission_due, "Submission Deadline" %><br />
-    <%= f.text_field :submission_due_date %> at
-    <%= f.time_select :submission_due_time, {minute_step: 5, ampm: true, :time_separator => ""} %>
-  </div>
-  <div class="field">
-    <%= f.label :review_due, "Review Deadline" %><br />
-    <%= f.text_field :review_due_date %> at
-    <%= f.time_select :review_due_time, {minute_step: 5, ampm: true, :time_separator => ""} %>
-  </div>
-  <div class="field">
-    <%= f.label :reviews_required %><br />
-    <%= f.number_field :reviews_required, :disabled => @assignment.review_due && (Time.zone.now > @assignment.submission_due) %>
-  </div>
-  <div class="field">
-    <%= f.label :manual_assignment, "Manually assign peer reviews" %>&nbsp;
-    <%= f.check_box :manual_assignment, :disabled => @assignment.review_due && (Time.zone.now > @assignment.submission_due) %>
-  </div>
-  <div class="actions">
     <div class="clearfix"></div>
-    <%= f.submit %>
-    <% if @assignment.draft %>
-      <%= f.submit name: 'publish', value: 'Publish Assignment', data: { confirm: 'Are you sure you wish to publish this assignment?' }, :style => 'margin-right: 0px !important' %>
+    <% if @assignment.id %>
+        <div class="delete">
+          <%= link_to 'Delete', course_assignment_path(@course, @assignment), method: :delete, data: { confirm: 'Are you sure you want to delete this assignment?' } %>
+        </div>
     <% end %>
-  </div>
-  <div class="clearfix"></div>
-  <% if @assignment.id %>
-    <div class="delete">
-      <%= link_to 'Delete', course_assignment_path(@course, @assignment), method: :delete, data: { confirm: 'Are you sure you want to delete this assignment?' } %>
-    </div>
-  <% end %>
 <% end %>

@@ -10,7 +10,7 @@
     <th>Grade</th>
     <th></th>
   </tr>
-  <% @assignment.course.get_students.sort_by{ |u| u.first_name }.sort_by{ |u| u.last_name }.each do |student| %>
+  <% @students.each do |student| %>
       <tr>
         <td><%= student.first_name %></td>
         <td><%= student.last_name %></td>
@@ -27,7 +27,7 @@
         <% else %>
             <td>--</td>
             <td>--</td>
-            <td><%= @assignment.evaluations.forUser(student).select {|evaluation| evaluation.finished?}.length %> / <%= @assignment.evaluations.forUser(student).length %></td>
+            <td><%= student.pseudo ? "--" : (@assignment.evaluations.forUser(student).select {|evaluation| evaluation.finished?}.length.to_s + "/" + @assignment.evaluations.forUser(student).length.to_s) %></td>
             <td>--</td>
             <td></td>
         <% end %>
