@@ -1,5 +1,6 @@
 class Assignment < ActiveRecord::Base
-  attr_accessible :course_id, :draft, :manual_assignment, :reviewers_assigned, :review_due, :reviews_required, :submission_due, :name, :submission_due_date, :submission_due_time, :review_due_date, :review_due_time
+  require 'csv'
+  attr_accessible :course_id, :draft, :manual_assignment, :reviewers_assigned, :review_due, :reviews_required, :submission_due, :name, :submission_due_date, :submission_due_time, :review_due_date, :review_due_time, :team
   after_update :update_evaluations, :if => :reviews_required_changed?
   before_validation :make_dates
 
@@ -8,6 +9,7 @@ class Assignment < ActiveRecord::Base
   has_many :submissions
   has_many :questions
   has_many :evaluations, :through => :submissions
+  has_many :memberships
 
   scope :published, -> { where(draft: false) }
 
@@ -104,6 +106,79 @@ class Assignment < ActiveRecord::Base
     end
   end
 
+  def get_students_for_assignment
+    self.course.get_students.select{|s| !s.pseudo or self.memberships.select{|m| m.pseudo_user_id == s.id}.length > 0 }
+  end
+
+  def reviews_for_user_to_complete(user)
+    self.evaluations.forUser(user).select { |eval| !eval.finished  }
+  end
+
+  # get /assignments/1/export
+  def export(students)
+    header_row = ["Name", "Total Points", "Total Possible Points", "Percentage"]
+    questions.each { |question|
+      header_row << question.question_text
+      header_row << "Possible Points"
+      reviews_required.times { |index|
+        header_row << "Reviewer #{index+1}"
+      }
+    }
+    header_row << "Reviews Finished"
+    header_row << "Reviews Required"
+
+    return CSV.generate do |csv|
+      csv << header_row
+      students.each do |student|
+        submission = submissions.select { |sub| sub.user.id == student.submitting_id(self) }.first
+        if submission then
+          if !submission.percentage.blank? then
+            percent = submission.percentage.round
+          else
+            percent = ""
+          end
+          this_sub = [student.name, submission.raw, totalPoints, percent]
+          # for each of the questions in the assignment
+          submission.responses.sort_by { |obj| obj.created_at }.uniq { |x| x.question_id }.each do |res|
+
+            points_for_q = []
+
+            # get responses for a student's submission
+            submission.get_responses_for_question(res.question).each_with_index do |response, index|
+              if response.is_complete?
+                points = (((100 / (response.question.scales.length - 1.0) * response.scale.value)) / 100) * res.question.question_weight
+                #points = (response.question.question_weight / (response.question.scales.length - 1.0) * response.scale.value)
+                points_for_q << points
+              end
+            end
+            # average points someone got for question
+            this_sub << (points_for_q.inject(:+).to_f / points_for_q.length) #.inject{ |sum, el| sum + el }.to_f / points_for_q.size
+
+            # total possible points
+            this_sub << res.question.question_weight
+
+            # for each peer response, record their grade of the assignment
+            points_for_q.each do |point|
+              this_sub << point
+            end
+          end
+        else
+          this_sub = [student.name, 0, totalPoints, 0] + ([0, 0] + [0]*reviews_required)*questions.length
+        end
+
+        this_sub << evaluations.forUser(student).select { |evaluation| evaluation.is_complete? }.length
+        this_sub << evaluations.forUser(student).length
+
+        csv << this_sub
+      end
+    end
+
+  end
+
+
+
+
+
   private
   def submission_deadline_not_passed
     if self.submission_due < Time.now and self.submission_due.to_i != self.submission_due_was.to_i
@@ -132,4 +207,5 @@ class Assignment < ActiveRecord::Base
       errors.add(:reviews_required, "Can't change number of reviews required after submission deadline has passed.")
     end
   end
+
 end

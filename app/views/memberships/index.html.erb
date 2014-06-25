@@ -1,0 +1,30 @@
+<%= render "assignments/header" %>
+<table>
+  <tr>
+    <th>Team</th>
+    <th>User</th>
+    <th></th>
+  </tr>
+  <% @memberships.sort_by{|m| m.team }.each do |membership| %>
+      <tr>
+        <td>
+          <%= membership.team %>
+        </td>
+        <td>
+          <%= User.find(membership.user_id).first_name + ' ' + User.find(membership.user_id).last_name %>
+        </td>
+        <td>
+          <%= link_to 'Destroy', membership, :method => :delete, :data => { :confirm => 'Are you sure?' } %>
+        </td>
+      </tr>
+  <% end %>
+</table>
+<br/>
+<form method='post' action="/courses/<%= @course.id.to_s %>/assignments/<%= @assignment.id.to_s %>/memberships">
+  <div class="field" >
+    <input id="group_attachment" name="group[attachment]" required="required" type="file" />
+  </div>
+  <div class="actions">
+    <input name="create_group" type="submit" value="Upload CSV File" />
+  </div>
+</form>

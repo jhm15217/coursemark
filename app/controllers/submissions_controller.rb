@@ -11,7 +11,8 @@ class SubmissionsController < ApplicationController
       raise CanCan::AccessDenied.new("Not authorized!")
     end
 
-    @submissions = @assignment.submissions.sort_by{ |s| s.user.last_name }
+    @submissions = @assignment.submissions
+    @students =  sorted(@assignment.get_students_for_assignment)  # @assignment version culls pseudo_users not used in this assignment
 
     respond_to do |format|
       format.html # index.html.erb
@@ -25,7 +26,7 @@ class SubmissionsController < ApplicationController
     @submission = Submission.find(params[:id])
     @questions = @submission.assignment.questions.sort_by {|obj| obj.created_at }
     evaluation = @evaluations.where(:user_id => current_user.id)[0]
-    @responses = @evaluations[0].responses.sort_by {|obj| obj.created_at }
+    @responses = @evaluations[0].responses.sort_by {|obj| puts "response created at" + obj.created_at.to_s + "xxx"; obj.created_at }
 
     if params[:finish]
       if evaluation.is_complete?
@@ -78,7 +79,7 @@ class SubmissionsController < ApplicationController
   # POST /submissions.json
   def create
     @submission = Submission.new(params[:submission])
-    @submission.user = current_user
+    @submission.user = submitting_user(@assignment)
 
     respond_to do |format|
       if @submission.save
@@ -86,7 +87,7 @@ class SubmissionsController < ApplicationController
         format.json { render json: @submission, status: :created, location: @submission }
       else
         puts @submission.errors.full_messages
-        format.html { redirect_to [@course, @assignment] }
+        format.html { redirect_to [@course, @assignment], flash: {error: "Store of submission failed!"} }
         format.json { render json: @submission.errors, status: :unprocessable_entity }
       end
     end
@@ -100,7 +101,7 @@ class SubmissionsController < ApplicationController
 
     respond_to do |format|
       if @submission.update_attributes(params[:submission])
-        format.html { redirect_to [@course, @submission.assignment]}
+        format.html { redirect_to :back}
       else
         puts @submission.errors.full_messages
         format.html { render action: "edit" }
