@@ -1,3 +1,4 @@
+<!-- I believe this is reached only via the Review button for a reviewer or the "See Review" for an instructor -->
 <div id='submissionHeader'>
   <small style='display:block; float:left; margin-top:-18px; width:100%;'>
     <% if current_user.instructor?(@course) %>
@@ -53,45 +54,45 @@
   <% if !(current_user.submitting_id(@assignment) == @submission.user.id  or
           current_user.instructor?(@course) or
           @submission.evaluations.select{|e| e.user_id == current_user.id}.all?{|e| e.finished } or
-          Time.zone.now < @assignment.review_due_date) %>
-      <!-- This user is a reviewer who hasn't finished but has time  >
+          Time.zone.now > @assignment.review_due) %>
+      <!-- This user is a reviewer who hasn't finished but has time  -->
       <% @questions.each do |question| %>
-        <div class='submissionQuestionBox' id='peer_review'>
-        <h2><%= question.question_text %></h2>
-        <div class='possiblePoints'><%= question.question_weight %> Points</div>
-        <%# response_for_question_by_peer(@current_user, @submission, question).first %>
-        <% question.responses.each do |response| %>
+          <div class='submissionQuestionBox' id='peer_review'>
+            <h2><%= question.question_text %></h2>
+            <div class='possiblePoints'><%= question.question_weight %> Points</div>
+            <%# response_for_question_by_peer(@current_user, @submission, question).first %>
+            <% question.responses.each do |response| %>
 
-            <% if response.evaluation.user_id == current_user.id && response.evaluation.submission_id == @submission.id %>
-                <%= nested_form_for [@course, @assignment, question, response], :remote => true  do |f| %>
+                <% if response.evaluation.user_id == current_user.id && response.evaluation.submission_id == @submission.id %>
+                    <%= nested_form_for [@course, @assignment, question, response], :remote => true  do |f| %>
 
-                    <div class="radio_btns">
-                        <% question.scales.sort_by {|s| s.value}.each do |scale| %>
-                          <div class="radio_btn">
-                            <%= f.radio_button :scale_id, scale.id %>
-                            <%= f.label "scale_id_#{scale.id}", "#{prettifyFloat(((50 / (question.scales.length - 1.0) * scale.value) + 50))}% - #{scale.description}" %>
-                          </div>
-                        <% end %> <!-- end scale loop -->
-                      </div>
-                      <% if question.written_response_required then %>
-                          <div class='peerReviewJustification'>
-                            <div class='submissionResponseFrom'>Comment (required)</div>
-                            <!-- <textarea class="reviewTextArea fl" style='height:75px;' cols="40" name="q_response_<%= question.id %>" rows="20"></textarea> -->
-                            <%= f.text_area :peer_review, :html => {class: "reviewTextArea fl"}, :required => true %>
-                          </div>
-                      <% else %>
-                          <a href='#' id='awr_q_<%= question.id %>' onclick='add_written_response(<%= question.id %>)'>Add a comment</a>
-                          <div class='peerReviewJustification' style='display:none;' id='q_response_<%= question.id %>'>
-                            <div class='submissionResponseFrom'>Comment</div>
-                            <%= f.text_area :peer_review, :html => {class: "reviewTextArea fl"} %>
-                          </div>
-                      <% end %>
-                      <br>
-                      <%# f.submit "Save Response" %>
-                  <% end %> <!-- end form -->
-              <% end %>  <!-- end if -->
-          <% end %> <!-- end responses loop -->
-          <div class='savedStatus'></div>
+                        <div class="radio_btns">
+                          <% question.scales.sort_by {|s| s.value}.each do |scale| %>
+                              <div class="radio_btn">
+                                <%= f.radio_button :scale_id, scale.id %>
+                                <%= f.label "scale_id_#{scale.id}", "#{prettifyFloat(((50 / (question.scales.length - 1.0) * scale.value) + 50))}% - #{scale.description}" %>
+                              </div>
+                          <% end %> <!-- end scale loop -->
+                        </div>
+                        <% if question.written_response_required then %>
+                            <div class='peerReviewJustification'>
+                              <div class='submissionResponseFrom'>Comment (required)</div>
+                              <!-- <textarea class="reviewTextArea fl" style='height:75px;' cols="40" name="q_response_<%= question.id %>" rows="20"></textarea> -->
+                              <%= f.text_area :peer_review, :html => {class: "reviewTextArea fl"}, :required => true %>
+                            </div>
+                        <% else %>
+                            <a href='#' id='awr_q_<%= question.id %>' onclick='add_written_response(<%= question.id %>)'>Add a comment</a>
+                            <div class='peerReviewJustification' style='display:none;' id='q_response_<%= question.id %>'>
+                              <div class='submissionResponseFrom'>Comment</div>
+                              <%= f.text_area :peer_review, :html => {class: "reviewTextArea fl"} %>
+                            </div>
+                        <% end %>
+                        <br>
+                        <%# f.submit "Save Response" %>
+                    <% end %> <!-- end form -->
+                <% end %>  <!-- end if -->
+            <% end %> <!-- end responses loop -->
+            <div class='savedStatus'></div>
           </div> <!-- end question box div -->
       <% end %> <!-- end question loop -->
 
@@ -99,7 +100,7 @@
           <div id='submitFormsButton' class='button'>Finish Peer Review</div>
       <% end %>
 
-  <% else %> <!-- the user is either an instructor, the submitter, or a reviewer who is finished or out of time -->
+  <% else %> <!-- the user is either an instructor or a reviewer who is finished or out of time, not (I think) a submitter-->
 
       <!--     EVALUATIONS -->
       <% @responses.each do |eval| %>
@@ -116,55 +117,52 @@
                         <% elsif current_user.submitting_id(@assignment) != @submission.user.id %>
                             Your Review
                         <% else %>
-                            Reviewer <%= index + 1 %>
+                            Reviewer <%= index + 1 %> submission version <% response.created_at.to_s %>xxx
                         <% end %>
                       </div>
                       <div class='submissionPeerReview'><%= if !response.peer_review.blank? then response.peer_review else "No written response provided." end %></div>
-                      <% puts "testing student response" %>
+
                       <% if !response.student_response.blank? then %>
-                          <%puts "Not blank" %>
                           <div class='submissionStudentResponse'>
                             <div class='submissionResponseFrom' style="margin-top: 30px;">
                               <% if current_user.instructor?(@course) %>
                                   <%= @submission.user.first_name %>'s Reply
-                              <% elsif current_user.submitting_id(@assignment) == @submission.user.id then %>
-                                  Your Reply
+                              <% elsif current_user.submitting_id(@assignment) == @submission.user.id then %>   <!-- probably never true -->
+                                  Your Rebuttal (Send mail to james.morris@cmu.edu if you see this.)
                               <% else %>
-                                  Author's Reply
+                                  Author's Rebuttal
                               <% end %>
                             </div>
                             <p> <%= response.student_response.html_safe.gsub(/\n/,'<br>').html_safe %> </p>
                           </div>
                       <% end %>
                       <% if current_user.instructor?(@course) and !@submission.instructor_approved? %>
-                        <div class='submissionInstructorResponse' style="margin-top:25px; margin-bottom:-3px;">
-                        <div class='submissionResponseFrom'>Instructor Comment</div>
+                          <div class='submissionInstructorResponse' style="margin-top:25px; margin-bottom:-3px;">
+                            <div class='submissionResponseFrom'>Instructor Comment</div>
                             <%= nested_form_for [@course, @assignment, eval.question, response]  do |f| %>
                                 <%= f.text_area :instructor_response, class: 'submissionTextArea fl'  %>
                                 <%= f.submit "Reply", class: 'submissionTextAreaReply fr' %>
                             <% end %>
-                        </div>
-                       <% elsif response.instructor_response %>
-                          <div class='submissionInstructorResponse' style="margin-top:25px; margin-bottom:-3px;">
+                          </div>
+                      <% elsif response.instructor_response %>
                           <div class='submissionResponseFrom'>Instructor Comment</div>
-                                <%= response.instructor_response %>
-                         </div>
-                       <% end %> <!-- End Instructor Response -->
+                          <%= response.instructor_response %>
+                      <% end %> <!-- End Instructor Response -->
                     </div>
                 <% end %>
             <% end %>
           </div> <!-- end submissionQuestionBox -->
       <% end %>
-  <% end %> <!-- END this user is either instructor or submitter -->
+  <% end %> <!-- End this user is either instructor or submitter -->
 
-  </div>
+</div>
 
-  </div>
-  </div>
+</div>
+</div>
 
-  <script>
-      function add_written_response(question_id) {
-          $('#awr_q_'+question_id).hide();
-          $('#q_response_'+question_id).css('display', 'inline-block');
-      }
-  </script>
+<script>
+    function add_written_response(question_id) {
+        $('#awr_q_'+question_id).hide();
+        $('#q_response_'+question_id).css('display', 'inline-block');
+    }
+</script>

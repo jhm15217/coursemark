@@ -26,7 +26,7 @@ class SubmissionsController < ApplicationController
     @submission = Submission.find(params[:id])
     @questions = @submission.assignment.questions.sort_by {|obj| obj.created_at }
     evaluation = @evaluations.where(:user_id => current_user.id)[0]
-    @responses = @evaluations[0].responses.sort_by {|obj| obj.created_at }
+    @responses = @evaluations[0].responses.sort_by {|obj| puts "response created at" + obj.created_at.to_s + "xxx"; obj.created_at }
 
     if params[:finish]
       if evaluation.is_complete?

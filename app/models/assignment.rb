@@ -115,8 +115,7 @@ class Assignment < ActiveRecord::Base
   end
 
   # get /assignments/1/export
-  def export
-    @students = Course.find(course_id).get_students_for_assignment.sort_by { |s| s.first_name }.sort_by { |s| s.last_name }.sort_by{|s| s.pseudo ? 0 : 1}
+  def export(students)
     header_row = ["Name", "Total Points", "Total Possible Points", "Percentage"]
     questions.each { |question|
       header_row << question.question_text
@@ -130,7 +129,7 @@ class Assignment < ActiveRecord::Base
 
     return CSV.generate do |csv|
       csv << header_row
-      @students.each do |student|
+      students.each do |student|
         submission = submissions.select { |sub| sub.user.id == student.submitting_id(self) }.first
         if submission then
           if !submission.percentage.blank? then
