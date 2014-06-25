@@ -76,7 +76,7 @@ class Submission < ActiveRecord::Base
 
   def create_and_save_evaluations
   	# if reviews_required has since become infeasible
-  	while ((self.assignment.course.get_students.length - 1) < self.assignment.reviews_required)
+  	while ((self.assignment.course.get_real_students.length - 1) < self.assignment.reviews_required)
   		self.assignment.reviews_required = self.assignment.reviews_required - 1
   		self.assignment.save!
   	end
@@ -84,7 +84,7 @@ class Submission < ActiveRecord::Base
   	# only run if the number of evaluations isn't the number required
   	if self.evaluations.length != self.assignment.reviews_required
 	  	self.evaluations.delete_all
-	  	courseStudents = self.assignment.course.get_students.without_user(self.user)
+	  	courseStudents = self.assignment.course.get_real_students.select{|s| s.submitting_id(assignment) != self.user_id }
 	  	evaluations = self.assignment.evaluations
 	  	evaluationCounts = Hash.new
 	  	# create hashmap that maps student id's to the number
@@ -126,4 +126,10 @@ class Submission < ActiveRecord::Base
 	  	end while evaluationsLeft > 0
   	end
   end
+
+  def get_responses_for_question(question)
+    responses.select{|resp| resp.question == question }
+  end
+
+
 end

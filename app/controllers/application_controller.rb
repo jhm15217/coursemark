@@ -43,7 +43,13 @@ class ApplicationController < ActionController::Base
   end
 
   def get_submission_for_assignment(assignment)
-    @submission = Submission.where(:assignment_id => assignment.id, :user_id => current_user.id)
+    # return current_user.submitting_user(assignment).submissions.first!
+    memberships = assignment.memberships.select{|m| m.user_id == current_user.id}
+    if memberships.length == 0
+      @submission = Submission.where(:assignment_id => assignment.id, :user_id => current_user.id)
+    else # This is a team assignment
+      @submission = Submission.where(:assignment_id => assignment.id, :user_id => memberships.first.pseudo_user_id )
+    end
     return @submission[0]
   end
 
@@ -51,7 +57,32 @@ class ApplicationController < ActionController::Base
     redirect_to root_url
   end
 
+  def submitting_user(assignment)
+    User.find(current_user.submitting_id(assignment))
+  end
+
+  def iff(a,b)
+    a ? b : !b
+  end
+
+  def compare_users(a,b)
+    !iff(a.pseudo,b.pseudo) ? (a.pseudo ? -1 : 1) :
+        a.last_name != b.last_name ? a.last_name <=> b.last_name :
+            a.first_name != b.first_name ? a.first_name <=> b.first_name :
+                0
+  end
+
+  def sorted(users)
+    users.sort { |a,b| compare_users(a,b) }
+  end
+
+  def sorted_registrations(r)
+    r.sort { |a,b|
+      !iff(a.instructor, b.instructor)  ? (a.instructor ? -1 : 1) :  compare_users(a.user, b.user) }
+  end
+
   private
+
   def current_user_session
     return @current_user_session if defined?(@current_user_session)
     @current_user_session = UserSession.find

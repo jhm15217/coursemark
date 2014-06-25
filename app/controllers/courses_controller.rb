@@ -13,7 +13,7 @@ class CoursesController < ApplicationController
     # new course page if there are none
 
     if @courses.length > 0
-      @URL = @courses.first
+      @URL = @courses.last
     else
       @URL = registrations_path
     end
