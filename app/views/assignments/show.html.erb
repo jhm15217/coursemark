@@ -11,14 +11,12 @@
     <div class="checkPoint <%= if (@submission.instructor_approved) && (@assignment.reviews_required > 0) then 'completed' end %>">Grade approved</div>
 </div>
 
-  <% if @submission.created_at %>
-    <div class="edit_submission afterDeadline">
-    <a href='<%= @submission.attachment.url %>' style="color:#343F53;">View Uploaded Submission</a>
-    </div>
-<% end %>
-
 <% if (Time.zone.now < @assignment.submission_due) %>
   <%= render 'submission' %>
+<% else %>
+  <div class="edit_submission afterDeadline">
+    <a href='<%= @submission.attachment.url %>' style="color:#343F53;">View Uploaded Submission</a>
+  </div>
 <% end %>
 
 <div class="clearfix"></div>
