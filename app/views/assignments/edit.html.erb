@@ -4,10 +4,10 @@
 
 <div class="assignmentStatus">
 	<h3>Assignment Progress</h3>
-	<div class="checkPoint <%= if @assignment.questions.length > 0 then 'completed' end %>">Complete Rubric</div>
-	<div class="checkPoint <%= if (!@assignment.draft) then 'completed' end %>">Publish Assignment</div>
-	<div class="checkPoint <%= if (!@assignment.draft) && (Time.zone.now > @assignment.submission_due) then 'completed' end %>">Submission Deadline</div>
+	<div class="checkPoint <%= if @assignment.questions.length > 0 then 'completed' end %>">Rubric Entered</div>
+	<div class="checkPoint <%= if (!@assignment.draft) then 'completed' end %>">Assignment Published</div>
+	<div class="checkPoint <%= if (!@assignment.draft) && (Time.zone.now > @assignment.submission_due) then 'completed' end %>">Submission Deadline Passed</div>
 	<div class="checkPoint <%= if (!@assignment.draft) && (Time.zone.now > @assignment.submission_due) && (@assignment.reviews_required > 0) then 'completed' end %>">Peer Reviews Assigned</div>
-	<div class="checkPoint <%= if (!@assignment.draft) && (Time.zone.now > @assignment.review_due) && (@assignment.reviews_required > 0)  then 'completed' end %>">Peer Review Deadline</div>
-	<div class="checkPoint <%= if (!@assignment.draft) && (@assignment.allGradesApproved?) && (@assignment.reviews_required > 0) then 'completed' end %>">Approve Grades</div>
+	<div class="checkPoint <%= if (!@assignment.draft) && (Time.zone.now > @assignment.review_due) && (@assignment.reviews_required > 0)  then 'completed' end %>">Review Deadline Passed</div>
+	<div class="checkPoint <%= if (!@assignment.draft) && (@assignment.allGradesApproved?) && (@assignment.reviews_required > 0) then 'completed' end %>">Assignment Complete</div>
 </div>

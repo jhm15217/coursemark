@@ -41,7 +41,7 @@
       <div class="clearfix"></div>
       <%= f.submit %>
       <% if @assignment.draft %>
-          <%= f.submit name: 'publish', value: 'Publish Assignment', data: { confirm: 'Are you sure you wish to publish this assignment?' }, :style => 'margin-right: 0px !important' %>
+          <%= f.submit name: 'publish', value: 'Publish Assignment', :style => 'margin-right: 0px !important' %>
       <% end %>
     </div>
     <div class="clearfix"></div>
