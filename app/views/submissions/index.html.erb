@@ -27,7 +27,7 @@
         <% else %>
             <td>--</td>
             <td>--</td>
-            <td><%= @assignment.evaluations.forUser(student).select {|evaluation| evaluation.finished?}.length %> / <%= @assignment.evaluations.forUser(student).length %></td>
+            <td><%= student.pseudo ? "--" : (@assignment.evaluations.forUser(student).select {|evaluation| evaluation.finished?}.length.to_s + "/" + @assignment.evaluations.forUser(student).length.to_s) %></td>
             <td>--</td>
             <td></td>
         <% end %>
