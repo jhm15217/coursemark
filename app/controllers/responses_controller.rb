@@ -66,11 +66,12 @@ class ResponsesController < ApplicationController
       raise CanCan::AccessDenied.new("Not authorized!")
     end
 
+    @URL = course_assignment_path(@course, @assignment)
+
     if (current_user.instructor?(@course))
       @URL = course_assignment_submission_path(@course, @assignment, @response.evaluation.submission)
     elsif (submitter_id == @response.evaluation.submission.user_id) and params[:response]
       @response.student_response =  params[:response][:student_response]
-      @URL = course_assignment_path(@course, @assignment)
     end
 
     respond_to do |format|
