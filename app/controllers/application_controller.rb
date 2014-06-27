@@ -76,11 +76,6 @@ class ApplicationController < ActionController::Base
     users.sort { |a,b| compare_users(a,b) }
   end
 
-  def sorted_registrations(r)
-    r.sort { |a,b|
-      !iff(a.instructor, b.instructor)  ? (a.instructor ? -1 : 1) :  compare_users(a.user, b.user) }
-  end
-
   private
 
   def current_user_session

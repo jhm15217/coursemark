@@ -8,7 +8,7 @@
     <div class="checkPoint <%= if (Time.zone.now > @assignment.submission_due) then 'completed' end %>">Assignment due on <%= @assignment.submission_due.to_s(:pretty) %></div>
     <div class="checkPoint <%= if (@assignment.manual_assignment && @assignment.reviewers_assigned) || ((Time.zone.now > @assignment.submission_due) && (@assignment.reviews_required > 0) && !@assignment.manual_assignment) then 'completed' end %>">Peer reviews assigned</div>
     <div class="checkPoint <%= if (Time.zone.now > @assignment.review_due) && (@assignment.reviews_required > 0)  then 'completed' end %>">Peer reviews due on <%= @assignment.review_due.to_s(:pretty) %></div>
-    <div class="checkPoint <%= if (@submission.instructor_approved) && (@assignment.reviews_required > 0) then 'completed' end %>">Grade approved</div>
+    <div class="checkPoint <%= if (@submission.instructor_approved) && (@assignment.reviews_required > 0) then 'completed' end %>">Reviewing Completed</div>
 </div>
 
 <% if (Time.zone.now < @assignment.submission_due) %>
@@ -63,7 +63,7 @@
 
             <% if response.instructor_response then %>
               <div class='submissionStudentResponse'>
-                <div class='submissionResponseFrom' style="margin-top: 25px;">Instructor's Reply</div>
+                <div class='submissionResponseFrom' style="margin-top: 25px;">Instructor's Comment</div>
                 <%= response.instructor_response %>
               </div>
             <% end %>

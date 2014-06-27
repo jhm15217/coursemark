@@ -21,11 +21,11 @@ class User < ActiveRecord::Base
 
   # Relationships
   has_many :evaluations
-  has_many :submissions
-  has_many :registrations
+  has_many :submissions, dependent: :destroy
+  has_many :registrations, dependent: :destroy
   has_many :courses, :through => :registrations
   has_many :assignments, :through => :courses
-  has_many :memberships
+  has_many :memberships, dependent: :destroy
 
   # Get all users except the given user
   scope :without_user, ->(user) {where("user_id != ?", user.id)}

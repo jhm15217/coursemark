@@ -3,7 +3,7 @@ class Course < ActiveRecord::Base
   attr_accessible :name, :course_code
 
   # Relationships
-  has_many :registrations
+  has_many :registrations, dependent: :destroy
   has_many :assignments
   has_many :users, :through => :registrations
 
