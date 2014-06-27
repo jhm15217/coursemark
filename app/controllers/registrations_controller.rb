@@ -15,23 +15,23 @@ class RegistrationsController < ApplicationController
   # GET /registrations
   # GET /registrations.json
   def index
-    if params[:course] && current_user.instructor?(Course.find(params[:course]))
-      @course = Course.find(params[:course])
+      @course = params[:course] ? Course.find(params[:course]) :  @course = current_user.courses.last
       @assignments = @course.assignments
-      @registrations = @course.registrations.where(:active => true).select{|r| !r.user.pseudo}.sort_by{|r| r.user.first_name }.sort_by{|r| r.user.last_name }.sort_by{ |r| r.instructor ? 0 : 1 }
+      @registrations = sorted_registrations(@course.registrations.where(:active => true))
       @template = "registrations/roster"
-    else
-      @registrations = current_user.registrations.where(:active => true).sort_by{ |r| r.instructor ? 0 : 1 }
-      @course = current_user.courses.first
-      @assignments = @course.assignments
-      @template = "registrations/index"
-    end
 
     respond_to do |format|
       format.html { render :template => @template } # index.html.erb
       format.json { render json: @registrations }
     end
   end
+
+  def sorted_registrations(r)
+    r.sort { |a,b|
+      !iff(a.instructor, b.instructor)  ? (a.instructor ? -1 : 1) :  compare_users(a.user, b.user) }
+  end
+
+
 
   # GET /registrations/1
   # GET /registrations/1.json

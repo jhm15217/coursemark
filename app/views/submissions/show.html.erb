@@ -115,8 +115,12 @@
                         <% if current_user.instructor?(@course) %>
                             <%= response.evaluation.user.name %>
                         <% elsif current_user.submitting_id(@assignment) != @submission.user.id %>
-                            Your Review
-                        <% else %>
+                            <% if current_user.id == response.evaluation.user.id %>
+                                Your Review
+                            <% else %>
+                                Other's Review
+                            <% end %>
+                        <% else %>  <!-- current_user is the submitter -->
                             Reviewer <%= index + 1 %> submission version <% response.created_at.to_s %>xxx
                         <% end %>
                       </div>

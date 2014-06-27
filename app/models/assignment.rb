@@ -6,10 +6,10 @@ class Assignment < ActiveRecord::Base
 
   # Relationships
   belongs_to :course
-  has_many :submissions
+  has_many :submissions, dependent: :destroy
   has_many :questions
   has_many :evaluations, :through => :submissions
-  has_many :memberships
+  has_many :memberships, dependent: :destroy
 
   scope :published, -> { where(draft: false) }
 

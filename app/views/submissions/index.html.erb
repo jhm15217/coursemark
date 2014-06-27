@@ -18,7 +18,7 @@
         <% if submission %>
             <td><%= submission ? submission.created_at.to_s(:pretty) : '--' %></td>
             <td><%= @assignment.evaluations.forSubmission(submission).select {|evaluation| evaluation.finished?}.length %> / <%= @assignment.evaluations.forSubmission(submission).length %></td>
-            <td><%= @assignment.evaluations.forUser(student).select {|evaluation| evaluation.finished?}.length %> / <%= @assignment.evaluations.forUser(student).length %></td>
+            <td><%= student.pseudo ? "--" : (@assignment.evaluations.forUser(student).select {|evaluation| evaluation.finished?}.length.to_s + " / " +  @assignment.evaluations.forUser(student).length).to_s %></td>
             <td>
               <%= if !submission.percentage.blank? then submission.percentage.round.to_s + '%' else "--" end %>
               <% if submission.instructor_approved %><div class="checkmark"></div><% end %>

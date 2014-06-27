@@ -52,7 +52,7 @@
                     <li><%= link_to "+ New Assignment", new_course_assignment_path(@course) %></li>
                 <% end %>
 
-            	<% @assignments.each do |assignment| %>
+            	<% @assignments.sort_by{|a| a.created_at }.each do |assignment| %>
                     <li class="<%= 'active' if @assignment && @assignment.id == assignment.id %>">
                     	<%= link_to course_assignment_path(@course, assignment) do %>
                             <div class="name"><%= assignment.name %></div>

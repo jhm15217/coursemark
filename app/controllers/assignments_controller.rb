@@ -168,13 +168,13 @@ class AssignmentsController < ApplicationController
     if params['publish']
       @assignment.draft = false
       if @assignment.questions.length == 0
-        flash[:error] = 'You must first create a rubric. '
+        flash[:error] = 'You must first create a rubric.'
         @assignment.draft = true
       end
       max_team_size = 1
       if @assignment.team  or params[:assignment][:team] and  params[:assignment][:team] == "1"
         unless @course.get_real_students.all?{|student| @assignment.memberships.sum{|membership| membership.user_id == student.id ? 1 : 0} == 1}
-          flash[:error] << "Each student must be a member of one team. "
+          flash[:error] = "Each student must be a member of one team."
           @assignment.draft = true
         end
         #Figure out max team size
@@ -184,7 +184,7 @@ class AssignmentsController < ApplicationController
       end
       # if reviews_required has since become infeasible
       if @course.get_real_students.length - max_team_size < @assignment.reviews_required
-        flash[:error] << "At most " + (@course.get_real_students.length - max_team_size).to_s + " reviews can be required. "
+        flash[:error] = "At most " + (@course.get_real_students.length - max_team_size).to_s + " reviews can be required."
         @assignment.draft = true
       end
 

@@ -4,7 +4,7 @@ class ReviewsController < ApplicationController
   def index
   	authorize! :manage, :reviews
   	
-    @students = @assignment.get_students_for_assignment
+    @students = sorted(@assignment.get_students_for_assignment)
 
   	respond_to do |format|
       format.html # index.html.erb
