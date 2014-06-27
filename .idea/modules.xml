@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/Coursemark.iml" filepath="$PROJECT_DIR$/.idea/Coursemark.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/Coursemark-transparency.iml" filepath="$PROJECT_DIR$/.idea/Coursemark-transparency.iml" />
     </modules>
   </component>
 </project>
