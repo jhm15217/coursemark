@@ -115,6 +115,8 @@ class Submission < ActiveRecord::Base
 
 				evaluationsLeft -= 1
 	  		end	
+	  		# Increase the review threshold incase we ran out of students and need more
+	 			reviewThreshold += 1
 	  	end while evaluationsLeft > 0
   	end
   end
