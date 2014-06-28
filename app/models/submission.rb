@@ -83,11 +83,10 @@ class Submission < ActiveRecord::Base
 	  	evaluationCounts = Hash.new
 	  	# create hashmap that maps student id's to the number
 	  	# of evaluations they have for this assignment
-	  	puts "courseStudents: " + courseStudents.inspect
       courseStudents.map { |student|
 	  		evaluationCounts[student.id] = evaluations.forUser(student).count		
 	  	}
-	  	reviewThreshold = evaluationCounts.values.min  || 0
+	  	reviewThreshold = evaluationCounts.values.min
 	  	evaluationsLeft = self.assignment.reviews_required
 	  	evaluatorPool = []
 	  	begin
