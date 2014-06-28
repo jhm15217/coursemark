@@ -18,7 +18,7 @@ class Course < ActiveRecord::Base
   end
 
   def get_real_students
-    get_students.where("pseudo IS NULL")
+    get_students.select{|s| !s.pseudo }
   end
 
   def get_instructors
