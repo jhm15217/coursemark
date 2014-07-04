@@ -15,7 +15,7 @@ class Ability
     can :confirm_email, User
     can :manage, User do |u|
       if not user
-        puts "No user vs. ", u.id
+        puts "No user vs. " + u.inspect
       end
       if user && u.id && user.id
         u.id == user.id

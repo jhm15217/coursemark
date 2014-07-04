@@ -19,7 +19,7 @@ group :test do
 	gem 'shoulda-matchers', '2.5.0'
 	gem 'factory_girl_rails', '4.4.1'
 	gem 'mocha', '1.0.0'
-	gem 'cucumber-rails', '1.4.0', :require => false
+	gem 'cucumber-rails', :require => false
 	gem 'gherkin', '2.12.2'
 	gem 'capybara', '2.2.1'
 	gem 'database_cleaner', '1.2.0'
@@ -27,6 +27,10 @@ group :test do
 	gem 'email_spec', '1.5.0'
 	gem 'simplecov', '0.8.2'
 	gem 'tconsole', '1.2.8'
+  gem 'rspec-rails'
+  gem 'rb-fsevent', '0.9.1', :require => false
+  gem 'growl', '1.0.3'
+  gem 'spork', '0.9.0'
 end
 
 # Gems used only in development
