@@ -131,7 +131,6 @@ ActiveRecord::Schema.define(:version => 20140704031308) do
     t.string   "confirmation_token"
     t.datetime "password_reset_sent_at"
     t.boolean  "pseudo"
-    t.string   "password_digest"
   end
 
 end
