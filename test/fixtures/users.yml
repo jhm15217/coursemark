@@ -1,15 +1,15 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
 one:
-  first_name: MyString
-  last_name: MyString
-  email: MyString
-  password: MyString
-  password_digest: MyString
+  first_name: Student
+  last_name: One
+  email: one@email.com
+  crypted_password: 400$8$39$ab301353f6213130$c64eb648298dd8fcbdf4efa575881d16c68adbec1a6a6f7cec94a97d28b29db2
+  password_salt: Gp4tpO329SKgeHTvepg
 
 two:
-  first_name: MyString
-  last_name: MyString
-  email: MyString
-  password: MyString
-  password_digest: MyString
+  first_name: Student
+  last_name: Two
+  email: two@email.com
+  crypted_password: 400$8$39$ab301353f6213130$c64eb648298dd8fcbdf4efa575881d16c68adbec1a6a6f7cec94a97d28b29db2
+  password_salt: Gp4tpO329SKgeHTvepg

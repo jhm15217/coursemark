@@ -1,6 +1,14 @@
 require 'test_helper'
 
 class AssignmentTest < ActiveSupport::TestCase
+  def setup
+    @assignment = assignments(:one)
+  end
+
+  def teardown
+    @assignment = nil
+  end
+
   # matchers
   should belong_to(:course)
 
@@ -26,6 +34,7 @@ class AssignmentTest < ActiveSupport::TestCase
   should_not allow_value(-1).for(:reviews_required)
   should_not allow_value("five").for(:reviews_required)
 
+  puts "running draft tests"
   # tests for draft
   should allow_value(true).for(:draft)
   should allow_value(false).for(:draft)
