@@ -339,7 +339,7 @@ a {
     font-weight: normal;
     font-size: 20pt;
     float: left;
-    width: 380px;
+    width: 200px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -409,7 +409,7 @@ a {
     border-bottom: 1px solid #DFDFDF;
     font-size: 10.5pt;
 }
-
+                                                   a
 #backBar a, #header a {
     color: #343F53;
     text-decoration: none;
@@ -428,6 +428,7 @@ a {
 .edit_assignment #error_explanation,
 .edit_assignment .error {
     color: #c0392b;
+    background: #d3d3d3;
 }
 
 .edit_assignment .error {

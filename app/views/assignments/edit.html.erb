@@ -4,6 +4,7 @@
 
 <div class="assignmentStatus">
 	<h3>Assignment Progress</h3>
+    <% @assignment = Assignment.find(@assignment.id) %> <!-- in case a validation error -->
 	<div class="checkPoint <%= if @assignment.questions.length > 0 then 'completed' end %>">Rubric Entered</div>
 	<div class="checkPoint <%= if (!@assignment.draft) then 'completed' end %>">Assignment Published</div>
 	<div class="checkPoint <%= if (!@assignment.draft) && (Time.zone.now > @assignment.submission_due) then 'completed' end %>">Submission Deadline Passed</div>
