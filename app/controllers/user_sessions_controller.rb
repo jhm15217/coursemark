@@ -1,6 +1,6 @@
 class UserSessionsController < ApplicationController
 	skip_before_filter :require_login
-	load_and_authorize_resource
+	load_and_authorize_resource except: :login_student
 	
 	def new
 		@user_session = UserSession.new
@@ -20,9 +20,13 @@ class UserSessionsController < ApplicationController
 		end  
 	end 
 
-	def destroy  
+	def destroy
+    $PUPPET = nil
 		@user_session = UserSession.find  
-		@user_session.destroy  
+		if @user_session
+      @user_session.destroy
+    end
 		redirect_to root_url  
-	end   
+  end
+
 end
