@@ -76,6 +76,11 @@ class ApplicationController < ActionController::Base
     users.sort { |a,b| compare_users(a,b) }
   end
 
+  def login_student
+    $PUPPET = User.find(params[:student])
+    redirect_to root_url
+  end
+
   private
 
   def current_user_session
@@ -84,7 +89,8 @@ class ApplicationController < ActionController::Base
   end
 
   def current_user
-    @current_user = current_user_session && current_user_session.record
+    @current_user = $PUPPET || current_user_session && current_user_session.record
+    @current_user
   end
 
   def require_login
@@ -92,4 +98,5 @@ class ApplicationController < ActionController::Base
       redirect_to login_url
     end
   end
+
 end
