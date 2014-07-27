@@ -12,3 +12,17 @@
 	<div class="checkPoint <%= if (!@assignment.draft) && (Time.zone.now > @assignment.review_due) && (@assignment.reviews_required > 0)  then 'completed' end %>">Review Deadline Passed</div>
 	<div class="checkPoint <%= if (!@assignment.draft) && (@assignment.allGradesApproved?) && (@assignment.reviews_required > 0) then 'completed' end %>">Assignment Reviewing Complete</div>
 </div>
+
+<% if @assignment.manual_assignment ? @assignment.reviewers_assigned : true %>
+    <% if (Time.zone.now > @assignment.submission_due)  %>
+        <div id="reviewing_tasks">
+          <% @reviewing_tasks.each_with_index do |task, index| %>
+              <%= link_to course_assignment_submission_path(@course, @assignment, task.submission) do %>
+                  <div class="reviewing_task highlighted" > <%= ((task.finished? or Time.zone.now > @assignment.review_due) ? 'See' : 'Complete') + ' Review ' + (index + 1).to_s %></div>
+              <% end %>
+          <% end %>
+        </div>
+    <% end %>
+<% end %>
+
+

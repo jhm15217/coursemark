@@ -23,7 +23,8 @@
               <%= if !submission.percentage.blank? then submission.percentage.round.to_s + '%' else "--" end %>
               <% if submission.instructor_approved %><div class="checkmark"></div><% end %>
             </td>
-            <td><%= link_to 'View Reviews', [@course, @assignment, submission] %></td>
+            <td><a href=<%= "/courses/#{@course.id}/assignments/#{@assignment.id}/submissions/#{submission.id}?instructor=true" %>>View Reviews</a>
+            </td>
         <% else %>
             <td>--</td>
             <td>--</td>

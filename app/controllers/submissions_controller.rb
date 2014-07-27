@@ -12,7 +12,7 @@ class SubmissionsController < ApplicationController
     end
 
     @submissions = @assignment.submissions
-    @students =  sorted(@assignment.get_students_for_assignment)  # @assignment version culls pseudo_users not used in this assignment
+    @students =  sorted(@assignment.get_participants_in_assignment)  # @assignment version culls pseudo_users not used in this assignment
 
     respond_to do |format|
       format.html # index.html.erb
@@ -26,22 +26,41 @@ class SubmissionsController < ApplicationController
     @submission = Submission.find(params[:id])
     @questions = @submission.assignment.questions.sort_by {|obj| obj.created_at }
     evaluation = @evaluations.where(:user_id => current_user.id)[0]
-    @responses = @evaluations[0].responses.sort_by {|obj| puts "response created at" + obj.created_at.to_s + "xxx"; obj.created_at }
+    @responses = @evaluations[0].responses.sort_by {|obj| obj.created_at }
 
-    if params[:finish]
-      if evaluation.is_complete?
-        evaluation.finished = true
-        evaluation.save!
-        redirect_to  course_assignment_path ({id: params[:assignment_id]} ) and return
-      else
-        flash[:error] = "Please answer all the questions."
-        redirect_to :back and return
-        return
+    if params[:instructor]
+      respond_to do |format|
+        format.html { render :view, :layout => 'no_sidebar' }
+        format.json { render json: @submission }
+      end
+    else
+      if params[:finish]
+        if evaluation.is_complete?
+          evaluation.finished = true
+          evaluation.save!
+          redirect_to  course_assignment_path ({id: params[:assignment_id]} ) and return
+        else
+          flash[:error] = "Please answer all the questions."
+          redirect_to :back and return
+        end
+      end
+      respond_to do |format|
+        format.html { render :layout => 'no_sidebar' } # show.html.erb
+        format.json { render json: @submission }
       end
     end
+  end
+
+    # GET /submissions/1
+  # GET /submissions/1.json
+  def view_reviews
+    @submission = Submission.find(params[:id])
+    @questions = @submission.assignment.questions.sort_by {|obj| obj.created_at }
+    evaluation = @evaluations.where(:user_id => current_user.id)[0]
+    @responses = @evaluations[0].responses.sort_by {|obj| obj.created_at }
 
     respond_to do |format|
-      format.html { render :layout => 'no_sidebar' } # show.html.erb
+      format.html { render view, :layout => 'no_sidebar' } # show.html.erb
       format.json { render json: @submission }
     end
   end

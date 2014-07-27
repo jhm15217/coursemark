@@ -1,6 +1,6 @@
 class Assignment < ActiveRecord::Base
   require 'csv'
-  attr_accessible :course_id, :draft, :manual_assignment, :reviewers_assigned, :review_due, :reviews_required, :submission_due, :name, :submission_due_date, :submission_due_time, :review_due_date, :review_due_time, :team
+  attr_accessible :course_id, :draft, :manual_assignment, :reviewers_assigned, :review_due, :reviews_required, :instructor_reviews_required, :submission_due, :name, :submission_due_date, :submission_due_time, :review_due_date, :review_due_time, :team
   after_update :update_evaluations, :if => :reviews_required_changed?
   before_validation :make_dates
 
@@ -106,8 +106,8 @@ class Assignment < ActiveRecord::Base
     end
   end
 
-  def get_students_for_assignment
-    self.course.get_students.select{|s| !s.pseudo or self.memberships.select{|m| m.pseudo_user_id == s.id}.length > 0 }
+  def get_participants_in_assignment
+    self.course.get_people.select{|s| !s.pseudo or self.memberships.select{|m| m.pseudo_user_id == s.id}.length > 0 }
   end
 
   def reviews_for_user_to_complete(user)

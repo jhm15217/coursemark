@@ -1,4 +1,4 @@
-<!-- I believe this is reached only via the Review button for a reviewer or the "See Review" for an instructor -->
+<!-- This is reached via the Complete or View Review button for a reviewer -->
 <div id='submissionHeader'>
   <small style='display:block; float:left; margin-top:-18px; width:100%;'>
     <% if current_user.instructor?(@course) %>
@@ -27,41 +27,15 @@
 
 
 <div id='submissionBoxesWrapper'>
-  <!--     GRADE -->
-  <% if current_user.instructor?(@course) %>
-      <div class='submissionGradeBox'>
-        <% if @submission.instructor_approved then %>
-            <!--     GRADE IS APPROVED -->
-            <span class="grade"><%= unless @submission.percentage.nil? then @submission.percentage.round.to_s + "%" end %></span>
-            <%= link_to course_assignment_submission_path(@course, @assignment, @submission, :submission => { :instructor_approved => false}), :method => :put do %>
-                <div class='button fr' style="margin-right: 0px;">Unapprove Grade</div>
-            <% end %>
-        <% else  %>
-            <!--     GRADE IS NOT APPROVED -->
-            <span class="grade"><%= unless @submission.percentage.nil? then @submission.percentage.round.to_s + "%" end  %></span>
-            <%= link_to course_assignment_submission_path(@course, @assignment, @submission, :submission => { :instructor_approved => true}), :method => :put do %>
-                <div class='button fr' style="margin-right: 0px;">Approve Grade</div>
-            <% end %>
-        <% end %>
-      </div>
-      <% if (Time.zone.now >= @assignment.review_due) && @submission.percentage.nil?%>
-          <div class='submissionGradeBox warning'>
-            This student's submission could not be automatically graded. Their submission did not receive the required number of complete reviews.
-          </div>
-      <% end %>
-  <% end %>
-
-  <% if !(current_user.submitting_id(@assignment) == @submission.user.id  or
-          current_user.instructor?(@course) or
-          @submission.evaluations.select{|e| e.user_id == current_user.id}.all?{|e| e.finished } or
-          Time.zone.now > @assignment.review_due) %>
+  <% if !@submission.evaluations.select{|e| e.user_id == current_user.id}.all?{|e| e.finished } and
+        Time.zone.now < @assignment.review_due %>
       <!-- This user is a reviewer who hasn't finished but has time  -->
       <% @questions.each do |question| %>
           <div class='submissionQuestionBox' id='peer_review'>
             <h2><%= question.question_text %></h2>
             <div class='possiblePoints'><%= question.question_weight %> Points</div>
             <%# response_for_question_by_peer(@current_user, @submission, question).first %>
-            <% question.responses.each do |response| %>
+            <% question.responses.sort_by{|r| r.created_at}.each do |response| %>
 
                 <% if response.evaluation.user_id == current_user.id && response.evaluation.submission_id == @submission.id %>
                     <%= nested_form_for [@course, @assignment, question, response], :remote => true  do |f| %>
@@ -100,14 +74,14 @@
           <div id='submitFormsButton' class='button'>Finish Peer Review</div>
       <% end %>
 
-  <% else %> <!-- the user is either an instructor or a reviewer who is finished or out of time, not (I think) a submitter-->
+  <% else %> <!-- the user is a reviewer who is finished or out of time -->
 
       <!--     EVALUATIONS -->
-      <% @responses.each do |eval| %>
+      <% @responses.each do |resp| %>
           <div class='submissionQuestionBox'>
-            <h2><%= eval.question.question_text %></h2>
-            <div class='possiblePoints'><%= eval.question.question_weight %> Points</div>
-            <% @submission.get_responses_for_question(eval.question).each_with_index do |response, index| %>
+            <h2><%= resp.question.question_text %></h2>
+            <div class='possiblePoints'><%= resp.question.question_weight %> Points</div>
+            <% @submission.get_responses_for_question(resp.question).each_with_index do |response, index| %>
                 <% if response.evaluation.finished? %>
                     <div class='submissionBox'>
                       <div class='submissionResponsePoints <%= gradeColorFullScale(prettifyFloat(((100 / (response.question.scales.length - 1.0) * response.scale.value)))) %>'><%= prettifyFloat(((100 / (response.question.scales.length - 1.0) * response.scale.value))).to_s + '%' %></div>
@@ -130,7 +104,7 @@
                           <div class='submissionStudentResponse'>
                             <div class='submissionResponseFrom' style="margin-top: 30px;">
                               <% if current_user.instructor?(@course) %>
-                                  <%= @submission.user.first_name %>'s Reply
+                                  <%= @submission.user.first_name %>'s Rebuttal
                               <% elsif current_user.submitting_id(@assignment) == @submission.user.id then %>   <!-- probably never true -->
                                   Your Rebuttal (Send mail to james.morris@cmu.edu if you see this.)
                               <% else %>
@@ -143,7 +117,7 @@
                       <% if current_user.instructor?(@course) and !@submission.instructor_approved? %>
                           <div class='submissionInstructorResponse' style="margin-top:25px; margin-bottom:-3px;">
                             <div class='submissionResponseFrom'>Instructor Comment</div>
-                            <%= nested_form_for [@course, @assignment, eval.question, response]  do |f| %>
+                            <%= nested_form_for [@course, @assignment, resp.question, response]  do |f| %>
                                 <%= f.text_area :instructor_response, class: 'submissionTextArea fl'  %>
                                 <%= f.submit "Reply", class: 'submissionTextAreaReply fr' %>
                             <% end %>
@@ -157,7 +131,7 @@
             <% end %>
           </div> <!-- end submissionQuestionBox -->
       <% end %>
-  <% end %> <!-- End this user is either instructor or submitter -->
+  <% end %> <!-- End this user is either instructor or reviewer -->
 
 </div>
 
