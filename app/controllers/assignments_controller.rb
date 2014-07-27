@@ -98,6 +98,8 @@ class AssignmentsController < ApplicationController
 
   # GET /assignments/1/edit
   def edit
+    @reviewing_tasks = @assignment.evaluations.forUser(current_user).sort_by{|e| e.created_at}
+
   end
 
   # POST /assignments

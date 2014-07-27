@@ -33,7 +33,8 @@
         <table class="reviews">
           <tr>
             <th>Name</th>
-            <% @assignment.reviews_required.times do |n| %>
+            <% reviews_required =  @assignment.reviews_required + @assignment.instructor_reviews_required  %>
+            <% reviews_required.times do |n| %>
                 <th>Reviewer <%= n+1 %></th>
             <% end %>
           </tr>

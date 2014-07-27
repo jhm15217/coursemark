@@ -21,6 +21,10 @@ class Course < ActiveRecord::Base
     get_students.select{|s| !s.pseudo }
   end
 
+  def get_people
+    User.joins(:courses).where("course_id = ?",self.id)
+  end
+
   def get_instructors
   	User.joins(:courses).where("course_id = ?",self.id).where("instructor = 't'")
   end

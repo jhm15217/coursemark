@@ -476,7 +476,8 @@ a {
     margin-left: 7px;
 }
 
-#assignment_reviews_required {
+#assignment_reviews_required,
+#assignment_instructor_reviews_required {
     width: 60px;
 }
 
