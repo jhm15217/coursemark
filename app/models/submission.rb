@@ -80,7 +80,7 @@ class Submission < ActiveRecord::Base
       self.evaluations.delete_all
       create_evaluations(self.assignment.reviews_required,
                          self.assignment.course.get_real_students.select{|s| s.submitting_id(assignment) != self.user_id })
-      create_evaluations(self.assignment.instructor_reviews_required,
+      create_evaluations(self.asssignment.instructor_reviews_required,
                          self.assignment.course.get_instructors)
     end
   end
@@ -109,11 +109,15 @@ class Submission < ActiveRecord::Base
         evaluator = evaluatorPool.pop
         evaluation = Evaluation.new(submission_id: self.id, user_id: evaluator.id)
         evaluation.save!
+
         # create a response for each question of the evaluation
         self.assignment.questions.each { |question|
-          response = Response.new(question_id: question.id, evaluation_id:evaluation.id)
+          response = Response.new(question_id: question.id, evaluation_id:evaluation.i )
+          response.
+          response.d
           response.save!
         }
+
         evaluationsLeft -= 1
       end
       # Increase the review threshold in case we ran out of reviewers and need more

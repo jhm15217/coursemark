@@ -1,7 +1,7 @@
 class Assignment < ActiveRecord::Base
   require 'csv'
   attr_accessible :course_id, :draft, :manual_assignment, :reviewers_assigned, :review_due, :reviews_required, :instructor_reviews_required, :submission_due, :name, :submission_due_date, :submission_due_time, :review_due_date, :review_due_time, :team
-  after_update :update_evaluations, :if => :reviews_required_changed?
+  after_update :update_evaluations, :if => :reviews_required_changed?  or  :instructor_reviews_required_changed?
   before_validation :make_dates
 
   # Relationships
@@ -20,11 +20,16 @@ class Assignment < ActiveRecord::Base
   validates_datetime :review_due, :allow_nil => true, :after => :submission_due, :after_message => "Review deadline must be after submission deadline"
   
   # submission and review due dates can only be changed if they haven't passed
-  validate :submission_deadline_not_passed
-  validate :review_deadline_not_passed
+  # validate :submission_deadline_not_passed
+  # Extending the submission deadline might cause more reviews to be required, and the reviewers might not notice if they
+  #    had completed all they initially had.
+  # validate :review_deadline_not_passed
+  # Extending the review deadline might allow a new review to come in after an instructor had declared the reviews for the
+  #    submission finished.
+
 
   # make sure the number of reviews required is feasible given class size
-  validate :reviews_required_feasible, :unless => :draft
+  validate :reviews_required_feasible
   # only allow changes to reviews_required if we are still taking submissions
   validate :submissions_open, :on => :update, :if => :reviews_required_changed?
 
@@ -183,14 +188,14 @@ class Assignment < ActiveRecord::Base
   def submission_deadline_not_passed
     puts "@assignment: " + @assignment.inspect
     puts "self:" + self.inspect
-    if self.submission_due < Time.now and self.submission_due.to_i != self.submission_due_was.to_i
-      errors.add(:submission_due, "Can't change submission deadline after it has passed")
+    if self.submission_due > Time.now and self.submission_due.to_i != self.submission_due_was.to_i
+      errors.add(:submission_due, "Can't change submission deadline if it has passed")
     end
   end
 
   def review_deadline_not_passed
-    if self.review_due < Time.now and self.review_due.to_i != self.review_due_was.to_i
-      errors.add(:review_due, "Can't change review deadline after it has passed")
+    if self.review_due > Time.now and self.review_due.to_i != self.review_due_was.to_i
+      errors.add(:review_due, "Can't change review deadline if it has passed")
     end
   end
   
@@ -199,14 +204,31 @@ class Assignment < ActiveRecord::Base
   end
 
   def reviews_required_feasible
-    if (self.course.get_students.length - 1) < reviews_required
-      errors.add(:reviews_required, "Too many reviews required for class size.")
+    if draft
+      return true # maybe the assignment is being created before all people enroll
+    end
+    max_team_size = 1
+    if team
+      unless @course.get_real_students.all?{|student| @assignment.memberships.sum{|membership| membership.user_id == student.id ? 1 : 0} == 1}
+        errors.add(:teams_ok, 'Each student must be a member of one team.')
+      end
+      #Figure out max team size
+      team_count = Hash.new(0)
+      self.memberships.each{|membership| team_count[membership.team] += 1}
+      max_team_size = (team_count.values.max or 1)
+    end
+    # if reviews_required has since become infeasible
+    if self.course.get_real_students.length - max_team_size < reviews_required
+      errors.add(:reviews_required, "At most " + (self.course.get_real_students.length - max_team_size).to_s + ' student reviews can be required.')
+    end
+    if self.course.get_instructors.length < instructor_reviews_required
+    errors.add(:reviews_required, "At most " + (self.course.get_instructors.length.to_s + ' instructor reviews can be required.'))
     end
   end
 
   def submissions_open
     if submission_due < Time.now
-      errors.add(:reviews_required, "Can't change number of reviews required after submission deadline has passed.")
+      errors.add(:reviews_required, 'Can\'t change number of reviews required after submission deadline has passed.')
     end
   end
 
