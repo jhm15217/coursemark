@@ -45,9 +45,7 @@
     <div class="actions">
       <div class="clearfix"></div>
       <%= f.submit %>
-      <% if @assignment.draft %>
-          <%= f.submit name: 'publish', value: 'Publish Assignment', :style => 'margin-right: 0px !important' %>
-      <% end %>
+        <%= f.submit name: 'publish', value: (@assignment.draft ? 'Publish' : 'Unpublish') + ' Assignment', :style => 'margin-right: 0px !important' %>
     </div>
     <div class="clearfix"></div>
     <% if @assignment.id %>
