@@ -61,7 +61,7 @@ class AssignmentsController < ApplicationController
 
     respond_to do |format|
       format.html
-      format.json { render json: @assignment }
+      format.json {render json: @assignment }
     end
   end
 
@@ -189,9 +189,11 @@ class AssignmentsController < ApplicationController
     respond_to do |format|
       if @assignment.update_attributes(params[:assignment])
         format.html { redirect_to @URL }
+        format.js {}
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
+        format.js {}
         format.json { render json: @assignment.errors, status: :unprocessable_entity }
       end
     end

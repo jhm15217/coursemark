@@ -23,16 +23,17 @@ function submitForms() {
     $(forms[i]).trigger('submit.rails');
   }
   if (form_error) {
-  	$('#submitFormsButton').html("Save Peer Review - Error please try again")
+  	$('#submitFormsButton').html("Error(s) encountered while saving. Please try again.")
   }
 }
 
 (function(f){function l(g,h){function d(a){if(!e){e=true;c.start&&c.start(a,b)}}function i(a,j){if(e){clearTimeout(k);k=setTimeout(function(){e=false;c.stop&&c.stop(a,b)},j>=0?j:c.delay)}}var c=f.extend({start:null,stop:null,delay:400},h),b=f(g),e=false,k;b.keypress(d);b.keydown(function(a){if(a.keyCode===8||a.keyCode===46)d(a)});b.keyup(i);b.blur(function(a){i(a,0)})}f.fn.typing=function(g){return this.each(function(h,d){l(d,g)})}})(jQuery);
 
   for (var i=0; i<forms.length; i++) {
-    var textarea = $(forms[i]).find('textarea[name="response[peer_review]"]')[0];
+      var textarea = $(forms[i]).find('textarea[name="response[peer_review]"]')[0];
+      var textarea2 = $(forms[i]).find('textarea[name="response[instructor_response]"]')[0];
 
-    // Checkbox change
+      // Checkbox change
     var checkbox = $(forms[i]).find('input[name="response[scale_id]"]').parent().parent();
     checkbox.change(function(){
       console.log('changed radio button');
@@ -49,21 +50,39 @@ function submitForms() {
     
     });
 
-    // Textarea change
+      // Textarea change
       $(textarea).typing({
-        start: function (event, $elem) {
-            $($elem.parent().parent().parent().find('.savedStatus')[0]).html('typing...');
-        },
-        stop: function (event, $elem) {
-            var existingComment = $($elem).val();
+          start: function (event, $elem) {
+              $($elem.parent().parent().parent().find('.savedStatus')[0]).html('typing...');
+          },
+          stop: function (event, $elem) {
+              var existingComment = $($elem).val();
 
-            if (!existingComment) {
-              $($elem).val(' ');
-            }
+              if (!existingComment) {
+                  $($elem).val(' ');
+              }
 
-            $($elem.parent().parent().parent().find('.savedStatus')[0]).html('saving...');
-            $($elem.parent().parent()[0]).trigger('submit.rails');
-        },
-        delay: 1000
+              $($elem.parent().parent().parent().find('.savedStatus')[0]).html('saving...');
+              $($elem.parent().parent()[0]).trigger('submit.rails');
+          },
+          delay: 1000
+      });
+
+      // Textareas change
+      $(textarea2).typing({
+          start: function (event, $elem) {
+              $($elem.parent().parent().find('.savedStatus')[0]).html('typing...');
+          },
+          stop: function (event, $elem) {
+              var existingComment = $($elem).val();
+
+              if (!existingComment) {
+                  $($elem).val(' ');
+              }
+
+              $($elem.parent().parent().find('.savedStatus')[0]).html('saving...');
+              $($elem.parent()[0]).trigger('submit.rails');
+          },
+          delay: 1000
       });
     }

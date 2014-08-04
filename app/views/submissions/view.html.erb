@@ -69,9 +69,9 @@
                   <% if !@submission.instructor_approved? %>
                       <div class='submissionInstructorResponse' style="margin-top:25px; margin-bottom:-3px;">
                         <div class='submissionResponseFrom'>Instructor Comment</div>
-                        <%= nested_form_for [@course, @assignment, eval.question, response]  do |f| %>
+                        <%= nested_form_for [@course, @assignment, eval.question, response], remote:true  do |f| %>
                             <%= f.text_area :instructor_response, class: 'submissionTextArea fl'  %>
-                            <%= f.submit "Reply", class: 'submissionTextAreaReply fr' %>
+                            <!-- %= f.submit "Reply", class: 'submissionTextAreaReply fr' %>   -->
                         <% end %>
                       </div>
                   <% elsif response.instructor_response %>
