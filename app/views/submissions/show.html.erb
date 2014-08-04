@@ -36,7 +36,6 @@
             <%= nested_form_for [@course, @assignment, question, response], :remote => true  do |f| %>
                 <div class='peerReviewJustification'>
                   <div class='submissionResponseFrom'>Comment<%= question.written_response_required ? ' (required)' : '' %></div>
-                  <!-- <textarea class="reviewTextArea fl" style='height:75px;' cols="40" name="q_response_<%= question.id %>" rows="20"></textarea> -->
                   <%= f.text_area :peer_review, :html => {class: "reviewTextArea fl"}, :required => question.written_response_required %>
                 </div>
 
@@ -49,13 +48,12 @@
                   <% end %> <!-- end scale loop -->
                 </div>
                 <br>
-                <%# f.submit "Save Response" %>
             <% end %> <!-- end form -->
           </div> <!-- submissionQuestionBox -->
       <% end %> <!-- questions loop -->
       <div class='savedStatus'></div>
       <%= link_to course_assignment_submission_path(@course, @assignment, @submission, finish: true) do %>
-          <div id='submitFormsButton' class='button'>Finish Peer Review</div>
+          <div id='submitFormsButton' class='button'>Publish Review</div>
       <% end %>
 
   <% else %> <!-- the user is a reviewer who is finished or out of time -->
