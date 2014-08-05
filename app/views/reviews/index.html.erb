@@ -33,16 +33,17 @@
         <table class="reviews">
           <tr>
             <th>Name</th>
-            <% reviews_required =  @assignment.reviews_required + @assignment.instructor_reviews_required  %>
-            <% reviews_required.times do |n| %>
-                <th>Reviewer <%= n+1 %></th>
+            <% @assignment.reviews_required.times do |n| %>
+                <th>Student <%= n+1 %></th>
+            <% end %>            <% @assignment.instructor_reviews_required.times do |n| %>
+                <th>Instructor <%= n+1 %></th>
             <% end %>
           </tr>
           <% @students.each do |student| %>
               <% if student.submissions.where('assignment_id = ' + @assignment.id.to_s)[0] %>
                   <tr>
                     <td><%= student.name %></td>
-                    <% student.submissions.where('assignment_id = ' + @assignment.id.to_s)[0].evaluations.each do |e| %>
+                    <% student.submissions.where('assignment_id = ' + @assignment.id.to_s)[0].evaluations.sort_by{|e| e.created_at }.each do |e| %>
                         <td>
                           <% if @assignment.manual_assignment && !@assignment.reviewers_assigned %>
                               <select data-student="<%= student.id %>" data-current="<%= e.user.id %>">

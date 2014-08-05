@@ -41,7 +41,7 @@ class SubmissionsController < ApplicationController
           evaluation.save!
           redirect_to  course_assignment_path ({id: params[:assignment_id]} ) and return
         else
-          flash[:error] = "Please answer all the questions."
+          flash[:error] = "You can't publish unless all ratings and required comments have been done."
           redirect_to :back and return
         end
       end

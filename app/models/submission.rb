@@ -14,7 +14,7 @@ class Submission < ActiveRecord::Base
   validates_presence_of :user_id
   validate :met_deadline, :on => :create
   validates_attachment_size :attachment, :less_than => 15.megabytes
-  validates_attachment_content_type :attachment, :content_type => ["application/pdf"]
+  validates_attachment_content_type :attachment, :content_type => ['application/pdf']
 
   def completed_responses
     completed = []
@@ -64,7 +64,7 @@ class Submission < ActiveRecord::Base
   def percentage
     grade = self.raw
     if grade
-      grade.fdiv(self.assignment.totalPoints) * 100
+      grade.fdiv(self.assignment.total_points) * 100
     end
   end
 
