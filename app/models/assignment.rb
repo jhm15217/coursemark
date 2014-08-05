@@ -1,6 +1,7 @@
 class Assignment < ActiveRecord::Base
   require 'csv'
-  attr_accessible :course_id, :draft, :manual_assignment, :reviewers_assigned, :review_due, :reviews_required, :instructor_reviews_required, :submission_due, :name, :submission_due_date, :submission_due_time, :review_due_date, :review_due_time, :team
+  attr_accessible :course_id, :draft, :manual_assignment, :reviewers_assigned, :review_due, :reviews_required
+  attr_accessible :instructor_reviews_required, :submission_due, :name, :submission_due_date, :submission_due_time, :review_due_date, :review_due_time, :team
   after_update :update_evaluations, :if => :reviews_required_changed?  or  :instructor_reviews_required_changed?
   before_validation :make_dates
 
@@ -14,11 +15,11 @@ class Assignment < ActiveRecord::Base
   scope :published, -> { where(draft: false) }
 
   # Validations
-  validates_inclusion_of :draft, :in => [true, false], :message => "must be true or false"
+  validates_inclusion_of :draft, :in => [true, false], :message => 'must be true or false'
   validates_numericality_of :reviews_required, :only_integer => true, :greater_than_or_equal_to  => 0
-  validates_datetime :submission_due, :allow_nil => true, :before => :review_due, :before_message => "Submission deadline must be before review deadline"
-  validates_datetime :review_due, :allow_nil => true, :after => :submission_due, :after_message => "Review deadline must be after submission deadline"
-  
+  validates_datetime :submission_due, :allow_nil => true, :before => :review_due, :before_message => 'Submission deadline must be before review deadline'
+  validates_datetime :review_due, :allow_nil => true, :after => :submission_due, :after_message => 'Review deadline must be after submission deadline'
+
   # submission and review due dates can only be changed if they haven't passed
   # validate :submission_deadline_not_passed
   # Extending the submission deadline might cause more reviews to be required, and the reviewers might not notice if they
@@ -34,19 +35,19 @@ class Assignment < ActiveRecord::Base
   validate :submissions_open, :on => :update, :if => :reviews_required_changed?
 
   def status
-    if (self.id.nil?)
+    if self.id.nil?
       return
     end
     if Time.zone.now <= self.submission_due
-      return "Submissions due " + self.submission_due.to_s(:pretty)
+      'Submissions due ' + self.submission_due.to_s(:pretty)
     elsif Time.zone.now <= self.review_due
-      return "Reviews due " + self.review_due.to_s(:pretty)
+      'Reviews due ' + self.review_due.to_s(:pretty)
     elsif Time.zone.now > self.review_due
-      return "Reviews completed " + self.review_due.to_s(:pretty)
+      'Reviews completed ' + self.review_due.to_s(:pretty)
     end
   end
 
-  def totalPoints
+  def total_points
     self.questions.map{|q| q.question_weight}.reduce(:+)
   end
 
@@ -69,41 +70,41 @@ class Assignment < ActiveRecord::Base
   end
 
   def submission_due_date
-    submission_due.strftime("%m/%d/%Y") if submission_due.present?
+    submission_due.strftime('%m/%d/%Y') if submission_due.present?
   end
- 
+
   def submission_due_time
     submission_due if submission_due.present?
   end
- 
+
   def review_due_date
-    review_due.strftime("%m/%d/%Y") if review_due.present?
+    review_due.strftime('%m/%d/%Y') if review_due.present?
   end
 
   def review_due_time
     review_due if review_due.present?
   end
- 
+
   def submission_due_date=(date)
-    @submission_due_date = Date.strptime(date, "%m/%d/%Y").strftime("%Y-%m-%d")
+    @submission_due_date = Date.strptime(date, '%m/%d/%Y').strftime('%Y-%m-%d')
   end
- 
+
   def submission_due_time=(time)
-    @submission_due_time = Time.parse(time.to_s).strftime("%H:%M:%S")
+    @submission_due_time = Time.parse(time.to_s).strftime('%H:%M:%S')
   end
- 
+
   def review_due_date=(date)
-    @review_due_date = Date.strptime(date, "%m/%d/%Y").strftime("%Y-%m-%d")
+    @review_due_date = Date.strptime(date, '%m/%d/%Y').strftime('%Y-%m-%d')
   end
 
   def review_due_time=(time)
-    @review_due_time = Time.parse(time.to_s).strftime("%H:%M:%S")
+    @review_due_time = Time.parse(time.to_s).strftime('%H:%M:%S')
   end
-  
+
   def make_dates
     @offset = Time.zone.now.to_s.split(' ')[2]
 
-    if (!@offset.nil? && !@submission_due_date.nil? && !@submission_due_time.nil? && !@review_due_date.nil? && !@review_due_time.nil?)
+    if !@offset.nil? && !@submission_due_date.nil? && !@submission_due_time.nil? && !@review_due_date.nil? && !@review_due_time.nil?
 
       self.submission_due = DateTime.parse("#{@submission_due_date} #{@submission_due_time + @offset}")
       self.review_due = DateTime.parse("#{@review_due_date} #{@review_due_time + @offset}")
@@ -115,52 +116,50 @@ class Assignment < ActiveRecord::Base
     self.course.get_people.select{|s| !s.pseudo or self.memberships.select{|m| m.pseudo_user_id == s.id}.length > 0 }
   end
 
+  def get_students_for_assignment
+    self.course.get_people.select{|s| !s.instructor?(self.course) and !s.pseudo }
+  end
+
   def reviews_for_user_to_complete(user)
     self.evaluations.forUser(user).select { |eval| !eval.finished  }
   end
 
   # get /assignments/1/export
   def export(students)
-    header_row = ["Name", "Total Points", "Total Possible Points", "Percentage"]
+    header_row = ['Submitter']
+    reviews_required.times { |index| header_row << "Student #{index+1}" }
+    instructor_reviews_required.times { |index| header_row << "Instructor #{index+1}" }
     questions.each { |question|
       header_row << question.question_text
-      header_row << "Possible Points"
-      reviews_required.times { |index|
-        header_row << "Reviewer #{index+1}"
-      }
+      reviews_required.times { |index| header_row << "Student #{index+1}" }
+      instructor_reviews_required.times { |index| header_row << "Instructor #{index+1}" }
     }
-    header_row << "Reviews Finished"
-    header_row << "Reviews Required"
+    header_row << 'Reviews Finished'
+    header_row << 'Reviews Required'
 
     return CSV.generate do |csv|
       csv << header_row
       students.each do |student|
         submission = submissions.select { |sub| sub.user.id == student.submitting_id(self) }.first
         if submission then
-          if !submission.percentage.blank? then
-            percent = submission.percentage.round
-          else
-            percent = ""
+          this_sub = [student.email]
+          submission.evaluations.sort_by{|e| e.created_at }.each do |e|
+            this_sub << e.user.email
           end
-          this_sub = [student.name, submission.raw, totalPoints, percent]
           # for each of the questions in the assignment
-          submission.responses.sort_by { |obj| obj.created_at }.uniq { |x| x.question_id }.each do |res|
+          self.questions.sort_by{ |obj| obj.created_at }.each do |question|
+            # total possible points
+            this_sub << question.question_weight
 
             points_for_q = []
-
-            # get responses for a student's submission
-            submission.get_responses_for_question(res.question).each_with_index do |response, index|
+            # get responses for a student's submission, sorted to match order in the reviewer page
+            submission.get_responses_for_question(question).sort_by{|r| r.evaluation.created_at }.each_with_index do |response, index|
               if response.is_complete?
-                points = (((100 / (response.question.scales.length - 1.0) * response.scale.value)) / 100) * res.question.question_weight
-                #points = (response.question.question_weight / (response.question.scales.length - 1.0) * response.scale.value)
-                points_for_q << points
+                points_for_q << (((100 / (response.question.scales.length - 1.0) * response.scale.value)) / 100) * question.question_weight
+              else
+                points_for_q << ''
               end
             end
-            # average points someone got for question
-            this_sub << (points_for_q.inject(:+).to_f / points_for_q.length) #.inject{ |sum, el| sum + el }.to_f / points_for_q.size
-
-            # total possible points
-            this_sub << res.question.question_weight
 
             # for each peer response, record their grade of the assignment
             points_for_q.each do |point|
@@ -168,7 +167,7 @@ class Assignment < ActiveRecord::Base
             end
           end
         else
-          this_sub = [student.name, 0, totalPoints, 0] + ([0, 0] + [0]*reviews_required)*questions.length
+          this_sub = [student.email] + ([0]*(reviews_required + instructor_reviews_required)*questions.length)
         end
 
         this_sub << evaluations.forUser(student).select { |evaluation| evaluation.is_complete? }.length
@@ -177,8 +176,8 @@ class Assignment < ActiveRecord::Base
         csv << this_sub
       end
     end
-
   end
+
 
 
 
@@ -186,19 +185,17 @@ class Assignment < ActiveRecord::Base
 
   private
   def submission_deadline_not_passed
-    puts "@assignment: " + @assignment.inspect
-    puts "self:" + self.inspect
     if self.submission_due > Time.now and self.submission_due.to_i != self.submission_due_was.to_i
-      errors.add(:submission_due, "Can't change submission deadline if it has passed")
+      errors.add(:submission_due, 'Can\'t change submission deadline if it has passed')
     end
   end
 
   def review_deadline_not_passed
     if self.review_due > Time.now and self.review_due.to_i != self.review_due_was.to_i
-      errors.add(:review_due, "Can't change review deadline if it has passed")
+      errors.add(:review_due, 'Can\'t change review deadline if it has passed')
     end
   end
-  
+
   def update_evaluations
     self.submissions.each {|submission| submission.save!}
   end
@@ -209,7 +206,7 @@ class Assignment < ActiveRecord::Base
     end
     max_team_size = 1
     if team
-      unless @course.get_real_students.all?{|student| @assignment.memberships.sum{|membership| membership.user_id == student.id ? 1 : 0} == 1}
+      unless self.course.get_real_students.all?{|student| @assignment.memberships.sum{|membership| membership.user_id == student.id ? 1 : 0} == 1}
         errors.add(:teams_ok, 'Each student must be a member of one team.')
       end
       #Figure out max team size
@@ -219,10 +216,10 @@ class Assignment < ActiveRecord::Base
     end
     # if reviews_required has since become infeasible
     if self.course.get_real_students.length - max_team_size < reviews_required
-      errors.add(:reviews_required, "At most " + (self.course.get_real_students.length - max_team_size).to_s + ' student reviews can be required.')
+      errors.add(:reviews_required, 'At most ' + (self.course.get_real_students.length - max_team_size).to_s + ' student reviews can be required.')
     end
     if self.course.get_instructors.length < instructor_reviews_required
-    errors.add(:reviews_required, "At most " + (self.course.get_instructors.length.to_s + ' instructor reviews can be required.'))
+      errors.add(:reviews_required, 'At most ' + (self.course.get_instructors.length.to_s + ' instructor reviews can be required.'))
     end
   end
 
