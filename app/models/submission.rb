@@ -80,7 +80,7 @@ class Submission < ActiveRecord::Base
       self.evaluations.delete_all
       create_evaluations(self.assignment.reviews_required,
                          self.assignment.course.get_real_students.select{|s| s.submitting_id(assignment) != self.user_id })
-      create_evaluations(self.asssignment.instructor_reviews_required,
+      create_evaluations(self.assignment.instructor_reviews_required,
                          self.assignment.course.get_instructors)
     end
   end
@@ -93,7 +93,7 @@ class Submission < ActiveRecord::Base
     eligible_reviewers.map { |r|
       evaluationCounts[r.id] = evaluations.forUser(r).count
     }
-    reviewThreshold = evaluationCounts.values.min
+    reviewThreshold = evaluationCounts.values.min || 0
     evaluationsLeft = required
     evaluatorPool = []
     begin
@@ -112,9 +112,7 @@ class Submission < ActiveRecord::Base
 
         # create a response for each question of the evaluation
         self.assignment.questions.each { |question|
-          response = Response.new(question_id: question.id, evaluation_id:evaluation.i )
-          response.
-          response.d
+          response = Response.new(question_id: question.id, evaluation_id:evaluation.id )
           response.save!
         }
 
