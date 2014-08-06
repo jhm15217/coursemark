@@ -206,7 +206,7 @@ class Assignment < ActiveRecord::Base
     end
     max_team_size = 1
     if team
-      unless self.course.get_real_students.all?{|student| @assignment.memberships.sum{|membership| membership.user_id == student.id ? 1 : 0} == 1}
+      unless self.course.get_real_students.all?{|student| self.memberships.sum{|membership| membership.user_id == student.id ? 1 : 0} == 1}
         errors.add(:teams_ok, 'Each student must be a member of one team.')
       end
       #Figure out max team size

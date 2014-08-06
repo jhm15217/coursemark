@@ -99,7 +99,7 @@ class AssignmentsController < ApplicationController
   # GET /assignments/1/edit
   def edit
     @reviewing_tasks = @assignment.evaluations.forUser(current_user).sort_by{|e| e.created_at}
-
+    puts @reviewing_tasks.inspect
   end
 
   # POST /assignments
@@ -189,11 +189,9 @@ class AssignmentsController < ApplicationController
     respond_to do |format|
       if @assignment.update_attributes(params[:assignment])
         format.html { redirect_to @URL }
-        format.js {}
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
-        format.js {}
         format.json { render json: @assignment.errors, status: :unprocessable_entity }
       end
     end
