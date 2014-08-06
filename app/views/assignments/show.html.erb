@@ -13,7 +13,7 @@
 
 <% if (Time.zone.now < @assignment.submission_due) %>
   <%= render 'submission' %>
-<% else %>
+<% elseif @submission.created_at %>
   <div class="edit_submission afterDeadline">
     <a href='<%= @submission.attachment.url %>' style="color:#343F53;">View Uploaded Submission</a>
   </div>

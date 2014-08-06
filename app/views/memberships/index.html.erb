@@ -3,7 +3,6 @@
   <tr>
     <th>Team</th>
     <th>User</th>
-    <th></th>
   </tr>
   <% @memberships.sort_by{|m| m.team }.each do |membership| %>
       <tr>
@@ -11,10 +10,7 @@
           <%= membership.team %>
         </td>
         <td>
-          <%= User.find(membership.user_id).first_name + ' ' + User.find(membership.user_id).last_name %>
-        </td>
-        <td>
-          <%= link_to 'Destroy', membership, :method => :delete, :data => { :confirm => 'Are you sure?' } %>
+          <%= User.find(membership.user_id).email  %>
         </td>
       </tr>
   <% end %>

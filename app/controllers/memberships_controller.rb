@@ -46,34 +46,41 @@ class MembershipsController < ApplicationController
 
   # POST /memberships
   # POST /memberships.json
+  # The csv file has no labels and lines of the form [email,team_name]
   def create
     @course = Course.find(params[:course_id])
     @assignment = Assignment.find(params[:assignment_id])
     @memberships = @assignment.memberships
 
     CSV.foreach('/Users/jhm/Desktop/' + params['group']['attachment']) do |row|
-      team_name = row[3]
-      student = User.find_all_by_last_name(row[0]).select{|x| x.first_name == row[1]}[0]
-      puts "student: " + student.inspect
-      # Wipe out previous memberships
-      @memberships.select{|m| m.user_id == student.id }.each do |membership|
-        membership.delete
-      end
-      # create new pseudo-user if needed
-      pseudo_users = User.find_all_by_last_name("Team").select{|x| x.first_name == team_name}
-      if pseudo_users.length > 0
-        pseudo_user = pseudo_users.first
+      team_name = row[1]
+      student = User.find_all_by_email(row[0])[0]
+      if !student
+        if flash[:error]
+          flash[:error] << ", #{row[0]}"
+        else
+          flash[:error] = "Can't find #{row[0]}"
+        end
       else
-        pseudo_user = User.new(first_name: team_name, last_name: "Team", pseudo: true)
-        pseudo_user.save!(validate: false)
-        register_pseudo_user(@course.id, pseudo_user)
+        # Wipe out previous memberships
+        @memberships.select{|m| m.user_id == student.id }.each do |membership|
+          membership.delete
+        end
+        # create new pseudo-user if needed
+        pseudo_users = User.find_all_by_last_name("Team").select{|x| x.first_name == team_name}
+        if pseudo_users.length > 0
+          pseudo_user = pseudo_users.first
+        else
+          pseudo_user = User.new(first_name: team_name, last_name: "Team", pseudo: true)
+          pseudo_user.save!(validate: false)
+          register_pseudo_user(@course.id, pseudo_user)
+        end
+        Membership.new(team:team_name, user_id: student.id, assignment_id: @assignment.id, pseudo_user_id: pseudo_user.id).save!
       end
-      puts "pseudo_user: " + pseudo_user.inspect
-      Membership.new(team:team_name, user_id: student.id, assignment_id: @assignment.id, pseudo_user_id: pseudo_user.id).save!
     end
 
     respond_to do |format|
-      format.html { redirect_to course_assignment_memberships_path(@course,@assignment), notice: 'Team memberships were recorded.' }
+      format.html { redirect_to course_assignment_memberships_path(@course,@assignment) }
       format.json { render json: @membership, status: :created, location: @membership }
     end
   end
