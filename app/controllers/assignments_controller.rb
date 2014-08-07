@@ -51,6 +51,7 @@ class AssignmentsController < ApplicationController
 
     @submission = get_submission_for_assignment(@assignment)
     @reviewing_tasks = @assignment.evaluations.forUser(current_user)
+    @questions = @assignment.questions.sort_by{|q| q.created_at }
 
     if @submission.nil?
       @submission = Submission.new
