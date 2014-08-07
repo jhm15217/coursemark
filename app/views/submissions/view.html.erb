@@ -45,19 +45,17 @@
   <% end %>
 
   <!--     EVALUATIONS -->
-  <% @responses.each do |eval| %>
+  <% @questions.each do |question| %>
       <div class='submissionQuestionBox'>
-        <h2><%= eval.question.question_text %></h2>
-        <div class='possiblePoints'><%= eval.question.question_weight %> Points</div>
-        <% @submission.get_responses_for_question(eval.question).each_with_index do |response, index| %>
+        <h2><%= question.question_text %></h2>
+        <div class='possiblePoints'><%= question.question_weight %> Points</div>
+        <% @submission.get_responses_for_question(question).sort_by{|r| r.created_at}.each_with_index do |response, index| %>
             <% if response.evaluation.finished? %>
                 <div class='submissionBox'>
-                  <div class='submissionResponsePoints <%= gradeColorFullScale(prettifyFloat(((100 / (response.question.scales.length - 1.0) * response.scale.value)))) %>'><%= prettifyFloat(((100 / (response.question.scales.length - 1.0) * response.scale.value))).to_s + '%' %></div>
+                  <div class='submissionResponsePoints <%= gradeColorFullScale(percentage(response.question, response.scale)) %>'><%= percentage(response.question, response.scale).to_s + '%' %></div>
                   <div class='submissionResponseFrom'>
                     <%= response.evaluation.user.name %>
                   </div>
-                  <div class='submissionPeerReview'><%= if !response.peer_review.blank? then response.peer_review else "No written response provided." end %></div>
-
                   <% if !response.student_response.blank? then %>
                       <div class='submissionStudentResponse'>
                         <div class='submissionResponseFrom' style="margin-top: 30px;">
@@ -69,7 +67,7 @@
                   <% if !@submission.instructor_approved? %>
                       <div class='submissionInstructorResponse' style="margin-top:25px; margin-bottom:-3px;">
                         <div class='submissionResponseFrom'>Instructor Comment</div>
-                        <%= nested_form_for [@course, @assignment, eval.question, response], remote:true  do |f| %>
+                        <%= nested_form_for [@course, @assignment, question, response], remote:true  do |f| %>
                             <%= f.text_area :instructor_response, class: 'submissionTextArea fl'  %>
                             <!-- %= f.submit "Reply", class: 'submissionTextAreaReply fr' %>   -->
                         <% end %>

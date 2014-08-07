@@ -34,6 +34,11 @@ module ApplicationHelper
 		else
 			return 'low'
 		end
-	end
+  end
+
+    def percentage(question, scale)
+      prettifyFloat(((100 / (question.scales.length - 1.0) * scale.value)))
+    end
+
 
 end
