@@ -4,16 +4,21 @@ class QuestionsController < ApplicationController
 
   # GET /questions
   # GET /questions.json
-  def index    
+  def index
     if !current_user.instructor?(@course)
       raise CanCan::AccessDenied.new("Not authorized!")
     end
 
     @questions = @assignment.questions.sort_by{ |q| q.created_at }
 
-    respond_to do |format|
-      format.html # index.html.erb
-      format.json { render json: @questions }
+    if params[:export_rubric]
+      export
+    else
+
+      respond_to do |format|
+        format.html # index.html.erb
+        format.json { render json: @questions }
+      end
     end
   end
 
@@ -67,11 +72,15 @@ class QuestionsController < ApplicationController
       raise CanCan::AccessDenied.new("Not authorized!")
     end
 
-    @question = Question.new(params[:question])
-    @question.assignment = @assignment
+    if params[:create_rubric]
+      ok = create_rubric
+    else
+      @question = Question.new(params[:question])
+      @question.assignment = @assignment
+    end
 
     respond_to do |format|
-      if @question.save
+      if ok or @question.save
         format.html { redirect_to action: "index" }
         format.json { render json: @question, status: :created, location: @question }
       else
@@ -79,6 +88,28 @@ class QuestionsController < ApplicationController
         format.json { render json: @question.errors, status: :unprocessable_entity }
       end
     end
+  end
+
+  def create_rubric
+    @course = Course.find(params[:course_id])
+    @assignment = Assignment.find(params[:assignment_id])
+    @questions = @assignment.questions
+    ok = true
+    CSV.foreach(ENV['HOME']+ '/Downloads/' + params['rubric']['attachment']) do |row|
+      puts 'question_text: ' + row[0]
+      puts 'question_weight :' + row[1].to_i.inspect
+      puts 'comment_required :' + (row[2] == 'TRUE').inspect
+      question = Question.new(question_text: row[0], question_weight: row[1].to_i, written_response_required:row[2] == 'TRUE',
+                              assignment_id: @assignment.id)
+      ok = question.save
+      i = 3
+      while ok and row[i] and row[i+1] do
+        scale = Scale.new(description: row[i], value: row[i+1].to_f, question_id: question.id)
+        ok = scale.save
+        i += 2
+      end
+    end
+    ok
   end
 
   # PUT /questions/1
@@ -133,4 +164,22 @@ class QuestionsController < ApplicationController
       @course = Course.find(params[:course_id])
     end
   end
+
+  def export
+    data = CSV.generate do |csv|
+      @questions.each do |q|
+        row = [q.question_text, q.question_weight, q.written_response_required]
+        q.scales.each do |s|
+          row << s.description
+          row << s.value
+        end
+        csv << row
+      end
+    end
+    current_date = "#{Time.now.month}-#{Time.now.day}-#{Time.now.year}"
+    send_data(data, :type => 'text/csv', :filename => "#{@assignment.name} (rubric as of #{current_date}).csv")
+  end
+
+
+
 end
