@@ -126,7 +126,7 @@ class Assignment < ActiveRecord::Base
 
   # get /assignments/1/export
   def export(students)
-    header_row = ['Submitter']
+    header_row = ['Submitter', 'Time']
     reviews_required.times { |index| header_row << "Student #{index+1}" }
     instructor_reviews_required.times { |index| header_row << "Instructor #{index+1}" }
     questions.each { |question|
@@ -140,9 +140,10 @@ class Assignment < ActiveRecord::Base
     return CSV.generate do |csv|
       csv << header_row
       students.each do |student|
+        this_sub = [student.email]
         submission = submissions.select { |sub| sub.user.id == student.submitting_id(self) }.first
         if submission then
-          this_sub = [student.email]
+          this_sub << submission.created_at
           submission.evaluations.sort_by{|e| e.created_at }.each do |e|
             this_sub << e.user.email
           end
@@ -154,23 +155,18 @@ class Assignment < ActiveRecord::Base
             points_for_q = []
             # get responses for a student's submission, sorted to match order in the reviewer page
             submission.get_responses_for_question(question).sort_by{|r| r.evaluation.created_at }.each_with_index do |response, index|
-              if response.is_complete?
-                points_for_q << (((100 / (response.question.scales.length - 1.0) * response.scale.value)) / 100) * question.question_weight
+              if response.evaluation.finished
+                this_sub << (((100 / (response.question.scales.length - 1.0) * response.scale.value)) / 100) * question.question_weight
               else
-                points_for_q << ''
+                this_sub << ''
               end
-            end
-
-            # for each peer response, record their grade of the assignment
-            points_for_q.each do |point|
-              this_sub << point
             end
           end
         else
-          this_sub = [student.email] + ([0]*(reviews_required + instructor_reviews_required)*questions.length)
+          this_sub += ['']*((1 + reviews_required + instructor_reviews_required )*(questions.length + 1))
         end
 
-        this_sub << evaluations.forUser(student).select { |evaluation| evaluation.is_complete? }.length
+        this_sub << evaluations.forUser(student).select { |evaluation| evaluation.finished }.length
         this_sub << evaluations.forUser(student).length
 
         csv << this_sub
