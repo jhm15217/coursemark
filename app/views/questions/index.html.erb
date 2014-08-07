@@ -1,36 +1,54 @@
 <%= render "assignments/header" %>
 
 <% if (Time.zone.now >= @assignment.submission_due) %>
-  <div class="notice">Rubric questions cannot be added after the submission deadline</div>
+    <div class="notice">Rubric questions cannot be added after the submission deadline</div>
 <% end %>
 
 <% if @questions and @questions.length > 0 %>
 
-<% @questions.each do |question| %>
-  <div class="rubricQuestion">
-    <%= link_to [:edit, @course, @assignment, question] do %>
-      <h2>"<%= question.question_text %>"</h2>
+    <% @questions.each do |question| %>
+        <div class="rubricQuestion">
+          <%= link_to [:edit, @course, @assignment, question] do %>
+              <h2>"<%= question.question_text %>"</h2>
+          <% end %>
+          <h4>
+            <%=question.question_weight %> POINTS -
+            <%= link_to "Delete", course_assignment_question_path(@course, @assignment, question), method: :delete %>
+          </h4>
+
+        </div>
     <% end %>
-    <h4>
-      <%=question.question_weight %> POINTS -
-      <%= link_to "Delete", course_assignment_question_path(@course, @assignment, question), method: :delete %>
-    </h4>
-    
-  </div>
-<% end %>
 
-<br />
+    <br />
 
-<% if (Time.zone.now < @assignment.submission_due) %>
-  <%= link_to new_course_assignment_question_path(@course, @assignment, :type => 'yesno') do %>
-    <div class="button">New question</div>
-  <% end %>
-<% end %>
+    <% if (Time.zone.now < @assignment.submission_due) %>
+        <%= link_to new_course_assignment_question_path(@course, @assignment, :type => 'yesno') do %>
+            <div class="button">New question</div>
+        <% end %>
+        <form method='post' action="/courses/<%= @course.id.to_s %>/assignments/<%= @assignment.id.to_s %>/questions">
+          <div class="field" >
+            <input id="rubric_attachment" name="rubric[attachment]" required="required" type="file" />
+          </div>
+          <div class="actions">
+            <input name="create_rubric" type="submit" value="Upload Questions CSV File" />
+          </div>
+        </form>
+
+    <% end %>
 
 <% else %>
 
-  <h2 class="noData">
-    <%= link_to 'Create first rubric question.',  new_course_assignment_question_path(@course, @assignment, :type => 'yesno') %>
-  </h2>
+    <h2 class="noData">
+      <%= link_to 'Create first rubric question.',  new_course_assignment_question_path(@course, @assignment, :type => 'yesno') %>
+    </h2>
 
 <% end %>
+
+<br/>
+
+<a href=<%= "/courses/#{@course.id}/assignments/#{@assignment.id}/questions?export_rubric=true" %>><div class='button' style="float: left;" >Export Rubric CSV</div></a>
+<br/>
+<div>
+  Each line has the form [Question:string,Weight:integer,written_response_required:Boolean,(description:string,value:integer)*]
+</div>
+

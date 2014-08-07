@@ -52,7 +52,7 @@ class MembershipsController < ApplicationController
     @assignment = Assignment.find(params[:assignment_id])
     @memberships = @assignment.memberships
 
-    CSV.foreach('/Users/jhm/Desktop/' + params['group']['attachment']) do |row|
+    CSV.foreach(ENV['HOME'] + '/Downloads/' + params['group']['attachment']) do |row|
       team_name = row[1]
       student = User.find_all_by_email(row[0])[0]
       if !student
