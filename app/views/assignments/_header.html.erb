@@ -3,7 +3,7 @@
     <h1 class="name"><%= @assignment.name %></h1>
 
     <% if @assignment.id %>
-        <div class="tabs">
+        <div class="tabs" style="width:100%;float:left" >
             <% if current_user.instructor?(@course) %>
             <div class="tab <%= 'active' if controller.controller_name == 'assignments' %>">
                 <%= link_to edit_course_assignment_path(@course, @assignment) do %>

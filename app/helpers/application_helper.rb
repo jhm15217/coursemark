@@ -40,5 +40,11 @@ module ApplicationHelper
       prettifyFloat(((100 / (question.scales.length - 1.0) * scale.value)))
     end
 
+  def reviewer_name(evaluation, index)
+    (evaluation.user.instructor?(evaluation.submission.assignment.course) or
+        current_user.instructor?(evaluation.submission.assignment.course)) ? evaluation.user.name :
+        'Reviewer ' + (index + 1).to_s
+  end
+
 
 end

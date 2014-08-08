@@ -90,11 +90,6 @@ textarea {
     padding: 0.2em 0;
 }
 
-a {
-    color: #343F53;
-    text-decoration: none;
-}
-
 /* ==========================================================================
    Agora custom styles
    ========================================================================== */
@@ -319,7 +314,7 @@ a {
     position: fixed;
     width: -moz-calc(100% + 120px);
     width: calc(100% + 120px);
-    height: 85px;
+    height: 100px;
     margin: 0px 0px 45px -50px;
     padding: 28px 50px 0px 50px;
     border-bottom: 1px solid #DFDFDF;
@@ -339,7 +334,6 @@ a {
     font-weight: normal;
     font-size: 20pt;
     float: left;
-    width: 200px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -356,7 +350,7 @@ a {
     height: 52px;
     margin-right: 50px;
     padding-top: 10px;
-    font-size: 10.5pt;
+    font-size: 12pt;
 }
 
 #main .tabs a {
@@ -376,7 +370,6 @@ a {
 
 #main .tab.active {
     color: #e67e22;
-    border-bottom: 3px solid #e67e22;
 }
 
 #main .tab.active:hover {
@@ -485,6 +478,15 @@ a {
     background: #FFF;
     padding: 25px;
     width: 50%;
+    border-radius: 6px;
+    border: 1px solid #DFDFDF;
+    float: left;
+    min-width: 360px;
+}
+#main .toDoList {
+    background: #FFF;
+    padding: 25px;
+    width: 70%;
     border-radius: 6px;
     border: 1px solid #DFDFDF;
     float: left;

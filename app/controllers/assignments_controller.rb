@@ -49,9 +49,30 @@ class AssignmentsController < ApplicationController
       return
     end
 
+    #Create 'To Do' List
+    @to_do = []
+    @course.assignments.each do  |assignment|
+      unless assignment.draft
+        if Time.now < assignment.submission_due and get_submission_for_assignment(assignment).nil?
+          puts 'Not submitted'
+          @to_do << {action: :submit, assignment: assignment, time: assignment.submission_due - 2.hours }
+        end
+        if Time.now < assignment.review_due
+          assignment.evaluations.forUser(current_user).sort_by{|t| t.created_at}.each_with_index do |evaluation, index|
+            unless evaluation.finished
+              @to_do << {action: :review, index: index + 1, submission_id: evaluation.submission.id, assignment: assignment,
+                         time: assignment.review_due - 2.hours }
+            end
+          end
+        end
+      end
+    end
+    @to_do.sort_by!{|t| t[:time] }
+
+    @reviewing_tasks = @assignment.evaluations.forUser(current_user).sort_by{|t| t.created_at}
     @submission = get_submission_for_assignment(@assignment)
-    @reviewing_tasks = @assignment.evaluations.forUser(current_user)
     @questions = @assignment.questions.sort_by{|q| q.created_at }
+
 
     if @submission.nil?
       @submission = Submission.new
