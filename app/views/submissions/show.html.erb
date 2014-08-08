@@ -1,4 +1,4 @@
-<!-- This is reached via the Complete or View Review button for a reviewer -->
+<!-- This is reached via the Complete or See Review button for a reviewer -->
 <div id='submissionHeader'>
   <small style='display:block; float:left; margin-top:-18px; width:100%;'>
     <% if current_user.instructor?(@course) %>
@@ -68,17 +68,11 @@
                     <div class='submissionBox'>
                       <div class='submissionResponsePoints <%= gradeColorFullScale(percentage(response.question,response.scale)) %>'><%= percentage(response.question, response.scale).to_s + '%' %></div>
                       <div class='submissionResponseFrom'>
-                        <% if current_user.instructor?(@course) %>
-                            <%= response.evaluation.user.name %>
-                        <% elsif current_user.submitting_id(@assignment) != @submission.user.id %>
                             <% if current_user.id == response.evaluation.user.id %>
                                 Your Review
                             <% else %>
-                                Other's Review
+                                <%= reviewer_name(response.evaluation, index) %>'s Review
                             <% end %>
-                        <% else %>  <!-- current_user is the submitter -->
-                            Reviewer <%= index + 1 %> submission version <% response.created_at.to_s %>xxx
-                        <% end %>
                       </div>  <!-- submissionResponseFrom -->
                       <div class='submissionPeerReview'><%= if !response.peer_review.blank? then response.peer_review else "No written response provided." end %></div>
 

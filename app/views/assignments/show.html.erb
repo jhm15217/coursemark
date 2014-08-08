@@ -2,18 +2,22 @@
 
 <!-- User is not instructor -->
 
-<div class="assignmentStatus" style="width: 49%;">
-  <h3>Assignment Progress</h3>
-  <div class="checkPoint completed %>">Assignment released</div>
-  <div class="checkPoint <%= if (Time.zone.now > @assignment.submission_due) then 'completed' end %>">Assignment due on <%= @assignment.submission_due.to_s(:pretty) %></div>
-  <div class="checkPoint <%= if (@assignment.manual_assignment && @assignment.reviewers_assigned) || ((Time.zone.now > @assignment.submission_due) && (@assignment.reviews_required > 0) && !@assignment.manual_assignment) then 'completed' end %>">Peer reviews assigned</div>
-  <div class="checkPoint <%= if (Time.zone.now > @assignment.review_due) && (@assignment.reviews_required > 0)  then 'completed' end %>">Peer reviews due on <%= @assignment.review_due.to_s(:pretty) %></div>
-  <div class="checkPoint <%= if (@submission.instructor_approved) && (@assignment.reviews_required > 0) then 'completed' end %>">Reviewing Completed</div>
+<div class="toDoList" >
+  <h3>To-Do List</h3>
+  <% @to_do.each do |task| %>
+      <%= ((if task[:action] == :submit  then
+              "Submit <a href=/courses/#{@course.id}/assignments/#{task[:assignment].id}>#{task[:assignment].name}</a>"
+           else
+              "Complete <a href=/courses/#{@course.id}/assignments/#{task[:assignment].id}/submissions/#{task[:submission_id]}>Review #{task[:index].to_s}</a> for #{task[:assignment].name}"
+           end) +
+          ' Assignment by ' + task[:time].strftime('%-m/%-d at %H:%M')  + '</br>').html_safe
+      %>
+  <% end %>
 </div>
 
 <% if (Time.zone.now < @assignment.submission_due) %>
     <%= render 'submission' %>
-    <% elsif @submission.created_at %>
+<% elsif @submission.created_at %>
     <div class="edit_submission afterDeadline">
       <a href='<%= @submission.attachment.url %>' style="color:#343F53;">View Uploaded Submission</a>
     </div>
@@ -36,7 +40,9 @@
 <div class="clearfix"></div>
 
 <% if @evaluations && (@submission.completed_responses.length > 0) %>
+    <h3>Reviews of Your Submission</h3>
     <div id="student_evaluation_view">
+
       <% @questions.each do |question| %>
           <div class='submissionQuestionBox clearfix'>
             <h2><%= question.question_text %></h2>
@@ -45,7 +51,7 @@
                 <% if response.evaluation.finished? %>
                     <div class='submissionBox'>
                       <div class='submissionResponsePoints <%= gradeColorFullScale(percentage(response.question, response.scale)) %>'><%= if !response.scale.nil? then percentage(response.question, response.scale).to_s + '%' else '--' end %></div>
-                      <div class='submissionResponseFrom'>Reviewer <%= index + 1 %> </div>
+                      <div class='submissionResponseFrom'><%= reviewer_name(response.evaluation, index) %></div>
                       <div class='submissionPeerReview'><%= if !response.peer_review.blank? then response.peer_review end %></div>
 
                       <div class='submissionInstructorResponse'>
