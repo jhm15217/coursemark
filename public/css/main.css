@@ -395,7 +395,7 @@ textarea {
     width: -moz-calc(100% + 120px);
     width: calc(100% + 120px);
     height: 46px;
-    margin: -45px 0px 30px -60px;
+    margin: -25px 0px 30px -60px;
     padding-top: 17px;
     padding-left: 60px;
     background: #FFF;
