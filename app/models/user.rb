@@ -20,7 +20,7 @@ class User < ActiveRecord::Base
   attr_accessible :email, :first_name, :last_name, :password, :password_confirmation, :pseudo
 
   # Relationships
-  has_many :evaluations
+  has_many :evaluations, dependent: :destroy
   has_many :submissions, dependent: :destroy
   has_many :registrations, dependent: :destroy
   has_many :courses, :through => :registrations

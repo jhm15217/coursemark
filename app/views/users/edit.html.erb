@@ -28,6 +28,9 @@
     <td><%= registration.course.name %></td>
     <td><%= registration.instructor ? "Course Staff" : "Student"  %></td>
     <td><%= link_to 'Leave Course', registration, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+    <% if current_user.instructor?(registration.course) %>
+        <td><%= link_to 'Delete Course', registration.course, method: :delete, data: { confirm: 'Do you want to erase this course and all its data?' }%></td>
+    <% end %>
   </tr>
 <% end %>
 </table>

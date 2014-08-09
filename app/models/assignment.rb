@@ -8,7 +8,7 @@ class Assignment < ActiveRecord::Base
   # Relationships
   belongs_to :course
   has_many :submissions, dependent: :destroy
-  has_many :questions
+  has_many :questions, dependent: :destroy
   has_many :evaluations, :through => :submissions
   has_many :memberships, dependent: :destroy
 

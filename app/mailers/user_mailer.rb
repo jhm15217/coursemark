@@ -3,14 +3,6 @@ class UserMailer < ActionMailer::Base
   DEV_URL = "localhost:3000"
   PROTOCOL = 'http'
 
-  def reset_email_counts
-    @@todays_senders = Hash.new
-    @@emails_today = 0
-    @@last_email = Time.now.yday
-  end
-
-  reset_email_counts
-
   default from: "james.morris@cmu.edu"
   #ActionMailer::Base.raise_delivery_errors = false  # until I figure out how to catch
 
