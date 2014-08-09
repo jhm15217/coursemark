@@ -33,7 +33,7 @@
     <td><%= registration.instructor ? "Course Staff" : "Student"  %></td>
     <td><%= registration.user.email %></td>
     <td>
-      <% if !registration.instructor %>
+      <% unless registration.instructor or registration.user.pseudo %>
         <%= link_to 'Log in as', application_login_student_path(:student => registration.user.id) %>
       <% end %>
     </td>
