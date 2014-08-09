@@ -15,7 +15,7 @@ class RegistrationsController < ApplicationController
   # GET /registrations
   # GET /registrations.json
   def index
-      @course = params[:course] ? Course.find(params[:course]) :  @course = current_user.courses.last
+      @course = params[:course] ? Course.find(params[:course]) :  current_user.courses.last
       @assignments = @course.assignments
       @registrations = sorted_registrations(@course.registrations.where(:active => true))
       @template = "registrations/roster"
