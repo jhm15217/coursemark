@@ -4,14 +4,16 @@
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
   </head>
   <body>
-    <h1>Welcome to Coursemark, <%= @user.first_name %></h1>
+    Welcome to Coursemark, <%= @user.first_name %>
+    </br>
     <p>
-      Your username is: <%= @user.email %>.<br/>
+      Your username is: <%= @user.email %>, your temporary password is <b><%= @password %></b>, and you are registered for
+      the course, <% @course.name %>.
     </p>
+    </br>
     <p>
-      To complete your registration, please confirm your email address by following this link:
+      Please login to coursemark.org, go to Settings, and change your password.
       <br />
-      <%= @url %>
     </p>
   </body>
 </html>

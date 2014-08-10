@@ -96,9 +96,6 @@ class QuestionsController < ApplicationController
     @questions = @assignment.questions
     ok = true
     CSV.foreach(ENV['HOME']+ '/Downloads/' + params['rubric']['attachment']) do |row|
-      puts 'question_text: ' + row[0]
-      puts 'question_weight :' + row[1].to_i.inspect
-      puts 'comment_required :' + (row[2] == 'TRUE').inspect
       question = Question.new(question_text: row[0], question_weight: row[1].to_i, written_response_required:row[2] == 'TRUE',
                               assignment_id: @assignment.id)
       ok = question.save

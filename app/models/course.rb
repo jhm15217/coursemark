@@ -11,6 +11,10 @@ class Course < ActiveRecord::Base
   scope :students, -> {joins(:users).where("instructor = 'f'")}
   scope :instructors, -> {joins(:users).where("instructor = 't'")}
 
+  def register(user)
+    Registration.new({active: false, instructor: false, course_code: self.course_code, user_id: user.id, course_id: self.id}).save!
+  end
+
   # Here are these instead
   # The SQL for the booleans on instructor might not work when noto n SQLite
   def get_students

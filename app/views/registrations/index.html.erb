@@ -1,37 +1,57 @@
 <div id="header">
-    <h1 class="name">My Courses</h1>
-    <div class="tabs">
-        <div class="tab logout">
-            <%= link_to edit_user_path(current_user) do %>
-                Settings
-            <% end %>
-            <%= link_to logout_path do %>
-                Sign out
-            <% end %>
-        </div>
+  <h1 class="name">Course Roster</h1>
+  <div class="tabs">
+    <div class="tab logout">
+      <%= link_to edit_user_path(current_user) do %>
+          Settings
+      <% end %>
+      <%= link_to logout_path do %>
+          Sign out
+      <% end %>
     </div>
+  </div>
 </div>
 
 <div id="headerSpacer"></div>
 
+<div class="notice">Instruct students to register at coursemark.org using this course code: <strong><%= @course.course_code %></strong></div>
+
 <table>
   <tr>
-    <th>Course</th>
+    <th>Name</th>
     <th>Type</th>
+    <th>Email</th>
+    <th>&nbsp;</th>
     <th>&nbsp;</th>
   </tr>
 
-<% @registrations.each do |registration| %>
-  <tr>
-    <td><%= registration.course.name %></td>
-    <td><%= registration.instructor ? "Course Staff" : "Student"  %></td>
-    <td><%= link_to 'Remove', registration, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-  </tr>
-<% end %>
+  <% @registrations.each do |registration| %>
+      <tr>
+        <td><%= registration.user.name %></td>
+        <td><%= registration.instructor ? "Course Staff" : registration.user.pseudo ? 'Team' : "Student"  %></td>
+        <td><%= registration.user.email %></td>
+        <td>
+          <% unless registration.instructor or registration.user.pseudo %>
+              <%= link_to 'Log in as', application_login_student_path(:student => registration.user.id) %>
+          <% end %>
+        </td>
+        <td><%= link_to 'Remove', registration, method: :delete, data: { confirm: 'Are you sure you wish to remove this student from the course?' } %></td>
+        <td>
+          <% if !registration.instructor %>
+              <%= link_to 'Add to Course Staff', registrations_add_to_course_staff_path(:registration => registration.id), data: { confirm: 'Are you sure you wish to add this user to the course staff?' } %>
+          <% end %>
+        </td>
+      </tr>
+  <% end %>
 </table>
 
 <br />
-
-<%= link_to new_registration_path do %>
-  <div class="button">Add Course</div>
-<% end %>
+<form method='get' action='/registrations/invite_students'>
+  <div class="field" >
+    <input id="invites_attachment" name="invites[attachment]" required="required" type="file" />
+  </div>
+  <%= hidden_field_tag 'course', @course.id %>
+  <div class="actions">
+    <input name='button' type='submit' value='Invite Students' />
+  </div>
+</form>
