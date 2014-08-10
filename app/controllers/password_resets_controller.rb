@@ -35,7 +35,8 @@ class PasswordResetsController < ApplicationController
 
     # The following will cause link to expire after one use.
     elsif @user.update_attributes(params[:user])
-      @user.password_reset_sent_at = 2.hours.ago and @user.save!(validate: false)
+      @user.password_reset_sent_at = 2.hours.ago
+      @user.save!(validate: false)
       redirect_to login_path, flash: { success: "Your password has been reset" }
     else
       flash.now[:error] = "Try again, please."

@@ -1,7 +1,8 @@
 class RegistrationsController < ApplicationController
+  require 'csv'
   skip_before_filter :get_assignments, :except => [:index]
   skip_before_filter :get_submission_for_assignment, :except => [:index]
-  load_and_authorize_resource :except => [:add_to_course_staff]
+  load_and_authorize_resource :except => [:add_to_course_staff, :invite_students]
 
   # Exception Handling
   class InvalidCourse < StandardError
@@ -11,24 +12,26 @@ class RegistrationsController < ApplicationController
   class ExistingRegistration < StandardError
   end
   rescue_from ExistingRegistration, :with => :existingRegistration
-  
+
   # GET /registrations
   # GET /registrations.json
   def index
-      @course = params[:course] ? Course.find(params[:course]) :  current_user.courses.last
-      @assignments = @course.assignments
-      @registrations = sorted_registrations(@course.registrations.where(:active => true))
-      @template = "registrations/roster"
+    @course = params[:course] ? Course.find(params[:course]) :  current_user.courses.last
+    @assignments = @course.assignments
+    @registrations = sorted_registrations(@course.registrations.where(active: true))
+    @template = "registrations/roster"
 
     respond_to do |format|
-      format.html { render :template => @template } # index.html.erb
+      format.html #index.html
       format.json { render json: @registrations }
     end
   end
 
   def sorted_registrations(r)
     r.sort { |a,b|
-      !iff(a.instructor, b.instructor)  ? (a.instructor ? -1 : 1) :  compare_users(a.user, b.user) }
+      !iff(a.instructor, b.instructor)  ? (a.instructor ? -1 : 1) :
+          !iff(a.user.pseudo, b.user.pseudo) ? (a.user.pseudo ? 1 : -1) :
+              compare_users(a.user, b.user) }
   end
 
 
@@ -71,6 +74,27 @@ class RegistrationsController < ApplicationController
     redirect_to :back
   end
 
+  def invite_students
+    @course = Course.find(params[:course])
+    CSV.foreach(ENV['HOME']+ '/Downloads/' + params['invites']['attachment']) do |row|
+      if user = User.find_by_email(row[2])
+        unless @course.registrations.any?{|r| r.user_id == user.id }
+          @course.register(user)
+          UserMailer.registration_email(user, @course).deliver
+        end
+      else
+        password = SecureRandom.hex(4)
+        user = User.new({first_name: row[0], last_name: row[1], email:row[2], password: password, password_confirmation: password})
+        user.confirmed = true
+        user.save!
+        @course.register(user)
+        UserMailer.welcome_email(user, password, @course).deliver
+      end
+    end
+    redirect_to :back
+  end
+
+
   # POST /registrations
   # POST /registrations.json
   def create
@@ -79,7 +103,7 @@ class RegistrationsController < ApplicationController
     @registration.instructor = false;
     @registration.user = current_user
 
-    # Throw an error if the course isnt found.
+    # Throw an error if the course isn't found.
     @registration.course = Course.where(:course_code => @registration.course_code).first or raise InvalidCourse
 
     # Throw an error if the user is already registered.
@@ -119,13 +143,33 @@ class RegistrationsController < ApplicationController
   # DELETE /registrations/1.json
   def destroy
     @registration = Registration.find(params[:id])
-    #@registration.active = false;
+    @course = @registration.course
+    @assignments = @course.assignments
 
-    # TODO: This should also delete all evaluations people were assigned of this user
+    # Destroy dependent structure first
+    @assignments.each do |assignment|
+      assignment.submissions.each do |submission|
+        if submission.user_id == @registration.user_id
+          submission.destroy
+        else
+          submission.evaluations.each do |evaluation|
+            if evaluation.user_id == @registration.user_id
+              evaluation.destroy
+            end
+          end
+        end
+      end
+      assignment.memberships.each do |membership|
+        if membership.user_id == @registration.user_id
+          membership.destroy
+        end
+      end
+    end
     @registration.destroy
 
+    @registrations = sorted_registrations(@course.registrations.where(active: true))
     respond_to do |format|
-      format.html { redirect_to root_url }
+      format.html { render :index }
       format.json { head :no_content }
     end
   end

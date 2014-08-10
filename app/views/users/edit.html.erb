@@ -40,8 +40,10 @@
 
 <br />
 
-<%= link_to new_course_path do %>
-  <div class="button" style="float:left;">Create Course</div>
+<% if @user.instructor?(@course) %>
+    <%= link_to new_course_path do %>
+      <div class="button" style="float:left;">Create Course</div>
+    <% end %>
 <% end %>
 
 <%= link_to new_registration_path do %>

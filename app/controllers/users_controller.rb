@@ -36,16 +36,17 @@ class UsersController < ApplicationController
 		end
 	end
 
-	def edit
-    	@user = current_user
-    	@course = @user.courses.first
-    	@registrations = current_user.registrations
+  def edit
+    @user = current_user
+    @course = @user.courses.first
+    @registrations = @user.registrations
+    @registrations.each { |r| r.active = true; r.save! }
 
-    	if params[:course]
-      		@course = Course.find(params[:course])
-      		@assignments = @course.assignments.published
-      	end
-  	end
+    if params[:course]
+      @course = Course.find(params[:course])
+      @assignments = @course.assignments.published
+    end
+  end
 
   # POST
   def create
@@ -77,7 +78,7 @@ class UsersController < ApplicationController
   def update
     @user = User.find(params[:id])
     @course = @user.courses.last!
-    @registrations = current_user.registrations
+    @registrations = current_user.registrations.where(active: true)
 
     respond_to do |format|
       if @user.update_attributes(params[:user])
