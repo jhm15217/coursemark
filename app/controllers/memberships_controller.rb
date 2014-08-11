@@ -52,37 +52,40 @@ class MembershipsController < ApplicationController
     @assignment = Assignment.find(params[:assignment_id])
     @memberships = @assignment.memberships
 
-    CSV.foreach(ENV['HOME'] + '/Downloads/' + params['group']['attachment']) do |row|
-      team_name = row[1]
-      student = User.find_all_by_email(row[0])[0]
-      if !student
-        if flash[:error]
-          flash[:error] << ", #{row[0]}"
-        else
-          flash[:error] = "Can't find #{row[0]}"
-        end
-      else
-        # Wipe out previous memberships
-        @memberships.select{|m| m.user_id == student.id }.each do |membership|
-          membership.delete
-        end
-        # create new pseudo-user if needed
-        pseudo_users = User.find_all_by_last_name("Team").select{|x| x.first_name == team_name}
-        if pseudo_users.length > 0
-          pseudo_user = pseudo_users.first
-        else
-          pseudo_user = User.new(first_name: team_name, last_name: "Team", pseudo: true)
-          pseudo_user.save!(validate: false)
-          register_pseudo_user(@course.id, pseudo_user)
-        end
-        Membership.new(team:team_name, user_id: student.id, assignment_id: @assignment.id, pseudo_user_id: pseudo_user.id).save!
-      end
-    end
+    CSV.foreach(ENV['HOME'] + '/Downloads/' + params['group']['attachment']) {|row| add_teammate(row) }
 
     respond_to do |format|
       format.html { redirect_to course_assignment_memberships_path(@course,@assignment) }
       format.json { render json: @membership, status: :created, location: @membership }
     end
+  end
+
+  def add_teammate(row)
+    team_name = row[1]
+    student = User.find_all_by_email(row[0])[0]
+    if !student  or !@course.get_students.any?{|s| s.id == student.id }
+      if flash[:error]
+        flash[:error] << ", #{row[0]}"
+      else
+        flash[:error] = "Can't find #{row[0]}"
+      end
+    else
+      # Wipe out previous memberships
+      @memberships.select{|m| m.user_id == student.id }.each do |membership|
+        membership.delete
+      end
+      # create new pseudo-user if needed
+      pseudo_users = User.find_all_by_last_name("Team").select{|x| x.first_name == team_name}
+      if pseudo_users.length > 0
+        pseudo_user = pseudo_users.first
+      else
+        pseudo_user = User.new(first_name: team_name, last_name: "Team", pseudo: true)
+        pseudo_user.save!(validate: false)
+        register_pseudo_user(@course.id, pseudo_user)
+      end
+      Membership.new(team:team_name, user_id: student.id, assignment_id: @assignment.id, pseudo_user_id: pseudo_user.id).save!
+    end
+
   end
 
 

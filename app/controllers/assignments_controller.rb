@@ -54,10 +54,9 @@ class AssignmentsController < ApplicationController
     @course.assignments.each do  |assignment|
       unless assignment.draft
         if Time.now < assignment.submission_due and get_submission_for_assignment(assignment).nil?
-          puts 'Not submitted'
           @to_do << {action: :submit, assignment: assignment, time: assignment.submission_due - 2.hours }
         end
-        if Time.now < assignment.review_due
+        if Time.now > assignment.submission_due and Time.now < assignment.review_due and assignment.reviewers_assigned
           assignment.evaluations.forUser(current_user).sort_by{|t| t.created_at}.each_with_index do |evaluation, index|
             unless evaluation.finished
               @to_do << {action: :review, index: index + 1, submission_id: evaluation.submission.id, assignment: assignment,
@@ -121,7 +120,9 @@ class AssignmentsController < ApplicationController
   # GET /assignments/1/edit
   def edit
     @reviewing_tasks = @assignment.evaluations.forUser(current_user).sort_by{|e| e.created_at}
-    puts @reviewing_tasks.inspect
+    unless @assignment.manual_assignment
+      @assignment.reviewers_assigned = true
+    end
   end
 
   # POST /assignments
@@ -223,6 +224,7 @@ class AssignmentsController < ApplicationController
 # DELETE /assignments/1.json
   def destroy
     @assignment = Assignment.find(params[:id])
+    @assignment.memberships.each{|m| m.destroy }
     @assignment.destroy
 
     respond_to do |format|

@@ -34,7 +34,7 @@
         <!--     GRADE IS NOT APPROVED -->
         <span class="grade"><%= unless @submission.percentage.nil? then @submission.percentage.round.to_s + "%" end  %></span>
         <%= link_to course_assignment_submission_path(@course, @assignment, @submission, :submission => { :instructor_approved => true}), :method => :put do %>
-            <div class='button fr' style="margin-right: 0px;">Release Review</div>
+            <div class='button fr' style="margin-right: 0px;">Close Review</div>
         <% end %>
     <% end %>
   </div>
