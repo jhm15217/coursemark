@@ -28,6 +28,8 @@ class CoursesController < ApplicationController
   # GET /courses/1.json
   def show
     @course = Course.find(params[:id])
+    @course.registrations.each{|r| (r.active = true; r.save! ) if r.user_id == current_user.id  }
+
 
     # Redirect to assignments page
 

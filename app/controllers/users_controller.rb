@@ -40,7 +40,6 @@ class UsersController < ApplicationController
     @user = current_user
     @course = @user.courses.first
     @registrations = @user.registrations
-    @registrations.each { |r| r.active = true; r.save! }
 
     if params[:course]
       @course = Course.find(params[:course])
@@ -78,7 +77,7 @@ class UsersController < ApplicationController
   def update
     @user = User.find(params[:id])
     @course = @user.courses.last!
-    @registrations = current_user.registrations.where(active: true)
+    @registrations = current_user.registrations
 
     respond_to do |format|
       if @user.update_attributes(params[:user])

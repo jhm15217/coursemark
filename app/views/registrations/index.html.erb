@@ -27,8 +27,8 @@
 
   <% @registrations.each do |registration| %>
       <tr>
-        <td><%= registration.user.name %></td>
-        <td><%= registration.instructor ? "Course Staff" : registration.user.pseudo ? 'Team' : "Student"  %></td>
+        <td><%= registration.active ? registration.user.name : "<div style='color:red'>#{registration.user.name}</div>".html_safe %></td>
+        <td><%= registration.instructor ? 'Instructor' : registration.user.pseudo ? 'Team' : 'Student' %></td>
         <td><%= registration.user.email %></td>
         <td>
           <% unless registration.instructor or registration.user.pseudo %>

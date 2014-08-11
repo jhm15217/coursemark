@@ -18,7 +18,7 @@ class RegistrationsController < ApplicationController
   def index
     @course = params[:course] ? Course.find(params[:course]) :  current_user.courses.last
     @assignments = @course.assignments
-    @registrations = sorted_registrations(@course.registrations.where(active: true))
+    @registrations = sorted_registrations(@course.registrations)
     @template = "registrations/roster"
 
     respond_to do |format|
@@ -77,21 +77,26 @@ class RegistrationsController < ApplicationController
   def invite_students
     @course = Course.find(params[:course])
     CSV.foreach(ENV['HOME']+ '/Downloads/' + params['invites']['attachment']) do |row|
-      if user = User.find_by_email(row[2])
-        unless @course.registrations.any?{|r| r.user_id == user.id }
-          @course.register(user)
-          UserMailer.registration_email(user, @course).deliver
-        end
-      else
-        password = SecureRandom.hex(4)
-        user = User.new({first_name: row[0], last_name: row[1], email:row[2], password: password, password_confirmation: password})
-        user.confirmed = true
-        user.save!
-        @course.register(user)
-        UserMailer.welcome_email(user, password, @course).deliver
-      end
+    invite_student(row)
     end
     redirect_to :back
+  end
+
+  def invite_student(row)
+    if user = User.find_by_email(row[2])
+      unless @course.get_students.any?{|s| s.id == user.id }
+        @course.register(user)
+        UserMailer.registration_email(user, @course).deliver
+      end
+    else
+      password = SecureRandom.hex(4)
+      user = User.new({first_name: row[0], last_name: row[1], email:row[2], password: password, password_confirmation: password})
+      user.confirmed = true
+      user.save!
+      @course.register(user)
+      UserMailer.welcome_email(user, password, @course).deliver
+    end
+
   end
 
 
@@ -167,9 +172,8 @@ class RegistrationsController < ApplicationController
     end
     @registration.destroy
 
-    @registrations = sorted_registrations(@course.registrations.where(active: true))
     respond_to do |format|
-      format.html { render :index }
+      format.html { redirect_to registrations_url }
       format.json { head :no_content }
     end
   end

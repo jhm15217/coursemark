@@ -18,7 +18,7 @@ class Course < ActiveRecord::Base
   # Here are these instead
   # The SQL for the booleans on instructor might not work when not on SQLite
   def get_students
-    registrations.select{|r| r.active and !r.instructor}.map{|r| r.user}
+    registrations.select{|r| !r.instructor}.map{|r| r.user}
   end
 
   def get_real_students
@@ -26,11 +26,11 @@ class Course < ActiveRecord::Base
   end
 
   def get_people
-    registrations.select{|r| r.active}.map{|r| r.user}.select{|u| !u.pseudo }
+    registrations.map{|r| r.user}
   end
 
   def get_instructors
-    registrations.select{|r| r.active and r.instructor}.map{|r| r.user}
+    registrations.select{|r| r.instructor}.map{|r| r.user}
   end
 
   def create_unique_identifier

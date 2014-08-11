@@ -109,11 +109,12 @@ class Assignment < ActiveRecord::Base
       self.submission_due = DateTime.parse("#{@submission_due_date} #{@submission_due_time + @offset}")
       self.review_due = DateTime.parse("#{@review_due_date} #{@review_due_time + @offset}")
 
+      self.memberships
     end
   end
 
   def get_participants_in_assignment
-    self.course.get_people.select{|s| !s.pseudo or self.memberships.select{|m| m.pseudo_user_id == s.id}.length > 0 }
+    course.get_people.select{|s| !s.pseudo or memberships.any?{|m| m.pseudo_user_id == s.id} }
   end
 
   def get_students_for_assignment
