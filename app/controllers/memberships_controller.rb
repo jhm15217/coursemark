@@ -52,7 +52,7 @@ class MembershipsController < ApplicationController
     @assignment = Assignment.find(params[:assignment_id])
     @memberships = @assignment.memberships
 
-    CSV.foreach(ENV['HOME'] + '/Downloads/' + params['group']['attachment']) {|row| add_teammate(row) }
+    params[:response][:teams].split("\r\n").each{ |line| add_teammate(line.split(',')) }
 
     respond_to do |format|
       format.html { redirect_to course_assignment_memberships_path(@course,@assignment) }
@@ -61,29 +61,28 @@ class MembershipsController < ApplicationController
   end
 
   def add_teammate(row)
-    team_name = row[1]
-    student = User.find_all_by_email(row[0])[0]
+    student = User.find_all_by_email(row[2])[0]
     if !student  or !@course.get_students.any?{|s| s.id == student.id }
       if flash[:error]
-        flash[:error] << ", #{row[0]}"
+        flash[:error] << ", #{row[2]}"
       else
-        flash[:error] = "Can't find #{row[0]}"
+        flash[:error] = "Can't find #{row[2]}"
       end
     else
-      # Wipe out previous memberships
-      @memberships.select{|m| m.user_id == student.id }.each do |membership|
+      # Wipe out any previous memberships for this assignment
+      @memberships.select{|m| m.user_id == student.id and m.assignment_id = @assignment.id }.each do |membership|
         membership.delete
       end
       # create new pseudo-user if needed
-      pseudo_users = User.find_all_by_last_name("Team").select{|x| x.first_name == team_name}
+      pseudo_users = User.all.select{|x| x.pseudo and x.first_name == row[3] and x.last_name == row[4]}
       if pseudo_users.length > 0
         pseudo_user = pseudo_users.first
       else
-        pseudo_user = User.new(first_name: team_name, last_name: "Team", pseudo: true)
+        pseudo_user = User.new(first_name: row[3], last_name: row[4], pseudo: true)
         pseudo_user.save!(validate: false)
         register_pseudo_user(@course.id, pseudo_user)
       end
-      Membership.new(team:team_name, user_id: student.id, assignment_id: @assignment.id, pseudo_user_id: pseudo_user.id).save!
+      Membership.new(team:pseudo_user.name, user_id: student.id, assignment_id: @assignment.id, pseudo_user_id: pseudo_user.id).save!
     end
 
   end

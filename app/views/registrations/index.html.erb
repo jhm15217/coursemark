@@ -48,7 +48,7 @@
 <br />
 <form method='get' action='/registrations/invite_students'>
   <div class="field" >
-    <input id="invites_attachment" name="invites[attachment]" required="required" type="file" />
+    <textarea cols="60" name="response[invites]" rows="20"></textarea>
   </div>
   <%= hidden_field_tag 'course', @course.id %>
   <div class="actions">
