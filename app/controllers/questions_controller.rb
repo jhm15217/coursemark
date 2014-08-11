@@ -95,7 +95,8 @@ class QuestionsController < ApplicationController
     @assignment = Assignment.find(params[:assignment_id])
     @questions = @assignment.questions
     ok = true
-    CSV.foreach(ENV['HOME']+ '/Downloads/' + params['rubric']['attachment']) do |row|
+    params[:response][:questions].split("\r\n").each do |line|
+      row = line.split(',')
       question = Question.new(question_text: row[0], question_weight: row[1].to_i, written_response_required:row[2] == 'TRUE',
                               assignment_id: @assignment.id)
       ok = question.save
