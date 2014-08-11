@@ -76,7 +76,7 @@ class RegistrationsController < ApplicationController
 
   def invite_students
     @course = Course.find(params[:course])
-    CSV.foreach(ENV['HOME']+ '/Downloads/' + params['invites']['attachment']) do |row|
+    CSV.foreach('/Users/jhm/Downloads/' + params['invites']['attachment']) do |row|
     invite_student(row)
     end
     redirect_to :back
