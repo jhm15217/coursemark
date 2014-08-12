@@ -49,8 +49,6 @@ class ReviewsController < ApplicationController
       response.save!
     }
 
-    puts params
-
     redirect_to action: 'index'
   end
 
