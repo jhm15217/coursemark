@@ -1,10 +1,7 @@
-Welcome to Worth Reading, <%= @user.name %>
-===============================================
- 
-You have successfully signed up to Worth Reading,
-your username is: <%= @user.email %>.
- 
-Please confirm you email address by following this link:
-<%= @url %>
- 
-Thanks for joining and have a great day!
+We are using a peer-reviewing system, Coursemark, in this course.
+
+Your Coursemark user name is: <%= @user.email %> and your temporary password is <b><%= @password %></b>.
+
+Please login to coursemark.org, go to SETTINGS, and change your password.
+
+<%= @autogen_msg %>
