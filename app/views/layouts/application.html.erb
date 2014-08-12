@@ -42,7 +42,7 @@
             
             <% if current_user.courses.length > 1 %>
                 <div id='courseSelector'>
-                  Other Courses
+                  <%= @course.name  %>
                 </div>
             <% end %>
 
@@ -52,7 +52,7 @@
                     <li><%= link_to "+ New Assignment", new_course_assignment_path(@course) %></li>
                 <% end %>
 
-            	<% @assignments.sort_by{|a| a.created_at }.each do |assignment| %>
+            	<% @assignments.sort_by{|a| a.submission_due }.each do |assignment| %>
                     <li class="<%= 'active' if @assignment && @assignment.id == assignment.id %>">
                     	<%= link_to course_assignment_path(@course, assignment) do %>
                             <div class="name"><%= assignment.name %></div>

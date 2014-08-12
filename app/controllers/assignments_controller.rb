@@ -7,13 +7,22 @@ class AssignmentsController < ApplicationController
   # GET /assignments
   # GET /assignments.json
   def index
-    @URL = edit_user_path(current_user, :course => @course.id)     #default is settings page
-    if @assignment = @course.assignments.last
-      @URL = course_assignment_url(@course, @assignment)  # show most recent
-      unless current_user.instructor?(@course)
-        if urgent = @course.to_do(current_user)[0]   # see if student has a to_do
-          @URL = course_assignment_url(@course, urgent[:assignment])
-        end
+    if current_user.instructor?(@course)
+      if @assignment = @course.assignments.last
+        @URL = course_assignment_url(@course, @assignment)
+      else
+        @URL = edit_user_path(current_user, :course => @course.id)     #default is settings page
+      end
+    else  #student
+      if urgent = @course.to_do(current_user)[0]   # see if student has a to_do
+        @URL = course_assignment_url(@course, urgent[:assignment])
+      elsif  pair = @course.assignments.map{|x| x.draft ? nil :
+          (Time.zone.now < x.review_due) ? { assignment: x, time: x.review_due } :
+              nil }.select{|x| x }.sort_by{|y| y.time }[0]
+        @URL = course_assignment_url(@course, pair[:assignment]) # show one with open reviews
+      else
+        @URL = edit_user_path(current_user, :course => @course.id)     #default is settings page
+
       end
     end
 
