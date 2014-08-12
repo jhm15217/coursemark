@@ -157,6 +157,10 @@ class AssignmentsController < ApplicationController
     @reviewing_tasks = @assignment.evaluations.forUser(current_user).sort_by{|e| e.created_at}
     @URL = course_assignment_path(@course, @assignment)
 
+    unless @assignment.team
+      @assignment.memberships.each{|m| m.destroy }
+    end
+
     if params['publish']
       if @assignment.draft
         if @assignment.questions.length == 0
