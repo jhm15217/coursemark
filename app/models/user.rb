@@ -60,10 +60,6 @@ class User < ActiveRecord::Base
     self.confirmation_token = SecureRandom.urlsafe_base64
   end
 
-  def get_submission(assignment)
-    Submission.where(:assignment_id => assignment.id, :user_id => self.id).first
-  end
-
   def submitting_id(assignment)
     ms = assignment.memberships.select{|m| m.user_id == self.id }.first
     return ms ? ms.pseudo_user_id : self.id
