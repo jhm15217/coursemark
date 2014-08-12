@@ -15,11 +15,11 @@ class Course < ActiveRecord::Base
     Registration.new({active: false, instructor: false, course_code: self.course_code, user_id: user.id, course_id: self.id}).save!
   end
 
-  def to_do
+  def to_do(user)
     to_do_list = []
     assignments.each do  |assignment|
       unless assignment.draft
-        if Time.now < assignment.submission_due and assignment.get_submission(current_user).nil?
+        if Time.now < assignment.submission_due and assignment.get_submission(user).nil?
           to_do_list << {action: :submit, assignment: assignment, time: assignment.submission_due - 2.hours }
         end
         if Time.now > assignment.submission_due and Time.now < assignment.review_due and assignment.reviewers_assigned
