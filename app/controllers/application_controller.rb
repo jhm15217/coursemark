@@ -3,7 +3,6 @@ class ApplicationController < ActionController::Base
   before_filter :require_login, :except => [:create ]
   before_filter :get_assignments
   helper_method :current_user
-  helper_method :get_submission_for_assignment
 
   def redirect_to(*args)
     flash.keep
@@ -40,17 +39,6 @@ class ApplicationController < ActionController::Base
         @assignments = @registration.course.assignments.published
       end
     end
-  end
-
-  def get_submission_for_assignment(assignment)
-    # return current_user.submitting_user(assignment).submissions.first!
-    memberships = assignment.memberships.select{|m| m.user_id == current_user.id}
-    if memberships.length == 0
-      @submission = Submission.where(:assignment_id => assignment.id, :user_id => current_user.id)
-    else # This is a team assignment
-      @submission = Submission.where(:assignment_id => assignment.id, :user_id => memberships.first.pseudo_user_id )
-    end
-    return @submission[0]
   end
 
   rescue_from CanCan::AccessDenied do |exception|

@@ -19,7 +19,7 @@ class Course < ActiveRecord::Base
     to_do_list = []
     assignments.each do  |assignment|
       unless assignment.draft
-        if Time.now < assignment.submission_due and get_submission_for_assignment(assignment).nil?
+        if Time.now < assignment.submission_due and assignment.get_submission(current_user).nil?
           to_do_list << {action: :submit, assignment: assignment, time: assignment.submission_due - 2.hours }
         end
         if Time.now > assignment.submission_due and Time.now < assignment.review_due and assignment.reviewers_assigned
