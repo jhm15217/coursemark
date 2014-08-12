@@ -15,6 +15,26 @@ class Course < ActiveRecord::Base
     Registration.new({active: false, instructor: false, course_code: self.course_code, user_id: user.id, course_id: self.id}).save!
   end
 
+  def to_do
+    to_do_list = []
+    assignments.each do  |assignment|
+      unless assignment.draft
+        if Time.now < assignment.submission_due and get_submission_for_assignment(assignment).nil?
+          to_do_list << {action: :submit, assignment: assignment, time: assignment.submission_due - 2.hours }
+        end
+        if Time.now > assignment.submission_due and Time.now < assignment.review_due and assignment.reviewers_assigned
+          assignment.evaluations.forUser(current_user).sort_by{|t| t.created_at}.each_with_index do |evaluation, index|
+            unless evaluation.finished
+              to_do_list << {action: :review, index: index + 1, submission_id: evaluation.submission.id, assignment: assignment,
+                         time: assignment.review_due - 2.hours }
+            end
+          end
+        end
+      end
+    end
+    to_do_list.sort_by{|t| t[:time] }
+  end
+
   # Here are these instead
   # The SQL for the booleans on instructor might not work when not on SQLite
   def get_students
