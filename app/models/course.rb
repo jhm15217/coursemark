@@ -21,7 +21,7 @@ class Course < ActiveRecord::Base
       unless assignment.draft
         if Time.now < assignment.submission_due and assignment.get_submission(user).nil?
           to_do_list << {action: :submit, assignment: assignment, time: assignment.submission_due - 2.hours }
-          puts "to_do: " + to_do.inspect
+          puts "to_do_list: " + to_do_list.inspect
         end
         if Time.now > assignment.submission_due and Time.now < assignment.review_due and assignment.reviewers_assigned
           assignment.evaluations.forUser(current_user).sort_by{|t| t.created_at}.each_with_index do |evaluation, index|
@@ -33,7 +33,7 @@ class Course < ActiveRecord::Base
         end
       end
     end
-    puts "final to_do: " + to_do.inspect
+    puts "final to_do_list: " + to_do_list.inspect
     to_do_list.sort_by{|t| t[:time] }
   end
 
