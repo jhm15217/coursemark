@@ -1,7 +1,6 @@
 class AssignmentsController < ApplicationController
   require 'csv'
   before_filter :get_course
-  helper_method :get_submission_for_assignment
   load_and_authorize_resource :except => [:new, :create]
   skip_authorization_check :only => [:new, :create]
 
@@ -37,7 +36,7 @@ class AssignmentsController < ApplicationController
     @to_do = @course.to_do
 
     @reviewing_tasks = @assignment.evaluations.forUser(current_user).sort_by{|t| t.created_at}
-    @submission = get_submission_for_assignment(@assignment)
+    @submission = @assignment.get_submission(current_user)
     @questions = @assignment.questions.sort_by{|q| q.created_at }
 
 

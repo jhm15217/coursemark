@@ -125,6 +125,19 @@ class Assignment < ActiveRecord::Base
     self.evaluations.forUser(user).select { |eval| !eval.finished  }
   end
 
+  def get_submission(user)
+    # return current_user.submitting_user(assignment).submissions.first!
+    ms = memberships.select{|m| m.user_id == user.id}
+    if ms.length == 0
+      @submission = Submission.where(:assignment_id => self.id, :user_id => user.id)
+    else # This is a team assignment
+      @submission = Submission.where(:assignment_id => self.id, :user_id => ms.first.pseudo_user_id )
+    end
+    return @submission[0]
+  end
+
+
+
   # get /assignments/1/export
   def export(students)
     header_row = ['Submitter', 'Time']

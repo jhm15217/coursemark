@@ -1,7 +1,6 @@
 class RegistrationsController < ApplicationController
   require 'csv'
   skip_before_filter :get_assignments, :except => [:index]
-  skip_before_filter :get_submission_for_assignment, :except => [:index]
   load_and_authorize_resource :except => [:add_to_course_staff, :invite_students]
 
   # Exception Handling
