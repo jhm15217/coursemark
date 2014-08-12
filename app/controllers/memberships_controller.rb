@@ -74,7 +74,10 @@ class MembershipsController < ApplicationController
         membership.delete
       end
       # create new pseudo-user if needed
+      if !row[3] then row[3] = '' end
+      if !row[4] then row[4] = '' end
       pseudo_users = User.all.select{|x| x.pseudo and x.first_name == row[3] and x.last_name == row[4]}
+
       if pseudo_users.length > 0
         pseudo_user = pseudo_users.first
       else
@@ -88,7 +91,7 @@ class MembershipsController < ApplicationController
   end
 
 
-  # PUT /memberships/1
+# PUT /memberships/1
   # PUT /memberships/1.json
   def update
     @membership = Membership.find(params[:id])

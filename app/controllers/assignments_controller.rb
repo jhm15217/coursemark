@@ -154,7 +154,7 @@ class AssignmentsController < ApplicationController
     params['assignment'].delete 'review_due_time(5i)'
 
     @assignment = Assignment.find(params[:id])
-
+    @reviewing_tasks = @assignment.evaluations.forUser(current_user).sort_by{|e| e.created_at}
     @URL = course_assignment_path(@course, @assignment)
 
     if params['publish']

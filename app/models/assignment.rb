@@ -18,7 +18,6 @@ class Assignment < ActiveRecord::Base
   validates_inclusion_of :draft, :in => [true, false], :message => 'must be true or false'
   validates_numericality_of :reviews_required, :only_integer => true, :greater_than_or_equal_to  => 0
   validates_datetime :submission_due, :allow_nil => true, :before => :review_due, :before_message => 'Submission deadline must be before review deadline'
-  validates_datetime :review_due, :allow_nil => true, :after => :submission_due, :after_message => 'Review deadline must be after submission deadline'
 
   # submission and review due dates can only be changed if they haven't passed
   # validate :submission_deadline_not_passed
