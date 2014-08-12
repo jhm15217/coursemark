@@ -8,29 +8,13 @@ class AssignmentsController < ApplicationController
   # GET /assignments
   # GET /assignments.json
   def index
-    @assignments = Assignment.where(:course_id => @course.id)
-
-    # Redirect to first assignment page or
-    # new assignment page if there are none
-
-    if @assignments.length > 0
-
-      if !current_user.instructor?(@course)
-        @assignment = @assignments.published.last
-      else
-        @assignment = @assignments.last
-      end
-
-      if @assignment.nil?
-        @URL = edit_user_path(current_user, :course => @course.id)
-      else
-        @URL = course_assignment_url(@course, @assignment)
-      end
-    else
-      if current_user.instructor?(@course)
-        @URL = { :action => 'new' }
-      else
-        @URL = edit_user_path(current_user, :course => @course.id)
+    @URL = edit_user_path(current_user, :course => @course.id)     #default is settings page
+    if @assignment = @course.assignments.last
+      @URL = course_assignment_url(@course, @assignment)  # show most recent
+      unless current_user.instructor?(@course)
+        if urgent = @course.to_do[0]   # see if student has a to_do
+          @URL = course_assignment_url(@course, urgent.assignment)
+        end
       end
     end
 
@@ -50,23 +34,7 @@ class AssignmentsController < ApplicationController
     end
 
     #Create 'To Do' List
-    @to_do = []
-    @course.assignments.each do  |assignment|
-      unless assignment.draft
-        if Time.now < assignment.submission_due and get_submission_for_assignment(assignment).nil?
-          @to_do << {action: :submit, assignment: assignment, time: assignment.submission_due - 2.hours }
-        end
-        if Time.now > assignment.submission_due and Time.now < assignment.review_due and assignment.reviewers_assigned
-          assignment.evaluations.forUser(current_user).sort_by{|t| t.created_at}.each_with_index do |evaluation, index|
-            unless evaluation.finished
-              @to_do << {action: :review, index: index + 1, submission_id: evaluation.submission.id, assignment: assignment,
-                         time: assignment.review_due - 2.hours }
-            end
-          end
-        end
-      end
-    end
-    @to_do.sort_by!{|t| t[:time] }
+    @to_do = @course.to_do
 
     @reviewing_tasks = @assignment.evaluations.forUser(current_user).sort_by{|t| t.created_at}
     @submission = get_submission_for_assignment(@assignment)
