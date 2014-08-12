@@ -12,7 +12,7 @@ class AssignmentsController < ApplicationController
       @URL = course_assignment_url(@course, @assignment)  # show most recent
       unless current_user.instructor?(@course)
         if urgent = @course.to_do(current_user)[0]   # see if student has a to_do
-          @URL = course_assignment_url(@course, urgent.assignment)
+          @URL = course_assignment_url(@course, urgent[:assignment])
         end
       end
     end
