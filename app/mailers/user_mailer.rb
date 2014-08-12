@@ -14,20 +14,15 @@ class UserMailer < ActionMailer::Base
     @user = user
     @password = password
     @course = course
-
-    # @url =  confirm_email_url(host: if Rails.env.production? then PROD_URL else DEV_URL end,
-    #                            id: user.id,
-    #                            confirmation_token: user.confirmation_token,
-    #                            protocol: "http" )
-
-    mail(to: user.email, subject: "Welcome to Coursemark")
+    @autogen_msg = AUTOGEN_MSG
+    mail(to: user.email, subject: "Welcome to #{@course.name}")
   end
 
   def registration_email(user, course)
     @user = user
     @course = course
-
-    mail(to: user.email, subject: "A new registration on Coursemark")
+    @autogen_msg = AUTOGEN_MSG
+    mail(to: user.email, subject: "Welcome to #{@course.name}")
   end
 
   def error_email(error, user, email)

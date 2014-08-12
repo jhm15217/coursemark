@@ -4,17 +4,10 @@
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
   </head>
   <body>
-    Welcome to Coursemark, <%= @user.first_name %>
-    </br>
-    <p>
-      Your username is: <%= @user.email %>, your temporary password is <b><%= @password %></b>, and you are registered for
-      the course, <% @course.name %>.
-    </p>
-    </br>
-    <p>
-      Please login to coursemark.org, go to SETTINGS, and change your password.
-      <br>
-    </p>
-    <%= @autogen_msg %>
+<%= @user.first_name %>,
+<p>We are using a peer-reviewing system, Coursemark, in this course.</p>
+<p>Your Coursemark user name is: <%= @user.email %> and your temporary password is <b><%= @password %></b>.</p>
+<p>Please login to coursemark.org, go to SETTINGS, and change your password.</p>
+<p><%= @autogen_msg %></p>
   </body>
 </html>
