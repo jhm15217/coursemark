@@ -11,7 +11,7 @@ class AssignmentsController < ApplicationController
     if @assignment = @course.assignments.last
       @URL = course_assignment_url(@course, @assignment)  # show most recent
       unless current_user.instructor?(@course)
-        if urgent = @course.to_do[0]   # see if student has a to_do
+        if urgent = @course.to_do(current_user)[0]   # see if student has a to_do
           @URL = course_assignment_url(@course, urgent.assignment)
         end
       end
@@ -33,7 +33,7 @@ class AssignmentsController < ApplicationController
     end
 
     #Create 'To Do' List
-    @to_do = @course.to_do
+    @to_do = @course.to_do(current_user)
 
     @reviewing_tasks = @assignment.evaluations.forUser(current_user).sort_by{|t| t.created_at}
     @submission = @assignment.get_submission(current_user)
