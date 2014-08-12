@@ -2,18 +2,20 @@
 
 <!-- User is not instructor -->
 
-<div class="toDoList" >
-  <h3>To-Do List</h3>
-  <% @to_do.each do |task| %>
-      <%= ((if task[:action] == :submit  then
-              "Submit <a href=/courses/#{@course.id}/assignments/#{task[:assignment].id}>#{task[:assignment].name}</a>"
-           else
-              "Complete <a href=/courses/#{@course.id}/assignments/#{task[:assignment].id}/submissions/#{task[:submission_id]}>Review #{task[:index].to_s}</a> for #{task[:assignment].name}"
-           end) +
-          ' Assignment by ' + task[:time].strftime('%-m/%-d at %H:%M')  + '</br>').html_safe
-      %>
-  <% end %>
-</div>
+<% if @to_do.length > 0 %>
+    <div class="toDoList" >
+      <h3>To-Do List</h3>
+      <% @to_do.each do |task| %>
+          <%= ((if task[:action] == :submit  then
+                  "Submit <a href=/courses/#{@course.id}/assignments/#{task[:assignment].id}>#{task[:assignment].name}</a>"
+                else
+                  "Complete <a href=/courses/#{@course.id}/assignments/#{task[:assignment].id}/submissions/#{task[:submission_id]}>Review #{task[:index].to_s}</a> for #{task[:assignment].name}"
+                end) +
+                  ' Assignment by ' + task[:time].strftime('%-m/%-d at %H:%M')  + '</br>').html_safe
+          %>
+      <% end %>
+    </div>
+<% end %>
 
 <% if (Time.zone.now < @assignment.submission_due) %>
     <%= render 'submission' %>
