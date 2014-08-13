@@ -42,11 +42,19 @@
       <%= f.label :manual_assignment, "Manually assigned reviews" %>&nbsp;
       <%= f.check_box :manual_assignment, :disabled => @assignment.review_due && (Time.zone.now > @assignment.submission_due) %>
     </div>
-    <div class="actions">
-      <div class="clearfix"></div>
-      <%= f.submit %>
-        <%= f.submit name: 'publish', value: (@assignment.draft ? 'Publish' : 'Unpublish') + ' Assignment', :style => 'margin-right: 0px !important' %>
-    </div>
+    <%if @assignment.draft %>
+       <div class="actions">
+         <div class="clearfix"></div>
+         <%= f.submit %>
+           <%= f.submit name: 'publish', value: 'Publish Assignment', :style => 'margin-right: 0px !important' %>
+        </div>
+    <% elsif @assignment.submissions.length == 0 %>
+        <div class="actions">
+          <div class="clearfix"></div>
+          <%= f.submit %>
+          <%= f.submit name: 'publish', value: 'Unpublish Assignment', :style => 'margin-right: 0px !important' %>
+        </div>
+    <% end %>
     <div class="clearfix"></div>
     <% if @assignment.id %>
         <div class="delete">

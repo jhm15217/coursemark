@@ -18,7 +18,7 @@ class AssignmentsController < ApplicationController
         @URL = course_assignment_url(@course, urgent[:assignment])
       elsif  pair = @course.assignments.map{|x| x.draft ? nil :
           (Time.zone.now < x.review_due) ? { assignment: x, time: x.review_due } :
-              nil }.select{|x| x }.sort_by{|y| y.time }[0]
+              nil }.select{|x| x }.sort_by{|y| y[:time] }[0]
         @URL = course_assignment_url(@course, pair[:assignment]) # show one with open reviews
       else
         @URL = edit_user_path(current_user, :course => @course.id)     #default is settings page
