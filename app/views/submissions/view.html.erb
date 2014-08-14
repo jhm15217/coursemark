@@ -23,21 +23,12 @@
 
 <div id='submissionBoxesWrapper'>
   <!--     GRADE -->
-  <div class='submissionGradeBox'>
-    <% if @submission.instructor_approved then %>
-        <!--     GRADE IS APPROVED -->
-        <span class="grade"><%= unless @submission.percentage.nil? then @submission.percentage.round.to_s + "%" end %></span>
-        <%= link_to course_assignment_submission_path(@course, @assignment, @submission, :submission => { :instructor_approved => false}), :method => :put do %>
-            <div class='button fr' style="margin-right: 0px;">Reopen Review</div>
-        <% end %>
-    <% else  %>
-        <!--     GRADE IS NOT APPROVED -->
-        <span class="grade"><%= unless @submission.percentage.nil? then @submission.percentage.round.to_s + "%" end  %></span>
-        <%= link_to course_assignment_submission_path(@course, @assignment, @submission, :submission => { :instructor_approved => true}), :method => :put do %>
-            <div class='button fr' style="margin-right: 0px;">Close Review</div>
-        <% end %>
-    <% end %>
-  </div>
+  <span class='submissionGradeBox'>
+        <span class="grade"><%= unless @submission.percentage.nil? then 'Review Average: ' + @submission.percentage.round.to_s + "%" end %></span>
+  </span>
+  <%= link_to course_assignment_submission_path(@course, @assignment, @submission, :submission => { :instructor_approved => false}), :method => :put do %>
+      <div class='button fr' style="margin-right: 0px;"><%= @submission.instructor_approved ? 'Reopen Review' : 'End Review' %></div>
+  <% end %>
   <% if (Time.zone.now >= @assignment.review_due) && @submission.percentage.nil?%>
       <div class='submissionGradeBox warning'>
         This student's submission could not be automatically graded. Their submission did not receive the required number of complete reviews.

@@ -44,6 +44,9 @@
 <% if @evaluations && (@submission.completed_responses.length > 0) %>
     <h3>Reviews of Your Submission</h3>
     <div id="student_evaluation_view">
+      <div class='submissionGradeBox'>
+        <span class="grade"><%= unless @submission.percentage.nil? then 'Review Average: ' + @submission.percentage.round.to_s + "%" end %></span>
+       </div>
 
       <% @questions.each do |question| %>
           <div class='submissionQuestionBox clearfix'>
