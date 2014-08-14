@@ -139,44 +139,47 @@ class Assignment < ActiveRecord::Base
 
   # get /assignments/1/export
   def export(students)
-    header_row = ['Submitter', 'Time']
-    reviews_required.times { |index| header_row << "Student #{index+1}" }
-    instructor_reviews_required.times { |index| header_row << "Instructor #{index+1}" }
-    questions.each { |question|
-      header_row << question.question_text
-      reviews_required.times { |index| header_row << "Student #{index+1}" }
-      instructor_reviews_required.times { |index| header_row << "Instructor #{index+1}" }
-    }
-    header_row << 'Reviews Finished'
-    header_row << 'Reviews Required'
-
+    reviewer_count =  reviews_required + instructor_reviews_required
+    space_before_questions =   ['']*(2 + reviewer_count)
+    ordered_questions = questions.sort_by{ |obj| obj.created_at }
     return CSV.generate do |csv|
-      csv << header_row
+      line = Array.new(space_before_questions)
+      ordered_questions.each {|question| line << question.question_text; line += ['']*(reviewer_count-1) }
+      csv << line
+      line = Array.new(space_before_questions)
+      ordered_questions.each{|q|  line << q.question_weight; line += ['']*(reviewer_count-1) }
+      csv << line
+
+      header_row = ['Submitter', 'Time']
+      chunk = []
+      reviews_required.times { |index| chunk << "Student #{index+1}" }
+      instructor_reviews_required.times { |index| chunk << "Instructor #{index+1}" }
+      header_row += chunk*(1 + ordered_questions.length)  + ['Reviews Finished', 'Reviews Requested']
+
+      csv <<   header_row
+
       students.each do |student|
         this_sub = [student.email]
         submission = submissions.select { |sub| sub.user.id == student.submitting_id(self) }.first
         if submission then
           this_sub << submission.created_at
-          submission.evaluations.sort_by{|e| e.created_at }.each do |e|
+          submission.evaluations.sort_by{|e| e.created_at }.each do |e|  # reveal who student1, student2, etc. were for this submission
             this_sub << e.user.email
           end
           # for each of the questions in the assignment
-          self.questions.sort_by{ |obj| obj.created_at }.each do |question|
-            # total possible points
-            this_sub << question.question_weight
-
+          ordered_questions.each do |question|
             points_for_q = []
             # get responses for a student's submission, sorted to match order in the reviewer page
-            submission.get_responses_for_question(question).sort_by{|r| r.evaluation.created_at }.each_with_index do |response, index|
+            submission.get_responses_for_question(question).sort_by{|r| r.evaluation.created_at }.each_with_index do |response, index|    #this should match the reviewers names
               if response.evaluation.finished
-                this_sub << percentage(response.question, response.scale) * question.question_weight   # (((100 / (response.question.scales.length - 1.0) * response.scale.value)) / 100)
+                this_sub << response.scale.value
               else
                 this_sub << ''
               end
             end
           end
         else
-          this_sub += ['']*((1 + reviews_required + instructor_reviews_required )*(questions.length + 1))
+          this_sub += ['']*(1 + (reviewer_count)*(questions.length + 1))
         end
 
         this_sub << evaluations.forUser(student).select { |evaluation| evaluation.finished }.length

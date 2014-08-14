@@ -1067,13 +1067,12 @@ textarea {
 
 .submissionGradeBox {
   height:72px;
+    width: 300px;
 }
 
 .submissionGradeBox span {
-  text-transform:uppercase;
   font-color:#48494B;
   line-height: 50px;
-  font-weight:bold;
 }
 
 .submissionBox {
@@ -1212,11 +1211,10 @@ textarea {
 .submissionGradeBox .grade {
     font-size: 34pt;
     margin: 0px;
-    font-weight: lighter;
 }
 
 .submissionGradeBox .grade {
-    font-size: 24pt;
+    font-size: 16pt;
 }
 
 #main .new_submission input[type=submit],
