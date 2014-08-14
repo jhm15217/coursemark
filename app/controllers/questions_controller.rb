@@ -102,7 +102,7 @@ class QuestionsController < ApplicationController
       ok = question.save
       i = 3
       while ok and row[i] and row[i+1] do
-        scale = Scale.new(description: row[i], value: row[i+1].to_f, question_id: question.id)
+        scale = Scale.new(description: row[i], value: row[i+1], question_id: question.id)
         ok = scale.save
         i += 2
       end

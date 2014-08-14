@@ -36,9 +36,17 @@ class AssignmentsController < ApplicationController
   # GET /assignments/1.json
   def show
     @assignment = Assignment.find(params[:id])
-    if current_user.instructor?(@course)
-      redirect_to(edit_course_assignment_url(@course, @assignment))
-      return
+    @user = current_user
+    if @user.instructor?(@course)
+      if reviewer_id = params[:reviewer]
+        @reviewer = User.find(reviewer_id)
+        @reviewing_tasks = @assignment.evaluations.forUser(@reviewer)
+        render 'assignments/show_instructor'
+        return
+      else
+        redirect_to(edit_course_assignment_url(@course, @assignment))
+        return
+      end
     end
 
     #Create 'To Do' List

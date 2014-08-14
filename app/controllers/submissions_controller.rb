@@ -27,7 +27,8 @@ class SubmissionsController < ApplicationController
     @questions = @submission.assignment.questions.sort_by {|obj| obj.created_at }
     evaluation = @evaluations.where(:user_id => current_user.id).first
     @responses = @evaluations[0].responses.sort_by {|obj| obj.created_at }
-    @current_user = current_user
+    @reviewer = params[:instructor_review_of] ? User.find(params[:instructor_review_of]) : current_user
+
 
     if params[:instructor]
       respond_to do |format|
