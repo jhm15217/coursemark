@@ -27,7 +27,7 @@
 
 
 <div id='submissionBoxesWrapper'>
-  <% if @reviewer != current_user and !@submission.evaluations.forUser(@reviewer)[0].finished  and
+  <% if @reviewer == current_user and !@submission.evaluations.forUser(@reviewer)[0].finished  and
           Time.zone.now < @assignment.review_due %>
       <!-- This user is a reviewer who hasn't finished but has time  -->
       <% @questions.each do |question| %>

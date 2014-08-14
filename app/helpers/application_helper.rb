@@ -37,7 +37,8 @@ module ApplicationHelper
   end
 
     def percentage(question, scale)
-      prettifyFloat(((100 / (question.scales.length - 1.0) * scale.value)))
+      scale.value
+#      prettifyFloat(((100 / (question.scales.length - 1.0) * scale.value)))
     end
 
   def reviewer_name(evaluation, index)
