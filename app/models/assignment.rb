@@ -169,7 +169,7 @@ class Assignment < ActiveRecord::Base
             # get responses for a student's submission, sorted to match order in the reviewer page
             submission.get_responses_for_question(question).sort_by{|r| r.evaluation.created_at }.each_with_index do |response, index|
               if response.evaluation.finished
-                this_sub << (((100 / (response.question.scales.length - 1.0) * response.scale.value)) / 100) * question.question_weight
+                this_sub << percentage(response.question, response.scale) * question.question_weight   # (((100 / (response.question.scales.length - 1.0) * response.scale.value)) / 100)
               else
                 this_sub << ''
               end
