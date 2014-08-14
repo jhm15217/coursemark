@@ -119,8 +119,7 @@ class QuestionsController < ApplicationController
 
     @question = Question.find(params[:id])
 
-    @question.scales do |scale, i|
-      scale.value = i+1
+    @question.scales do |scale|
       scale.save!
     end 
 
