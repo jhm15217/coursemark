@@ -45,7 +45,7 @@
     <h3>Reviews of Your Submission</h3>
     <div id="student_evaluation_view">
       <div class='submissionGradeBox'>
-        <span class="grade"><%= unless @submission.percentage.nil? then 'Review Average: ' + @submission.percentage.round.to_s + "%" end %></span>
+        <span class="grade"><%= unless g = @submission.grade.nil? then 'Review Average: ' + g.to_s + "%" end %></span>
       </div>
 
       <% @questions.each do |question| %>
@@ -55,7 +55,7 @@
             <% @submission.get_responses_for_question(question).sort_by{|r| r.created_at }.each_with_index do |response, index| %>
                 <% if response.evaluation.finished? %>
                     <div class='submissionBox'>
-                      <div class='submissionResponsePoints <%= gradeColorFullScale(percentage(response.question, response.scale)) %>'><%= if !response.scale.nil? then percentage(response.question, response.scale).to_s + '%' else '--' end %></div>
+                      <div class='submissionResponsePoints <%= gradeColorFullScale(response.scale.value) %>'><%= if !response.scale.nil? then response.scale.value.to_s + '%' else '--' end %></div>
                       <div class='submissionResponseFrom'><%= reviewer_name(response.evaluation, index) %></div>
                       <div class='submissionPeerReview'><%= if !response.peer_review.blank? then response.peer_review end %></div>
 

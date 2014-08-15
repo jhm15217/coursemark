@@ -24,14 +24,14 @@
 <div id='submissionBoxesWrapper'>
   <!--     GRADE -->
   <span class='submissionGradeBox'>
-        <span class="grade"><%= unless @submission.percentage.nil? then 'Review Average: ' + @submission.percentage.round.to_s + "%" end %></span>
+        <span class="grade"><%= unless g = @submission.grade.nil? then 'Review Average: ' + g.to_s + "%" end %></span>
   </span>
   <%= link_to course_assignment_submission_path(@course, @assignment, @submission, :submission => { :instructor_approved => false}), :method => :put do %>
       <div class='button fr' style="margin-right: 0px;"><%= @submission.instructor_approved ? 'Reopen Review' : 'End Review' %></div>
   <% end %>
-  <% if (Time.zone.now >= @assignment.review_due) && @submission.percentage.nil?%>
+  <% if (Time.zone.now >= @assignment.review_due) && @submission.grade.nil?%>
       <div class='submissionGradeBox warning'>
-        This student's submission could not be automatically graded. Their submission did not receive the required number of complete reviews.
+        This student's submission did not receive any reviews.
       </div>
   <% end %>
 
@@ -43,7 +43,7 @@
         <% @submission.get_responses_for_question(question).sort_by{|r| r.created_at}.each_with_index do |response, index| %>
             <% if response.evaluation.finished? %>
                 <div class='submissionBox'>
-                  <div class='submissionResponsePoints <%= gradeColorFullScale(percentage(response.question, response.scale)) %>'><%= percentage(response.question, response.scale).to_s + '%' %></div>
+                  <div class='submissionResponsePoints <%= gradeColorFullScale(response.scale.value) %>'><%= response.scale.value.to_s + '%' %></div>
                   <div class='submissionResponseFrom'>
                     <%= response.evaluation.user.name %>
                   </div>
