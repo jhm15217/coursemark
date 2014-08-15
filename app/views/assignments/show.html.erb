@@ -46,7 +46,7 @@
     <div id="student_evaluation_view">
       <div class='submissionGradeBox'>
         <span class="grade"><%= unless @submission.percentage.nil? then 'Review Average: ' + @submission.percentage.round.to_s + "%" end %></span>
-       </div>
+      </div>
 
       <% @questions.each do |question| %>
           <div class='submissionQuestionBox clearfix'>
@@ -85,4 +85,17 @@
           <div class="clearfix"></div>
       <% end %>
     </div>
+<% else %>
+    <h3>Reviewing Rubric</h3>
+    <% @questions.each do |question| %>
+        <div class='submissionQuestionBox clearfix'>
+          <h2><%= question.question_text %></h2>
+          <div class='possiblePoints'><%= question.question_weight %> Points</div>
+          <% question.scales.sort_by{|s| s.value}.each do |scale|  %>
+              <%= scale.description + ':' + scale.value.to_s + '%   ' %>
+          <% end %>
+        </div>
+    <% end %>
 <% end %>
+
+
