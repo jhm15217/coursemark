@@ -18,8 +18,8 @@ class Submission < ActiveRecord::Base
 
   def completed_responses
     completed = []
-    self.responses.each do |response|
-      if response.is_complete?
+    responses.each do |response|
+      if response.evaluation.finished   # Count only published reviews
         completed << response
       end
     end
@@ -27,16 +27,16 @@ class Submission < ActiveRecord::Base
   end
 
   def evaluations_assigned
-    self.assignment.evaluations.forUser(self.user)
+    assignment.evaluations.forUser(user)
   end
 
   def evaluations_completed
-    self.assignment.evaluations.forUser(self.user).select {|evaluation| evaluation.is_complete?}
+    assignment.evaluations.forUser(user).select {|evaluation| evaluation.is_complete?}
   end
 
-  def raw
+  def grade
     # Get only completed responses
-    responses = self.completed_responses
+    responses = completed_responses
     if responses.length > 0
       questions = Hash.new
       for response in responses
@@ -52,40 +52,32 @@ class Submission < ActiveRecord::Base
           questions[response.question_id]  = question
         end
       end
-      questions.map{ |k, v|
-        (v[:total].fdiv(v[:responses] * 100)) * v[:weight]
-      }.reduce(:+)
+      questions.map{ |k, v|(v[:total].fdiv(v[:responses])) * v[:weight]}.reduce(:+).fdiv(assignment.total_points)
     else
       nil
     end
   end
 
-  def percentage
-    grade = self.raw
-    if grade
-      grade.fdiv(self.assignment.total_points) * 100
-    end
-  end
 
   def met_deadline
-    if Time.now > self.assignment.submission_due
+    if Time.now > assignment.submission_due
       errors.add(:submission, "Deadline for assignment submission has passed.")
     end
   end
 
   def create_and_save_evaluations
     # only run if the number of evaluations isn't the number required
-    if self.evaluations.length != self.assignment.reviews_required + self.assignment.instructor_reviews_required
-      self.evaluations.delete_all
-      create_evaluations(self.assignment.reviews_required,
-                         self.assignment.course.get_real_students.select{|s| s.submitting_id(assignment) != self.user_id })
-      create_evaluations(self.assignment.instructor_reviews_required,
-                         self.assignment.course.get_instructors)
+    if evaluations.length != assignment.reviews_required + assignment.instructor_reviews_required
+      evaluations.delete_all
+      create_evaluations(assignment.reviews_required,
+                         assignment.course.get_real_students.select{|s| s.submitting_id(assignment) != user_id })
+      create_evaluations(assignment.instructor_reviews_required,
+                         assignment.course.get_instructors)
     end
   end
 
   def create_evaluations(required, eligible_reviewers)
-    evaluations = self.assignment.evaluations
+    evaluations = assignment.evaluations
     evaluationCounts = Hash.new
     # create hashmap that maps reviewers' id's to the number
     # of evaluations they have for this assignment
@@ -106,11 +98,11 @@ class Submission < ActiveRecord::Base
       # are required or we run out of reviewers
       while evaluatorPool.length > 0 && evaluationsLeft > 0
         evaluator = evaluatorPool.pop
-        evaluation = Evaluation.new(submission_id: self.id, user_id: evaluator.id)
+        evaluation = Evaluation.new(submission_id: id, user_id: evaluator.id)
         evaluation.save!
 
         # create a response for each question of the evaluation
-        self.assignment.questions.each { |question|
+        assignment.questions.each { |question|
           response = Response.new(question_id: question.id, evaluation_id:evaluation.id )
           response.save!
         }

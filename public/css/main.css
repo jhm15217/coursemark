@@ -404,7 +404,7 @@ textarea {
     border-bottom: 1px solid #DFDFDF;
     font-size: 10.5pt;
 }
-                                                   a
+
 #backBar a, #header a {
     color: #343F53;
     text-decoration: none;
@@ -413,6 +413,8 @@ textarea {
 #main #error_explanation h2,
 #main #error_explanation {
     font-size: 11pt;
+    color: red;
+    background-color: black;
 }
 
 #ui-datepicker-div {

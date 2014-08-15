@@ -44,7 +44,7 @@
                   <% question.scales.sort_by {|s| s.value}.each do |scale| %>
                       <div class="radio_btn">
                         <%= f.radio_button :scale_id, scale.id %>
-                        <%= f.label "scale_id_#{scale.id}", "#{percentage(question, scale)}% - #{scale.description}" %>
+                        <%= f.label "scale_id_#{scale.id}", "#{scale.value}% - #{scale.description}" %>
                       </div>
                   <% end %> <!-- end scale loop -->
                 </div>
@@ -68,7 +68,7 @@
                        sort_by{|r| r.evaluation.user == @reviewer ? 0 : 1}.each_with_index do |response, index| %>
                 <% if response.evaluation.finished? %>
                     <div class='submissionBox'>
-                      <div class='submissionResponsePoints <%= gradeColorFullScale(percentage(response.question,response.scale)) %>'><%= percentage(response.question, response.scale).to_s + '%' %></div>
+                      <div class='submissionResponsePoints <%= gradeColorFullScale(response.scale.value) %>'><%= response.scale.value.to_s + '%' %></div>
                       <div class='submissionResponseFrom'>
                               <% if @reviewer.id == response.evaluation.user.id and @reviewer == current_user %>
                                 Your Review

@@ -21,7 +21,7 @@
               <%= @assignment.evaluations.forSubmission(submission).select {|evaluation| evaluation.finished?}.length %> / <%= @assignment.evaluations.forSubmission(submission).length %></a>
             </td>
             <td>
-              <%= if !submission.percentage.blank? then submission.percentage.round.to_s + '%' else "--" end %>
+              <%= unless g = submission.grade.blank? then g.to_s + '%' else "--" end %>
               <% if submission.instructor_approved %><div class="checkmark"></div><% end %>
             </td>
         <% else %>

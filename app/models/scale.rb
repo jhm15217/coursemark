@@ -6,6 +6,7 @@ class Scale < ActiveRecord::Base
   belongs_to :question
 
   # Validations
-  # validates_presence_of :question_id
+  validates_numericality_of :value, only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 100
+
 
 end
