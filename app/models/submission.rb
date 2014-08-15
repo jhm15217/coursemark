@@ -49,12 +49,11 @@ class Submission < ActiveRecord::Base
           question[:responses] = 1
           question[:total] = response.scale.value
           question[:weight] = response.question.question_weight
-          question[:max] = response.question.scales.maximum(:value)
           questions[response.question_id]  = question
         end
       end
       questions.map{ |k, v|
-        (v[:total].fdiv(v[:responses] * v[:max])) * v[:weight]
+        (v[:total].fdiv(v[:responses] * 100)) * v[:weight]
       }.reduce(:+)
     else
       nil

@@ -60,6 +60,7 @@ class AssignmentsController < ApplicationController
     if @submission.nil?
       @submission = Submission.new
       @submission.assignment = @assignment
+      @evaluations = []
     else
       @evaluations = Evaluation.where(submission_id: @submission.id)
     end
