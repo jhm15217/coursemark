@@ -50,12 +50,16 @@ class ApplicationController < ActionController::Base
     if user and course.get_people.any?{|s| s.id == user.id }
       user
     else
-      if flash[:error]
-        flash[:error] << ", #{email}"
-      else
-        flash[:error] = "Can't find #{email}"
-      end
+      multi_flash(:error, 'Can\'t find ', email)
       nil
+    end
+  end
+
+  def multi_flash(tag, m1, m2)
+    if flash[tag]
+      flash[tag] << ', ' + m2
+    else
+      flash[:error] = m1 + m2
     end
   end
 
