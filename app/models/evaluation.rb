@@ -19,4 +19,9 @@ class Evaluation < ActiveRecord::Base
   def is_complete?
     return self.responses.all? { |response| response.is_complete? }
   end
+
+  def destroy
+    super
+    Response.check
+  end
 end

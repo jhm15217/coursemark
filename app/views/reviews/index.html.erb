@@ -3,61 +3,33 @@
 <% if @assignment.submissions.length == 0 %>
     <h2 class="noData">No one has submitted yet.</h2>
 <% else %>
-    <% if @assignment.manual_assignment %>
-        <div class="notice">
+    <% if @assignment.manual_assignment and  Time.zone.now.between?(@assignment.submission_due, @assignment.review_due) %>
+        <span class="notice">
           <% if @assignment.reviewers_assigned %>
-              Reviews are currently being completed by students.
-          <% else %>
-              <% if (Time.zone.now >= @assignment.submission_due) %>
-                  When finished editing peer review assignments, click "Assign Reviews."
-              <% else %>
-                  Peer reviews will be available for assignment on <%= @assignment.submission_due.to_s(:pretty) %>
-              <% end %>
+              Reviewing is underway.
           <% end %>
 
-          <% if (Time.zone.now >= @assignment.submission_due) %>
-              <% if !@assignment.reviewers_assigned %>
-                  <%= link_to assign_reviews_course_assignment_reviews_path(@course, @assignment) do %>
-                      <div class='button fr' style="margin-right: -12px; margin-top: -13px;">Assign Reviews</div>
-                  <% end %>
-              <% else %>
-                  <%= link_to assign_reviews_course_assignment_reviews_path(@course, @assignment) do %>
-                      <div class='button fr' style="margin-right: -12px; margin-top: -13px;">Unassign Reviews</div>
-                  <% end %>
-              <% end %>
+        </span>
+          <%= link_to assign_reviews_course_assignment_reviews_path(@course, @assignment) do %>
+              <div class='button fr' style="margin-right: -12px; margin-top: -13px;">
+                <%= @assignment.reviewers_assigned ? 'Unassign Reviews (Caution!)' : 'Assign Reviews' %>
+              </div>
           <% end %>
-        </div>
     <% end %>
 
     <% if @students.length > 0 %>
         <table class="reviews">
           <tr>
-            <th>Name</th>
-            <% @assignment.reviews_required.times do |n| %>
-                <th>Student <%= n+1 %></th>
-            <% end %>            <% @assignment.instructor_reviews_required.times do |n| %>
-                <th>Instructor <%= n+1 %></th>
-            <% end %>
+            <th>Submitter</th>
+            <th>Reviewers</th>
           </tr>
           <% @students.each do |student| %>
               <% if student.submissions.where('assignment_id = ' + @assignment.id.to_s)[0] %>
                   <tr>
-                    <td><%= student.name %></td>
+                    <td><%= student.email %></td>
                     <% student.submissions.where('assignment_id = ' + @assignment.id.to_s)[0].evaluations.sort_by{|e| e.created_at }.each do |e| %>
                         <td>
-                          <% if @assignment.manual_assignment && !@assignment.reviewers_assigned %>
-                              <select data-student="<%= student.id %>" data-current="<%= e.user.id %>">
-                                <% @students.each do |s| %>
-                                    <% if s.id != student.id %>
-                                        <option data-student="<%= s.id %>" <%= if s.id == e.user.id then 'selected' end %>>
-                                          <%= s.name %>
-                                        </option>
-                                    <% end %>
-                                <% end %>
-                              </select>
-                          <% else %>
-                              <%= e.user.name %>
-                          <% end %>
+                              <%= e.user.email %>  <%= link_to image_tag('delete.png'), e, method: :delete, data: { confirm: 'Are you sure you wish to remove this reviewer?' } %>
                         </td>
                     <% end %>
                   </tr>
@@ -69,3 +41,21 @@
         <h2 class="noData">No one has enrolled yet.</h2>
     <% end %>
 <% end %>
+
+<% if Time.zone.now.between?(@assignment.submission_due, @assignment.review_due) %>
+    <form method='post' action="/courses/<%= @course.id.to_s %>/assignments/<%= @assignment.id.to_s %>/reviews">
+      <span class="actions">
+        <input name="load_reviewers" type="submit" value="Add Reviewing Tasks" />
+      </span>
+      <span class="radio">
+        <input name="clear_reviewers" type="radio" value="true">Clear Tasks First </input>
+      </span>
+          <div class="field" >
+            <textarea cols="100" name="response[reviewers]" rows="10"></textarea>
+          </div>
+    </form>
+<br/>
+<div>
+  Each line has the form 'Submitter-email,Reviewer1-email,...'
+  <% end %>
+</div>

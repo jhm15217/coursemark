@@ -24,7 +24,7 @@
 <div id='submissionBoxesWrapper'>
   <!--     GRADE -->
   <span class='submissionGradeBox'>
-        <span class="grade"><%= unless g = @submission.grade.nil? then 'Review Average: ' + g.to_s + "%" end %></span>
+        <span class="grade"><%= unless (g = @submission.grade).nil? then 'Review Average: ' + g.to_s + "%" end %></span>
   </span>
   <%= link_to course_assignment_submission_path(@course, @assignment, @submission, :submission => { :instructor_approved => false}), :method => :put do %>
       <div class='button fr' style="margin-right: 0px;"><%= @submission.instructor_approved ? 'Reopen Review' : 'End Review' %></div>

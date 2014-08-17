@@ -81,7 +81,7 @@ class MembershipsController < ApplicationController
       if pseudo_users.length > 0
         pseudo_user = pseudo_users.first
       else
-        pseudo_user = User.new(first_name: row[3], last_name: row[4], pseudo: true)
+        pseudo_user = User.new(first_name: row[3], last_name: row[4], email: row[3] + row[4] + '@team.edu',  pseudo: true)
         pseudo_user.save!(validate: false)
         register_pseudo_user(@course.id, pseudo_user)
       end

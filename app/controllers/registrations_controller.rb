@@ -153,14 +153,13 @@ class RegistrationsController < ApplicationController
     # Destroy dependent structure first
     @assignments.each do |assignment|
       assignment.submissions.each do |submission|
+        submission.evaluations.each do |evaluation|
+          if evaluation.user_id == @registration.user_id
+            evaluation.destroy
+          end
+        end
         if submission.user_id == @registration.user_id
           submission.destroy
-        else
-          submission.evaluations.each do |evaluation|
-            if evaluation.user_id == @registration.user_id
-              evaluation.destroy
-            end
-          end
         end
       end
       assignment.memberships.each do |membership|

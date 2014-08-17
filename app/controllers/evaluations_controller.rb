@@ -1,6 +1,6 @@
 class EvaluationsController < ApplicationController
   before_filter :get_assignment, :get_course, :get_submission
-  load_and_authorize_resource
+#  load_and_authorize_resource
 
   # GET /evaluations
   # GET /evaluations.json
@@ -76,10 +76,12 @@ class EvaluationsController < ApplicationController
   # DELETE /evaluations/1.json
   def destroy
     @evaluation = Evaluation.find(params[:id])
+    @assignment = @evaluation.submission.assignment
+    @course = @assignment.course
     @evaluation.destroy
 
     respond_to do |format|
-      format.html { redirect_to course_assignment_submission_evaluations_path(@course, @assignment, @submission) }
+      format.html { redirect_to "/courses/#{@course.id}/assignments/#{@assignment.id}/reviews" }
       format.json { head :no_content }
     end
   end

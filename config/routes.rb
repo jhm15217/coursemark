@@ -18,7 +18,11 @@ Agora::Application.routes.draw do
       get 'export', :controller => 'assignments', :action => 'export'
       resources :memberships
       resources :submissions do
-        resources :evaluations
+        resources :evaluations do
+          delete 'destroy', controller: 'reviews', action: 'destroy'
+        end
+
+
       end
 
       resources :questions do
@@ -37,6 +41,7 @@ Agora::Application.routes.draw do
   resources :password_resets, only: [:new, :create, :update]
 
   resources :registrations
+  resources :evaluations
 
   resources :users do
     resources :emails, only: [:index, :show, :destroy]

@@ -45,6 +45,20 @@ class ApplicationController < ActionController::Base
     redirect_to root_url
   end
 
+  def find_registrant(course, email)
+    user = User.find_by_email(email)
+    if user and course.get_people.any?{|s| s.id == user.id }
+      user
+    else
+      if flash[:error]
+        flash[:error] << ", #{email}"
+      else
+        flash[:error] = "Can't find #{email}"
+      end
+      nil
+    end
+  end
+
   def submitting_user(assignment)
     User.find(current_user.submitting_id(assignment))
   end
@@ -69,6 +83,7 @@ class ApplicationController < ActionController::Base
     redirect_to root_url
   end
 
+
   private
 
   def current_user_session
@@ -86,6 +101,7 @@ class ApplicationController < ActionController::Base
       redirect_to login_url
     end
   end
+
 
 
 end
