@@ -1,7 +1,7 @@
 class Submission < ActiveRecord::Base
   attr_accessible :assignment_id, :attachment, :user_id, :instructor_approved
   has_attached_file :attachment
-  after_save :create_and_save_evaluations
+  after_save :assign_enough_review_tasks
 
   # Relationships
   belongs_to :user
@@ -65,51 +65,44 @@ class Submission < ActiveRecord::Base
     end
   end
 
-  def create_and_save_evaluations
-    # only run if the number of evaluations isn't the number required
-    if evaluations.length != assignment.reviews_required
-      evaluations.delete_all
-      create_evaluations(assignment.reviews_required,
-                         assignment.course.get_real_students.select{|s| s.submitting_id(assignment) != user_id })
+  def assign_enough_review_tasks
+    unless assignment.manual_assignment
+      create_evaluations(assignment.reviews_required  - evaluations.length,
+                         assignment.course.get_real_students.
+                             select{|s| s.submitting_id(assignment) != user_id and #not on same team
+                             !evaluations.any?{|e| e.user_id == s.id} })  #not already reviewing
     end
+
   end
 
   def create_evaluations(required, eligible_reviewers)
-    evaluations = assignment.evaluations
     evaluationCounts = Hash.new
     # create hashmap that maps reviewers' id's to the number
-    # of evaluations they have for this assignment
-    eligible_reviewers.map { |r|
-      evaluationCounts[r.id] = evaluations.forUser(r).count
-    }
+    # of evaluations they already have for this assignment
+    eligible_reviewers.map { |r| evaluationCounts[r.id] = assignment.evaluations.forUser(r).count }
     reviewThreshold = evaluationCounts.values.min || 0
     evaluationsLeft = required
     evaluatorPool = []
-    begin
+    while evaluationsLeft > 0
       # get reviewers that have the lowest number of evaluations already assigned
-      evaluatorPool.concat(eligible_reviewers.select { |r|
-        evaluationCounts[r.id] == reviewThreshold
-      })
+      evaluatorPool.concat(eligible_reviewers.select { |r| evaluationCounts[r.id] == reviewThreshold })
       # shuffle to achieve randomness
       evaluatorPool.shuffle!
-      # Create evaluations for submission until no more
-      # are required or we run out of reviewers
+      # Create evaluations for submission until no more are required or we run out of reviewers
       while evaluatorPool.length > 0 && evaluationsLeft > 0
         evaluator = evaluatorPool.pop
         evaluation = Evaluation.new(submission_id: id, user_id: evaluator.id)
         evaluation.save!
-
         # create a response for each question of the evaluation
         assignment.questions.each { |question|
           response = Response.new(question_id: question.id, evaluation_id:evaluation.id )
           response.save!
         }
-
         evaluationsLeft -= 1
       end
       # Increase the review threshold in case we ran out of reviewers and need more
       reviewThreshold += 1
-    end while evaluationsLeft > 0
+    end
   end
 
 
