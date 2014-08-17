@@ -1,8 +1,8 @@
 class Assignment < ActiveRecord::Base
   require 'csv'
   attr_accessible :course_id, :draft, :manual_assignment, :reviewers_assigned, :review_due, :reviews_required
-  attr_accessible :instructor_reviews_required, :submission_due, :name, :submission_due_date, :submission_due_time, :review_due_date, :review_due_time, :team
-  after_update :update_evaluations, :if => :reviews_required_changed?  or  :instructor_reviews_required_changed?
+  attr_accessible :submission_due, :name, :submission_due_date, :submission_due_time, :review_due_date, :review_due_time, :team
+  after_update :update_evaluations, :if => :reviews_required_changed?
   before_validation :make_dates
 
   # Relationships
@@ -139,7 +139,7 @@ class Assignment < ActiveRecord::Base
 
   # get /assignments/1/export
   def export(students)
-    reviewer_count =  reviews_required + instructor_reviews_required
+    reviewer_count =  evaluations.uniq{ |e| e.user }.length
     space_before_questions =   ['']*(2 + reviewer_count)
     ordered_questions = questions.sort_by{ |obj| obj.created_at }
     return CSV.generate do |csv|
@@ -152,8 +152,7 @@ class Assignment < ActiveRecord::Base
 
       header_row = ['Submitter', 'Time']
       chunk = []
-      reviews_required.times { |index| chunk << "Student #{index+1}" }
-      instructor_reviews_required.times { |index| chunk << "Instructor #{index+1}" }
+      reviews_required.times { |index| chunk << "Reviewer #{index+1}" }
       header_row += chunk*(1 + ordered_questions.length)  + ['Reviews Finished', 'Reviews Requested']
 
       csv <<   header_row
@@ -163,20 +162,24 @@ class Assignment < ActiveRecord::Base
         submission = submissions.select { |sub| sub.user.id == student.submitting_id(self) }.first
         if submission then
           this_sub << submission.created_at
-          submission.evaluations.sort_by{|e| e.created_at }.each do |e|  # reveal who student1, student2, etc. were for this submission
+          reviewer_shortfall = ['']*(reviewer_count-submission.evaluations.length)
+          submission.evaluations.sort_by{|e| e.created_at }.each do |e|  # reveal who Reviewer1, Reviewer2, etc. were for this submission
             this_sub << e.user.email
           end
+          this_sub += reviewer_shortfall
           # for each of the questions in the assignment
           ordered_questions.each do |question|
             points_for_q = []
             # get responses for a student's submission, sorted to match order in the reviewer page
-            submission.get_responses_for_question(question).sort_by{|r| r.evaluation.created_at }.each_with_index do |response, index|    #this should match the reviewers names
+            submission.get_responses_for_question(question).sort_by{|r| r.evaluation.created_at }.
+                each_with_index do |response, index|    #this should match the reviewers names
               if response.evaluation.finished
                 this_sub << response.scale.value
               else
                 this_sub << ''
               end
             end
+            this_sub += reviewer_shortfall
           end
         else
           this_sub += ['']*(1 + (reviewer_count)*(questions.length + 1))
@@ -189,6 +192,10 @@ class Assignment < ActiveRecord::Base
       end
     end
   end
+    def put_emails(e)
+
+    end
+
 
 
 
@@ -230,9 +237,7 @@ class Assignment < ActiveRecord::Base
     if self.course.get_real_students.length - max_team_size < reviews_required
       errors.add(:reviews_required, 'At most ' + (self.course.get_real_students.length - max_team_size).to_s + ' student reviews can be required.')
     end
-    if self.course.get_instructors.length < instructor_reviews_required
-      errors.add(:reviews_required, 'At most ' + (self.course.get_instructors.length.to_s + ' instructor reviews can be required.'))
-    end
+
   end
 
   def submissions_open

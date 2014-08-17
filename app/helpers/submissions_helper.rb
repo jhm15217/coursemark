@@ -1,5 +1,16 @@
 module SubmissionsHelper
   def response_for_question_by_peer(reviewer, submission, question)
-    Response.where(question_id: question.id).select{|r| r.evaluation.user_id == reviewer.id and r.evaluation.submission_id == submission.id}.first
+    submission.evaluations.map{|e| e.responses.select{|r| test(r, reviewer, question)}[0]}.keep_if{|r| r}[0]
   end
+
+  def test(r, reviewer, question)
+    if r.evaluation
+      r.question_id == question.id and r.evaluation.user_id == reviewer.id
+    else
+      puts 'Bad Response: ' + r.inspect
+      r.destroy
+      false
+    end
+  end
+
 end

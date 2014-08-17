@@ -67,12 +67,10 @@ class Submission < ActiveRecord::Base
 
   def create_and_save_evaluations
     # only run if the number of evaluations isn't the number required
-    if evaluations.length != assignment.reviews_required + assignment.instructor_reviews_required
+    if evaluations.length != assignment.reviews_required
       evaluations.delete_all
       create_evaluations(assignment.reviews_required,
                          assignment.course.get_real_students.select{|s| s.submitting_id(assignment) != user_id })
-      create_evaluations(assignment.instructor_reviews_required,
-                         assignment.course.get_instructors)
     end
   end
 

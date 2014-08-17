@@ -2,8 +2,8 @@
 
 <table class="submissions">
   <tr>
-    <th>First name</th>
-    <th>Last name</th>
+    <th>Name</th>
+    <th>Email</th>
     <th>Submitted</th>
     <th>Reviews Received</th>
     <th>Grade</th>
@@ -12,16 +12,17 @@
   </tr>
   <% @students.each do |student| %>
       <tr>
-        <td><%= student.first_name %></td>
-        <td><%= student.last_name %></td>
+        <td><%= student.name %></td>
+        <td><%= student.email %></td>
         <% submission = @assignment.get_submission(student) %>
         <% if submission %>
             <td><%= submission.created_at.to_s(:pretty) %></td>
             <td><a href=<%= "/courses/#{@course.id}/assignments/#{@assignment.id}/submissions/#{submission.id}?instructor=true" %>>
-              <%= @assignment.evaluations.forSubmission(submission).select {|evaluation| evaluation.finished?}.length %> / <%= @assignment.evaluations.forSubmission(submission).length %></a>
+              <%= @assignment.evaluations.forSubmission(submission).select {|evaluation| evaluation.finished?}.length %> /
+              <%= @assignment.evaluations.forSubmission(submission).length %></a>
             </td>
             <td>
-              <%= unless g = submission.grade.blank? then g.to_s + '%' else "--" end %>
+              <%= unless (g = submission.grade).blank? then g.to_s + '%' else "--" end %>
               <% if submission.instructor_approved %><div class="checkmark"></div><% end %>
             </td>
         <% else %>

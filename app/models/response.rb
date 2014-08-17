@@ -25,7 +25,18 @@ class Response < ActiveRecord::Base
         return false
       end
     end
-  end 
+  end
+
+  def self.check
+    all.each do |r|
+      unless (!r.evaluation_id or Evaluation.where(id: r.evaluation_id)) and (!r.scale_id or Scale.where(id: r.scale_id)) and
+          (!r.question_id or Question.where(id: r.question_id))
+        puts 'Bad Registration: ' + r.inspect
+        r.destroy
+      end
+    end
+  end
+
 
   private
   def met_deadline

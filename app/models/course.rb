@@ -35,8 +35,8 @@ class Course < ActiveRecord::Base
     to_do_list.sort_by{|t| t[:time] }
   end
 
-  # Here are these instead
   # The SQL for the booleans on instructor might not work when not on SQLite
+  # Here are these instead
   def get_students
     registrations.select{|r| !r.instructor}.map{|r| r.user}
   end

@@ -45,7 +45,7 @@
     <h3>Reviews of Your Submission</h3>
     <div id="student_evaluation_view">
       <div class='submissionGradeBox'>
-        <span class="grade"><%= unless g = @submission.grade.nil? then 'Review Average: ' + g.to_s + "%" end %></span>
+        <span class="grade"><%= unless (g = @submission.grade).nil? then 'Review Average: ' + g.to_s + "%" end %></span>
       </div>
 
       <% @questions.each do |question| %>
@@ -85,7 +85,7 @@
           <div class="clearfix"></div>
       <% end %>
     </div>
-<% else %>
+<% elsif Time.zone.now < @assignment.submission_due %>
     <h3>Reviewing Rubric</h3>
     <% @questions.each do |question| %>
         <div class='submissionQuestionBox clearfix'>

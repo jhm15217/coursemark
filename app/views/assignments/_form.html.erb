@@ -24,14 +24,10 @@
       <%= f.time_select :review_due_time, {minute_step: 5, ampm: true, :time_separator => ""} %>
     </div>
     <div class="field">
-      <%= f.label :student_reviews_required %><br />
+      <%= f.label :reviews_required %><br />
       <%= f.number_field :reviews_required, :disabled => @assignment.review_due && (Time.zone.now > @assignment.submission_due) %>
     </div>
     <div class="clearfix"></div>
-    <div class="field">
-      <%= f.label :instructor_reviews_required %><br />
-      <%= f.number_field :instructor_reviews_required, :disabled => @assignment.review_due && (Time.zone.now > @assignment.submission_due) %>
-    </div>
     <div class="clearfix"></div>
     <div class="field">
       <%= f.label :team_submissions, "Team Submissions" %>&nbsp;
@@ -40,7 +36,7 @@
     <div class="clearfix"></div>
     <div class="field">
       <%= f.label :manual_assignment, "Manually assigned reviews" %>&nbsp;
-      <%= f.check_box :manual_assignment, :disabled => @assignment.review_due && (Time.zone.now > @assignment.submission_due) %>
+      <%= f.check_box :manual_assignment, :disabled => @assignment.review_due && (Time.zone.now > @assignment.submission_due), :checked => true %>
     </div>
     <div class="actions">
       <div class="clearfix"></div>
