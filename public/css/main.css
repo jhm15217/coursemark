@@ -634,7 +634,7 @@ textarea {
     margin-bottom: 1.6em;
 }
 #main input[type=submit], .button {
-    width: 215px;
+    width: automatic;
     height: 50px;
     border-radius: 5px;
     border: 1px solid #d5d5d5;

@@ -90,6 +90,8 @@ class AssignmentsController < ApplicationController
       @assignment.reviews_required = 0
     end
 
+    @assignment.manual_assignment = true
+
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @assignment }

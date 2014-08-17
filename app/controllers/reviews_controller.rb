@@ -20,7 +20,13 @@ class ReviewsController < ApplicationController
     if params[:clear_reviewers]
       @assignment.evaluations.each{|e| e.destroy }
     end
-    params[:response][:reviewers].split("\r\n").each{ |line| add_submission(line.split(',')) }
+    if params[:add_required]
+      @assignment.submissions.each do |submission|
+        submission.assign_enough_review_tasks
+      end
+    else
+      params[:response][:reviewers].split("\r\n").each{ |line| add_submission(line.split(',')) }
+    end
     respond_to do |format|
       format.html { redirect_to course_assignment_reviews_path(@course,@assignment) }
       format.json { render json: @reviewers, status: :created, location: @reviewers }

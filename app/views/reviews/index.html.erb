@@ -4,16 +4,11 @@
     <h2 class="noData">No one has submitted yet.</h2>
 <% else %>
     <% if Time.zone.now < @assignment.submission_due %>
-        <div class='notice'>Reviewing has not started.</div>
+        <div class='notice'>Submissions are still arriving.</div>
     <% elsif Time.zone.now < @assignment.review_due %>
-        <% if @assignment.manual_assignment and !@assignment.reviewers_assigned %>
+        <% if @assignment.manual_assignment  %>
             <%= link_to assign_reviews_course_assignment_reviews_path(@course, @assignment) do %>
-                <div class='button fr' style="margin-right: -12px; margin-top: -13px;">Start Reviews</div>
-            <% end %>
-        <% else %>
-            <span class='notice'>Reviewing in progress. Change with caution.</span>
-            <%= link_to assign_reviews_course_assignment_reviews_path(@course, @assignment) do %>
-                <div class='button fr' style="margin-right: -12px; margin-top: -13px;">Pause Reviews</div>
+                <div class='button fr' style="margin-right: -12px; margin-top: -13px;"><%= @assignment.reviewers_assigned ? 'Start Reviews' : 'Pause Reviews' %></div>
             <% end %>
         <% end %>
     <% else %>
@@ -49,10 +44,13 @@
 <% end %>
 
 
-<% if Time.zone.now.between?(@assignment.submission_due, @assignment.review_due) %>
+<% if Time.zone.now < @assignment.review_due %>
     <form method='post' action="/courses/<%= @course.id.to_s %>/assignments/<%= @assignment.id.to_s %>/reviews">
       <span class="actions">
-        <input name="load_reviewers" type="submit" value="Add Reviewing Tasks" />
+        <input name="load_reviewers" type="submit" value="Add Reviewing Tasks Below" style="margin-right:20px" />
+      </span>
+      <span class="actions">
+        <input name='add_required' type='submit' value='Add Any More Required Reviewers' style='margin-right:20px' />
       </span>
       <span class="radio">
         <input name="clear_reviewers" type="radio" value="true">Clear Tasks First </input>
@@ -63,6 +61,6 @@
     </form>
     <br/>
     <div>
-      Each line has the form 'Submitter-email,Reviewer1-email,...'
+      Each line has the form 'Submitter-email,Reviewer1-email,Reviewer2-email,...'
 <% end %>
 </div>
