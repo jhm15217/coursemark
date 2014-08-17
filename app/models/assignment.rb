@@ -139,7 +139,7 @@ class Assignment < ActiveRecord::Base
 
   # get /assignments/1/export
   def export(students)
-    reviewer_count =  evaluations.uniq{ |e| e.user }.length
+    reviewer_count =  submissions.map{|s| s.evaluations.length}.max
     space_before_questions =   ['']*(2 + reviewer_count)
     ordered_questions = questions.sort_by{ |obj| obj.created_at }
     return CSV.generate do |csv|
