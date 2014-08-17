@@ -3,44 +3,51 @@
 <% if @assignment.submissions.length == 0 %>
     <h2 class="noData">No one has submitted yet.</h2>
 <% else %>
-    <% if @assignment.manual_assignment and  Time.zone.now.between?(@assignment.submission_due, @assignment.review_due) %>
-        <span class="notice">
-          <% if @assignment.reviewers_assigned %>
-              Reviewing is underway.
-          <% end %>
-
-        </span>
-          <%= link_to assign_reviews_course_assignment_reviews_path(@course, @assignment) do %>
-              <div class='button fr' style="margin-right: -12px; margin-top: -13px;">
-                <%= @assignment.reviewers_assigned ? 'Unassign Reviews (Caution!)' : 'Assign Reviews' %>
-              </div>
-          <% end %>
-    <% end %>
-
-    <% if @students.length > 0 %>
-        <table class="reviews">
-          <tr>
-            <th>Submitter</th>
-            <th>Reviewers</th>
-          </tr>
-          <% @students.each do |student| %>
-              <% if student.submissions.where('assignment_id = ' + @assignment.id.to_s)[0] %>
-                  <tr>
-                    <td><%= student.email %></td>
-                    <% student.submissions.where('assignment_id = ' + @assignment.id.to_s)[0].evaluations.sort_by{|e| e.created_at }.each do |e| %>
-                        <td>
-                              <%= e.user.email %>  <%= link_to image_tag('delete.png'), e, method: :delete, data: { confirm: 'Are you sure you wish to remove this reviewer?' } %>
-                        </td>
-                    <% end %>
-                  </tr>
-              <% end %>
-          <% end %>
-        </table>
-        <br />
+    <% if Time.zone.now < @assignment.submission_due %>
+        <div class='notice'>Reviewing has not started.</div>
+    <% elsif Time.zone.now < @assignment.review_due %>
+        <% if @assignment.manual_assignment and !@assignment.reviewers_assigned %>
+            <%= link_to assign_reviews_course_assignment_reviews_path(@course, @assignment) do %>
+                <div class='button fr' style="margin-right: -12px; margin-top: -13px;">Start Reviews</div>
+            <% end %>
+        <% else %>
+            <span class='notice'>Reviewing in progress. Change with caution.</span>
+            <%= link_to assign_reviews_course_assignment_reviews_path(@course, @assignment) do %>
+                <div class='button fr' style="margin-right: -12px; margin-top: -13px;">Pause Reviews</div>
+            <% end %>
+        <% end %>
     <% else %>
-        <h2 class="noData">No one has enrolled yet.</h2>
+        <div class='notice'>Reviewing is over.</div>
     <% end %>
 <% end %>
+
+
+<% if @students.length > 0 %>
+    <table class="reviews">
+      <tr>
+        <th>Submitter</th>
+        <th>Reviewers</th>
+      </tr>
+      <% @students.each do |student| %>
+          <% if student.submissions.where('assignment_id = ' + @assignment.id.to_s)[0] %>
+              <tr>
+                <td><%= student.email %></td>
+                <% student.submissions.where('assignment_id = ' + @assignment.id.to_s)[0].evaluations.sort_by{|e| e.created_at }.each do |e| %>
+                    <td>
+                      <%  if e.user.submitting_id(@assignment) == student.id then multi_flash(:error, 'Self-reviewer(s): ', student.email) end %>
+                      <%= e.user.email %><%= link_to image_tag('delete.png'), e, method: :delete,
+                                                     data: { confirm: e.finished ? 'A completed review will be discarded. Are you sure?' : "" } %>
+                    </td>
+                <% end %>
+              </tr>
+          <% end %>
+      <% end %>
+    </table>
+    <br />
+<% else %>
+    <h2 class="noData">No one has enrolled yet.</h2>
+<% end %>
+
 
 <% if Time.zone.now.between?(@assignment.submission_due, @assignment.review_due) %>
     <form method='post' action="/courses/<%= @course.id.to_s %>/assignments/<%= @assignment.id.to_s %>/reviews">
@@ -50,12 +57,12 @@
       <span class="radio">
         <input name="clear_reviewers" type="radio" value="true">Clear Tasks First </input>
       </span>
-          <div class="field" >
-            <textarea cols="100" name="response[reviewers]" rows="10"></textarea>
-          </div>
+      <div class="field" >
+        <textarea cols="100" name="response[reviewers]" rows="10"></textarea>
+      </div>
     </form>
-<br/>
-<div>
-  Each line has the form 'Submitter-email,Reviewer1-email,...'
-  <% end %>
+    <br/>
+    <div>
+      Each line has the form 'Submitter-email,Reviewer1-email,...'
+<% end %>
 </div>

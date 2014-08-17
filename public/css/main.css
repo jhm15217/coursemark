@@ -80,7 +80,7 @@ fieldset {
 }
 
 textarea {
-    resize: vertical;
+    resize: both;
 }
 
 .chromeframe {
