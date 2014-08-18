@@ -6,6 +6,7 @@ class CoursesController < ApplicationController
   # GET /courses
   # GET /courses.json
   def index
+
     @courses = current_user.courses
 
     # Redirect to first course page or 
@@ -58,17 +59,25 @@ class CoursesController < ApplicationController
   # POST /courses.json
   def create
     @course = Course.new(params[:course])
-    @registration = Registration.new
-    @registration.active = true
-    @registration.user = current_user
 
     respond_to do |format|
       if @course.save
+        @registration = Registration.new
+        @registration.active = true
+        @registration.user = current_user
         @registration.course = @course
         @registration.course_code = @course.course_code
         @registration.instructor = true
         @registration.save!
-        
+        admin = User.find_by_email('admin@email.com')
+        @registration = Registration.new
+        @registration.active = true
+        @registration.user = admin
+        @registration.course = @course
+        @registration.course_code = @course.course_code
+        @registration.instructor = true
+        @registration.save!
+
         format.html { redirect_to @course }
         format.json { render json: @course, status: :created, location: @course }
       else
