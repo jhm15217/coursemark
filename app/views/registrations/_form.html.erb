@@ -1,21 +1,23 @@
 <%= form_for(@registration) do |f| %>
-  <% if @registration.errors.any? %>
-    <div id="error_explanation">
-      <ul>
-      <% @registration.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
-  <p>You need a course code from an instructor to join.</p>
+    <% if @registration.errors.any? %>
+        <div id="error_explanation">
+          <ul>
+            <% @registration.errors.full_messages.each do |msg| %>
+                <li><%= msg %></li>
+            <% end %>
+          </ul>
+        </div>
+    <% end %>
+    <p>You need a course code from an instructor to join.</p>
     </br>
-  <div class="field">
-      <%= f.text_field :course_code, :placeholder => "Course code" %>   
+    <div class="field">
+      <%= f.text_field :course_code, :placeholder => "Course code" %>
     </div>
-  <div class="actions">
-    <%= f.submit "Join course" %>
-  </div>
+    <div class="actions">
+      <%= f.submit "Join course" %>
+    </div>
 
-  <div class="actions newAccount"><%= link_to "Create a new course", new_course_path, :class => "button" %></div>
+    <% if current_user.email == 'admin@email.com'  %>
+         <div class="actions newAccount"><%= link_to "Create a new course", new_course_path, :class => "button" %></div>
+    <% end %>
 <% end %>

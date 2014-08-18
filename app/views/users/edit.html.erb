@@ -40,7 +40,7 @@
 
 <br />
 
-<% if @user.instructor?(@course) %>
+<% if @user.email == 'admin@email.com' %>
     <%= link_to new_course_path do %>
       <div class="button" style="float:left;">Create Course</div>
     <% end %>
