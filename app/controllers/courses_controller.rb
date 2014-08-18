@@ -9,6 +9,8 @@ class CoursesController < ApplicationController
 
     @courses = current_user.courses
 
+    puts 'current_user & courses: ' + current_user.email + ' ' + @courses.inspect
+
     # Redirect to first course page or 
     # new course page if there are none
 
