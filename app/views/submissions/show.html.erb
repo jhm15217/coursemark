@@ -49,10 +49,12 @@
                   <% end %> <!-- end scale loop -->
                 </div>
                 <br>
+                <div class='savedStatus'></div>
             <% end %> <!-- end form -->
           </div> <!-- submissionQuestionBox -->
+
       <% end %> <!-- questions loop -->
-      <div class='savedStatus'></div>
+
       <%= link_to course_assignment_submission_path(@course, @assignment, @submission, finish: true) do %>
           <div id='submitFormsButton' class='button'>Publish Review</div>
       <% end %>

@@ -29,7 +29,7 @@
     <td><%= link_to registration.course.name, course_path(registration.course) %></td>
     <td><%= registration.instructor ? "Course Staff" : "Student"  %></td>
     <td><%= link_to 'Leave Course', registration, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-    <% if current_user.instructor?(registration.course) %>
+    <% if current_user.email == 'admin@email.com' %>
         <td><%= link_to 'Delete Course', registration.course, method: :delete, data: { confirm: 'Do you want to erase this course and all its data?' }%></td>
     <% else %>
         <td></td>

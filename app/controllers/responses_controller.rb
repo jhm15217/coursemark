@@ -1,6 +1,6 @@
 class ResponsesController < ApplicationController
   before_filter :get_assignment, :get_course, :get_question
-  load_and_authorize_resource :except => [:update]
+#  load_and_authorize_resource :except => [:update]
 
   # GET /responses
   # GET /responses.json
@@ -69,7 +69,7 @@ class ResponsesController < ApplicationController
     @URL = course_assignment_path(@course, @assignment)
 
     if (current_user.instructor?(@course))
-      @URL = course_assignment_submission_path(@course, @assignment, @response.evaluation.submission)
+      @URL = course_assignment_submission_path(@course, @assignment, @response.evaluation.submission) + '?instructor=true'
     elsif (submitter_id == @response.evaluation.submission.user_id) and params[:response]
       @response.student_response =  params[:response][:student_response]
     end
