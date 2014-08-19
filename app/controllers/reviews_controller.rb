@@ -34,7 +34,7 @@ class ReviewsController < ApplicationController
   end
 
   def add_submission(row)
-    if submitter = find_registrant(@course, row[0]) and submission = @assignment.submissions.select{|s| s.user_id == submitter.id}[0]
+    if row[0] and submitter = find_registrant(@course, row[0]) and submission = @assignment.submissions.select{|s| s.user_id == submitter.id}[0]
       i = 1
       while row[i]
         if reviewer = find_registrant(@course, row[i])

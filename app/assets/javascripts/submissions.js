@@ -56,11 +56,11 @@ function submitForms() {
               $($elem.parent().parent().parent().find('.savedStatus')[0]).html('typing...');
           },
           stop: function (event, $elem) {
-              var existingComment = $($elem).val();
-
-              if (!existingComment) {
-                  $($elem).val(' ');
-              }
+//              var existingComment = $($elem).val();
+//
+//              if (!existingComment) {
+//                  $($elem).val(' ');
+//              }
 
               $($elem.parent().parent().parent().find('.savedStatus')[0]).html('saving...');
               $($elem.parent().parent()[0]).trigger('submit.rails');

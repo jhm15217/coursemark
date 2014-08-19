@@ -39,12 +39,12 @@ for (var i=0; i<forms.length; i++) {
             $($elem.parent().parent().parent().find('.savedStatus')[0]).html('typing...');
         },
         stop: function (event, $elem) {
-            var rebuttal = $($elem).val();
-
-            if (!rebuttal) {
-                $($elem).val(' ');
-            }
-
+//            var rebuttal = $($elem).val();
+//
+//            if (!rebuttal) {
+//                $($elem).val(' ');
+//            }
+//
             $($elem.parent().parent().find('.savedStatus')[0]).html('saving...');
             $($elem.parent()[0]).trigger('submit.rails');
         },
