@@ -35,7 +35,8 @@
               <%= link_to 'Log in as', application_login_student_path(:student => registration.user.id) %>
           <% end %>
         </td>
-        <td><%= link_to 'Remove', registration, method: :delete, data: { confirm: 'Are you sure you wish to remove this student from the course?' } %></td>
+        <td><%= unless registration.user.email == 'admin@email.com' then link_to 'Remove', registration, method: :delete,
+                                                                                 data: { confirm: 'Are you sure you wish to remove this student from the course?' } end %></td>
         <td>
           <% if !registration.instructor %>
               <%= link_to 'Add to Course Staff', registrations_add_to_course_staff_path(:registration => registration.id), data: { confirm: 'Are you sure you wish to add this user to the course staff?' } %>

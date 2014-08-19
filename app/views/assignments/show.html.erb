@@ -64,11 +64,13 @@
                             <div class='submissionResponseFrom' style="margin-top: 20px;">Your Rebuttal</div>
                             <%= nested_form_for [@course, @assignment, question, response], :remote => true do |f| %>
                                 <%= f.text_area :student_response, class:  'submissionTextArea fl'  %>
-                                <!-- %= f.submit "Rebut", class: 'submissionTextAreaReply fr' %>   replaced by ajax -->
+                                <br>
+                                <div class='savedStatus'></div>
                             <% end %>
                         <% elsif response.student_response %>
                             <div class='submissionResponseFrom' style="margin-top: 20px;">Your Rebuttal</div>
                             <p> <%= response.student_response.html_safe.gsub(/\n/,'<br>').html_safe %> </p>
+
                         <% end %>
                       </div> <!-- End Student Response -->
 
