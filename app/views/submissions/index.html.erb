@@ -22,7 +22,7 @@
               <%= @assignment.evaluations.forSubmission(submission).length %></a>
             </td>
             <td>
-              <%= unless (g = submission.grade).blank? then g.to_s + '%' else "--" end %>
+              <%= unless (g = submission.grade).blank? then prettifyFloat(g).to_s + '%' else "--" end %>
               <% if submission.instructor_approved %><div class="checkmark"></div><% end %>
             </td>
         <% else %>
