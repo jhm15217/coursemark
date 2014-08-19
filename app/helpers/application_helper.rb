@@ -7,9 +7,8 @@ module ApplicationHelper
     x
   end
 
-  def prettifyFloat(x, precision = 2)
-    x = x.round(1)
-    (("%.#{precision}f" % x).split(/\./).last == '0' * precision and x.to_i or x)
+  def prettifyFloat(x, precision = 0)
+    ("%.#{precision}f" % x)
   end
 
   # Takes in a grade (b/w 50-100),
