@@ -9,14 +9,16 @@ class Submission < ActiveRecord::Base
   has_many :evaluations, dependent: :destroy
   has_many :responses, :through => :evaluations
 
+  MAX_FILE_SIZE = 15 # MegaBytes
+
   # Validations
   validates_presence_of :assignment_id
   validates_presence_of :user_id
   validate :met_deadline, :on => :create
-  validates_attachment_size :attachment, :less_than => 15.megabytes
+  validates_attachment_size :attachment, :less_than => MAX_FILE_SIZE.megabytes, message: "File must be smaller than #{MAX_FILE_SIZE}MB. File>Reduce File Size."
   validates_attachment_content_type :attachment, :content_type => ['application/pdf']
 
-  def completed_responses
+    def completed_responses
     completed = []
     responses.each do |response|
       if response.evaluation.finished   # Count only published reviews

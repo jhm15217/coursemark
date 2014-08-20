@@ -96,18 +96,22 @@ class SubmissionsController < ApplicationController
     @submission = Submission.find(params[:id])
   end
 
+
   # POST /submissions
   # POST /submissions.json
   def create
     @submission = Submission.new(params[:submission])
     @submission.user = submitting_user(@assignment)
 
+    @submission.save
+
+
     respond_to do |format|
       if @submission.save
         format.html { redirect_to [@course, @submission.assignment] }
         format.json { render json: @submission, status: :created, location: @submission }
       else
-        format.html { redirect_to [@course, @assignment], flash: {error: "Store of submission failed!"} }
+        format.html { redirect_to [@course, @assignment] , flash: {error: @submission.errors.messages[:attachment]} }
         format.json { render json: @submission.errors, status: :unprocessable_entity }
       end
     end
