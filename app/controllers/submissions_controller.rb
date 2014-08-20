@@ -96,6 +96,10 @@ class SubmissionsController < ApplicationController
     @submission = Submission.find(params[:id])
   end
 
+  def combine(messages)
+    messages.map{|m| m + ' '}.reduce(:+)
+  end
+
 
   # POST /submissions
   # POST /submissions.json
@@ -103,15 +107,12 @@ class SubmissionsController < ApplicationController
     @submission = Submission.new(params[:submission])
     @submission.user = submitting_user(@assignment)
 
-    @submission.save
-
-
     respond_to do |format|
       if @submission.save
         format.html { redirect_to [@course, @submission.assignment] }
         format.json { render json: @submission, status: :created, location: @submission }
       else
-        format.html { redirect_to [@course, @assignment] , flash: {error: @submission.errors.messages[:attachment]} }
+        format.html { redirect_to [@course, @assignment] , flash: {error: combine(@submission.errors.messages[:attachment])} }
         format.json { render json: @submission.errors, status: :unprocessable_entity }
       end
     end
@@ -122,12 +123,13 @@ class SubmissionsController < ApplicationController
   # PUT /submissions/1.json
   def update
     @submission = Submission.find(params[:id])
+    @submission.user = submitting_user(@assignment)
 
     respond_to do |format|
       if @submission.update_attributes(params[:submission])
         format.html { redirect_to :back}
       else
-        format.html { render action: "edit" }
+        format.html { redirect_to [@course, @assignment] , flash: {error: combine(@submission.errors.messages[:attachment])} }
         format.json { render json: @submission.errors, status: :unprocessable_entity }
       end
     end
