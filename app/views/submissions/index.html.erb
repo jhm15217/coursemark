@@ -11,19 +11,22 @@
 
   </tr>
   <% @students.each do |student| %>
+      <% submission = @assignment.get_submissions(student)[0] %>
       <tr>
         <td><%= student.name %></td>
         <td><%= student.email %></td>
-        <% submission = @assignment.get_submission(student) %>
         <% if submission %>
-            <td><%= submission.created_at.to_s(:pretty) %></td>
-            <td><a href=<%= "/courses/#{@course.id}/assignments/#{@assignment.id}/submissions/#{submission.id}?instructor=true" %>>
-              <%= @assignment.evaluations.forSubmission(submission).select {|evaluation| evaluation.finished?}.length %> /
-              <%= @assignment.evaluations.forSubmission(submission).length %></a>
+            <td>
+              <%= submission.created_at.to_s(:pretty) %>
+            </td>
+            <td>
+              <a href=<%= "/courses/#{@course.id}/assignments/#{@assignment.id}/submissions/#{submission.id}?instructor=true" %>>
+                <%= @assignment.evaluations.forSubmission(submission).select {|evaluation| evaluation.finished?}.length %> /
+                <%= @assignment.evaluations.forSubmission(submission).length %></a>
             </td>
             <td>
               <%= unless (g = submission.grade).blank? then prettifyFloat(g).to_s + '%' else "--" end %>
-              <% if submission.instructor_approved %><div class="checkmark"></div><% end %>
+              <% if submission.instructor_approved then %><div class="checkmark"></div><% end %>
             </td>
         <% else %>
             <td>--</td>
@@ -42,7 +45,6 @@
         </td>
       </tr>
   <% end %>
-
 </table>
 <br />
 <%= link_to :controller => "assignments", :action => "export" do %>

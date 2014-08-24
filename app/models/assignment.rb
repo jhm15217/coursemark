@@ -124,15 +124,14 @@ class Assignment < ActiveRecord::Base
     self.evaluations.forUser(user).select { |eval| !eval.finished  }
   end
 
-  def get_submission(user)
+  def get_submissions(user)
     # return current_user.submitting_user(assignment).submissions.first!
     ms = memberships.select{|m| m.user_id == user.id}
     if ms.length == 0
-      @submission = Submission.where(:assignment_id => self.id, :user_id => user.id)
+      Submission.where(:assignment_id => self.id, :user_id => user.id)
     else # This is a team assignment
-      @submission = Submission.where(:assignment_id => self.id, :user_id => ms.first.pseudo_user_id )
+      ms.map{|m| Submission.where(:assignment_id => self.id, :user_id => m.pseudo_user_id)}.flatten
     end
-    return @submission[0]
   end
 
 
@@ -159,7 +158,7 @@ class Assignment < ActiveRecord::Base
 
       students.each do |student|
         this_sub = [student.email]
-        submission = submissions.select { |sub| sub.user.id == student.submitting_id(self) }.first
+        submission = submissions.select { |sub| sub.user.id == student.submitting_id(self, sub) }.first
         if submission then
           this_sub << submission.created_at
           reviewer_shortfall = ['']*(reviewer_count-submission.evaluations.length)
@@ -225,8 +224,8 @@ class Assignment < ActiveRecord::Base
     end
     max_team_size = 1
     if team
-      unless self.course.get_real_students.all?{|student| self.memberships.sum{|membership| membership.user_id == student.id ? 1 : 0} == 1}
-        errors.add(:teams_ok, 'Each student must be a member of one team.')
+      unless self.course.get_real_students.all?{|student| self.memberships.sum{|membership| membership.user_id == student.id ? 1 : 0} >= 1}
+        errors.add(:teams_ok, 'Each student must be a member of at least one team.')
       end
       #Figure out max team size
       team_count = Hash.new(0)

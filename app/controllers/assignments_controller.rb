@@ -1,7 +1,7 @@
 class AssignmentsController < ApplicationController
   require 'csv'
   before_filter :get_course
-  load_and_authorize_resource :except => [:new, :create]
+  load_and_authorize_resource :except => [:new, :create, :update]
   skip_authorization_check :only => [:new, :create]
 
   # GET /assignments
@@ -53,17 +53,13 @@ class AssignmentsController < ApplicationController
     @to_do = @course.to_do(current_user)
 
     @reviewing_tasks = @assignment.evaluations.forUser(current_user).sort_by{|t| t.created_at}
-    @submission = @assignment.get_submission(current_user)
-    @questions = @assignment.questions.sort_by{|q| q.created_at }
-
-
-    if @submission.nil?
-      @submission = Submission.new
-      @submission.assignment = @assignment
-      @evaluations = []
-    else
-      @evaluations = Evaluation.where(submission_id: @submission.id)
+    @submissions = @assignment.get_submissions(current_user)
+    @submission = @submissions.last
+    unless @submission
+      @submission = Submission.new(assignment_id: @assignment.id)
     end
+    @questions = @assignment.questions.sort_by{|q| q.created_at }
+    @teams = @user.memberships.select{|m| m.assignment.course_id == @course.id and m.assignment_id == @assignment.id }.map{|m| User.find(m.pseudo_user_id)}
 
     respond_to do |format|
       format.html
@@ -157,56 +153,76 @@ class AssignmentsController < ApplicationController
   # PUT /assignments/1
   # PUT /assignments/1.json
   def update
-    params['assignment']['submission_due_time'] = params['assignment']['submission_due_time(4i)'] + ':' + params['assignment']['submission_due_time(5i)']
-    params['assignment'].delete 'submission_due_time(1i)'
-    params['assignment'].delete 'submission_due_time(5i)'
-    params['assignment'].delete 'submission_due_time(2i)'
-    params['assignment'].delete 'submission_due_time(3i)'
-    params['assignment'].delete 'submission_due_time(4i)'
-    params['assignment'].delete 'submission_due_time(5i)'
+    if params[:assignment][:attachment]   # The user uploaded a file
+      @assignment = Assignment.find(params[:assignment][:assignment_id])
+      if params[:assignment][:user_id] == '-1'
+        redirect_to :back, flash: {error: "Please select the team you are submitting for."}
+        return
+      end
+      old_submissions = @assignment.submissions.select{|s| s.user_id == params[:assignment][:user_id].to_i }
+      @submission = Submission.new(params['assignment'])
 
-    params['assignment']['review_due_time'] = params['assignment']['review_due_time(4i)'] + ':' + params['assignment']['review_due_time(5i)']
-    params['assignment'].delete 'review_due_time(1i)'
-    params['assignment'].delete 'review_due_time(5i)'
-    params['assignment'].delete 'review_due_time(2i)'
-    params['assignment'].delete 'review_due_time(3i)'
-    params['assignment'].delete 'review_due_time(4i)'
-    params['assignment'].delete 'review_due_time(5i)'
-
-    @assignment = Assignment.find(params[:id])
-    @reviewing_tasks = @assignment.evaluations.forUser(current_user).sort_by{|e| e.created_at}
-    @URL = course_assignment_path(@course, @assignment)
-
-    unless @assignment.team
-      @assignment.memberships.each{|m| m.destroy }
-    end
-
-    if params['publish']
-      if @assignment.draft
-        if @assignment.questions.length == 0
-          flash[:error] = 'You must first create a rubric.'
-          @assignment.draft = true
+      respond_to do |format|
+        if @submission.save
+          old_submissions.each{|s| s.destroy }
+          format.html { redirect_to :back }
+          format.json { head :no_content }
         else
-          @assignment.draft = false
-          @URL = edit_course_assignment_path(@assignment.course, @assignment)
-        end
-      else
-        if @assignment.submissions.length != 0
-          flash[:error] = 'You must first (somehow) delete all submissions'
-          @assignment.draft = false
-        else
-          @assignment.draft = true
+          format.html { redirect_to :back, flash: {error: combine(@submission.errors.messages[:attachment])} }
+          format.json { render json: @assignment.errors, status: :unprocessable_entity }
         end
       end
-    end
+    else
+      params['assignment']['submission_due_time'] = params['assignment']['submission_due_time(4i)'] + ':' + params['assignment']['submission_due_time(5i)']
+      params['assignment'].delete 'submission_due_time(1i)'
+      params['assignment'].delete 'submission_due_time(5i)'
+      params['assignment'].delete 'submission_due_time(2i)'
+      params['assignment'].delete 'submission_due_time(3i)'
+      params['assignment'].delete 'submission_due_time(4i)'
+      params['assignment'].delete 'submission_due_time(5i)'
 
-    respond_to do |format|
-      if @assignment.update_attributes(params[:assignment])
-        format.html { redirect_to @URL }
-        format.json { head :no_content }
-      else
-        format.html { render action: "edit" }
-        format.json { render json: @assignment.errors, status: :unprocessable_entity }
+      params['assignment']['review_due_time'] = params['assignment']['review_due_time(4i)'] + ':' + params['assignment']['review_due_time(5i)']
+      params['assignment'].delete 'review_due_time(1i)'
+      params['assignment'].delete 'review_due_time(5i)'
+      params['assignment'].delete 'review_due_time(2i)'
+      params['assignment'].delete 'review_due_time(3i)'
+      params['assignment'].delete 'review_due_time(4i)'
+      params['assignment'].delete 'review_due_time(5i)'
+
+      @assignment = Assignment.find(params[:id])
+      @reviewing_tasks = @assignment.evaluations.forUser(current_user).sort_by{|e| e.created_at}
+      @URL = course_assignment_path(@course, @assignment)
+
+      unless @assignment.team
+        @assignment.memberships.each{|m| m.destroy }
+      end
+
+      if params['publish']
+        if @assignment.draft
+          if @assignment.questions.length == 0
+            flash[:error] = 'You must first create a rubric.'
+          else
+            @assignment.draft = false
+            @URL = edit_course_assignment_path(@assignment.course, @assignment)
+          end
+        else
+          if @assignment.submissions.length != 0
+            flash[:error] = 'You must first (somehow) delete all submissions'
+            @assignment.draft = false
+          else
+            @assignment.draft = true
+          end
+        end
+      end
+
+      respond_to do |format|
+        if @assignment.update_attributes(params[:assignment])
+          format.html { redirect_to @URL }
+          format.json { head :no_content }
+        else
+          format.html { render action: "edit" }
+          format.json { render json: @assignment.errors, status: :unprocessable_entity }
+        end
       end
     end
   end

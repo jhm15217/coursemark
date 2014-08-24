@@ -1,27 +1,36 @@
-<%= form_for [@course, @assignment, @submission] do |f| %>
-  <% if @submission.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@submission.errors.count, "error") %> prohibited this submission from being saved:</h2>
-
-      <ul>
-      <% @submission.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
+<div height='automatic' width="automatic">
+  <%= form_for [@course, @assignment] do |f| %>
+      <% if @teams.length > 1 %>
+          <select id="teams">
+            <option value='-1' >Select Submitting Team</option>
+            <% @teams.each do |t| %>
+                <option value="<%= t.id %>" ><%= t.name %></option>
+            <% end %>
+          </select>
       <% end %>
-      </ul>
-    </div>
+      <div class="field">
+        <%= f.file_field :attachment, :accept => 'application/pdf', :required => true, :style => 'border: 0px' %>
+      </div>
+      <div class="field">
+        <%= f.hidden_field :assignment_id, value: @assignment.id %>
+      </div>
+      <div id='team' class="field">
+        <%= f.hidden_field :user_id, value: @teams.length == 1 ? @teams[0].id : @user.id %>    <!-- value will be overwritten if multi-team assignment -->
+      </div>
+      <div class="actions">
+        <script>
+            function get_team() {
+                var e = document.getElementById("teams");
+                var selected_team = e.options[e.selectedIndex].value;
+                console.log("old user " + document.getElementById("assignment_user_id").value);
+                console.log("new user " + selected_team);
+                document.getElementById("assignment_user_id").value =  selected_team;
+            }
+        </script>
+
+        <input name="commit" type="submit" onclick="get_team();" value="Submit" >
+
+      </div>
   <% end %>
+</div>
 
-  <div class="field">
-    <%= f.file_field :attachment, :accept => 'application/pdf', :required => true, :style => 'border: 0px' %>
-  </div>
-  <div class="field hidden">
-    <%= f.collection_select :assignment_id, Assignment.all, :id, :name, :prompt => "Select assignment..." %>
-  </div>
-  <div class="actions">
-    <%= f.submit (@submission.created_at ? "Resubmit" : "Submit" ) %>
-
-    <% if @submission.created_at %>
-      <a href='<%= @submission.attachment.url %>' style="color:#343F53; display: block; margin-top: 15px;">View Uploaded Submission</a>
-    <% end %>
-  </div>
-<% end %>

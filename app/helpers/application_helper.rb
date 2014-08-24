@@ -55,6 +55,10 @@ module ApplicationHelper
     end
   end
 
+  def iff(a,b)
+    a ? b : !b
+  end
+
 
 
 end

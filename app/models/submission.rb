@@ -70,7 +70,7 @@ class Submission < ActiveRecord::Base
   def assign_enough_review_tasks
     create_evaluations(assignment.reviews_required  - evaluations.length,
                        assignment.course.get_real_students.
-                           select{|s| s.submitting_id(assignment) != user_id and #not on same team
+                           select{|s| s.submitting_id(assignment, self) != user_id and #not on same team
                            !evaluations.any?{|e| e.user_id == s.id} })  #not already reviewing
 
   end
