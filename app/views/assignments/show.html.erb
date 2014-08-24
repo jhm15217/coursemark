@@ -45,7 +45,7 @@
     <h3>Reviews of Your Submission</h3>
     <div id="student_evaluation_view">
       <div class='submissionGradeBox'>
-        <span class="grade"><%= unless (g = @submission.grade).nil? then 'Review Average: ' + prettifyFloat(g).to_s + "%" end %></span>
+        <span class="grade"><%= unless (g = @submission.grade).nil? then 'Weighted Average: ' + prettifyFloat(g).to_s + "%" end %></span>
       </div>
 
       <% @questions.each do |question| %>
@@ -56,7 +56,8 @@
                 <% if response.evaluation.finished? %>
                     <div class='submissionBox'>
                       <div class='submissionResponsePoints <%= gradeColorFullScale(response.scale.value) %>'><%= if !response.scale.nil? then response.scale.value.to_s + '%' else '--' end %></div>
-                      <div class='submissionResponseFrom'><%= reviewer_name(response.evaluation, index) %></div>
+                      <span class='submissionResponseFrom'><%= reviewer_name(response.evaluation, index) %>: </span>
+                      <span> <%= response.scale.description %></span>
                       <div class='submissionPeerReview'><%= if !response.peer_review.blank? then response.peer_review end %></div>
 
                       <div class='submissionInstructorResponse'>

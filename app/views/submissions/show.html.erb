@@ -59,7 +59,7 @@
           <div id='submitFormsButton' class='button'>Publish Review</div>
       <% end %>
 
-  <% else %> <!-- the user is a reviewer who is finished or out of time -->
+  <% else %> <!-- the user is a submitter or a reviewer who is finished or out of time or an eavesdropping instructor -->
 
       <!--     EVALUATIONS -->
       <% @questions.each do |question| %>
@@ -71,14 +71,17 @@
                 <% if response.evaluation.finished? %>
                     <div class='submissionBox'>
                       <div class='submissionResponsePoints <%= gradeColorFullScale(response.scale.value) %>'><%= response.scale.value.to_s + '%' %></div>
-                      <div class='submissionResponseFrom'>
+                      <span class='submissionResponseFrom'>
                               <% if @reviewer.id == response.evaluation.user.id and @reviewer == current_user %>
-                                Your Review
+                                Your Review:&nbsp
                               <% else %>
-                                <%= reviewer_name(response.evaluation, index) %>'s Review
+                                <%= reviewer_name(response.evaluation, index) %>'s Review:&nbsp
                               <% end %>
-                      </div>  <!-- submissionResponseFrom -->
-                      <div class='submissionPeerReview'><%= if !response.peer_review.blank? then response.peer_review else "No written response provided." end %></div>
+                      </span>  <!-- submissionResponseFrom -->
+                      <span> <%= response.scale.description %></span>
+
+                      <div class='submissionPeerReview'><%= if !response.peer_review.blank? then response.peer_review  end %></div>
+                      <div class='submissionResponseFrom'>  </div>
 
                       <% if !response.student_response.blank? then %>
                           <div class='submissionStudentResponse'>
