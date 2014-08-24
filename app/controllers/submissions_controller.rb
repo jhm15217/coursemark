@@ -27,7 +27,8 @@ class SubmissionsController < ApplicationController
     @questions = @submission.assignment.questions.sort_by {|obj| obj.created_at }
     evaluation = @evaluations.where(:user_id => current_user.id).first
     @responses = ((e = @evaluations[0]) ? e.responses.sort_by {|obj| obj.created_at } : [])
-    @reviewer = params[:instructor_review_of] ? User.find(params[:instructor_review_of]) : current_user
+    @user = params[:instructor_review_of] ? User.find(params[:instructor_review_of]) : current_user
+    @submitter =  @submission.user_id == @user.submitting_id(@assignment, @submission)
 
 
     if params[:instructor]
@@ -35,25 +36,28 @@ class SubmissionsController < ApplicationController
         format.html { render :view, :layout => 'no_sidebar' }
         format.json { render json: @submission }
       end
-    else
-      if params[:finish]
-        if evaluation.is_complete?
-          evaluation.finished = true
-          evaluation.save!
-          redirect_to  course_assignment_path ({id: params[:assignment_id]} ) and return
-        else
-          flash[:error] = "You can't publish unless all ratings and required comments have been done."
-          redirect_to :back and return
+    elsif params[:finish]
+      if evaluation.is_complete?
+        evaluation.finished = true
+        evaluation.save!
+        redirect_to  course_assignment_path ({id: params[:assignment_id]} ) and return
+        respond_to do |format|
+          format.html { render :layout => 'no_sidebar' } # show.html.erb
+          format.json { render json: @submission }
         end
+      else
+        flash[:error] = "You can't publish unless all ratings and required comments have been done."
+        redirect_to :back and return
       end
+    else # it's a student who submitted it or is completing  or seeing a review of someone else
       respond_to do |format|
-        format.html { render :layout => 'no_sidebar' } # show.html.erb
+        format.html { render 'show', :layout => 'no_sidebar' } # show.html.erb
         format.json { render json: @submission }
       end
     end
   end
 
-    # GET /submissions/1
+  # GET /submissions/1
   # GET /submissions/1.json
   def view_reviews
     @submission = Submission.find(params[:id])
@@ -96,17 +100,12 @@ class SubmissionsController < ApplicationController
     @submission = Submission.find(params[:id])
   end
 
-  def combine(messages)
-    messages.map{|m| m + ' '}.reduce(:+)
-  end
 
-
+=begin
   # POST /submissions
   # POST /submissions.json
   def create
     @submission = Submission.new(params[:submission])
-    @submission.user = submitting_user(@assignment)
-
     respond_to do |format|
       if @submission.save
         format.html { redirect_to [@course, @submission.assignment] }
@@ -122,9 +121,7 @@ class SubmissionsController < ApplicationController
   # PUT /submissions/1
   # PUT /submissions/1.json
   def update
-    @submission = Submission.find(params[:id])
-    @submission.user = submitting_user(@assignment)
-
+    @submission = Submission.find(params[:submission])
     respond_to do |format|
       if @submission.update_attributes(params[:submission])
         format.html { redirect_to :back}
@@ -136,6 +133,7 @@ class SubmissionsController < ApplicationController
   end
 
   # DELETE /submissions/1
+=end
   # DELETE /submissions/1.json
   def destroy
     @submission = Submission.find(params[:id])

@@ -9,7 +9,7 @@ class PasswordResetsController < ApplicationController
   # Password reset email is sent
   def create
     @user =  User.find_by_email(params[:email])
-    if @user && @user.confirmed
+    if @user
       @user.send_password_reset
       redirect_to email_confirmation_path(id: @user.id)
     else
@@ -36,6 +36,7 @@ class PasswordResetsController < ApplicationController
     # The following will cause link to expire after one use.
     elsif @user.update_attributes(params[:user])
       @user.password_reset_sent_at = 2.hours.ago
+      @user.confirmed = true
       @user.save!(validate: false)
       redirect_to login_path, flash: { success: "Your password has been reset" }
     else

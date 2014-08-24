@@ -492,7 +492,6 @@ textarea {
     width: 70%;
     border-radius: 6px;
     border: 1px solid #DFDFDF;
-    float: left;
     min-width: 360px;
 }
 
@@ -523,11 +522,10 @@ textarea {
 #main .edit_assignment, #main .new_assignment {
     background: #FFF;
     padding: 25px;
-    width: -moz-calc(50% - 45px);
-    width: calc(50% - 45px);
+    width: 70px;
+    height: 200px;
     border-radius: 6px;
     border: 1px solid #DFDFDF;
-    float: left;
     margin-right: 45px;
     min-width: 360px;
 }
@@ -1192,12 +1190,11 @@ textarea {
 
 .new_submission,
 .edit_submission {
-    float: left;
     background: #FFF;
     padding: 25px;
-    width: -moz-calc 400px;
-    width: 400px;
+    width: 280px;
     margin-left: 20px;
+    margin-right: 40px;
     border-radius: 6px;
     border: 1px solid #DFDFDF;
     height: 180px;
@@ -1328,6 +1325,7 @@ textarea {
 
 #reviewing_tasks {
     margin-top: 20px;
+    margin-right: 20px;
 }
 
 .reviewing_task {
