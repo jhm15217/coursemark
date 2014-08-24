@@ -522,12 +522,11 @@ textarea {
 #main .edit_assignment, #main .new_assignment {
     background: #FFF;
     padding: 25px;
-    width: 70px;
-    height: 200px;
     border-radius: 6px;
     border: 1px solid #DFDFDF;
     margin-right: 45px;
     min-width: 360px;
+    float: left;
 }
 
 #main .edit_assignment input[type=submit],
@@ -1086,17 +1085,17 @@ textarea {
 }
 
 .submissionBox {
-    width: 100%;
+    width: 90%;
     min-width: 250px;
     height: auto;
-    min-height: 100px;
+    /* min-height: 100px; */
     display: inline-block;
     box-sizing: border-box;
     background: #FFF;
     border: 1px solid #DFDFDF;
     border-radius: 6px;
     margin: 10px 0px 10px 0px;
-    padding: 17px 50px 17px 17px;
+    padding: 17px 17px 17px 17px;
     overflow: hidden;
 }
 
@@ -1129,9 +1128,9 @@ textarea {
     right: 0px;
     top: 0px;
     height: 50px;
-    width: 79px;
+    width: 100px;
     text-align: center;
-    max-width: 100px;
+    max-width: 200px;
     min-width: 45px;
     font-size: 20px;
     float: right;
