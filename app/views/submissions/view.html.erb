@@ -24,7 +24,7 @@
 <div id='submissionBoxesWrapper'>
   <!--     GRADE -->
   <span class='submissionGradeBox'>
-        <span class="grade"><%= unless (g = @submission.grade).nil? then 'Review Average: ' + prettifyFloat(g).to_s + "%" end %></span>
+        <span class="grade"><%= unless (g = @submission.grade).nil? then 'Weighted Average: ' + prettifyFloat(g).to_s + "%" end %></span>
   </span>
   <%= link_to course_assignment_submission_path(@course, @assignment, @submission, :submission => { :instructor_approved => false}), :method => :put do %>
       <div class='button fr' style="margin-right: 0px;"><%= @submission.instructor_approved ? 'Reopen Review' : 'End Review' %></div>
@@ -44,8 +44,9 @@
             <% if response.evaluation.finished? %>
                 <div class='submissionBox'>
                   <div class='submissionResponsePoints <%= gradeColorFullScale(response.scale.value) %>'><%= response.scale.value.to_s + '%' %></div>
-                  <div class='submissionResponseFrom'>
                     <%= response.evaluation.user.name %>
+                  <span class='submissionResponseFrom'><%= reviewer_name(response.evaluation, index) %>: </span>
+                  <span> <%= response.scale.description %></span>
                   </div>
                   <div class='submissionPeerReview'><%= if !response.peer_review.blank? then response.peer_review  end %></div>
                   <% if !response.student_response.blank? then %>
