@@ -32,12 +32,30 @@ class AssignmentsController < ApplicationController
     end
   end
 
-  # GET /assignments/1
+  def switch_names(registration)
+    if !registration.active
+      user = registration.user
+      t = user.first_name
+      user.first_name = user.last_name
+      user.last_name = t
+      user.save!(validate: false)
+    end
+  end
+
+  def fix
+    Course.find(params[:course_id]).registrations.each{|r| switch_names(r) }
+  end
+
+# GET /assignments/1
+
   # GET /assignments/1.json
   def show
     @assignment = Assignment.find(params[:id])
     @user = current_user
     if @user.instructor?(@course)
+      if params[:fix]
+        fix
+      end
       if reviewer_id = params[:reviewer]
         @reviewer = User.find(reviewer_id)
         @reviewing_tasks = @assignment.evaluations.forUser(@reviewer)
