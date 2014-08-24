@@ -1,5 +1,5 @@
-<div height='automatic' width="automatic">
-  <%= form_for [@course, @assignment] do |f| %>
+
+  <%= form_for [@course, @assignment], html: {class: 'submissionBox'} do |f| %>
       <% if @teams.length > 1 %>
           <select id="teams">
             <option value='-1' >Select Submitting Team</option>
@@ -32,5 +32,5 @@
 
       </div>
   <% end %>
-</div>
+
 
