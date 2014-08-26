@@ -30,8 +30,14 @@ class SubmissionsController < ApplicationController
     @user = params[:instructor_review_of] ? User.find(params[:instructor_review_of]) : current_user
     @submitter =  @submission.user_id == @user.submitting_id(@assignment, @submission)
 
-
-    if params[:instructor]
+    if params[:instructor_approved_toggle]
+      @submission.instructor_approved = !@submission.instructor_approved
+      @submission.save!
+      respond_to do |format|
+        format.html { render :view, :layout => 'no_sidebar' }    # We came here from an instructor page.
+        format.json { render json: @submission }
+      end
+    elsif params[:instructor]
       respond_to do |format|
         format.html { render :view, :layout => 'no_sidebar' }
         format.json { render json: @submission }
@@ -101,7 +107,6 @@ class SubmissionsController < ApplicationController
   end
 
 
-=begin
   # POST /submissions
   # POST /submissions.json
   def create
@@ -133,7 +138,6 @@ class SubmissionsController < ApplicationController
   end
 
   # DELETE /submissions/1
-=end
   # DELETE /submissions/1.json
   def destroy
     @submission = Submission.find(params[:id])

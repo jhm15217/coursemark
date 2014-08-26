@@ -21,11 +21,6 @@
 <% if (Time.zone.now < @assignment.submission_due) %>
     <%= render 'submission' %>
 <% end %>
-<% if @submission.created_at %>
-    <div class="edit_submission afterDeadline">
-      <a href='<%= @submission.attachment.url %>' style="color:#343F53;">Check Uploaded Submission</a>
-    </div>
-<% end %>
 
 
 
@@ -60,7 +55,21 @@
     <% end %>
 <% end %>
 
-<div class="clearfix"></div>
+<!--<div class="clearfix"></div>-->
+
+
+<% if Time.zone.now < @assignment.submission_due %>
+    <h3>Reviewing Rubric</h3>
+    <% @questions.each do |question| %>
+        <div class='submissionQuestionBox clearfix'>
+          <h2><%= question.question_text %></h2>
+          <div class='possiblePoints'><%= question.question_weight %> Points</div>
+          <% question.scales.sort_by{|s| s.value}.each do |scale|  %>
+              <%= scale.description + ':' + scale.value.to_s + '%   ' %>
+          <% end %>
+        </div>
+    <% end %>
+<% end %>
 
 
 

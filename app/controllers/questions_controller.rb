@@ -41,18 +41,10 @@ class QuestionsController < ApplicationController
     end
 
     @question = Question.new
-    @type = params[:type]
 
-    if @type == 'scale'
-      @question.scales.build(:value => 0, :description => 'Lowest Score Label')
-      @question.scales.build(:value => 1)
-      @question.scales.build(:value => 2)
-      @question.scales.build(:value => 3)
-      @question.scales.build(:value => 4, :description => 'Highest Score Label')
-    elsif @type == 'yesno'
-      @question.scales.build(:value => 0, :description => 'No')
-      @question.scales.build(:value => 1, :description => 'Yes')
-    end
+    @question.scales.build()
+    @question.scales.build()
+
 
     respond_to do |format|
       format.html # new.html.erb
@@ -60,13 +52,13 @@ class QuestionsController < ApplicationController
     end
   end
 
-  # GET /questions/1/edit
+# GET /questions/1/edit
   def edit
     @question = Question.find(params[:id])
   end
 
-  # POST /questions
-  # POST /questions.json
+# POST /questions
+# POST /questions.json
   def create
     if !current_user.instructor?(@course)
       raise CanCan::AccessDenied.new("Not authorized!")
@@ -95,23 +87,38 @@ class QuestionsController < ApplicationController
     @assignment = Assignment.find(params[:assignment_id])
     @questions = @assignment.questions
     ok = true
-    params[:response][:questions].split("\r\n").each do |line|
-      row = line.split(',')
-      question = Question.new(question_text: row[0], question_weight: row[1].to_i, written_response_required:row[2] == 'TRUE',
-                              assignment_id: @assignment.id)
-      ok = question.save
-      i = 3
-      while ok and row[i] and row[i+1] do
-        scale = Scale.new(description: row[i], value: row[i+1], question_id: question.id)
-        ok = scale.save
-        i += 2
-      end
+    params[:response][:questions].split("\r\n").each do |line|  ok = ok and create_question(line, @assignment) end
+    ok
+  end
+
+  def create_question(line, assignment)
+    row = line.split(',').map{|s| clean_csv_item(s) }
+    question = Question.new(question_text: row[0], question_weight: row[1].to_i, written_response_required:row[2] == 'TRUE',
+                            assignment_id: @assignment.id)
+    ok = question.save
+    i = 3
+    while ok and row[i] and row[i+1] do
+      scale = Scale.new(description: row[i], value: row[i+1], question_id: question.id)
+      ok = scale.save
+      i += 2
     end
     ok
   end
 
-  # PUT /questions/1
-  # PUT /questions/1.json
+  def clean_csv_item(s)
+    c = s.strip.gsub('<comma>', ',')
+    if c =~ /"(.*)"/
+      $1
+    else
+      c
+    end
+  end
+
+
+
+
+# PUT /questions/1
+# PUT /questions/1.json
   def update
     if !current_user.instructor?(@course)
       raise CanCan::AccessDenied.new("Not authorized!")
@@ -121,7 +128,7 @@ class QuestionsController < ApplicationController
 
     @question.scales do |scale|
       scale.save!
-    end 
+    end
 
     respond_to do |format|
       if @question.update_attributes(params[:question])
@@ -134,13 +141,13 @@ class QuestionsController < ApplicationController
     end
   end
 
-  # DELETE /questions/1
-  # DELETE /questions/1.json
+# DELETE /questions/1
+# DELETE /questions/1.json
   def destroy
     if !current_user.instructor?(@course)
       raise CanCan::AccessDenied.new("Not authorized!")
     end
-    
+
     @question = Question.find(params[:id])
     @question.destroy
 
@@ -165,9 +172,9 @@ class QuestionsController < ApplicationController
   def export
     data = CSV.generate do |csv|
       @questions.each do |q|
-        row = [q.question_text, q.question_weight, q.written_response_required]
+        row = [q.question_text.gsub(',','<comma>'), q.question_weight, q.written_response_required]
         q.scales.each do |s|
-          row << s.description
+          row << s.description.gsub(',','<comma>')
           row << s.value
         end
         csv << row
@@ -177,6 +184,6 @@ class QuestionsController < ApplicationController
     send_data(data, :type => 'text/csv', :filename => "#{@assignment.name} (rubric as of #{current_date}).csv")
   end
 
-
-
 end
+
+

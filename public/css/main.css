@@ -1085,7 +1085,7 @@ textarea {
 }
 
 .submissionBox {
-    width: 90%;
+    width: 40%;
     min-width: 250px;
     height: auto;
     /* min-height: 100px; */
@@ -1138,6 +1138,7 @@ textarea {
     background: #e67e22;
     border-bottom-left-radius: 6px;
     color: white;
+    padding-right: 20px;
     padding-top: 12px;
 }
 
@@ -1190,17 +1191,19 @@ textarea {
 .new_submission,
 .edit_submission {
     background: #FFF;
-    padding: 25px;
-    width: 280px;
-    margin-left: 20px;
-    margin-right: 40px;
+    width: 150px;
+    margin-left: 0px;
+    margin-right: 80px;
     border-radius: 6px;
     border: 1px solid #DFDFDF;
     height: 180px;
+    padding-left: 5px;
+    padding-top: 10px;
 }
 
 .edit_submission.afterDeadline {
-    height: 80px;
+    height: 50px;
+    float: right;
 }
 
 .new_submission input,                                                                                                                                                                              u
@@ -1211,7 +1214,7 @@ textarea {
 .new_submission a,
 .edit_submission a {
     color: #2ecc71;
-    text-decoration: underline;
+    /* text-decoration: underline; */
 }
 
 .new_submission .grade,
