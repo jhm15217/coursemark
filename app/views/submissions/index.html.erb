@@ -11,7 +11,7 @@
 
   </tr>
   <% @students.each do |student| %>
-      <% submission = @assignment.get_submissions(student)[0] %>
+      <% submission = @assignment.submissions.select{|s| s.user_id == student.id }[0] %>
       <tr>
         <td><%= student.name %></td>
         <td><%= student.email %></td>

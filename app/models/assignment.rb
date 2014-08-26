@@ -143,7 +143,7 @@ class Assignment < ActiveRecord::Base
     ordered_questions = questions.sort_by{ |obj| obj.created_at }
     return CSV.generate do |csv|
       line = Array.new(space_before_questions)
-      ordered_questions.each {|question| line << question.question_text; line += ['']*(reviewer_count-1) }
+      ordered_questions.each {|question| line << question.question_text.gsub(',','<comma>'); line += ['']*(reviewer_count-1) }
       csv << line
       line = Array.new(space_before_questions)
       ordered_questions.each{|q|  line << q.question_weight; line += ['']*(reviewer_count-1) }

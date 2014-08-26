@@ -4,7 +4,7 @@
     <% @questions.each do |question| %>
         <div class="rubricQuestion">
           <%= link_to [:edit, @course, @assignment, question] do %>
-              <h2>"<%= question.question_text %>"</h2>
+              <h2><%= question.question_text %></h2>
           <% end %>
           <h4>
             <%=question.question_weight %> POINTS -
