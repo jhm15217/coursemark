@@ -8,6 +8,7 @@ Agora::Application.routes.draw do
   match 'registrations/invite_students' => 'registrations#invite_students'
   match 'application/login_student' => 'application#login_student'
   match 'assignments/publish' => 'assignments#publish'
+  match 'all_users' => 'users#all_users'
 
   get "users/new"
   get "users/edit"
