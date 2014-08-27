@@ -14,7 +14,8 @@
 
 <div id="headerSpacer"></div>
 
-<div class="notice">Instruct students to register at coursemark.org using this course code: <strong><%= @course.course_code %></strong></div>
+<div class="notice">Instruct students to register at coursemark.org using this course code: <strong><%= @course.course_code %></strong>.
+  There are <%= @registrations.length.to_s %> people registered.</div>
 
 <table>
   <tr>

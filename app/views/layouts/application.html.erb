@@ -15,6 +15,16 @@
         <link rel="shortcut icon" href="/favicon.png" />
 
         <script src="/js/vendor/modernizr-2.6.2.min.js"></script>
+      <script>
+          function changeTeam(teamid) {
+              $.ajax({
+                  type: "POST",
+                  url: window.location.pathname + '/change_team',
+                  data: { teamID: teamid  }
+              });
+          }
+      </script>
+
     </head>
     <body>
         <!--[if lt IE 7]>

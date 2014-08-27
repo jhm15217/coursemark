@@ -6,17 +6,5 @@
 
 <h2>New Rubric Question</h2>
 
-<h4>Question Type</h4>
-
-<%= link_to new_course_assignment_question_path(@course, @assignment, :type => 'yesno') do %>
-	<div class="button questionType <%= 'selected' if @type == 'yesno' %>">Yes/No</div>
-<% end %>
-
-<%= link_to new_course_assignment_question_path(@course, @assignment, :type => 'scale') do %>
-	<div class="button questionType <%= 'selected' if @type == 'scale' %>">Scale</div>
-<% end %>
-
-<div class="clearfix"></div>
-
 
 <%= render 'form' %>

@@ -25,7 +25,7 @@ class ReviewsController < ApplicationController
         submission.assign_enough_review_tasks
       end
     else
-      params[:response][:reviewers].split("\r\n").each{ |line| add_submission(line.split(',')) }
+      params[:response][:reviewers].split("\r\n").each{ |line| add_submission(line.split(',').map{|s| s.strip}) }
     end
     respond_to do |format|
       format.html { redirect_to course_assignment_reviews_path(@course,@assignment) }

@@ -40,7 +40,7 @@
     </div>
     <div class="actions">
       <div class="clearfix"></div>
-      <%= f.submit  %>
+      <%= f.submit value:'Update' %>
     </div>
     <%if @assignment.draft %>
        <div class="actions">
@@ -64,3 +64,4 @@
       <%= "<a href=/courses/#{@course.id}/assignments/#{@assignment.id}?fix=true>Fix </a>".html_safe  %>
     </div>
 <% end %>
+

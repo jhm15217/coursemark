@@ -50,9 +50,9 @@ class MembershipsController < ApplicationController
   def create
     @course = Course.find(params[:course_id])
     @assignment = Assignment.find(params[:assignment_id])
-    @memberships = @assignment.memberships
+    @assignment.memberships.each {|membership| membership.destroy }
 
-    params[:response][:teams].split("\r\n").each{ |line| add_teammate(line.split(',')) }
+    params[:response][:teams].split("\r\n").each{ |line| add_teammate(line.split(',').map{|s| s.strip}) }
 
     respond_to do |format|
       format.html { redirect_to course_assignment_memberships_path(@course,@assignment) }
@@ -69,10 +69,6 @@ class MembershipsController < ApplicationController
         flash[:error] = "Can't find #{row[2]}"
       end
     else
-      # Wipe out any previous memberships for this assignment
-      @memberships.select{|m| m.user_id == student.id and m.assignment_id = @assignment.id }.each do |membership|
-        membership.delete
-      end
       # create new pseudo-user if needed
       if !row[3] then row[3] = '' end
       if !row[4] then row[4] = '' end
