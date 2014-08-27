@@ -34,14 +34,14 @@ class SubmissionsController < ApplicationController
       @submission.instructor_approved = !@submission.instructor_approved
       @submission.save!
       respond_to do |format|
-        format.html { render :view, :layout => 'no_sidebar' }    # We came here from an instructor page.
+        format.html { render :view, :layout => 'no_sidebar' }    # we came here from an instrucor page.
         format.json { render json: @submission }
       end
-    elsif params[:instructor]
-      respond_to do |format|
-        format.html { render :view, :layout => 'no_sidebar' }
-        format.json { render json: @submission }
-      end
+    # elsif params[:instructor]
+    #   respond_to do |format|
+    #     format.html { render :view, :layout => 'no_sidebar' }
+    #     format.json { render json: @submission }
+    #   end
     elsif params[:finish]
       if evaluation.is_complete?
         evaluation.finished = true
