@@ -26,9 +26,8 @@
   <span class='submissionGradeBox'>
         <span class="grade"><%= unless (g = @submission.grade).nil? then 'Weighted Average: ' + prettifyFloat(g).to_s + "%" end %></span>
   </span>
-  <%= link_to course_assignment_submission_path(@course, @assignment, @submission, :submission => { :instructor_approved => false}), :method => :put do %>
-      <div class='button fr' style="margin-right: 0px;"><%= @submission.instructor_approved ? 'Reopen Review' : 'End Review' %></div>
-  <% end %>
+  <a href='<%= "/courses/#{@course.id}/assignments/#{@assignment.id}/submissions/#{@submission.id}?instructor_approved_toggle=true" %>' >
+      <div class='button fr' style='margin-right: 0px;'><%= @submission.instructor_approved ? 'Reopen Review' : 'End Review'%></div>  </a>
   <% if (Time.zone.now >= @assignment.review_due) && @submission.grade.nil?%>
       <div class='submissionGradeBox warning'>
         This student's submission did not receive any reviews.
@@ -44,40 +43,28 @@
             <% if response.evaluation.finished? %>
                 <div class='submissionBox'>
                   <div class='submissionResponsePoints <%= gradeColorFullScale(response.scale.value) %>'><%= response.scale.value.to_s + '%' %></div>
-                    <%= response.evaluation.user.name %>
                   <span class='submissionResponseFrom'><%= reviewer_name(response.evaluation, index) %>: </span>
                   <span> <%= response.scale.description %></span>
-                  </div>
                   <div class='submissionPeerReview'><%= if !response.peer_review.blank? then response.peer_review  end %></div>
-                  <% if !response.student_response.blank? then %>
-                      <div class='submissionStudentResponse'>
-                        <div class='submissionResponseFrom' style="margin-top: 30px;">
-                          <%= @submission.user.first_name %>'s Rebuttal
-                        </div>
-                        <p> <%= response.student_response.html_safe.gsub(/\n/,'<br>').html_safe %> </p>
-                      </div>
-                  <% end %>
-                  <% if !@submission.instructor_approved? %>
-                      <div class='submissionInstructorResponse' style="margin-top:25px; margin-bottom:-3px;">
-                        <div class='submissionResponseFrom'>Instructor Comment</div>
-                        <%= nested_form_for [@course, @assignment, question, response], remote: true do |f| %>
-                            <%= f.text_area :instructor_response, class: 'submissionTextArea fl'  %>
-                            <br>
-                            <div class='savedStatus'></div>
-                        <% end %>
-                      </div>
-                  <% elsif response.instructor_response %>
-                      <div class='submissionResponseFrom'>Instructor Comment</div>
-                      <%= response.instructor_response %>
-                  <% end %> <!-- End Instructor Response -->
                 </div>
+                <% if !response.student_response.blank? then %>
+                    <div class='submissionStudentResponse'>
+                      <div class='submissionResponseFrom' style="margin-top: 30px;">
+                        <%= @submission.user.first_name %>'s Rebuttal
+                      </div>
+                      <p> <%= response.student_response.html_safe.gsub(/\n/,'<br>').html_safe %> </p>
+                    </div>
+                <% end %>
+               <%= instructor_comment(response, true)  %>
             <% end %>
-        <% end %>
+        <%end %>
       </div> <!-- end submissionQuestionBox -->
   <% end %>
+</div>
+
 
 </div>
-</div>
+
 
 
 <script>

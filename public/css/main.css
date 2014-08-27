@@ -492,7 +492,6 @@ textarea {
     width: 70%;
     border-radius: 6px;
     border: 1px solid #DFDFDF;
-    float: left;
     min-width: 360px;
 }
 
@@ -523,13 +522,11 @@ textarea {
 #main .edit_assignment, #main .new_assignment {
     background: #FFF;
     padding: 25px;
-    width: -moz-calc(50% - 45px);
-    width: calc(50% - 45px);
     border-radius: 6px;
     border: 1px solid #DFDFDF;
-    float: left;
     margin-right: 45px;
     min-width: 360px;
+    float: left;
 }
 
 #main .edit_assignment input[type=submit],
@@ -1088,17 +1085,17 @@ textarea {
 }
 
 .submissionBox {
-    width: 100%;
+    width: 40%;
     min-width: 250px;
     height: auto;
-    min-height: 100px;
+    /* min-height: 100px; */
     display: inline-block;
     box-sizing: border-box;
     background: #FFF;
     border: 1px solid #DFDFDF;
     border-radius: 6px;
     margin: 10px 0px 10px 0px;
-    padding: 17px 50px 17px 17px;
+    padding: 17px 17px 17px 17px;
     overflow: hidden;
 }
 
@@ -1131,9 +1128,9 @@ textarea {
     right: 0px;
     top: 0px;
     height: 50px;
-    width: 79px;
+    width: 100px;
     text-align: center;
-    max-width: 100px;
+    max-width: 200px;
     min-width: 45px;
     font-size: 20px;
     float: right;
@@ -1141,6 +1138,7 @@ textarea {
     background: #e67e22;
     border-bottom-left-radius: 6px;
     color: white;
+    padding-right: 20px;
     padding-top: 12px;
 }
 
@@ -1192,19 +1190,20 @@ textarea {
 
 .new_submission,
 .edit_submission {
-    float: left;
     background: #FFF;
-    padding: 25px;
-    width: -moz-calc 400px;
-    width: 400px;
-    margin-left: 20px;
+    width: 150px;
+    margin-left: 0px;
+    margin-right: 80px;
     border-radius: 6px;
     border: 1px solid #DFDFDF;
     height: 180px;
+    padding-left: 5px;
+    padding-top: 10px;
 }
 
 .edit_submission.afterDeadline {
-    height: 80px;
+    height: 50px;
+    float: right;
 }
 
 .new_submission input,                                                                                                                                                                              u
@@ -1215,7 +1214,7 @@ textarea {
 .new_submission a,
 .edit_submission a {
     color: #2ecc71;
-    text-decoration: underline;
+    /* text-decoration: underline; */
 }
 
 .new_submission .grade,
@@ -1328,6 +1327,7 @@ textarea {
 
 #reviewing_tasks {
     margin-top: 20px;
+    margin-right: 20px;
 }
 
 .reviewing_task {

@@ -1,13 +1,13 @@
-<!-- This is reached via the Complete or See Review button for a reviewer -->
-<!-- if @reviewer is not the current user then the viewer is an instructor reviewing @reviewer's finished reviews -->
+<!-- This is reached via the Complete or See Review button for a reviewer, or via a link on the assignment page for the submitter -->
+<!-- if @user is not the current user then the viewer is an instructor reviewing @user's finished reviews -->
 <div id='submissionHeader'>
   <small style='display:block; float:left; margin-top:-18px; width:100%;'>
-    <% if @reviewer.instructor?(@course) %>
+    <% if @user.instructor?(@course) %>
         <%= link_to "&larr; #{@submission.assignment.name}".html_safe , course_assignment_submissions_path(@course, @assignment) %>
     <% else %>
         <%= link_to "&larr; #{@submission.assignment.name}".html_safe , course_assignment_path(@course, @assignment) %>
     <% end %>
-    <h1 class="name"> <% if @reviewer.instructor?(@course) %><%= @submission.user.name %><% end %></h1>
+    <h1 class="name"> <% if @user.instructor?(@course) %><%= @submission.user.name %><% end %></h1>
     <% if !@submission.attachment.blank? %>
         <div id='submissionDownloadBtn'>
           <a href='<%= @submission.attachment.url %>' >Download Submission</a>
@@ -27,13 +27,12 @@
 
 
 <div id='submissionBoxesWrapper'>
-  <% if @reviewer == current_user and !@submission.evaluations.forUser(@reviewer)[0].finished  and
-          Time.zone.now < @assignment.review_due %>
+  <% if !@submitter and @user == current_user and !@submission.evaluations.forUser(@user)[0].finished  and Time.zone.now < @assignment.review_due %>
       <!-- This user is a reviewer who hasn't finished but has time  -->
       <% @questions.each do |question| %>
           <div class='submissionQuestionBox' id='peer_review'>
             <h2><%= question.question_text %></h2>
-            <% response = response_for_question_by_peer(@reviewer, @submission, question) %>
+            <% response = response_for_question_by_peer(@user, @submission, question) %>
             <%= nested_form_for [@course, @assignment, question, response], :remote => true  do |f| %>
                 <div class='peerReviewJustification'>
                   <div class='submissionResponseFrom'>Comment<%= question.written_response_required ? ' (required)' : '' %></div>
@@ -59,6 +58,7 @@
           <div id='submitFormsButton' class='button'>Publish Review</div>
       <% end %>
 
+
   <% else %> <!-- the user is a submitter or a reviewer who is finished or out of time or an eavesdropping instructor -->
 
       <!--     EVALUATIONS -->
@@ -67,12 +67,12 @@
             <h2><%= question.question_text %></h2>
             <div class='possiblePoints'><%= question.question_weight %> Points</div>
             <% @submission.get_responses_for_question(question).sort_by{|r| r.created_at}.
-                       sort_by{|r| r.evaluation.user == @reviewer ? 0 : 1}.each_with_index do |response, index| %>
+                       sort_by{|r| r.evaluation.user == @user ? 0 : 1}.each_with_index do |response, index| %>
                 <% if response.evaluation.finished? %>
                     <div class='submissionBox'>
                       <div class='submissionResponsePoints <%= gradeColorFullScale(response.scale.value) %>'><%= response.scale.value.to_s + '%' %></div>
                       <span class='submissionResponseFrom'>
-                              <% if @reviewer.id == response.evaluation.user.id and @reviewer == current_user %>
+                              <% if @user.id == response.evaluation.user.id and @user == current_user %>
                                 Your Review:&nbsp
                               <% else %>
                                 <%= reviewer_name(response.evaluation, index) %>'s Review:&nbsp
@@ -83,13 +83,27 @@
                       <div class='submissionPeerReview'><%= if !response.peer_review.blank? then response.peer_review  end %></div>
                       <div class='submissionResponseFrom'>  </div>
 
-                      <% if !response.student_response.blank? then %>
+                      <% if @submitter %>
+                          <div class='submissionInstructorResponse'>
+                            <% if !@submission.instructor_approved %>
+                                <div class='submissionResponseFrom' style="margin-top: 20px;">Your Rebuttal</div>
+                                <%= nested_form_for [@course, @assignment, question, response], :remote => true do |f| %>
+                                    <%= f.text_area :student_response, class:  'submissionTextArea fl'  %>
+                                    <br>
+                                    <div class='savedStatus'></div>
+                                <% end %>
+                            <% elsif response.student_response %> <!-- student said something, and instructor has closed discussion -->
+                                <div class='submissionResponseFrom' style="margin-top: 20px;">Your Rebuttal</div>
+                                <p> <%= response.student_response.html_safe.gsub(/\n/,'<br>').html_safe %> </p>
+                            <% end %>
+                          </div>
+                      <% elsif !response.student_response.blank? then %>
                           <div class='submissionStudentResponse'>
                             <div class='submissionResponseFrom' style="margin-top: 30px;">
-                              <% if @reviewer.instructor?(@course) %>
-                                  <%= @submission.user.first_name %>'s Rebuttal
-                              <% elsif @reviewer.submitting_id(@assignment) == @submission.user.id then %>   <!-- probably never true -->
-                                  Your Rebuttal (Send mail to james.morris@cmu.edu if you see this.)
+                              <% if @user.instructor?(@course) %>
+                                  <%= @submission.user.name %>'s Rebuttal
+                              <% elsif @submitter then %>
+                                  Your Rebuttal
                               <% else %>
                                   Author's Rebuttal
                               <% end %>
@@ -97,17 +111,18 @@
                             <p> <%= response.student_response.html_safe.gsub(/\n/,'<br>').html_safe %> </p>
                           </div>
                       <% end %>
-                      <% if @reviewer.instructor?(@course) and !@submission.instructor_approved? %>
-                          <div class='submissionInstructorResponse' style="margin-top:25px; margin-bottom:-3px;">
-                            <div class='submissionResponseFrom'>Instructor Comment</div>
-                            <%= nested_form_for [@course, @assignment, question, response]  do |f| %>
-                                <%= f.text_area :instructor_response, class: 'submissionTextArea fl'  %>
-                                <%= f.submit "Reply", class: 'submissionTextAreaReply fr' %>
-                            <% end %>
-                          </div>
-                      <% elsif response.instructor_response %>
-                          <div class='submissionResponseFrom'>Instructor Comment</div>
-                          <%= response.instructor_response %>
+                      <%= instructor_comment(response, @user.instructor?(@course))  %>  <!-- Review reviewing instructor can't add comments -->
+                      <!--<% if @user.instructor?(@course) and !@submission.instructor_approved? %>-->
+                          <!--<div class='submissionInstructorResponse' style="margin-top:25px; margin-bottom:-3px;">-->
+                            <!--<div class='submissionResponseFrom'>Instructor Comment</div>-->
+                            <!--<%= nested_form_for [@course, @assignment, question, response]  do |f| %>-->
+                                <!--<%= f.text_area :instructor_response, class: 'submissionTextArea fl'  %>-->
+                                <!--<%= f.submit "Reply", class: 'submissionTextAreaReply fr' %>-->
+                            <!--<% end %>-->
+                          <!--</div>-->
+                      <!--<% elsif response.instructor_response %>-->
+                          <!--<div class='submissionResponseFrom'>Instructor Comment</div>-->
+                          <!--<%= response.instructor_response %>-->
                       <% end %> <!-- Instructor Response -->
                     </div>   <!-- submission box -->
                 <% end %> <!-- if finished -->
@@ -115,9 +130,10 @@
           </div> <!-- end submissionQuestionBox -->
       <% end %>  <!-- question loop -->
   <% end %> <!-- if-else -->
+</div> <!-- submissionBoxesWrapper -->
 </div>  <!-- submissionWrapper -->
 </div>
-</div>
+
 
 <script>
     function add_written_response(question_id) {

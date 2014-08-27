@@ -15,7 +15,7 @@ class Submission < ActiveRecord::Base
   validates_presence_of :assignment_id
   validates_presence_of :user_id
   validate :met_deadline, :on => :create
-  validates_attachment_size :attachment, :less_than => MAX_FILE_SIZE.megabytes, message: "File must be smaller than #{MAX_FILE_SIZE}MB. File>Reduce File Size."
+  validates_attachment_size :attachment, :less_than => MAX_FILE_SIZE.megabytes, message: "File must be smaller than #{MAX_FILE_SIZE}MB. In MSW: File>Reduce File Size."
   validates_attachment_content_type :attachment, :content_type => ['application/pdf']
 
     def completed_responses
@@ -70,7 +70,7 @@ class Submission < ActiveRecord::Base
   def assign_enough_review_tasks
     create_evaluations(assignment.reviews_required  - evaluations.length,
                        assignment.course.get_real_students.
-                           select{|s| s.submitting_id(assignment) != user_id and #not on same team
+                           select{|s| s.submitting_id(assignment, self) != user_id and #not on same team
                            !evaluations.any?{|e| e.user_id == s.id} })  #not already reviewing
 
   end

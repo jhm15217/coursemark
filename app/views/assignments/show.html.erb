@@ -7,11 +7,12 @@
       <h3>To-Do List</h3>
       <% @to_do.each do |task| %>
           <%= ((if task[:action] == :submit  then
-                  "Submit <a href=/courses/#{@course.id}/assignments/#{task[:assignment].id}>#{task[:assignment].name}</a>"
+                  "Submit <a href=/courses/#{@course.id}/assignments/#{task[:assignment].id}>
+                  #{task[:assignment].name + (task[:team] ? ' for ' + task[:team] : '')}</a>"
                 else
                   "Complete <a href=/courses/#{@course.id}/assignments/#{task[:assignment].id}/submissions/#{task[:submission_id]}>Review #{task[:index].to_s}</a> for #{task[:assignment].name}"
                 end) +
-                  ' Assignment by ' + task[:time].strftime('%-m/%-d at %H:%M')  + '</br>').html_safe
+                  ' by ' + task[:time].strftime('%-m/%-d at %H:%M')  + '</br>').html_safe
           %>
       <% end %>
     </div>
@@ -19,76 +20,45 @@
 
 <% if (Time.zone.now < @assignment.submission_due) %>
     <%= render 'submission' %>
-<% elsif @submission.created_at %>
-    <div class="edit_submission afterDeadline">
-      <a href='<%= @submission.attachment.url %>' style="color:#343F53;">View Uploaded Submission</a>
-    </div>
 <% end %>
 
-<div class="clearfix"></div>
+
+
+<h3>Reviews of Your Submission(s)</h3>
+
+<% @submissions.each do |submission| %>
+    <div id="reviewing_task">
+      <%= link_to course_assignment_submission_path(@course, @assignment, submission) + '?view=true' do %>
+          <%= submission.user.name %>'s
+          </div>
+      <% end %>
+<% end %>
+
+
+
+
+<br>
+<h3>Reviews by You</h3>
+
 
 <% if (@assignment.manual_assignment && @assignment.reviewers_assigned) || !@assignment.manual_assignment %>
     <% if (Time.zone.now > @assignment.submission_due)  %>
         <div id="reviewing_tasks">
           <% @reviewing_tasks.each_with_index do |task, index| %>
-              <%= link_to course_assignment_submission_path(@course, @assignment, task.submission) do %>
-                  <div class="reviewing_task highlighted" > <%= ((task.finished? or Time.zone.now > @assignment.review_due) ? 'See' : 'Complete') + ' Review ' + (index + 1).to_s %></div>
-              <% end %>
+              <div id="reviewing_task">
+                <%= link_to course_assignment_submission_path(@course, @assignment, task.submission) do %>
+                    <%= ((task.finished? or Time.zone.now > @assignment.review_due) ? 'See' : 'Complete') + ' Review ' + (index + 1).to_s %>
+                <% end %>
+              </div>
           <% end %>
         </div>
     <% end %>
 <% end %>
 
-<div class="clearfix"></div>
+<!--<div class="clearfix"></div>-->
 
-<% if @evaluations && (@submission.completed_responses.length > 0) %>
-    <h3>Reviews of Your Submission</h3>
-    <div id="student_evaluation_view">
-      <div class='submissionGradeBox'>
-        <span class="grade"><%= unless (g = @submission.grade).nil? then 'Weighted Average: ' + prettifyFloat(g).to_s + "%" end %></span>
-      </div>
 
-      <% @questions.each do |question| %>
-          <div class='submissionQuestionBox clearfix'>
-            <h2><%= question.question_text %></h2>
-            <div class='possiblePoints'><%= question.question_weight %> Points</div>
-            <% @submission.get_responses_for_question(question).sort_by{|r| r.created_at }.each_with_index do |response, index| %>
-                <% if response.evaluation.finished? %>
-                    <div class='submissionBox'>
-                      <div class='submissionResponsePoints <%= gradeColorFullScale(response.scale.value) %>'><%= if !response.scale.nil? then response.scale.value.to_s + '%' else '--' end %></div>
-                      <span class='submissionResponseFrom'><%= reviewer_name(response.evaluation, index) %>: </span>
-                      <span> <%= response.scale.description %></span>
-                      <div class='submissionPeerReview'><%= if !response.peer_review.blank? then response.peer_review end %></div>
-
-                      <div class='submissionInstructorResponse'>
-                        <% if !@submission.instructor_approved %>
-                            <div class='submissionResponseFrom' style="margin-top: 20px;">Your Rebuttal</div>
-                            <%= nested_form_for [@course, @assignment, question, response], :remote => true do |f| %>
-                                <%= f.text_area :student_response, class:  'submissionTextArea fl'  %>
-                                <br>
-                                <div class='savedStatus'></div>
-                            <% end %>
-                        <% elsif response.student_response %>
-                            <div class='submissionResponseFrom' style="margin-top: 20px;">Your Rebuttal</div>
-                            <p> <%= response.student_response.html_safe.gsub(/\n/,'<br>').html_safe %> </p>
-
-                        <% end %>
-                      </div> <!-- End Student Response -->
-
-                      <% if response.instructor_response then %>
-                          <div class='submissionStudentResponse'>
-                            <div class='submissionResponseFrom' style="margin-top: 25px;">Instructor's Comment</div>
-                            <%= response.instructor_response %>
-                          </div>
-                      <% end %>
-                    </div>
-                <% end %>
-            <% end %>
-          </div> <!-- end submissionQuestionBox -->
-          <div class="clearfix"></div>
-      <% end %>
-    </div>
-<% elsif Time.zone.now < @assignment.submission_due %>
+<% if Time.zone.now < @assignment.submission_due %>
     <h3>Reviewing Rubric</h3>
     <% @questions.each do |question| %>
         <div class='submissionQuestionBox clearfix'>
@@ -100,5 +70,6 @@
         </div>
     <% end %>
 <% end %>
+
 
 
