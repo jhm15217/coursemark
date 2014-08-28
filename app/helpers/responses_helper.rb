@@ -1,38 +1,36 @@
 module ResponsesHelper
 
-  def peer_review(response, index, user)
+  def complete_peer_review(response, user)
     question = response.question
-    (if !(@submitter or user.instructor?(@course) or response.evaluation.finished) and Time.zone.now.between?(@assignment.submission_due, @assignment.review_due)
-      nested_form_for [@course, @assignment, question, response], :remote => true  do |f|
-        "<div class='peerReviewJustification'>" +
-            ("<div class='submissionResponseFrom'>Comment #{question.written_response_required ? '(required)' : ''}</div>"
-            f.text_area :peer_review, :html => {class: "reviewTextArea fl"}, :required => response.question.written_response_required) +
-            "</div>" +
-            "<div class='radio_btns'>" +
-            (question.scales.sort_by {|s| s.value}.map do |scale|
-              "<div class='radio_btn'>"  +
-                  (f.radio_button :scale_id, scale.id) +
-                  (f.label ":scale_id_#{scale.id}", "#{scale.value}% - #{scale.description}") +
-                  "</div>"
-            end).reduce(:+) +
-            "</div>" +
-            "<br>" +
-            "<div class='savedStatus'></div>" +
-            (link_to course_assignment_submission_path(@course, @assignment, @submission, finish: true) do
-              "<div id='submitFormsButton' class='button'>Publish Review</div>"
-            end ).html_safe
-      end
-    else
-      "<span class='submissionResponseFrom'>" +
-          (if @user.id == response.evaluation.user.id and @user == current_user
-             "Your Review:&nbsp"
-           else
-             reviewer_name(response.evaluation, index) + "'s Review:&nbsp"
-           end) +
-          "</span>" +
-          "<span>" + ' ' + response.scale.description + "</span>" +
-          "<div class='submissionPeerReview'>#{!response.peer_review.blank? ? '' : response.peer_review }</div>"
-    end).html_safe
+    nested_form_for [@course, @assignment, question, response], :remote => true  do |f|
+      ("<div class='peerReviewJustification'>" +
+          "<div class='submissionResponseFrom'>Comment #{question.written_response_required ? '(required)' : ''}</div>" +
+          (f.text_area :peer_review, :html => {class: "reviewTextArea fl"}, :required => question.written_response_required) +
+          "</div>" +
+          "<div class='radio_btns'>" +
+          (question.scales.sort_by {|s| s.value}.map do |scale|
+            "<div class='radio_btn'>"  +
+                (f.radio_button :scale_id, scale.id) +
+                (f.label ":scale_id_#{scale.id}", "#{scale.value}% - #{scale.description}") +
+                "</div>"
+          end).reduce(:+) +
+          "</div>" +
+          "<br>" +
+          "<div class='savedStatus'></div>").html_safe
+    end
+  end
+
+  def see_peer_review(response, index, user)
+    ("<span class='submissionResponseFrom'>" +
+        (if @user.id == response.evaluation.user.id and @user == current_user
+           "Your Review:&nbsp"
+         else
+           reviewer_name(response.evaluation, index) + "'s Review:&nbsp"
+         end) +
+        "</span>" +
+        "<span>" + ' ' + response.scale.description + "</span>" +
+        "<div class='submissionPeerReview'>#{!response.peer_review.blank? ? '' : response.peer_review }</div>"
+    ).html_safe
   end
 
   def instructor_comment(response, instructor)
