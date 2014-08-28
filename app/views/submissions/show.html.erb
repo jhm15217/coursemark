@@ -1,13 +1,13 @@
 <!-- This should show the review of a submission regardless of who is asking for it-- instructor, submitter, or reviewer -->
-<% instructor = @user.instructor?(@course) %>
+
 <div id='submissionHeader'>
   <small style='display:block; float:left; margin-top:-18px; width:100%;'>
-    <% if instructor %>
+    <% if @user.instructor?(@course) %>
         <%= link_to "&larr; #{@submission.assignment.name}".html_safe , course_assignment_submissions_path(@course, @assignment) %>
     <% else %>
         <%= link_to "&larr; #{@submission.assignment.name}".html_safe , course_assignment_path(@course, @assignment) %>
     <% end %>
-    <h1 class="name"> <% if instructor %><%= @submission.user.name %><% end %></h1>
+    <h1 class="name"> <% if @user.instructor?(@course) %><%= @submission.user.name %><% end %></h1>
     <% if !@submission.attachment.blank? %>
         <div id='submissionDownloadBtn'>
           <a href='<%= @submission.attachment.url %>' >Download Submission</a>
@@ -25,36 +25,53 @@
 
 <div id='submissionsWrapper'>
   <div id='submissionBoxesWrapper'>
-    <% if instructor and Time.zone.now > @assignment.review_due %>
+    <!--     GRADE -->
+    <% if @user.instructor?(@course) and Time.zone.now > @assignment.review_due %>
         <a href='<%= "/courses/#{@course.id}/assignments/#{@assignment.id}/submissions/#{@submission.id}?instructor_approved_toggle=true" %>' >
           <div class='button fl' style='margin-right: 20px;'><%= @submission.instructor_approved ? 'Reopen Review' : 'End Review'%></div>  </a>
     <% end %>
-    <% if g = @submission.grade %>
+    <% if !(g = @submission.grade) %>
+        <div class='submissionGradeBox warning'>
+          No Reviews
+        </div>
+    <% else %>
+        <% if @user.instructor?(@course) %>
           <span class='submissionGradeBox'>
             <span class='grade'> Average <%= prettifyFloat(g).to_s + '%' %></span>
           </span>
-    <% end %>
-    <% if !@submitter and @user == current_user and (e = @submission.evaluations.forUser(@user)[0]) and !e.finished  and Time.zone.now < @assignment.review_due %>
-        <!-- This user is a reviewer who hasn't finished but has time  -->
-        <% @questions.each do |question| %>
-            <div class='submissionQuestionBox' id='peer_review'>
-              <h2><%= question.question_text %></h2>
-              <%= complete_peer_review(response_for_question_by_peer(@user, @submission, question), @user) %>
-            </div> <!-- submissionQuestionBox -->
-        <% end %> <!-- questions loop -->
-        <div>
-          <%= link_to course_assignment_submission_path(@course, @assignment, @submission, finish: true) do %>
-              <div id='submitFormsButton' class='button'>Publish Review</div>
-          <% end %>
-        </div>
+        <% end %>
+        <% if !@submitter and @user == current_user and (e = @submission.evaluations.forUser(@user)[0]) and !e.finished  and Time.zone.now < @assignment.review_due %>
+            <!-- This user is a reviewer who hasn't finished but has time  -->
+            <% @questions.each do |question| %>
+                <div class='submissionQuestionBox' id='peer_review'>
+                  <h2><%= question.question_text %></h2>
+                  <% response = response_for_question_by_peer(@user, @submission, question) %>
+                  <%= nested_form_for [@course, @assignment, question, response], :remote => true  do |f| %>
+                      <div class='peerReviewJustification'>
+                        <div class='submissionResponseFrom'>Comment<%= question.written_response_required ? ' (required)' : '' %></div>
+                        <%= f.text_area :peer_review, :html => {class: "reviewTextArea fl"}, :required => question.written_response_required %>
+                      </div>
 
-    <% else %> <!-- the user is a submitter or a reviewer who is finished or out of time or an instructor -->
-        <!--     EVALUATIONS -->
-        <% if !@submissions.evaluations.any?{|e| e.finished? } %>
-            <div class='submissionGradeBox warning'>
-              No Reviews
-            </div>
-        <% else %>
+                      <div class="radio_btns">
+                        <% question.scales.sort_by {|s| s.value}.each do |scale| %>
+                            <div class="radio_btn">
+                              <%= f.radio_button :scale_id, scale.id %>
+                              <%= f.label "scale_id_#{scale.id}", "#{scale.value}% - #{scale.description}" %>
+                            </div>
+                        <% end %> <!-- end scale loop -->
+                      </div>
+                      <br>
+                      <div class='savedStatus'></div>
+                  <% end %> <!-- end form -->
+                </div> <!-- submissionQuestionBox -->
+
+            <% end %> <!-- questions loop -->
+
+            <%= link_to course_assignment_submission_path(@course, @assignment, @submission, finish: true) do %>
+                <div id='submitFormsButton' class='button'>Publish Review</div>
+            <% end %>
+        <% else %> <!-- the user is a submitter or a reviewer who is finished or out of time or an instructor -->
+            <!--     EVALUATIONS -->
             <% @questions.each do |question| %>
                 <div class='submissionQuestionBox'>
                   <h2><%= question.question_text %></h2>
@@ -65,9 +82,9 @@
                           <div class='submissionBox'>
                             <div class='submissionResponsePoints <%= gradeColorFullScale(response.scale.value) %>'>
                               <%= response.scale.value.to_s + '%' %></div>
-                            <%= see_peer_review(response, index, @user) %>
+                            <%= peer_review(response, index, @user) %>
                             <%= student_rebuttal(response, @user) %>
-                            <%= instructor_comment(response, instructor) %>
+                            <%= instructor_comment(response, @user.instructor?(@course)) %>
                           </div>   <!-- submission box -->
                       <% end %> <!-- if finished -->
                   <% end %>  <!-- response loop -->
