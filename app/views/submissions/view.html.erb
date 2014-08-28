@@ -15,48 +15,55 @@
     <div id='submissionPDFWrapper'>
       <embed src="<%= @submission.attachment.url %>" width="100%" height="100%" style="border: none;"></embed>
     </div>
+    <div id='submissionsWrapper'>
+<% else %>
+    <div id='submissionsWrapperNoPDF'>
 <% end %>
-<div id='submissionsWrapper'>
-  <div id='submissionBoxesWrapper'>
-    <!--     GRADE -->
-    <% if Time.zone.now > @assignment.review_due %>
-        <a href='<%= "/courses/#{@course.id}/assignments/#{@assignment.id}/submissions/#{@submission.id}?instructor_approved_toggle=true" %>' >
-          <div class='button fl' style='margin-right: 20px;'><%= @submission.instructor_approved ? 'Reopen Review' : 'End Review'%></div>  </a>
-    <% end %>
-    <% if !(g = @submission.grade) %>
-        <div class='submissionGradeBox warning'>
-          No Reviews
-        </div>
-    <% else %>
-        <span class='submissionGradeBox'>
-            <span class='grade'> Average <%= prettifyFloat(g).to_s + '%' %></span>
-        </span>
 
-        <!--     EVALUATIONS -->
-        <% @questions.each do |question| %>
-            <div class='submissionQuestionBox'>
-              <h2><%= question.question_text %></h2>
-              <div class='possiblePoints'><%= question.question_weight %> Points</div>
-              <% @submission.get_responses_for_question(question).sort_by{|r| r.created_at}.each_with_index do |response, index| %>
-                  <% if response.evaluation.finished? %>
-                      <div class='submissionBox'>
-                        <div class='submissionResponsePoints <%= gradeColorFullScale(response.scale.value) %>'><%= response.scale.value.to_s + '%' %></div>
-                        <%= peer_review(response, index, @user)  %>
-<!--
-                        <span class='submissionResponseFrom'><%= reviewer_name(response.evaluation, index) %>: </span>
-                        <span> <%= response.scale.description %></span>
-                        <div class='submissionPeerReview'><%= if !response.peer_review.blank? then response.peer_review  end %></div>
--->
-                        <%= student_rebuttal(response, @user) %>
-                        <%= instructor_comment(response, true)  %>
+
+<div id='submissionBoxesWrapper'>
+  <!--     GRADE -->
+  <span class='submissionGradeBox'>
+        <span class="grade"><%= unless (g = @submission.grade).nil? then 'Weighted Average: ' + prettifyFloat(g).to_s + "%" end %></span>
+  </span>
+  <a href='<%= "/courses/#{@course.id}/assignments/#{@assignment.id}/submissions/#{@submission.id}?instructor_approved_toggle=true" %>' >
+      <div class='button fr' style='margin-right: 0px;'><%= @submission.instructor_approved ? 'Reopen Review' : 'End Review'%></div>  </a>
+  <% if (Time.zone.now >= @assignment.review_due) && @submission.grade.nil?%>
+      <div class='submissionGradeBox warning'>
+        This student's submission did not receive any reviews.
+      </div>
+  <% end %>
+
+  <!--     EVALUATIONS -->
+  <% @questions.each do |question| %>
+      <div class='submissionQuestionBox'>
+        <h2><%= question.question_text %></h2>
+        <div class='possiblePoints'><%= question.question_weight %> Points</div>
+        <% @submission.get_responses_for_question(question).sort_by{|r| r.created_at}.each_with_index do |response, index| %>
+            <% if response.evaluation.finished? %>
+                <div class='submissionBox'>
+                  <div class='submissionResponsePoints <%= gradeColorFullScale(response.scale.value) %>'><%= response.scale.value.to_s + '%' %></div>
+                  <span class='submissionResponseFrom'><%= reviewer_name(response.evaluation, index) %>: </span>
+                  <span> <%= response.scale.description %></span>
+                  <div class='submissionPeerReview'><%= if !response.peer_review.blank? then response.peer_review  end %></div>
+                </div>
+                <% if !response.student_response.blank? then %>
+                    <div class='submissionStudentResponse'>
+                      <div class='submissionResponseFrom' style="margin-top: 30px;">
+                        <%= @submission.user.first_name %>'s Rebuttal
                       </div>
-                  <% end %>
-              <%end %>
-            </div> <!-- end submissionQuestionBox -->
-        <% end %>
-        </div>
-    <% end %>
-    </div>
+                      <p> <%= response.student_response.html_safe.gsub(/\n/,'<br>').html_safe %> </p>
+                    </div>
+                <% end %>
+               <%= instructor_comment(response, true)  %>
+            <% end %>
+        <%end %>
+      </div> <!-- end submissionQuestionBox -->
+  <% end %>
+</div>
+
+
+</div>
 
 
 

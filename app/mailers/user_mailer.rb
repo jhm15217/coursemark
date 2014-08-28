@@ -18,17 +18,6 @@ class UserMailer < ActionMailer::Base
     mail(to: user.email, subject: "Welcome to #{@course.name}")
   end
 
-  def welcome_email_walk_on(user)
-    @user = user
-
-    @url =  confirm_email_url(host: if Rails.env.production? then PROD_URL else DEV_URL end,
-                              id: user.id,
-                              confirmation_token: user.confirmation_token,
-                              protocol: "http" )
-
-    mail(to: user.email, subject: "Welcome to Coursemark")
-  end
-
   def registration_email(user, course)
     @user = user
     @course = course
