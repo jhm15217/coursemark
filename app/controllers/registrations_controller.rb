@@ -76,13 +76,13 @@ class RegistrationsController < ApplicationController
   def invite_students
     @course = Course.find(params[:course])
     params[:response][:invites].split("\r\n").each do |line|
-        invite_student(line.split(","))
+        invite_student(line.split(",").map{|s| clean_csv_item(s)})
     end
     redirect_to :back
   end
 
   def invite_student(row)
-    if user = User.find_by_email(row[2])
+    if user = User.find_by_email(row[2].downcase)
       unless @course.get_students.any?{|s| s.id == user.id }
         @course.register(user)
         UserMailer.registration_email(user, @course).deliver
