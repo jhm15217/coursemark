@@ -52,7 +52,7 @@ class MembershipsController < ApplicationController
     @assignment = Assignment.find(params[:assignment_id])
     @assignment.memberships.each {|membership| membership.destroy }
 
-    params[:response][:teams].split("\r\n").each{ |line| add_teammate(line.split(',').map{|s| clean_csv_item(s)}) }
+    params[:response][:teams].split("\r\n").each{ |line| add_teammate(line.split(',').map{|s| s.strip}) }
 
     respond_to do |format|
       format.html { redirect_to course_assignment_memberships_path(@course,@assignment) }

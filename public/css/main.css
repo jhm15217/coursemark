@@ -1033,19 +1033,6 @@ textarea {
   border-right: 1px solid #DFDFDF;
 }
 
-.submissionUpload {
-    width: 400px;
-    height: auto;
-    /* min-height: 100px; */
-    display: inline-block;
-    box-sizing: border-box;
-    background: #FFF;
-    border: 1px solid #DFDFDF;
-    border-radius: 6px;
-    margin: 10px 0px 10px 0px;
-    padding: 17px 17px 17px 17px;
-    overflow: hidden;
-}
 #submissionDownloadBtn {
   position: absolute;
   right: 36px;
@@ -1098,7 +1085,7 @@ textarea {
 }
 
 .submissionBox {
-    width: 95%;
+    width: 40%;
     min-width: 250px;
     height: auto;
     /* min-height: 100px; */
@@ -1172,8 +1159,7 @@ textarea {
   font-size: 14px;
   font-weight: 600;
   text-transform: uppercase;
-  margin-bottom: 4px;
-  margin-top: 8px;
+  margin-bottom: 8px;
 }
 
 .submissionStudentResponse,

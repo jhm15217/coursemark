@@ -8,7 +8,7 @@ class PasswordResetsController < ApplicationController
 
   # Password reset email is sent
   def create
-    @user =  User.find_by_email(params[:email].downcase)
+    @user =  User.find_by_email(params[:email])
     if @user
       @user.send_password_reset
       redirect_to email_confirmation_path(id: @user.id)
