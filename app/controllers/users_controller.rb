@@ -1,8 +1,21 @@
 class UsersController < ApplicationController
-	skip_before_filter :require_login, :except => [:edit, :update]
+	skip_before_filter :require_login, :except => [:edit]
 	load_and_authorize_resource
 
   def index
+  end
+
+  def all_users
+    @course = Course.all[0]
+  end
+
+  def destroy
+    User.find(params[:id]).destroy
+    respond_to do |format|
+      format.html { redirect_to :back }
+      format.json { head :no_content }
+    end
+
   end
 
   # GET
@@ -50,13 +63,13 @@ class UsersController < ApplicationController
   # POST
   def create
     # Checks if user started to register
-    if !User.find_by_email(params[:user][:email])
+    if !(@user = User.find_by_email(params[:user][:email]))
       @user = User.new(params[:user])
       if @user.save
         respond_to do |format|
           # Tell the UserMailer to send a welcome Email after save
           flash[:success] = "Welcome to Coursemark."
-          UserMailer.welcome_email(@user).deliver
+          UserMailer.welcome_email_walk_on(@user).deliver
           # UserMailer.delay.welcome_email(@user)
           format.html { redirect_to(email_confirmation_path(id: @user.id)) }
         end
