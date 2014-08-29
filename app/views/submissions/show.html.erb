@@ -50,7 +50,7 @@
 
     <% else %> <!-- the user is a submitter or a reviewer who is finished or out of time or an instructor -->
         <!--     EVALUATIONS -->
-        <% if !@submissions.evaluations.any?{|e| e.finished? } %>
+        <% if !@submission.evaluations.any?{|e| e.finished? } %>
             <div class='submissionGradeBox warning'>
               No Reviews
             </div>

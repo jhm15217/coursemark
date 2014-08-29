@@ -31,7 +31,7 @@
     <div class="clearfix"></div>
     <div class="field">
       <%= f.label :team_submissions, "Team Submissions" %>&nbsp;
-      <%= f.check_box :team, :disabled => @assignment.review_due && (Time.zone.now > @assignment.submission_due) %>
+      <%= f.check_box :team, :disabled => !@assignment.draft %>
     </div>
     <div class="clearfix"></div>
     <div class="field">
