@@ -63,7 +63,8 @@ class UsersController < ApplicationController
   # POST
   def create
     # Checks if user started to register
-    if !(@user = User.find_by_email(params[:user][:email].downcase))
+    params[:user][:email] =  params[:user][:email].downcase
+    if !User.find_by_email(params[:user][:email])
       @user = User.new(params[:user])
       if @user.save
         respond_to do |format|
