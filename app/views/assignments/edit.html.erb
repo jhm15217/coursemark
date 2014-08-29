@@ -13,7 +13,7 @@
 	<div class="checkPoint <%= if (!@assignment.draft) && (@assignment.allGradesApproved?) && (@assignment.reviews_required > 0) then 'completed' end %>">Assignment Reviewing Complete</div>
 </div>
 
-<% if @assignment.manual_assignment ? @assignment.reviewers_assigned : true %>
+<% if @assignment.reviewers_assigned  %>
     <% if (Time.zone.now > @assignment.submission_due)  %>
         <div id="reviewing_tasks">
           <% @reviewing_tasks.each_with_index do |task, index| %>

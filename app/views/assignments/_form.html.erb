@@ -1,13 +1,17 @@
+<% puts "errors: "   +  @assignment.errors.inspect %>
+<% if @assignment.errors.any? %>
+
+    <div id="error_explanation">
+      <% @assignment.errors.messages.values.each do |msgs| %>
+          <% msgs.each do |msg| %>
+              <p><%= msg %></p>
+          <%end %>
+      <% end %>
+    </div>
+<% end %>
+
 <%= nested_form_for [@course, @assignment] do |f| %>
     <h3>Assignment Settings</h3>
-
-    <% if @assignment.errors.any? %>
-        <div id="error_explanation">
-          <% @assignment.errors.messages.values.each do |msg| %>
-              <p><%= msg[0] %></p>
-          <% end %>
-        </div>
-    <% end %>
 
     <div class="field">
       <%= f.label :name, "Assignment Name" %><br />
@@ -42,17 +46,10 @@
       <div class="clearfix"></div>
       <%= f.submit value:'Update' %>
     </div>
-    <%if @assignment.draft %>
-       <div class="actions">
-         <div class="clearfix"></div>
-           <%= f.submit name: 'publish', value: 'Publish Assignment', :style => 'margin-right: 0px !important' %>
-        </div>
-    <% elsif @assignment.submissions.length == 0 %>
-        <div class="actions">
-          <div class="clearfix"></div>
-          <%= f.submit name: 'publish', value: 'Unpublish Assignment', :style => 'margin-right: 0px !important' %>
-        </div>
-    <% end %>
+    <div class="actions">
+      <div class="clearfix"></div>
+      <%= f.submit name: 'publish', value: (@assignment.draft ? 'Publish Assignment' : 'Unpublish Assignment'), :style => 'margin-right: 0px !important' %>
+    </div>
     <div class="clearfix"></div>
     <% if @assignment.id %>
         <div class="delete">

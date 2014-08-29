@@ -41,7 +41,7 @@
 <h3>Reviews by You</h3>
 
 
-<% if (@assignment.manual_assignment && @assignment.reviewers_assigned) || !@assignment.manual_assignment %>
+<% if @assignment.reviewers_assigned %>
     <% if (Time.zone.now > @assignment.submission_due)  %>
         <div id="reviewing_tasks">
           <% @reviewing_tasks.each_with_index do |task, index| %>

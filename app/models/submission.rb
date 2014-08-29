@@ -76,12 +76,12 @@ class Submission < ActiveRecord::Base
   end
 
   def create_evaluations(required, eligible_reviewers)
-    evaluationCounts = Hash.new
+    evaluationsLeft = [required  - evaluations.length, 0].max
     # create hashmap that maps reviewers' id's to the number
     # of evaluations they already have for this assignment
+    evaluationCounts = Hash.new
     eligible_reviewers.map { |r| evaluationCounts[r.id] = assignment.evaluations.forUser(r).count }
     reviewThreshold = evaluationCounts.values.min || 0
-    evaluationsLeft = required
     evaluatorPool = []
     while evaluationsLeft > 0
       # get reviewers that have the lowest number of evaluations already assigned
