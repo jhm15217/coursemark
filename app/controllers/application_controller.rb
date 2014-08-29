@@ -89,7 +89,7 @@ class ApplicationController < ActionController::Base
   end
 
   def login_student
-    $PUPPET = User.find(params[:student])
+#    $PUPPET = User.find(params[:student])
     redirect_to root_url
   end
 
@@ -102,7 +102,7 @@ class ApplicationController < ActionController::Base
   end
 
   def current_user
-    @current_user = $PUPPET || current_user_session && current_user_session.record
+    @current_user = current_user_session && current_user_session.record
     @current_user
   end
 
