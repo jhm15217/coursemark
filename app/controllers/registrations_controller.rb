@@ -76,7 +76,7 @@ class RegistrationsController < ApplicationController
   def invite_students
     @course = Course.find(params[:course])
     params[:response][:invites].split("\r\n").each do |line|
-        invite_student(line.split(",").map{|s| clean_csv_item(s))
+        invite_student(line.split(",").map{|s| clean_csv_item(s)})
     end
     redirect_to :back
   end
