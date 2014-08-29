@@ -93,6 +93,15 @@ class ApplicationController < ActionController::Base
     redirect_to root_url
   end
 
+  def clean_csv_item(s)
+    c = s.strip.gsub('<comma>', ',')
+    if c =~ /"(.*)"/
+      $1
+    else
+      c
+    end
+  end
+
 
   private
 

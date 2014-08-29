@@ -216,26 +216,16 @@ class AssignmentsController < ApplicationController
       end
 
       if params['publish']
-        if @assignment.draft
-          if @assignment.questions.length == 0
-            flash[:error] = 'You must first create a rubric.'
-          else
+        if @assignment.draft and @assignment.publishable
             @assignment.draft = false
-            @URL = edit_course_assignment_path(@assignment.course, @assignment)
-          end
         else
-          if @assignment.submissions.length != 0
-            flash[:error] = 'You must first (somehow) delete all submissions'
-            @assignment.draft = false
-          else
-            @assignment.draft = true
-          end
+            @assignment.draft = true     #Unpublish
         end
       end
 
       respond_to do |format|
         if @assignment.update_attributes(params[:assignment])
-          format.html { redirect_to @URL }
+          format.html { render action: "edit" }
           format.json { head :no_content }
         else
           format.html { render action: "edit" }

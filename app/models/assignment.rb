@@ -15,9 +15,9 @@ class Assignment < ActiveRecord::Base
   scope :published, -> { where(draft: false) }
 
   # Validations
-  validates_inclusion_of :draft, :in => [true, false], :message => 'must be true or false'
   validates_numericality_of :reviews_required, :only_integer => true, :greater_than_or_equal_to  => 0
-  validates_datetime :submission_due, :allow_nil => true, :before => :review_due, :before_message => 'Submission deadline must be before review deadline'
+
+#  validates_datetime :submission_due, :allow_nil => true, :before => :review_due, :before_message => 'Submission deadline must be before review deadline'
 
   # submission and review due dates can only be changed if they haven't passed
   # validate :submission_deadline_not_passed
@@ -29,7 +29,7 @@ class Assignment < ActiveRecord::Base
 
 
   # make sure the number of reviews required is feasible given class size
-  validate :reviews_required_feasible
+#  validate :reviews_required_feasible
   # only allow changes to reviews_required if we are still taking submissions
   validate :submissions_open, :on => :update, :if => :reviews_required_changed?
 
@@ -62,6 +62,22 @@ class Assignment < ActiveRecord::Base
     end
 
     return true
+  end
+
+  # I chose to not make this a validation because it takes a while
+
+   def publishable
+    ok = true
+    if questions.length == 0
+      ok = false
+      errors.add(:submission_due, 'You must first create a rubric.')
+    end
+    ok = reviews_required_feasible and ok
+    if submission_due.nil? or review_due.nil? or submission_due > review_due
+      ok = false
+      errors.add(:submission_due, 'Submission deadline must be before review deadline')
+    end
+    ok
   end
 
   def missing_submissions
@@ -196,11 +212,6 @@ class Assignment < ActiveRecord::Base
     end
 
 
-
-
-
-
-
   private
   def submission_deadline_not_passed
     if self.submission_due > Time.now and self.submission_due.to_i != self.submission_due_was.to_i
@@ -219,13 +230,11 @@ class Assignment < ActiveRecord::Base
   end
 
   def reviews_required_feasible
-    if draft
-      return true # maybe the assignment is being created before all people enroll
-    end
     max_team_size = 1
     if team
       unless self.course.get_real_students.all?{|student| self.memberships.sum{|membership| membership.user_id == student.id ? 1 : 0} >= 1}
-        errors.add(:teams_ok, 'Each student must be a member of at least one team.')
+        errors.add(:team, 'Each student must be a member of at least one team.')
+        return false
       end
       #Figure out max team size
       team_count = Hash.new(0)
