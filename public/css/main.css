@@ -415,6 +415,7 @@ textarea {
     font-size: 11pt;
     color: red;
     background-color: black;
+    width: 50%;
 }
 
 #ui-datepicker-div {

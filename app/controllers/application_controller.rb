@@ -72,7 +72,7 @@ class ApplicationController < ActionController::Base
   end
 
   def combine(messages)
-    messages.map{|m| m + ' '}.reduce(:+)
+    !messages ? '' : messages.map{|m| m + ' '}.reduce(:+)
   end
 
 

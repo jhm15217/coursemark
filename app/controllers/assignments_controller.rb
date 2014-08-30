@@ -105,6 +105,7 @@ class AssignmentsController < ApplicationController
     end
 
     @assignment.manual_assignment = true
+    @assignment.draft = true
 
     respond_to do |format|
       format.html # new.html.erb
@@ -216,11 +217,7 @@ class AssignmentsController < ApplicationController
       end
 
       if params['publish']
-        if @assignment.draft and @assignment.publishable
-            @assignment.draft = false
-        else
-            @assignment.draft = true     #Unpublish
-        end
+        params[:assignment][:draft] = @assignment.draft  ? '0' : '1'
       end
 
       respond_to do |format|
