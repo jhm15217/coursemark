@@ -1,4 +1,3 @@
-<% puts "errors: "   +  @assignment.errors.inspect %>
 <% if @assignment.errors.any? %>
 
     <div id="error_explanation">
@@ -42,13 +41,17 @@
       <%= f.label :manual_assignment, 'Wait for \'Start Reviews\'' %>&nbsp;
       <%= f.check_box :manual_assignment, :disabled => @assignment.review_due && (Time.zone.now > @assignment.submission_due), value: @assignment.manual_assignment %>
     </div>
-    <div class="actions">
+    <div class="field">
+      <%= f.label :draft, 'Draft' %>&nbsp;
+      <%= f.check_box :draft, value: @assignment.draft %>
+<!--
       <div class="clearfix"></div>
-      <%= f.submit value:'Update' %>
+      <%= f.submit name: 'publish', value: (@assignment.draft ? 'Publish Assignment' : 'Unpublish Assignment'), :style => 'margin-right: 0px !important' %>
+-->
     </div>
     <div class="actions">
       <div class="clearfix"></div>
-      <%= f.submit name: 'publish', value: (@assignment.draft ? 'Publish Assignment' : 'Unpublish Assignment'), :style => 'margin-right: 0px !important' %>
+      <%= f.submit value:'Update' %>
     </div>
     <div class="clearfix"></div>
     <% if @assignment.id %>

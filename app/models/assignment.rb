@@ -32,6 +32,7 @@ class Assignment < ActiveRecord::Base
 #  validate :reviews_required_feasible
   # only allow changes to reviews_required if we are still taking submissions
   validate :submissions_open, :on => :update, :if => :reviews_required_changed?
+  validate :publishable
 
   def status
     if self.id.nil?
@@ -64,18 +65,19 @@ class Assignment < ActiveRecord::Base
     return true
   end
 
-  # I chose to not make this a validation because it takes a while
 
-   def publishable
+  def publishable
     ok = true
-    if questions.length == 0
-      ok = false
-      errors.add(:submission_due, 'You must first create a rubric.')
-    end
-    ok = reviews_required_feasible and ok
-    if submission_due.nil? or review_due.nil? or submission_due > review_due
-      ok = false
-      errors.add(:submission_due, 'Submission deadline must be before review deadline')
+    unless draft
+      if questions.length == 0
+        ok = false
+        errors.add(:submission_due, 'You must first create a rubric.')
+      end
+      ok = reviews_required_feasible and ok
+      if submission_due.nil? or review_due.nil? or submission_due > review_due
+        ok = false
+        errors.add(:submission_due, 'Submission deadline must be before review deadline')
+      end
     end
     ok
   end
