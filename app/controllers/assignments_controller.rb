@@ -172,7 +172,9 @@ class AssignmentsController < ApplicationController
   # PUT /assignments/1
   # PUT /assignments/1.json
   def update
+    @user = User.find(params[:assignment][:user_id])
     if params[:assignment][:attachment]   # The user uploaded a file
+      puts "Starting STORE PDF for: "  + @user.name + ' ' + @user.email
       @assignment = Assignment.find(params[:assignment][:assignment_id])
       if params[:assignment][:user_id] == '-1'
         redirect_to :back, flash: {error: "Please select the team you are submitting for."}
