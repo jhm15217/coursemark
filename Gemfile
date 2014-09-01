@@ -59,6 +59,7 @@ group :assets do
   gem 'uglifier', '>= 1.0.3'
 end
 
+gem 'algorithms'
 gem 'nokogiri'
 gem 'paperclip'
 gem 'aws-sdk'

@@ -50,7 +50,7 @@ class MembershipsController < ApplicationController
   def create
     @course = Course.find(params[:course_id])
     @assignment = Assignment.find(params[:assignment_id])
-    @assignment.memberships.each {|membership| membership.destroy }
+    @assignment.memberships.each {|membership| membership.destroy }    # Every upload is a complete team designations
 
     params[:response][:teams].split("\r\n").each{ |line| add_teammate(line.split(',').map{|s| clean_csv_item(s)}) }
 

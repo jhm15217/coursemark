@@ -1,7 +1,6 @@
 class Submission < ActiveRecord::Base
   attr_accessible :assignment_id, :attachment, :user_id, :instructor_approved
   has_attached_file :attachment
-  after_save :assign_enough_review_tasks
 
   # Relationships
   belongs_to :user
@@ -21,10 +20,11 @@ class Submission < ActiveRecord::Base
   def save
     puts "SAVING ATTACHMENT " + self.inspect
     super
+    assignment.initialize_reviewers
+    assign_enough_review_tasks(assignment.initialize_reviewers)
   end
 
   def completed_responses
-
     completed = []
     responses.each do |response|
       if response.evaluation.finished   # Count only published reviews
@@ -73,43 +73,30 @@ class Submission < ActiveRecord::Base
     end
   end
 
-  def assign_enough_review_tasks
-    create_evaluations(assignment.reviews_required  - evaluations.length,
-                       assignment.course.get_real_students.
-                           select{|s| s.submitting_id(assignment, self) != user_id and #not on same team
-                           !evaluations.any?{|e| e.user_id == s.id} })  #not already reviewing
-
+  def assign_enough_review_tasks(reviewers)
+    create_evaluations(assignment.reviews_required  - evaluations.length, reviewers)
   end
 
-  def create_evaluations(required, eligible_reviewers)
-    evaluationsLeft = [required  - evaluations.length, 0].max
-    # create hashmap that maps reviewers' id's to the number
-    # of evaluations they already have for this assignment
-    evaluationCounts = Hash.new
-    eligible_reviewers.map { |r| evaluationCounts[r.id] = assignment.evaluations.forUser(r).count }
-    reviewThreshold = evaluationCounts.values.min || 0
-    evaluatorPool = []
-    while evaluationsLeft > 0
-      # get reviewers that have the lowest number of evaluations already assigned
-      evaluatorPool.concat(eligible_reviewers.select { |r| evaluationCounts[r.id] == reviewThreshold })
-      # shuffle to achieve randomness
-      evaluatorPool.shuffle!
-      # Create evaluations for submission until no more are required or we run out of reviewers
-      while evaluatorPool.length > 0 && evaluationsLeft > 0
-        evaluator = evaluatorPool.pop
-        evaluation = Evaluation.new(submission_id: id, user_id: evaluator.id)
+  def create_evaluations(required, reviewers)
+    candidates = reviewers
+    disqualified = []
+    while required > 0
+      review_count = candidates.next_key
+      candidate = candidates.pop
+      if candidate.submitting_id(assignment, self) == user_id or evaluations.any?{|e| e.user_id == candidate.id}
+        disqualified << { key: review_count, value: candidate }
+      else
+        evaluation = Evaluation.new(submission_id: id, user_id: candidate.id)
         evaluation.save!
         # create a response for each question of the evaluation
-        assignment.questions.each { |question|
-          response = Response.new(question_id: question.id, evaluation_id:evaluation.id )
-          response.save!
-        }
-        evaluationsLeft -= 1
+        assignment.questions.each { |question| Response.new(question_id: question.id, evaluation_id:evaluation.id ).save! }
+        required -= 1
+        candidates.push(review_count + 1, candidate)   # put back in pool
       end
-      # Increase the review threshold in case we ran out of reviewers and need more
-      reviewThreshold += 1
     end
+    disqualified.each{|pair| candidates.push(pair[:key], pair[:value])}  # put back in pool with original key
   end
+
 
 
   def get_responses_for_question(question)
