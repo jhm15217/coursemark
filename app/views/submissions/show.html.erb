@@ -37,10 +37,15 @@
     <% if !@submitter and @user == current_user and (e = @submission.evaluations.forUser(@user)[0]) and !e.finished  and Time.zone.now < @assignment.review_due %>
         <!-- This user is a reviewer who hasn't finished but has time  -->
         <% @questions.each do |question| %>
-            <div class='submissionQuestionBox' id='peer_review'>
-              <h2><%= question.question_text %></h2>
-              <%= complete_peer_review(response_for_question_by_peer(@user, @submission, question), @user) %>
-            </div> <!-- submissionQuestionBox -->
+            <% if question %>
+                <div class='submissionQuestionBox' id='peer_review'>
+                  <h2><%= question.question_text %></h2>
+                  <%= complete_peer_review(response_for_question_by_peer(@user, @submission, question), @user) %>
+                </div>
+            <% else %>
+                <h2>Missing Question? Inform james.morris@cmu.edu</h2>
+                puts "Error, null question: " + @questions.inspect
+            <% end %> <!-- submissionQuestionBox -->
         <% end %> <!-- questions loop -->
         <div>
           <%= link_to course_assignment_submission_path(@course, @assignment, @submission, finish: true) do %>
