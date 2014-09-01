@@ -97,7 +97,8 @@ class Assignment < ActiveRecord::Base
 
 
   def add_required
-    submissions.each { |s| s.assign_enough_review_tasks(initialize_reviewers) }
+    reviewers =  initialize_reviewers
+    submissions.each { |s| s.assign_enough_review_tasks(reviewers) }
   end
 
   def missing_submissions
