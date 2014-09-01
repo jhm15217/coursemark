@@ -3,24 +3,27 @@
 <% if @questions.length > 0 %>
     <% @questions.each do |question| %>
         <div class="rubricQuestion">
-          <%= link_to [:edit, @course, @assignment, question] do %>
+          <% if (Time.zone.now < @assignment.submission_due) %>
+              <%= link_to [:edit, @course, @assignment, question] do %>
+                  <h2><%= question.question_text %></h2>
+              <% end %>
+          <% else %>
               <h2><%= question.question_text %></h2>
           <% end %>
+
           <h4>
             <%=question.question_weight %> POINTS -
-            <%= link_to "Delete", course_assignment_question_path(@course, @assignment, question), method: :delete %>
+            <% if (Time.zone.now < @assignment.submission_due) %>
+              <%= link_to "Delete", course_assignment_question_path(@course, @assignment, question), method: :delete %>
+            <% end %>
           </h4>
         </div>
 
     <% end %>
-    <br/>
-    <a href=<%= "/courses/#{@course.id}/assignments/#{@assignment.id}/questions?export_rubric=true" %>>
-      <div class='button'  >Export Rubric CSV</div></a>
-    <br>
 <% end %>
 
 
-<% if (Time.zone.now < @assignment.submission_due) %>
+<% if Time.zone.now < @assignment.submission_due or !@assignment.reviewers_assigned %>
     <%= link_to new_course_assignment_question_path(@course, @assignment, :type => 'yesno') do %>
         <div class='button'>New question</div>
     <% end %>
@@ -34,11 +37,15 @@
       </div>
     </form>
 <% else %>
-    <div class="notice">Rubric questions cannot be added after the submission deadline</div>
+    <div class="notice">Rubric cannot be modified after the submission deadline</div>
 <% end %>
 
 
-<br/>
+<a href=<%= "/courses/#{@course.id}/assignments/#{@assignment.id}/questions?export_rubric=true" %>>
+  <div class='button'  >Export Rubric CSV</div></a>
+<br>
+
+
 <div>
   Each line has the form [Question:string,Weight:integer,written_response_required:Boolean,(description:string,value:integer)*]
 </div>

@@ -172,8 +172,8 @@ class AssignmentsController < ApplicationController
   # PUT /assignments/1
   # PUT /assignments/1.json
   def update
-    @user = User.find(params[:assignment][:user_id])
     if params[:assignment][:attachment]   # The user uploaded a file
+      @user = User.find(params[:assignment][:user_id])
       puts "Starting STORE PDF for: "  + @user.name + ' ' + @user.email
       @assignment = Assignment.find(params[:assignment][:assignment_id])
       if params[:assignment][:user_id] == '-1'

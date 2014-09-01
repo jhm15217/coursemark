@@ -1,5 +1,9 @@
 class Assignment < ActiveRecord::Base
   require 'csv'
+  require 'algorithms'
+  include Containers
+
+
   attr_accessible :course_id, :draft, :manual_assignment, :reviewers_assigned, :review_due, :reviews_required
   attr_accessible :submission_due, :name, :submission_due_date, :submission_due_time, :review_due_date, :review_due_time, :team
   after_update :update_evaluations, :if => :reviews_required_changed?
@@ -80,6 +84,20 @@ class Assignment < ActiveRecord::Base
       end
     end
     ok
+  end
+
+  def initialize_reviewers
+    reviewers = MinHeap.new
+    course.get_real_students.each do |r|
+      review_count =  evaluations.forUser(r).length
+      reviewers.push(review_count, r)
+    end
+    reviewers
+  end
+
+
+  def add_required
+    submissions.each { |s| s.assign_enough_review_tasks(initialize_reviewers) }
   end
 
   def missing_submissions
