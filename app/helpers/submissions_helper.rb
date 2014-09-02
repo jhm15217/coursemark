@@ -1,4 +1,5 @@
 module SubmissionsHelper
+
   def response_for_question_by_peer(reviewer, submission, question)
     submission.evaluations.map{|e| e.responses.select{|r| test(r, reviewer, question)}[0]}.keep_if{|r| r}[0]
   end
