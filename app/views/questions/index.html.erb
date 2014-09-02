@@ -23,7 +23,7 @@
 <% end %>
 
 
-<% if Time.zone.now < @assignment.submission_due or !@assignment.reviewers_assigned %>
+<% if @assignment.draft %>
     <%= link_to new_course_assignment_question_path(@course, @assignment, :type => 'yesno') do %>
         <div class='button'>New question</div>
     <% end %>
@@ -37,7 +37,7 @@
       </div>
     </form>
 <% else %>
-    <div class="notice">Rubric cannot be modified after the submission deadline</div>
+    <div class="notice">The rubric cannot be modified after publication.</div>
 <% end %>
 
 
