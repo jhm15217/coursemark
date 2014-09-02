@@ -40,9 +40,13 @@
         <!-- This user is a reviewer who hasn't finished but has time  -->
         <% @questions.each do |question| %>
             <% if !question.nil? %>
-                <div class='submissionQuestionBox' id='peer_review'>
-                  <h2><%= question.question_text %></h2>
-                  <%= complete_peer_review(response_for_question_by_peer(@user, @submission, question), @user) %>
+                <% if response_for_question_by_peer(@user, @submission, question) %>
+                    <div class='submissionQuestionBox' id='peer_review'>
+                      <h2><%= question.question_text %></h2>
+                      <%= complete_peer_review(response_for_question_by_peer(@user, @submission, question), @user) %>
+                <% else %>
+                    <% puts 'Error: No response for: '  + @user.email + ' about ' + question.question_text   %>
+                <% end %>
                 </div>
             <% else %>
                 <h2>Missing Question? Inform james.morris@cmu.edu, sending screen shot.</h2>
