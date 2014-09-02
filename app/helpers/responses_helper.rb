@@ -29,7 +29,7 @@ module ResponsesHelper
          end) +
         "</span>" +
         "<span>" + ' ' + response.scale.description + "</span>" +
-        "<div class='submissionPeerReview'>#{!response.peer_review.blank? ? '' : response.peer_review }</div>"
+        "<div class='submissionPeerReview'>#{ response.peer_review.blank? ? '' : response.peer_review }</div>"
     ).html_safe
   end
 
