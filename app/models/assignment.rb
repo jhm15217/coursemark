@@ -88,7 +88,7 @@ class Assignment < ActiveRecord::Base
 
   def initialize_reviewers
     reviewers = MinHeap.new
-    course.get_real_students.each do |r|
+    course.get_real_students.shuffle.each do |r|
       review_count =  evaluations.forUser(r).length
       reviewers.push(review_count, r)
     end

@@ -18,9 +18,7 @@ class Submission < ActiveRecord::Base
   validates_attachment_content_type :attachment, :content_type => ['application/pdf']
 
   def save
-    puts "SAVING ATTACHMENT " + self.inspect
     super
-    assignment.initialize_reviewers
     assign_enough_review_tasks(assignment.initialize_reviewers)
   end
 
