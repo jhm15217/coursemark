@@ -29,7 +29,7 @@
                 <td><%= student.email %></td>
                 <% student.submissions.where('assignment_id = ' + @assignment.id.to_s)[0].evaluations.sort_by{|e| e.created_at }.each do |e| %>
                     <td>
-                      <%  if e.user.submitting_id(@assignment, e.submission) == student.id then multi_flash(:error, 'Self-reviewer(s): ', student.email) end %>
+                      <%  if e.user.submitting_id(@assignment, e.submission) == student.id then multi_flash(:error, 'Self-reviewer(s): ' + student.email) end %>
                       <%= e.user.email %><%= link_to image_tag('delete.png'), e, method: :delete,
                                                      data: { confirm: e.finished ? 'A completed review will be discarded. Are you sure?' : "" } %>
                     </td>
