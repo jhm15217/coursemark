@@ -1,44 +1,44 @@
 <%= render "assignments/header" %>
 
+<% unless @assignment.draft %>
+    <div class="notice"> Changing the rubric after publishing might hurt early submitters.</div>
+    <br>
+    <br>
+<% end %>
+
+<% if Time.zone.now.between(@assignment.submission_due, @assignment.review_due) %>
+    <div class="notice"> Changing the rubric during reviewing might make reviews less comparable.</div>
+    <br>
+    <br>
+<% end %>
+
 <% if @questions.length > 0 %>
     <% @questions.each do |question| %>
         <div class="rubricQuestion">
-          <% if (Time.zone.now < @assignment.submission_due) %>
-              <%= link_to [:edit, @course, @assignment, question] do %>
-                  <h2><%= question.question_text %></h2>
-              <% end %>
-          <% else %>
+          <%= link_to [:edit, @course, @assignment, question] do %>
               <h2><%= question.question_text %></h2>
           <% end %>
-
           <h4>
             <%=question.question_weight %> POINTS -
-            <% if (Time.zone.now < @assignment.submission_due) %>
-              <%= link_to "Delete", course_assignment_question_path(@course, @assignment, question), method: :delete %>
-            <% end %>
+            <%= link_to "Delete", course_assignment_question_path(@course, @assignment, question), method: :delete %>
           </h4>
         </div>
-
     <% end %>
 <% end %>
 
 
-<% if @assignment.draft %>
-    <%= link_to new_course_assignment_question_path(@course, @assignment, :type => 'yesno') do %>
-        <div class='button'>New question</div>
-    <% end %>
-    <br>
-    <form method='post' action="/courses/<%= @course.id.to_s %>/assignments/<%= @assignment.id.to_s %>/questions">
-      <div class="field" >
-        <textarea cols="120" name="response[questions]" rows="20"></textarea>
-      </div>
-      <div class="actions">
-        <input name="create_rubric" type="submit" value="Load New Questions" />
-      </div>
-    </form>
-<% else %>
-    <div class="notice">The rubric cannot be modified after publication.</div>
+<%= link_to new_course_assignment_question_path(@course, @assignment, :type => 'yesno') do %>
+    <div class='button'>New question</div>
 <% end %>
+<br>
+<form method='post' action="/courses/<%= @course.id.to_s %>/assignments/<%= @assignment.id.to_s %>/questions">
+  <div class="field" >
+    <textarea cols="120" name="response[questions]" rows="20"></textarea>
+  </div>
+  <div class="actions">
+    <input name="create_rubric" type="submit" value="Load New Questions" />
+  </div>
+</form>
 
 
 <a href=<%= "/courses/#{@course.id}/assignments/#{@assignment.id}/questions?export_rubric=true" %>>

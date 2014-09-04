@@ -18,7 +18,13 @@ class ReviewsController < ApplicationController
     @course = Course.find(params[:course_id])
     @assignment = Assignment.find(params[:assignment_id])
     if params[:clear_reviewers]
-      @assignment.evaluations.each{|e| e.destroy }
+      @assignment.evaluations.each do |e|
+        if e.finished
+          multi_flash(:notice, "Didn't delete finished review(s) by ", e.user.email)
+        else
+          e.destroy
+        end
+      end
     end
     if params[:add_required]
       @assignment.add_required
@@ -31,67 +37,67 @@ class ReviewsController < ApplicationController
     end
   end
 
-def add_submission(row)
-  if row[0] and submitter = find_registrant(@course, row[0]) and submission = @assignment.submissions.select{|s| s.user_id == submitter.id}[0]
-    i = 1
-    while row[i]
-      if reviewer = find_registrant(@course, row[i])
-        if !@assignment.evaluations.select{|e| e.submission == submission and e.user == reviewer }[0]
-          e = Evaluation.new(submission_id: submission.id, user_id: reviewer.id)
-          e.save!
-          @assignment.questions.each { |q| Response.new(evaluation_id: e.id, question_id: q.id).save! }
+  def add_submission(row)
+    if row[0] and submitter = find_registrant(@course, row[0]) and submission = @assignment.submissions.select{|s| s.user_id == submitter.id}[0]
+      i = 1
+      while row[i]
+        if reviewer = find_registrant(@course, row[i])
+          if !@assignment.evaluations.select{|e| e.submission == submission and e.user == reviewer }[0]
+            e = Evaluation.new(submission_id: submission.id, user_id: reviewer.id)
+            e.save!
+            @assignment.questions.each { |q| Response.new(evaluation_id: e.id, question_id: q.id).save! }
+          end
         end
+        i +=1
       end
-      i +=1
     end
   end
-end
 
-def assign_reviews
-  authorize! :manage, :reviews
+  def assign_reviews
+    authorize! :manage, :reviews
 
-  @assignment.reviewers_assigned = !@assignment.reviewers_assigned
-  @assignment.save!
+    @assignment.reviewers_assigned = !@assignment.reviewers_assigned
+    @assignment.save!
 
-  redirect_to action: 'index'
-end
-
-def edit_review
-  authorize! :manage, :reviews
-
-  # Find existing evaluation
-  @s = @assignment.submissions.where('user_id = ' + params['submitterID'])[0]
-  @e = @s.evaluations.where('user_id = ' + params['oldReviewerID'])[0]
-
-  # Delete existing evaluation
-  if @e then @e.destroy end
-
-  # Create new evaluation
-  @e = Evaluation.new
-  @e.submission = @s
-  @e.user_id = params['newReviewerID']
-  @e.save!
-
-  # Create empty evaluation responses
-  @assignment.questions.each { |question|
-    response = Response.new
-    response.question_id = question.id
-    response.evaluation_id = @e.id
-    response.save!
-  }
-
-  redirect_to action: 'index'
-end
-
-def get_assignment
-  if params[:assignment_id]
-    @assignment = Assignment.find(params[:assignment_id])
+    redirect_to action: 'index'
   end
-end
 
-def get_course
-  if params[:course_id]
-    @course = Course.find(params[:course_id])
+  def edit_review
+    authorize! :manage, :reviews
+
+    # Find existing evaluation
+    @s = @assignment.submissions.where('user_id = ' + params['submitterID'])[0]
+    @e = @s.evaluations.where('user_id = ' + params['oldReviewerID'])[0]
+
+    # Delete existing evaluation
+    if @e then @e.destroy end
+
+    # Create new evaluation
+    @e = Evaluation.new
+    @e.submission = @s
+    @e.user_id = params['newReviewerID']
+    @e.save!
+
+    # Create empty evaluation responses
+    @assignment.questions.each { |question|
+      response = Response.new
+      response.question_id = question.id
+      response.evaluation_id = @e.id
+      response.save!
+    }
+
+    redirect_to action: 'index'
   end
-end
+
+  def get_assignment
+    if params[:assignment_id]
+      @assignment = Assignment.find(params[:assignment_id])
+    end
+  end
+
+  def get_course
+    if params[:course_id]
+      @course = Course.find(params[:course_id])
+    end
+  end
 end

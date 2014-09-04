@@ -3,7 +3,7 @@ require 'spec_helper'
 describe PasswordResetsController do
   let(:user) { FactoryGirl.create(:user) }
 
-  before { user.password_reset_sent_at = Time.now and user.save }
+  before { user.password_reset_sent_at = Time.zone.now and user.save }
 
   describe "GET 'new'" do
     it "returns http success" do

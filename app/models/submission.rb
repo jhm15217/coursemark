@@ -66,7 +66,7 @@ class Submission < ActiveRecord::Base
 
 
   def met_deadline
-    if Time.now > assignment.submission_due
+    if Time.zone.now > assignment.submission_due
       errors.add(:submission, "Deadline for assignment submission has passed.")
     end
   end
@@ -78,7 +78,7 @@ class Submission < ActiveRecord::Base
   def create_evaluations(required, reviewers)
     candidates = reviewers
     disqualified = []
-    while required > 0
+    while required > 0  and reviewers.size > 0   # if you run out candidates, stop
       review_count = candidates.next_key
       candidate = candidates.pop
       if candidate.submitting_id(assignment, self) == user_id or evaluations(true).any?{|e| e.user_id == candidate.id}
@@ -86,8 +86,7 @@ class Submission < ActiveRecord::Base
       else
         evaluation = Evaluation.new(submission_id: id, user_id: candidate.id)
         evaluation.save!
-        # create a response for each question of the evaluation
-        assignment.questions.each { |question| Response.new(question_id: question.id, evaluation_id:evaluation.id ).save! }
+        # responses will be created for each question of the evaluation at the last minute, when a reviewer starts
         required -= 1
         candidates.push(review_count + 1, candidate)   # put back in pool
       end

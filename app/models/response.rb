@@ -40,7 +40,7 @@ class Response < ActiveRecord::Base
 
   private
   def met_deadline
-    if Time.now > self.evaluation.submission.assignment.review_due
+    if Time.zone.now > self.evaluation.submission.assignment.review_due
       errors.add(:submission, "Deadline for evaluations has passed.")
     end 
   end

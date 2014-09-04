@@ -59,7 +59,7 @@ class ApplicationController < ActionController::Base
     if flash[tag]
       flash[tag] << ', ' + m2
     else
-      flash[:error] = m1 + m2
+      flash[tag] = m1 + m2
     end
   end
 
