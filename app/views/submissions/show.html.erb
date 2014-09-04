@@ -40,13 +40,13 @@
         <!-- This user is a reviewer who hasn't finished but has time  -->
         <% @questions.each do |question| %>
             <% if !question.nil? %>
-                <% if response_for_question_by_peer(@user, @submission, question) %>
-                    <div class='submissionQuestionBox' id='peer_review'>
-                      <h2><%= question.question_text %></h2>
-                      <%= complete_peer_review(response_for_question_by_peer(@user, @submission, question), @user) %>
-                <% else %>
-                    <% puts 'Error: No response for: '  + @user.email + ' about ' + question.question_text   %>
+                <% if !( r =response_for_question_by_peer(@user, @submission, question)) %>
+                    <% r = Response.new(question_id: question.id, evaluation_id:e.id ) %>
+                    <% r.save! %>
                 <% end %>
+                <div class='submissionQuestionBox' id='peer_review'>
+                  <h2><%= question.question_text %></h2>
+                  <%= complete_peer_review(r, @user) %>
                 </div>
             <% else %>
                 <h2>Missing Question? Inform james.morris@cmu.edu, sending screen shot.</h2>
@@ -67,22 +67,24 @@
             </div>
         <% else %>
             <% @questions.each do |question| %>
-                <div class='submissionQuestionBox'>
-                  <h2><%= question.question_text %></h2>
-                  <div class='possiblePoints'><%= question.question_weight %> Points</div>
-                  <% @submission.get_responses_for_question(question).sort_by{|r| r.created_at}.
-                             each_with_index do |response, index| %>
-                      <% if response.evaluation.finished? %>
-                          <div class='submissionBox'>
-                            <div class='submissionResponsePoints <%= gradeColorFullScale(response.scale.value) %>'>
-                              <%= response.scale.value.to_s + '%' %></div>
-                            <%= see_peer_review(response, index, @user) %>
-                            <%= student_rebuttal(response, @user) %>
-                            <%= instructor_comment(response, instructor) %>
-                          </div>   <!-- submission box -->
-                      <% end %> <!-- if finished -->
-                  <% end %>  <!-- response loop -->
-                </div> <!-- end submissionQuestionBox -->
+                <% if (rs =  @submission.get_responses_for_question(question)).any?{|r1| r1.evaluation.finished? } %>
+                    <div class='submissionQuestionBox'>
+                      <h2><%= question.question_text %></h2>
+                      <div class='possiblePoints'><%= question.question_weight %> Points</div>
+                      <% rs.sort{|a,b| @submission.user == @user.id ? -1 : a.created_at <=> b.created_at}.
+                                 each_with_index do |response, index| %>
+                          <% if response.evaluation.finished? %>
+                              <div class='submissionBox'>
+                                <div class='submissionResponsePoints <%= gradeColorFullScale(response.scale.value) %>'>
+                                  <%= response.scale.value.to_s + '%' %></div>
+                                <%= see_peer_review(response, index, @user) %>
+                                <%= student_rebuttal(response, @user) %>
+                                <%= instructor_comment(response, instructor) %>
+                              </div>   <!-- submission box -->
+                          <% end %> <!-- if finished -->
+                      <% end %>  <!-- response loop -->
+                    </div> <!-- end submissionQuestionBox -->
+                <% end %>
             <% end %>  <!-- question loop -->
         <% end %> <!-- if-else -->
     <% end %>

@@ -115,7 +115,7 @@ class AssignmentsController < ApplicationController
 
   def export
     @assignment = Assignment.find(params[:assignment_id])
-    current_date = "#{Time.now.month}-#{Time.now.day}-#{Time.now.year}"
+    current_date = "#{Time.zone.now.month}-#{Time.zone.now.day}-#{Time.zone.now.year}"
     send_data(@assignment.export(sorted(@assignment.get_students_for_assignment)), :type => 'text/csv', :filename => "#{@assignment.course.name}: #{@assignment.name} (as of #{current_date}).csv")
   end
 

@@ -172,7 +172,7 @@ class QuestionsController < ApplicationController
         csv << row
       end
     end
-    current_date = "#{Time.now.month}-#{Time.now.day}-#{Time.now.year}"
+    current_date = "#{Time.zone.now.month}-#{Time.zone.now.day}-#{Time.zone.now.year}"
     send_data(data, :type => 'text/csv', :filename => "#{@assignment.name} (rubric as of #{current_date}).csv")
   end
 

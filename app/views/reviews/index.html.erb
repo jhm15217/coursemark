@@ -12,7 +12,7 @@
             <% end %>
         <% end %>
     <% else %>
-        <div class='notice'>Reviewing is over.</div>
+        <div class='notice'>Peer reviewing is over.</div>
     <% end %>
 <% end %>
 
@@ -24,12 +24,15 @@
         <th>Reviewers</th>
       </tr>
       <% @students.each do |student| %>
-          <% if student.submissions.where('assignment_id = ' + @assignment.id.to_s)[0] %>
+          <% sub = student.submissions.where('assignment_id = ' + @assignment.id.to_s)[0]  %>
+          <% if sub %>
+              <%  evals = sub.evaluations %>
+              <%  if evals.map{|e| e.user_id }.length != evals.map{|e| e.user_id }.uniq.length then puts 'Error, duplicate reviewer(s) for ' + student.email end %>
               <tr>
                 <td><%= student.email %></td>
-                <% student.submissions.where('assignment_id = ' + @assignment.id.to_s)[0].evaluations.sort_by{|e| e.created_at }.each do |e| %>
+                <% evals.sort_by{|e| e.created_at }.each do |e| %>
                     <td>
-                      <%  if e.user.submitting_id(@assignment, e.submission) == student.id then multi_flash(:error, 'Self-reviewer(s): ' + student.email) end %>
+                      <%  if e.user.submitting_id(@assignment, e.submission) == student.id then multi_flash(:error, 'Warning: Self-reviewing by ', e.user.email) end %>
                       <%= e.user.email %><%= link_to image_tag('delete.png'), e, method: :delete,
                                                      data: { confirm: e.finished ? 'A completed review will be discarded. Are you sure?' : "" } %>
                     </td>
@@ -44,7 +47,13 @@
 <% end %>
 
 
+
 <% if Time.zone.now < @assignment.review_due %>
+    <% if Time.zone.now > @assignment.submission_due %>
+        Since reviewing has started, any changes may not be noticed by reviewers.
+        <br>
+        <br>
+    <% end %>
     <form method='post' action="/courses/<%= @course.id.to_s %>/assignments/<%= @assignment.id.to_s %>/reviews">
       <span class="actions">
         <input name="load_reviewers" type="submit" value="Add Reviewing Tasks Below" style="margin-right:20px" />

@@ -235,13 +235,13 @@ class Assignment < ActiveRecord::Base
 
   private
   def submission_deadline_not_passed
-    if self.submission_due > Time.now and self.submission_due.to_i != self.submission_due_was.to_i
+    if self.submission_due > Time.zone.now and self.submission_due.to_i != self.submission_due_was.to_i
       errors.add(:submission_due, 'Can\'t change submission deadline if it has passed')
     end
   end
 
   def review_deadline_not_passed
-    if self.review_due > Time.now and self.review_due.to_i != self.review_due_was.to_i
+    if self.review_due > Time.zone.now and self.review_due.to_i != self.review_due_was.to_i
       errors.add(:review_due, 'Can\'t change review deadline if it has passed')
     end
   end
@@ -270,7 +270,7 @@ class Assignment < ActiveRecord::Base
   end
 
   def submissions_open
-    if submission_due < Time.now
+    if submission_due < Time.zone.now
       errors.add(:reviews_required, 'Can\'t change number of reviews required after submission deadline has passed.')
     end
   end

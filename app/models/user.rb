@@ -50,7 +50,7 @@ class User < ActiveRecord::Base
 
   def send_password_reset
     generate_confirmation_token
-    self.password_reset_sent_at = Time.now
+    self.password_reset_sent_at = Time.zone.now
     save!(validate: false)
 
     UserMailer.password_reset(self).deliver
