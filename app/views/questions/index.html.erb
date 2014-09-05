@@ -6,7 +6,7 @@
     <br>
 <% end %>
 
-<% if Time.zone.now.between(@assignment.submission_due, @assignment.review_due) %>
+<% if Time.zone.now.between?(@assignment.submission_due, @assignment.review_due) %>
     <div class="notice"> Changing the rubric during reviewing might make reviews less comparable.</div>
     <br>
     <br>
