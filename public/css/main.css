@@ -347,12 +347,22 @@ textarea {
     color: #95969C;
 }
 
-#main .tab {
+/*#main .tab {
     float: left;
     height: 52px;
     margin-right: 50px;
     padding-top: 10px;
     font-size: 12pt;
+}*/
+
+#main .tab {
+    float: left;
+    height: 31px;
+    margin-right: 50px;
+    padding-top: 6px;
+    font-size: 12pt;
+    padding-right: 6px;
+    padding-left: 6px;
 }
 
 #main .tabs a {
@@ -362,7 +372,7 @@ textarea {
 
 #main .tab.active a {
     color: #e67e22;
-    font-weight: bold;
+    /*font-weight: bold;*/
 }
 
 #main .tab:hover:not('.logout') {
@@ -370,8 +380,17 @@ textarea {
     border-bottom: 3px solid #95969C;
 }
 
+/*#main .tab.active {
+    color: #e67e22;
+}*/
+
 #main .tab.active {
     color: #e67e22;
+    border-left:solid 1px #DFDFDF;
+    border-right:solid 1px #DFDFDF;
+    border-top:solid 1px #DFDFDF;
+    background-color: #F5F6F8;
+    padding: 5px 5px 0 5px;
 }
 
 #main .tab.active:hover {
@@ -410,13 +429,24 @@ textarea {
     text-decoration: none;
 }
 
-#main #error_explanation h2,
-#main #error_explanation {
+#main #error_explanation h2 {
     font-size: 11pt;
     color: red;
     background-color: black;
     width: 50%;
 }
+#main #error_explanation {
+    font-size: 12pt;
+    color: black;
+    background-color: #C92824;
+    width: 100%;
+    min-height: 60px;
+    height: auto;
+    margin-bottom: 20px;
+    padding: 4px 10px 2px 10px;
+    display: block;
+}
+
 
 #ui-datepicker-div {
     width: 225px;
@@ -557,6 +587,10 @@ textarea {
 #main table tr {
     height: 50px;
     border-bottom: 1px solid #DFDFDF;
+}
+
+table.submissions {
+    border-radius: 6px;
 }
 
 #main .submissions tr {
@@ -726,6 +760,15 @@ textarea {
     margin-bottom: 15px;
 }
 
+.med_width_button {
+    width:150px;
+    color:black;
+}
+
+.update_account_btn {
+    width:311px;
+}
+
 #main .loginFields .field,
 #main .newAccountFields .field {
     margin-bottom: 0px;
@@ -743,6 +786,29 @@ textarea {
 #main .newAccountFields .actions input {
     border: 1px solid #d5d5d5;
 }
+
+#main .editAccountFields .field {
+    margin-bottom: 0px;
+}
+
+#main .editAccountFields #user_first_name,
+#main .editAccountFields #user_password {
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+#main .editAccountFields #user_last_name,
+#main .editAccountFields #user_password_confirmation {
+    border-top:none;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    margin-bottom: 10px;
+}
+
+#main .editAccountFields #user_password {
+    margin-top:10px;
+}
+
 
 .passwordResetBtn {
     width: 470px !important;
@@ -918,7 +984,8 @@ textarea {
 .loginWrapper #error_explanation ul {
     list-style: none;
     padding: 0px;
-    color: #ff0000;
+    color: white;
+    font-weight: 300;
 }
 
 .loginWrapper.newAccount {
