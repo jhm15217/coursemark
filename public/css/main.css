@@ -331,6 +331,7 @@ textarea {
 
 #main h1 {
     margin: 0px;
+    margin-top:-5px;
     margin-right: 50px;
     font-family: "HelveticaNeue-Light", "Helvetica Neue Light";
     font-weight: normal;
@@ -342,7 +343,7 @@ textarea {
 }
 
 #main .tabs {
-    margin-top: 4px;
+    margin-top: 9px;
     text-transform: uppercase;
     color: #95969C;
 }
@@ -406,9 +407,10 @@ textarea {
     top: 0px;
     right: 394px;
     width: 120px;
-    height: 85px;
+    height: 100px;
     padding-left: 35px;
-    padding-top: 23px;
+    padding-top: 24px;
+    line-height: 26px;
     border-left: 1px solid #DFDFDF;
 }
 
@@ -526,6 +528,56 @@ textarea {
     min-width: 360px;
 }
 
+#main .toDoList h3 {
+    margin-top:0px;
+}
+
+#main .toDoUl {
+    list-style: none;
+    padding:0px;
+}
+
+#main .toDoUl li {
+    display: block;
+    width:95%;
+    padding:10px;
+    border:solid 1px #ccc;
+    border-radius: 6px;
+    color: rgb(92, 92, 92);
+    margin-bottom: 10px;
+}
+
+#main .toDoUl li:hover {
+    border:solid 1px #000;
+}
+
+#main .toDoUl li a {
+    text-decoration: none;
+    color:inherit;
+}
+
+#main .toDoUl li a:visited {
+    color: rgb(92, 92, 92);
+}
+
+.a_name {
+    width:100%;
+    font-weight: bold;
+    color:black;
+}
+
+.assignment_section_header {
+    margin-bottom:2px;
+}
+
+.na_text {
+    color: #7B7B7E;
+}
+
+.red {
+    color:red;
+}
+
 .assignmentStatus .checkPoint {
     height: 50px;
     padding-top: 15px;
@@ -569,6 +621,31 @@ textarea {
 #main .new_assignment .delete a {
     color: #343F53;
     opacity: .5;
+}
+
+#main ul.rubricScale {
+    list-style: none;
+    padding-left:0px;
+}
+
+#main ul.rubricScale li {
+    display: block;
+    float:left;
+    width:60%;
+    padding:8px;
+    min-height:32px;
+    background: #FCFCFC;
+    border: solid 1px #E0E0E0;
+}
+
+#main ul.rubricScale li:first-child {
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+}
+
+#main ul.rubricScale li:last-child {
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
 }
 
 #main table {
@@ -766,7 +843,7 @@ table.submissions {
 }
 
 .update_account_btn {
-    width:311px;
+    width:321px;
 }
 
 #main .loginFields .field,
@@ -795,6 +872,7 @@ table.submissions {
 #main .editAccountFields #user_password {
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
+    padding:10px;
 }
 
 #main .editAccountFields #user_last_name,
@@ -803,6 +881,7 @@ table.submissions {
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
     margin-bottom: 10px;
+    padding:10px;
 }
 
 #main .editAccountFields #user_password {
