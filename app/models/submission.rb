@@ -17,7 +17,7 @@ class Submission < ActiveRecord::Base
   validates_attachment_size :attachment, :less_than => MAX_FILE_SIZE.megabytes, message: "File must be smaller than #{MAX_FILE_SIZE}MB. In MSW: File>Reduce File Size."
   validates_attachment_content_type :attachment, :content_type => ['application/pdf']
 
-  def save
+  def save(args)
     super
     assign_enough_review_tasks(assignment.initialize_reviewers)
   end
