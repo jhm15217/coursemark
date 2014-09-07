@@ -32,23 +32,13 @@ class AssignmentsController < ApplicationController
     end
   end
 
-  # def switch_names(registration)
-  #   if !registration.active
-  #     user = registration.user
-  #     t = user.first_name
-  #     user.first_name = user.last_name
-  #     user.last_name = t
-  #     user.save!(validate: false)
-  #   end
-  # end
-
   def fix
-    Membership.all.each do |m|
-      unless User.find_all_by_id(m.pseudo_user_id).length > 0
-        puts 'Destroying membership for ' + m.user.email
-        m.destroy
-      end
-    end
+    # Membership.all.each do |m|
+    #   unless User.find_all_by_id(m.pseudo_user_id).length > 0
+    #     puts 'Destroying membership for ' + m.user.email
+    #     m.destroy
+    #   end
+    # end
     # Submission.all.each do |s|
     #   if s.attachment
     #     puts "Has attachement: " + (s.user ? s.user.email.inspect : '') + ' ' + s.attachment.url

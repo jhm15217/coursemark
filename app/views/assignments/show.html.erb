@@ -6,8 +6,8 @@
     <div class="toDoList" >
       <h3>To-Do List</h3>
       <ul class="toDoUl">
-      <% @to_do.each do |task| %>
-          
+        <% @to_do.each do |task| %>
+
             <% hours_remain = ((task[:time] - Time.zone.now) / 1.hour).round %>
             <% if hours_remain < 25 then remaining = hours_remain.to_s + ' hours ' else remaining = (hours_remain/24).to_s + ' days ' end %>
             <%= ((if task[:action] == :submit  then
@@ -18,8 +18,8 @@
                   end) +
                     '</div> by ' + task[:time].strftime('%A (%-m/%-d) at %I:%M %p') + ' (<span class="red">' + remaining  + 'left</span>) </a>').html_safe
             %>
-          </li>
-      <% end %>
+            </li>
+        <% end %>
       </ul>
     </div>
 <% end %>
@@ -30,34 +30,26 @@
 
 
 
-<h3 class='assignment_section_header'>Reviews of Your Submission(s)</h3>
-<% if @submissions.length == 0 %>
-  <span class='na_text'>No reviews of your submission</span>
+<% if @submissions.length > 0 %>
+    <h3 class='assignment_section_header'>Your Submission(s)</h3>
+    <% @submissions.each do |submission| %>
+        <div id="reviewing_task">
+          <%= link_to course_assignment_submission_path(@course, @assignment, submission) + '?view=true' do %>
+              <%= submission.user.name + "'s" +
+                          ((e = submission.evaluations.select{|e| e.finished }.length) > 0 ? (" with " + e.to_s + ' review(s)') : '')  %>
+          <% end %>
+        </div>
+    <% end %>
 <% end %>
-
-<% @submissions.each do |submission| %>
-    <div id="reviewing_task">
-      <%= link_to course_assignment_submission_path(@course, @assignment, submission) + '?view=true' do %>
-          <%= submission.user.name %>'s
-      <% end %>
-    </div>
-<% end %>
-
-
-
-
 
 
 <br>
-<h3 class='assignment_section_header'>Reviews by You</h3>
 
 
 <% if @assignment.reviewers_assigned %>
-    <% if (Time.zone.now > @assignment.submission_due)  %>
-        <div id="reviewing_tasks">
-          <% if @reviewing_tasks.length == 0 %>
-            <span class='na_text'>No reviews by you</span>
-          <% end %>
+    <div id="reviewing_tasks">
+      <% if @reviewing_tasks.length > 0 %>
+          <h3 class='assignment_section_header'>Reviews by You</h3>
           <% @reviewing_tasks.each_with_index do |task, index| %>
               <div id="reviewing_task">
                 <%= link_to course_assignment_submission_path(@course, @assignment, task.submission) do %>
@@ -65,10 +57,8 @@
                 <% end %>
               </div>
           <% end %>
-        </div>
-    <% end %>
-<% else %>
-  <span class='na_text'>No reviews by you</span>
+      <% end %>
+    </div>
 <% end %>
 
 <!--<div class="clearfix"></div>-->
