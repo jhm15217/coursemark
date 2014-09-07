@@ -1,6 +1,6 @@
 class Submission < ActiveRecord::Base
-  attr_accessible :assignment_id, :attachment, :user_id, :instructor_approved
-  has_attached_file :attachment
+  attr_accessible :assignment_id, :attachment, :user_id, :instructor_approved, :url
+#  has_attached_file :attachment
 
   # Relationships
   belongs_to :user
@@ -14,8 +14,14 @@ class Submission < ActiveRecord::Base
   validates_presence_of :assignment_id
   validates_presence_of :user_id
   validate :met_deadline, :on => :create
-  validates_attachment_size :attachment, :less_than => MAX_FILE_SIZE.megabytes, message: "File must be smaller than #{MAX_FILE_SIZE}MB. In MSW: File>Reduce File Size."
-  validates_attachment_content_type :attachment, :content_type => ['application/pdf']
+#  validates_attachment_size :attachment, :less_than => MAX_FILE_SIZE.megabytes, message: "File must be smaller than #{MAX_FILE_SIZE}MB. In MSW: File>Reduce File Size."
+#  validates_attachment_content_type :attachment, :content_type => ['application/pdf']
+
+  # def self.new(params)
+  #   assignment_id = params[:assignment_id]
+  #   attachment = params[:attachment]
+  #   user_id = params[:user_id]
+  # end
 
   def save
     super

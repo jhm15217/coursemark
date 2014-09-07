@@ -116,7 +116,7 @@ class SubmissionsController < ApplicationController
         format.html { redirect_to [@course, @submission.assignment] }
         format.json { render json: @submission, status: :created, location: @submission }
       else
-        format.html { redirect_to [@course, @assignment] , flash: {error: combine(@submission.errors.messages[:attachment])} }
+        format.html { redirect_to [@course, @assignment] , flash: {error: combine(@submission.errors.messages[:url])} }
         format.json { render json: @submission.errors, status: :unprocessable_entity }
       end
     end
@@ -131,7 +131,7 @@ class SubmissionsController < ApplicationController
       if @submission.update_attributes(params[:submission])
         format.html { redirect_to :back}
       else
-        format.html { redirect_to [@course, @assignment] , flash: {error: combine(@submission.errors.messages[:attachment])} }
+        format.html { redirect_to [@course, @assignment] , flash: {error: combine(@submission.errors.messages[:url])} }
         format.json { render json: @submission.errors, status: :unprocessable_entity }
       end
     end

@@ -10,6 +10,7 @@ class UsersController < ApplicationController
   end
 
   def destroy
+    Memberships.each{|m| if m.pseudo_user_id == self.id then m.destroy end }
     User.find(params[:id]).destroy
     respond_to do |format|
       format.html { redirect_to :back }
