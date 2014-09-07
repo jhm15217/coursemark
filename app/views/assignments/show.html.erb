@@ -5,16 +5,22 @@
 <% if @to_do.length > 0 %>
     <div class="toDoList" >
       <h3>To-Do List</h3>
+      <ul class="toDoUl">
       <% @to_do.each do |task| %>
-          <%= ((if task[:action] == :submit  then
-                  "Submit <a href=/courses/#{@course.id}/assignments/#{task[:assignment].id}>
-                  #{task[:assignment].name + (task[:team] ? ' for ' + task[:team] : '')}</a>"
-                else
-                  "Complete <a href=/courses/#{@course.id}/assignments/#{task[:assignment].id}/submissions/#{task[:submission_id]}>Review #{task[:index].to_s}</a> for #{task[:assignment].name}"
-                end) +
-                  ' by ' + task[:time].strftime('%-m/%-d at %H:%M')  + '</br>').html_safe
-          %>
+          
+            <% hours_remain = ((task[:time] - Time.zone.now) / 1.hour).round %>
+            <% if hours_remain < 25 then remaining = hours_remain.to_s + ' hours ' else remaining = (hours_remain/24).to_s + ' days ' end %>
+            <%= ((if task[:action] == :submit  then
+                    "<a href=/courses/#{@course.id}/assignments/#{task[:assignment].id}><li>
+                    <div class='a_name'>Submit #{task[:assignment].name + (task[:team] ? ' for ' + task[:team] : '')}"
+                  else
+                    "<a href=/courses/#{@course.id}/assignments/#{task[:assignment].id}/submissions/#{task[:submission_id]}><span class='a_name'>Complete Review #{task[:index].to_s}<span>for #{task[:assignment].name}"
+                  end) +
+                    '</div> by ' + task[:time].strftime('%A (%-m/%-d) at %I:%M %p') + ' (<span class="red">' + remaining  + 'left</span>) </a>').html_safe
+            %>
+          </li>
       <% end %>
+      </ul>
     </div>
 <% end %>
 
@@ -24,26 +30,34 @@
 
 
 
-<h3>Reviews of Your Submission(s)</h3>
+<h3 class='assignment_section_header'>Reviews of Your Submission(s)</h3>
+<% if @submissions.length == 0 %>
+  <span class='na_text'>No reviews of your submission</span>
+<% end %>
 
 <% @submissions.each do |submission| %>
     <div id="reviewing_task">
       <%= link_to course_assignment_submission_path(@course, @assignment, submission) + '?view=true' do %>
           <%= submission.user.name %>'s
-          </div>
       <% end %>
+    </div>
 <% end %>
 
 
 
 
+
+
 <br>
-<h3>Reviews by You</h3>
+<h3 class='assignment_section_header'>Reviews by You</h3>
 
 
 <% if @assignment.reviewers_assigned %>
     <% if (Time.zone.now > @assignment.submission_due)  %>
         <div id="reviewing_tasks">
+          <% if @reviewing_tasks.length == 0 %>
+            <span class='na_text'>No reviews by you</span>
+          <% end %>
           <% @reviewing_tasks.each_with_index do |task, index| %>
               <div id="reviewing_task">
                 <%= link_to course_assignment_submission_path(@course, @assignment, task.submission) do %>
@@ -53,20 +67,24 @@
           <% end %>
         </div>
     <% end %>
+<% else %>
+  <span class='na_text'>No reviews by you</span>
 <% end %>
 
 <!--<div class="clearfix"></div>-->
 
 
 <% if Time.zone.now < @assignment.submission_due %>
-    <h3>Reviewing Rubric</h3>
+    <h3 class='assignment_section_header'>Reviewing Rubric</h3>
     <% @questions.each do |question| %>
         <div class='submissionQuestionBox clearfix'>
           <h2><%= question.question_text %></h2>
           <div class='possiblePoints'><%= question.question_weight %> Points</div>
-          <% question.scales.sort_by{|s| s.value}.each do |scale|  %>
-              <%= scale.description + ':' + scale.value.to_s + '%   ' %>
-          <% end %>
+          <ul class='rubricScale'>
+            <% question.scales.sort_by{|s| s.value}.each do |scale|  %>
+                <li><%= scale.value.to_s + '%: ' + scale.description  %></li>
+            <% end %>
+          </ul>
         </div>
     <% end %>
 <% end %>
