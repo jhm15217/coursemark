@@ -1,5 +1,6 @@
 
   <%= form_for [@course, @assignment], html: {class: 'submissionUpload'} do |f| %>
+  <h3>Submit Assignment</h3>
       <% if @teams.length > 1 %>
           <select id="teams">
             <option value='-1' >Select Submitting Team</option>
@@ -28,7 +29,7 @@
             }
         </script>
 
-        <input name="commit" type="submit" onclick="get_team();" value="Submit" >
+        <input class="med_width_button hidden" name="commit" type="submit" onclick="get_team();" value="Submit" >
 
       </div>
 <!--
@@ -68,13 +69,18 @@
 
                       progressBar.
                               css('background', 'green').
+                              css('color', 'white').
+                              css('border-radius', '6px').
+                              css('padding', '5px').
                               css('display', 'block').
                               css('width', '0%').
                               text("Loading...");
                   },
                   done: function(e, data) {
                       submitButton.prop('disabled', false);
-                      progressBar.text("Uploading done");
+                      submitButton.removeClass('hidden');
+
+                      progressBar.text("Uploaded: Ready to submit");
 
                       // extract key and generate URL from response
                       var key   = $(data.jqXHR.responseXML).find("Key").text();
@@ -88,8 +94,11 @@
                       submitButton.prop('disabled', false);
 
                       progressBar.
-                              css("background", "red").
-                              text("Failed");
+                              css("background", "red"). 
+                              css('color', 'white').
+                              css('border-radius', '6px').
+                              css('padding', '5px').
+                              text("Failed, try again");
                   }
               });
           });
