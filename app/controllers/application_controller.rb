@@ -4,6 +4,7 @@ class ApplicationController < ActionController::Base
   before_filter :get_assignments
   helper_method :current_user
 
+
   def redirect_to(*args)
     flash.keep
     super
