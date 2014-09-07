@@ -14,7 +14,7 @@
                     "<a href=/courses/#{@course.id}/assignments/#{task[:assignment].id}><li>
                     <div class='a_name'>Submit #{task[:assignment].name + (task[:team] ? ' for ' + task[:team] : '')}"
                   else
-                    "<a href=/courses/#{@course.id}/assignments/#{task[:assignment].id}/submissions/#{task[:submission_id]}><span class='a_name'>Complete Review #{task[:index].to_s}<span>for #{task[:assignment].name}"
+                    "<a href=/courses/#{@course.id}/assignments/#{task[:assignment].id}/submissions/#{task[:submission_id]}><div class='a_name'>Complete Review #{task[:index].to_s} for #{task[:assignment].name}"
                   end) +
                     '</div> by ' + task[:time].strftime('%A (%-m/%-d) at %I:%M %p') + ' (<span class="red">' + remaining  + 'left</span>) </a>').html_safe
             %>

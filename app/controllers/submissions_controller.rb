@@ -1,8 +1,8 @@
 class SubmissionsController < ApplicationController
   before_filter :get_assignment, :get_course
   before_filter :get_evaluations, :only => :show
-  #load_and_authorize_resource :except => [:view]
-  skip_authorization_check :only => [:view, :update]
+  #load_and_authorize_resource
+  skip_authorization_check :only => [:update]
 
   # GET /submissions
   # GET /submissions.json
@@ -72,17 +72,17 @@ class SubmissionsController < ApplicationController
     end
   end
 
-  def view
-    @submission = Submission.where(:submission => params[:id].to_s).first
-    @evaluators = @submission.evaluations.pluck(:user_id)
-
-    if (!current_user.instructor?(@submission.assignment.course) && (current_user.id != @submission.user_id) && (!@evaluators.include?(current_user.id)))
-      raise CanCan::AccessDenied.new("Not authorized!")
-    end
-
-    @filename = 'submission_' + @submission.id.to_s + '.pdf'
-    send_data(@submission.submission.file.read, :filename => @filename, :disposition => 'inline', :type => 'application/pdf')
-  end
+  # def view
+  #   @submission = Submission.where(:submission => params[:id].to_s).first
+  #   @evaluators = @submission.evaluations.pluck(:user_id)
+  #
+  #   if (!current_user.instructor?(@submission.assignment.course) && (current_user.id != @submission.user_id) && (!@evaluators.include?(current_user.id)))
+  #     raise CanCan::AccessDenied.new("Not authorized!")
+  #   end
+  #
+  #   @filename = 'submission_' + @submission.id.to_s + '.pdf'
+  #   send_data(@submission.submission.file.read, :filename => @filename, :disposition => 'inline', :type => 'application/pdf')
+  # end
 
   # GET /submissions/new
   # GET /submissions/new.json
