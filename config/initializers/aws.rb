@@ -1,4 +1,4 @@
-AWS.config(access_key_id:     ENV['AWS_ACCESS_KEY_ID'],
-           secret_access_key: ENV['AWS_SECRET_ACCESS_KEY'] )
+AWS.config(access_key_id:     'AKIAJUAJULX2PQPERHLA',
+           secret_access_key: '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' )
 
-S3_BUCKET = AWS::S3.new.buckets[ENV['S3_BUCKET']]
+S3_BUCKET = AWS::S3.new.buckets['Coursemark']
