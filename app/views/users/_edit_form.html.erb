@@ -7,7 +7,7 @@
     </div>
   <% end %>
 
-  <div class="newAccountFields">
+  <div class="editAccountFields">
     <div class="field">
       <%= f.text_field :first_name, :placeholder => "First Name" %>
     </div>
@@ -15,16 +15,16 @@
       <%= f.text_field :last_name, :placeholder => "Last Name" %>
     </div>
     <div class="field">
-      <%= @user.email %>
+       <%= @user.email %>
     </div>
     <div class="field">
-      <%= f.password_field :password, :placeholder => "Password" %> 
+     <%= f.password_field :password, :placeholder => "New Password" %> 
     </div>
     <div class="field">
-      <%= f.password_field :password_confirmation, :placeholder => "Password Confirmation" %> 
+      <%= f.password_field :password_confirmation, :placeholder => "New Password Confirmation" %> 
     </div>
     <div class="actions">
-      <%= f.submit "Update account" %>
+      <%= f.submit "Update account", :class => 'update_account_btn' %>
     </div>
   </div>
 <% end %>

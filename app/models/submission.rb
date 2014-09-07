@@ -23,7 +23,7 @@ class Submission < ActiveRecord::Base
   #   user_id = params[:user_id]
   # end
 
-  def save
+  def save(args)
     super
     assign_enough_review_tasks(assignment.initialize_reviewers)
   end
