@@ -41,7 +41,7 @@
                   <% if response.evaluation.finished? %>
                       <div class='submissionBox'>
                         <div class='submissionResponsePoints <%= gradeColorFullScale(response.scale.value) %>'><%= response.scale.value.to_s + '%' %></div>
-                        <%= peer_review(response, index, @user)  %>
+                        <%= see_peer_review(response, index, @user)  %>
 <!--
                         <span class='submissionResponseFrom'><%= reviewer_name(response.evaluation, index) %>: </span>
                         <span> <%= response.scale.description %></span>
