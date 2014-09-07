@@ -38,17 +38,11 @@
 <% @submissions.each do |submission| %>
     <div id="reviewing_task">
       <%= link_to course_assignment_submission_path(@course, @assignment, submission) + '?view=true' do %>
-          <%= submission.user.name %>'s
+          See all reviews of your submission
       <% end %>
     </div>
 <% end %>
 
-
-
-
-
-
-<br>
 <h3 class='assignment_section_header'>Reviews by You</h3>
 
 

@@ -1193,7 +1193,7 @@ input[type="file"]::-webkit-file-upload-button {
 }
 
 .submissionUpload {
-    width: 450px;
+    width: 540px;
     height: auto;
     /* min-height: 100px; */
     display: inline-block;

@@ -9,6 +9,12 @@
             <% end %>
           </select>
       <% end %>
+      <% if !@submission.url.blank?  %>
+          <%= link_to 'This file', @submission.url, :target => "_blank" %> has been submitted.<br />
+          <% if %>
+            You may re-submit until the deadline on <%= @submission.assignment.submission_due.strftime('%A (%-m/%-d) at %I:%M %p') %>.
+          <% end %>
+      <% end %>
       <div class="field">
          <%= f.file_field :url, :accept => 'application/pdf', :required => true, :style => 'border: 0px' %>
       </div>
@@ -28,7 +34,7 @@
                 document.getElementById("assignment_user_id").value =  selected_team;
             }
         </script>
-
+        
         <input class="med_width_button hidden" name="commit" type="submit" onclick="get_team();" value="Submit" >
 
       </div>
