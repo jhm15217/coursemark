@@ -43,7 +43,15 @@ class AssignmentsController < ApplicationController
   # end
 
   def fix
-#    Course.find(params[:course_id]).registrations.each{|r| switch_names(r) }
+    registrants = Registration.all.select{|r| params[:course_id].to_i == r.course_id }
+    registrants.each do |r|
+      rssubs = r.user.submissions.select{|s| s.assignment_id == params[:id].to_i }
+      puts 'user ' + r.user.email + ' has ' + rssubs.length.to_s + ' submissions'
+      if rssubs.length > 1
+        puts 'Error: ' + r.user.email + ' has multiple submissions:'
+        rssubs.each{|s| puts '   ' + s.created_at.to_s }
+      end
+    end
   end
 
 # GET /assignments/1
