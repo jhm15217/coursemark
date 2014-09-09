@@ -1,7 +1,7 @@
 class CoursesController < ApplicationController
   skip_before_filter :get_assignments
   layout false
-  load_and_authorize_resource
+#  load_and_authorize_resource
   
   # GET /courses
   # GET /courses.json
