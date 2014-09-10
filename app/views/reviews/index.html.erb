@@ -8,7 +8,7 @@
     <% elsif Time.zone.now < @assignment.review_due %>
         <% if @assignment.manual_assignment  %>
             <%= link_to assign_reviews_course_assignment_reviews_path(@course, @assignment) do %>
-                <div class='button fr' style="margin-right: -12px; margin-top: -13px;"><%= @assignment.reviewers_assigned ? 'Pause Reviews' : 'Start Reviews' %></div>
+                <div class='button fr' style="margin-right: -12px; margin-top: -13px;"><%= @assignment.are_reviewers_assigned ? 'Pause Reviews' : 'Start Reviews' %></div>
             <% end %>
         <% end %>
     <% else %>

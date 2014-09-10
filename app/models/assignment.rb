@@ -69,6 +69,10 @@ class Assignment < ActiveRecord::Base
     return true
   end
 
+  def are_reviewers_assigned
+    reviewers_assigned or !manual_assignment and Time.zone.now > submission_due
+  end
+
 
   def publishable
     ok = true

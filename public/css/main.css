@@ -404,6 +404,17 @@ textarea {
 
 #main .tab.logout {
     position: absolute;
+    top: 40px;
+    right: 394px;
+    width: 120px;
+    height: 60px;
+    padding-left: 35px;
+    padding-top: 24px;
+    line-height: 26px;
+    border-left: 1px solid #DFDFDF;
+}
+#main .tab.settings {
+    position: absolute;
     top: 0px;
     right: 394px;
     width: 120px;
