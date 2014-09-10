@@ -35,7 +35,8 @@ Agora::Application.configure do
   config.assets.compress = false
 
   # Expands the lines which load the assets
-  config.assets.debug = true
+  config.assets.debug = false
+  config.assets.compile = true
 
   # Mailer
   config.action_mailer.delivery_method = :smtp
@@ -51,14 +52,14 @@ Agora::Application.configure do
   config.action_mailer.raise_delivery_errors = true
 
   # Uploader
-  config.paperclip_defaults = {
-    :storage => :s3,
-    :s3_protocol => 'http',
-    :s3_credentials => {
-      :bucket => 'Coursemark',
-      :access_key_id => 'AKIAJUAJULX2PQPERHLA',
-      :secret_access_key => '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'
-    }
-  }
+  # config.paperclip_defaults = {
+  #   :storage => :s3,
+  #   :s3_protocol => 'http',
+  #   :s3_credentials => {
+  #     :bucket => 'Coursemark',
+  #     :access_key_id => 'AKIAJUAJULX2PQPERHLA',
+  #     :secret_access_key => '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'
+  #   }
+  # }
 
 end

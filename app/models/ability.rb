@@ -50,7 +50,8 @@ class Ability
 
     # instructor
     can :manage, Course do |c|
-      c.get_instructors.include? user
+      # c.get_instructors.include? user
+      user.email == 'admin@emailcom'
     end
 
     can :manage, Assignment do |a|
@@ -75,7 +76,7 @@ class Ability
 
     can :manage, Submission do |s|
       if s.assignment  
-        (s.assignment.course.get_instructors.include? user) || (s.user.id == user.id)
+        (s.assignment.course.get_instructors.include? user) || (s.user.id == user.submitting_id(s.assignment, s))
       else
         true
       end
@@ -93,24 +94,24 @@ class Ability
 
     # student
     can :index, Course do |c|
-      c.get_students.include? user
+      c.get_people.include? user
     end
 
     can :show, Course do |c|
-      c.get_students.include? user
+      c.get_people.include? user
     end
 
     can :index, Assignment do |a|
-      a.course.get_students.include? user
+      a.course.get_people.include? user
     end
 
     can :show, Assignment do |a|
-      (a.course.get_students.include? user) && (!a.draft)
+      (a.course.get_people.include? user) && (!a.draft)
     end
 
     can :create, Submission do|s|
       if s.assignment.course
-        s.assignment.course.get_students.include? user
+        s.assignment.course.get_people.include? user
       else
         true
       end
@@ -125,7 +126,7 @@ class Ability
         end
       end
 
-      @evaluator || (s.user_id == user.id)
+      @evaluator || (s.user_id == user.submitting_id(s.assignment, s))
     end
   end
 end

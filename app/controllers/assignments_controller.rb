@@ -16,13 +16,10 @@ class AssignmentsController < ApplicationController
     else  #student
       if urgent = @course.to_do(current_user)[0]   # see if student has a to_do
         @URL = course_assignment_url(@course, urgent[:assignment])
-      elsif  pair = @course.assignments.map{|x| x.draft ? nil :
-          (Time.zone.now < x.review_due) ? { assignment: x, time: x.review_due } :
-              nil }.select{|x| x }.sort_by{|y| y[:time] }[0]
-        @URL = course_assignment_url(@course, pair[:assignment]) # show one with open reviews
+      elsif (any = @course.assignments.select{|a| !a.draft }).length > 0
+        @URL = course_assignment_path(@course, any.sort_by{|a| a.created_at }.last )     #show newest assignment
       else
-        @URL = edit_user_path(current_user, :course => @course.id)     #default is settings page
-
+        @URL = edit_user_path(current_user)     #go to settings page
       end
     end
 
@@ -32,31 +29,42 @@ class AssignmentsController < ApplicationController
     end
   end
 
-  # def switch_names(registration)
-  #   if !registration.active
-  #     user = registration.user
-  #     t = user.first_name
-  #     user.first_name = user.last_name
-  #     user.last_name = t
-  #     user.save!(validate: false)
-  #   end
-  # end
-
   def fix
     registrants = Registration.all.select{|r| params[:course_id].to_i == r.course_id }
     registrants.each do |r|
       rssubs = r.user.submissions.select{|s| s.assignment_id == params[:id].to_i }
-      puts 'user ' + r.user.email + ' has ' + rssubs.length.to_s + ' submissions'
       if rssubs.length > 1
         puts 'Error: ' + r.user.email + ' has multiple submissions:'
+        rssubs.sort_by!{|s| s.created_at }
         rssubs.each{|s| puts '   ' + s.created_at.to_s }
+        rssubs.first(rssubs.length - 1).each{|s|s.destroy }
       end
     end
+
+    # Membership.all.each do |m|
+    #   unless User.find_all_by_id(m.pseudo_user_id).length > 0
+    #     puts 'Destroying membership for ' + m.user.email
+    #     m.destroy
+    #   end
+    # end
+    # Submission.all.each do |s|
+    #   if s.attachment
+    #     puts "Has attachement: " + (s.user ? s.user.email.inspect : '') + ' ' + s.attachment.url
+    #     s.url = s.attachment.url.gsub('/system', 'https://s3.amazonaws.com/Coursemark')
+    #     s.save!
+    #   else
+    #     puts "No attachment: " +  (s.user ? s.user.email.inspect : '')
+    #   end
+    # end
+  end
+
+  def vanilla(s)
+    s.gsub(/[ :]/, '_')
   end
 
 # GET /assignments/1
 
-  # GET /assignments/1.json
+# GET /assignments/1.json
   def show
     @assignment = Assignment.find(params[:id])
     @user = current_user
@@ -80,12 +88,19 @@ class AssignmentsController < ApplicationController
 
     @reviewing_tasks = @assignment.evaluations.forUser(current_user).sort_by{|t| t.created_at}
     @submissions = @assignment.get_submissions(current_user)
-    @submission = @submissions.last
+    @submission = @submissions.sort_by{|s| s.created_at }.last
     unless @submission
       @submission = Submission.new(assignment_id: @assignment.id)
     end
     @questions = @assignment.questions.sort_by{|q| q.created_at }
-    @teams = @user.memberships.select{|m| m.assignment.course_id == @course.id and m.assignment_id == @assignment.id }.map{|m| User.find(m.pseudo_user_id)}
+    @teams = @user.memberships.select{|m| m.assignment.course_id == @course.id and m.assignment_id == @assignment.id }.
+        map{|m| User.find(m.pseudo_user_id)}
+
+    @s3_direct_post = S3_BUCKET.presigned_post(
+        key: vanilla(@course.name) + '/' + @user.submitting_id(@assignment, @submission).to_s + '/' + vanilla(@assignment.name) + '.pdf',
+        success_action_status: 201,
+        acl: :public_read,
+        content_type: 'application/pdf')       # For uploads
 
     respond_to do |format|
       format.html
@@ -130,9 +145,6 @@ class AssignmentsController < ApplicationController
   # GET /assignments/1/edit
   def edit
     @reviewing_tasks = @assignment.evaluations.forUser(current_user).sort_by{|e| e.created_at}
-    unless @assignment.manual_assignment
-      @assignment.reviewers_assigned = true
-    end
   end
 
   # POST /assignments
@@ -177,19 +189,22 @@ class AssignmentsController < ApplicationController
     end
   end
 
+
+
   # PUT /assignments/1
   # PUT /assignments/1.json
   def update
-    if params[:assignment][:attachment]   # The user uploaded a file
-      @user = User.find(params[:assignment][:user_id])
-      puts "Starting STORE PDF for: "  + @user.name + ' ' + @user.email
-      @assignment = Assignment.find(params[:assignment][:assignment_id])
+    if params[:assignment][:url]   # The user uploaded a file
       if params[:assignment][:user_id] == '-1'
         redirect_to :back, flash: {error: "Please select the team you are submitting for."}
         return
       end
-      old_submissions = @assignment.submissions.select{|s| s.user_id == params[:assignment][:user_id].to_i }
+      @user = User.find(params[:assignment][:user_id])
+      @assignment = Assignment.find(params[:assignment][:assignment_id])
       @submission = Submission.new(params['assignment'])
+      @submission[:url] =  @submission[:url].gsub('//s3.amazonaws.com', 'https://s3.amazonaws.com/Coursemark')
+      old_submissions = @assignment.submissions.
+          select{|s| s.user.nil? or s.user.submitting_id(@assignment,@submission) == params[:assignment][:user_id].to_i }
 
       respond_to do |format|
         if @submission.save
@@ -197,7 +212,7 @@ class AssignmentsController < ApplicationController
           format.html { redirect_to :back }
           format.json { head :no_content }
         else
-          format.html { redirect_to :back, flash: {error: combine(@submission.errors.messages[:attachment])} }
+          format.html { redirect_to :back, flash: {error: combine(@submission.errors.messages[:url])} }
           format.json { render json: @assignment.errors, status: :unprocessable_entity }
         end
       end
