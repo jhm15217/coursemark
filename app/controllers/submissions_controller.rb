@@ -1,8 +1,8 @@
 class SubmissionsController < ApplicationController
   before_filter :get_assignment, :get_course
   before_filter :get_evaluations, :only => :show
-  #load_and_authorize_resource :except => [:view]
-  skip_authorization_check :only => [:view, :update]
+  load_and_authorize_resource
+  skip_authorization_check :only => [:update]
 
   # GET /submissions
   # GET /submissions.json
@@ -37,11 +37,6 @@ class SubmissionsController < ApplicationController
         format.html { render :layout => 'no_sidebar' }    # we came here from an instrucor page.
         format.json { render json: @submission }
       end
-    # elsif params[:instructor]
-    #   respond_to do |format|
-    #     format.html { render :view, :layout => 'no_sidebar' }
-    #     format.json { render json: @submission }
-    #   end
     elsif params[:finish]
       if evaluation.is_complete?
         evaluation.finished = true
@@ -77,17 +72,17 @@ class SubmissionsController < ApplicationController
     end
   end
 
-  def view
-    @submission = Submission.where(:submission => params[:id].to_s).first
-    @evaluators = @submission.evaluations.pluck(:user_id)
-
-    if (!current_user.instructor?(@submission.assignment.course) && (current_user.id != @submission.user_id) && (!@evaluators.include?(current_user.id)))
-      raise CanCan::AccessDenied.new("Not authorized!")
-    end
-
-    @filename = 'submission_' + @submission.id.to_s + '.pdf'
-    send_data(@submission.submission.file.read, :filename => @filename, :disposition => 'inline', :type => 'application/pdf')
-  end
+  # def view
+  #   @submission = Submission.where(:submission => params[:id].to_s).first
+  #   @evaluators = @submission.evaluations.pluck(:user_id)
+  #
+  #   if (!current_user.instructor?(@submission.assignment.course) && (current_user.id != @submission.user_id) && (!@evaluators.include?(current_user.id)))
+  #     raise CanCan::AccessDenied.new("Not authorized!")
+  #   end
+  #
+  #   @filename = 'submission_' + @submission.id.to_s + '.pdf'
+  #   send_data(@submission.submission.file.read, :filename => @filename, :disposition => 'inline', :type => 'application/pdf')
+  # end
 
   # GET /submissions/new
   # GET /submissions/new.json
@@ -116,7 +111,7 @@ class SubmissionsController < ApplicationController
         format.html { redirect_to [@course, @submission.assignment] }
         format.json { render json: @submission, status: :created, location: @submission }
       else
-        format.html { redirect_to [@course, @assignment] , flash: {error: combine(@submission.errors.messages[:attachment])} }
+        format.html { redirect_to [@course, @assignment] , flash: {error: combine(@submission.errors.messages[:url])} }
         format.json { render json: @submission.errors, status: :unprocessable_entity }
       end
     end
@@ -131,7 +126,7 @@ class SubmissionsController < ApplicationController
       if @submission.update_attributes(params[:submission])
         format.html { redirect_to :back}
       else
-        format.html { redirect_to [@course, @assignment] , flash: {error: combine(@submission.errors.messages[:attachment])} }
+        format.html { redirect_to [@course, @assignment] , flash: {error: combine(@submission.errors.messages[:url])} }
         format.json { render json: @submission.errors, status: :unprocessable_entity }
       end
     end

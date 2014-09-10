@@ -1,16 +1,19 @@
 <div id="header">
   <h1 class="name">Course Roster</h1>
   <div class="tabs">
-    <div class="tab logout">
+    <div class="tab settings">
       <%= link_to edit_user_path(current_user) do %>
           Settings
       <% end %>
+    </div>
+    <div class="tab logout">
       <%= link_to logout_path do %>
           Sign out
       <% end %>
     </div>
   </div>
 </div>
+
 
 <div id="headerSpacer"></div>
 
@@ -22,6 +25,7 @@
     <th>Name</th>
     <th>Type</th>
     <th>Email</th>
+    <!--<th>&nbsp;</th>-->
     <th>&nbsp;</th>
     <th>&nbsp;</th>
   </tr>
@@ -31,11 +35,13 @@
         <td><%= registration.active ? registration.user.name : "<div style='color:red'>#{registration.user.name}</div>".html_safe %></td>
         <td><%= registration.instructor ? 'Instructor' : registration.user.pseudo ? 'Team' : 'Student' %></td>
         <td><%= registration.user.email %></td>
+<!--
         <td>
           <% unless registration.instructor or registration.user.pseudo %>
               <%= link_to 'Log in as', application_login_student_path(:student => registration.user.id) %>
           <% end %>
         </td>
+-->
         <td><%= unless registration.user.email == 'admin@email.com' then link_to 'Remove', registration, method: :delete,
                                                                                  data: { confirm: 'Are you sure you wish to remove this student from the course?' } end %></td>
         <td>
