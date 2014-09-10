@@ -1,6 +1,6 @@
 class UserSessionsController < ApplicationController
   skip_before_filter :require_login
-#  load_and_authorize_resource except: :login_student
+  load_and_authorize_resource
 
   def new
     #This is the first code executed when the site opens
@@ -29,12 +29,10 @@ class UserSessionsController < ApplicationController
   end
 
   def destroy
-    $PUPPET = nil
     @user_session = UserSession.find
     if @user_session
       @user_session.destroy
     end
-    @current_user_session = nil
     redirect_to root_url
     return
   end

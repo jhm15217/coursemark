@@ -1,7 +1,7 @@
 class SubmissionsController < ApplicationController
   before_filter :get_assignment, :get_course
   before_filter :get_evaluations, :only => :show
-  #load_and_authorize_resource
+  load_and_authorize_resource
   skip_authorization_check :only => [:update]
 
   # GET /submissions

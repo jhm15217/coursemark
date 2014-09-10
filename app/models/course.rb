@@ -31,7 +31,7 @@ class Course < ActiveRecord::Base
         elsif assignment.get_submissions(user)[0].nil?
           to_do_list << {action: :submit, assignment: assignment, time: assignment.submission_due - 2.hours }
         end
-      elsif Time.zone.now <  assignment.review_due and assignment.reviewers_assigned
+      elsif Time.zone.now <  assignment.review_due and assignment.are_reviewers_assigned
         assignment.evaluations.forUser(user).sort_by{|t| t.created_at}.each_with_index do |evaluation, index|
           unless evaluation.finished
             to_do_list << {action: :review, index: index + 1, submission_id: evaluation.submission.id, assignment: assignment,

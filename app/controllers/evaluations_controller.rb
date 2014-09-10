@@ -1,6 +1,6 @@
 class EvaluationsController < ApplicationController
   before_filter :get_assignment, :get_course, :get_submission
-#  load_and_authorize_resource
+  load_and_authorize_resource
 
   # GET /evaluations
   # GET /evaluations.json

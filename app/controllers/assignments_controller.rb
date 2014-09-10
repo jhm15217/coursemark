@@ -16,13 +16,10 @@ class AssignmentsController < ApplicationController
     else  #student
       if urgent = @course.to_do(current_user)[0]   # see if student has a to_do
         @URL = course_assignment_url(@course, urgent[:assignment])
-      elsif  pair = @course.assignments.map{|x| x.draft ? nil :
-          (Time.zone.now < x.review_due) ? { assignment: x, time: x.review_due } :
-              nil }.select{|x| x }.sort_by{|y| y[:time] }[0]
-        @URL = course_assignment_url(@course, pair[:assignment]) # show one with open reviews
+      elsif (any = @course.assignments.select{|a| !a.draft }).length > 0
+        @URL = course_assignment_path(@course, any.sort_by{|a| a.created_at }.last )     #show newest assignment
       else
-        @URL = edit_user_path(current_user, :course => @course.id)     #default is settings page
-
+        @URL = edit_user_path(current_user)     #go to settings page
       end
     end
 
@@ -44,21 +41,21 @@ class AssignmentsController < ApplicationController
       end
     end
 
-  # Membership.all.each do |m|
-  #   unless User.find_all_by_id(m.pseudo_user_id).length > 0
-  #     puts 'Destroying membership for ' + m.user.email
-  #     m.destroy
-  #   end
-  # end
-  # Submission.all.each do |s|
-  #   if s.attachment
-  #     puts "Has attachement: " + (s.user ? s.user.email.inspect : '') + ' ' + s.attachment.url
-  #     s.url = s.attachment.url.gsub('/system', 'https://s3.amazonaws.com/Coursemark')
-  #     s.save!
-  #   else
-  #     puts "No attachment: " +  (s.user ? s.user.email.inspect : '')
-  #   end
-# end
+    # Membership.all.each do |m|
+    #   unless User.find_all_by_id(m.pseudo_user_id).length > 0
+    #     puts 'Destroying membership for ' + m.user.email
+    #     m.destroy
+    #   end
+    # end
+    # Submission.all.each do |s|
+    #   if s.attachment
+    #     puts "Has attachement: " + (s.user ? s.user.email.inspect : '') + ' ' + s.attachment.url
+    #     s.url = s.attachment.url.gsub('/system', 'https://s3.amazonaws.com/Coursemark')
+    #     s.save!
+    #   else
+    #     puts "No attachment: " +  (s.user ? s.user.email.inspect : '')
+    #   end
+    # end
   end
 
   def vanilla(s)
@@ -67,7 +64,7 @@ class AssignmentsController < ApplicationController
 
 # GET /assignments/1
 
-  # GET /assignments/1.json
+# GET /assignments/1.json
   def show
     @assignment = Assignment.find(params[:id])
     @user = current_user
@@ -148,9 +145,6 @@ class AssignmentsController < ApplicationController
   # GET /assignments/1/edit
   def edit
     @reviewing_tasks = @assignment.evaluations.forUser(current_user).sort_by{|e| e.created_at}
-    unless @assignment.manual_assignment
-      @assignment.reviewers_assigned = true
-    end
   end
 
   # POST /assignments

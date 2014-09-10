@@ -26,9 +26,6 @@
 
     </head>
     <body>
-    <%= javascript_include_tag "application" %>
-    <%= yield :javascript_includes %>
-
     <!--[if lt IE 7]>
         <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
     <![endif]-->
@@ -88,7 +85,10 @@
         </div>
 
 
-        <div id="main">
+    <%= javascript_include_tag "application" %>
+    <%= yield :javascript_includes %>
+
+    <div id="main">
           <% flash.each do |key, value| %>
               <%= content_tag(:div, value, class: "alert alert-#{key} center") %>
           <% end %>
