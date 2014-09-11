@@ -71,6 +71,7 @@
                       progressBar.css('width', progress + '%')
                   },
                   start: function (e) {
+                      console.log("Starting Upload")
                       submitButton.prop('disabled', true);
 
                       progressBar.
@@ -97,6 +98,7 @@
                       form.append(input);
                   },
                   fail: function(e, data) {
+                      console.log("Error, Upload Failed: ", e, data)
                       submitButton.prop('disabled', false);
 
                       progressBar.
@@ -104,6 +106,7 @@
                               css('color', 'white').
                               css('border-radius', '6px').
                               css('padding', '5px').
+                              css('width', '100%').
                               text("Failed, try again");
                   }
               });
