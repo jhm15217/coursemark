@@ -41,21 +41,21 @@ class AssignmentsController < ApplicationController
       end
     end
 
-    # Membership.all.each do |m|
-    #   unless User.find_all_by_id(m.pseudo_user_id).length > 0
-    #     puts 'Destroying membership for ' + m.user.email
-    #     m.destroy
-    #   end
-    # end
-    # Submission.all.each do |s|
-    #   if s.attachment
-    #     puts "Has attachement: " + (s.user ? s.user.email.inspect : '') + ' ' + s.attachment.url
-    #     s.url = s.attachment.url.gsub('/system', 'https://s3.amazonaws.com/Coursemark')
-    #     s.save!
-    #   else
-    #     puts "No attachment: " +  (s.user ? s.user.email.inspect : '')
-    #   end
-    # end
+    Membership.all.each do |m|
+      unless User.find_all_by_id(m.pseudo_user_id).length > 0
+        puts 'Destroying membership for ' + m.user.email
+        m.destroy
+      end
+    end
+    Submission.all.each do |s|
+      if s.attachment
+        puts "Has attachement: " + (s.user ? s.user.email.inspect : '') + ' ' + s.attachment.url
+        s.url = s.attachment.url.gsub('/system', 'https://s3.amazonaws.com/Coursemark')
+        s.save!
+      else
+        puts "No attachment: " +  (s.user ? s.user.email.inspect : '')
+      end
+    end
   end
 
   def vanilla(s)
