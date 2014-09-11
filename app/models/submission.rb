@@ -1,6 +1,6 @@
 class Submission < ActiveRecord::Base
   attr_accessible :assignment_id, :attachment, :user_id, :instructor_approved, :url
-  has_attached_file :attachment
+#  has_attached_file :attachment
 
   # Relationships
   belongs_to :user

@@ -85,8 +85,18 @@ class Ability
     can :manage, Response do |r|
       if r.evaluation.user_id == user.id
         true
-      elsif r.evaluation.submission.assignment.course  
-        r.evaluation.submission.assignment.course.get_instructors.include? user  
+      elsif r.evaluation.submission.assignment.course
+        r.evaluation.submission.assignment.course.get_instructors.include? user
+      else
+        true
+      end
+    end
+
+    can :manage, Evaluation do |e|
+      if e.user_id == user.id
+        true
+      elsif e.submission.assignment.course
+        e.submission.assignment.course.get_instructors.include? user
       else
         true
       end
