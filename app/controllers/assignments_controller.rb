@@ -30,32 +30,33 @@ class AssignmentsController < ApplicationController
   end
 
   def fix
-    registrants = Registration.all.select{|r| params[:course_id].to_i == r.course_id }
-    registrants.each do |r|
-      rssubs = r.user.submissions.select{|s| s.assignment_id == params[:id].to_i }
-      if rssubs.length > 1
-        puts 'Error: ' + r.user.email + ' has multiple submissions:'
-        rssubs.sort_by!{|s| s.created_at }
-        rssubs.each{|s| puts '   ' + s.created_at.to_s }
-        rssubs.first(rssubs.length - 1).each{|s|s.destroy }
-      end
-    end
-
-    Membership.all.each do |m|
-      unless User.find_all_by_id(m.pseudo_user_id).length > 0
-        puts 'Destroying membership for ' + m.user.email
-        m.destroy
-      end
-    end
-    Submission.all.each do |s|
-      if s.attachment_file_name
-        puts "Has attachement: " + (s.user ? s.user.email.inspect : '') + ' ' + s.attachment.url
-        s.url = s.attachment.url.gsub('/system', 'https://s3.amazonaws.com/Coursemark')
-        s.save!
-      else
-        puts "No attachment: " +  (s.user ? s.user.email.inspect : '')
-      end
-    end
+    # registrants = Registration.all.select{|r| params[:course_id].to_i == r.course_id }
+    # registrants.each do |r|
+    #   rssubs = r.user.submissions.select{|s| s.assignment_id == params[:id].to_i }
+    #   if rssubs.length > 1
+    #     puts 'Error: ' + r.user.email + ' has multiple submissions:'
+    #     rssubs.sort_by!{|s| s.created_at }
+    #     rssubs.each{|s| puts '   ' + s.created_at.to_s }
+    #     rssubs.first(rssubs.length - 1).each{|s|s.destroy }
+    #   end
+    # end
+    #
+    # Membership.all.each do |m|
+    #   unless User.find_all_by_id(m.pseudo_user_id).length > 0
+    #     puts 'Destroying membership for ' + m.user.email
+    #     m.destroy
+    #   end
+    # end
+    #
+    # Submission.all.each do |s|
+    #   if s.attachment_file_name
+    #     puts "Has attachement: " + (s.user ? s.user.email.inspect : '') + ' ' + s.attachment.url
+    #     s.url = s.attachment.url.gsub('/system', 'https://s3.amazonaws.com/Coursemark')
+    #     s.save!
+    #   else
+    #     puts "No attachment: " +  (s.user ? s.user.email.inspect : '')
+    #   end
+    # end
   end
 
   def vanilla(s)
