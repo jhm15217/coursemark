@@ -5,7 +5,7 @@ module ResponsesHelper
     nested_form_for [@course, @assignment, question, response], :remote => true  do |f|
       (("<div class='peerReviewJustification'>" +
           "<div class='submissionResponseFrom'>Comment #{question.written_response_required ? '(required)' : ''}</div>" +
-          (f.text_area :peer_review, :html => {class: "reviewTextArea fl"}, :required => question.written_response_required) +
+          (f.text_area :peer_review, class: 'submissionTextArea fl', :required => question.written_response_required) +
           "</div>") +
           "<div class='radio_btns'>" +
           (question.scales.sort_by {|s| s.value}.map do |scale|
@@ -15,7 +15,7 @@ module ResponsesHelper
                 "</div>"
           end).reduce(:+) +
           "</div>" +
-          "<br>" +
+          "<br><br>" +
           "<div class='savedStatus'></div>").html_safe
     end
   end
@@ -29,7 +29,7 @@ module ResponsesHelper
          end) +
         "</span>" +
         "<span>" + ' ' + response.scale.description + "</span>" +
-        "<div class='submissionPeerReview'>#{ response.peer_review.blank? ? '' : response.peer_review }</div>"
+        "<div class='submissionPeerReview'>#{ response.peer_review.blank? ? '' : response.peer_review.gsub(/\n/,'<br>').html_safe }</div>"
     ).html_safe
   end
 
@@ -42,14 +42,14 @@ module ResponsesHelper
        "<div class=submissionInstructorResponse' style='margin-top:25px; margin-bottom:-3px;'>" +
            "<div class='submissionResponseFrom'>Instructors' Comments</div>" +
            (nested_form_for [course, assignment, question, response], remote: true do |f|
-             (f.text_area :instructor_response, class: 'submissionTextArea fl')  +
-                 ('<br>' +
-                     '<div class=\'savedStatus\'></div>').html_safe
-           end ) +
+                 (f.text_area :instructor_response, class: 'submissionTextArea fl')  +
+             ('<br><br>' +
+              '<div class=\'savedStatus\'></div>').html_safe
+           end ).html_safe +
            "</div>"
      elsif response.instructor_response
        "<div class='submissionResponseFrom'>Instructors' Comments</div>" +
-           response.instructor_response
+           response.instructor_response.gsub(/\n/,'<br>').html_safe
      else
        ''
      end).html_safe
@@ -65,7 +65,7 @@ module ResponsesHelper
            "<div class='submissionResponseFrom' style='margin-top: 20px;'>Your Rebuttal</div>" +
            (nested_form_for [course, assignment, question, response], remote: true do |f|
              (f.text_area :student_response, class:'submissionTextArea fl') +
-                 ("<br>" +
+                 ("<br><br>" +
                      "<div class='savedStatus'></div>").html_safe
            end) +
            "</div>"
@@ -76,7 +76,7 @@ module ResponsesHelper
                @submitter ? "Your Rebuttal" :
                    "Author's Rebuttal" ) +
            "</div>"  +
-           "<p>#{response.student_response.html_safe.gsub(/\n/,'<br>').html_safe} </p>" +
+           "<p>#{response.student_response.gsub(/\n/,'<br>').html_safe} </p>" +
            "</div>"
      else
        ""

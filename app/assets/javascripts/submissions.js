@@ -58,11 +58,8 @@ function submitForms() {
               $($elem.parent().parent().parent().find('.savedStatus')[0]).html('typing...');
           },
           stop: function (event, $elem) {
-              var existingComment = $($elem).val();
-
-              if (!existingComment) {
-                  $($elem).val(' ');
-              }
+              var tb = $($elem)
+              tb.height(tb.prop('scrollHeight'));
 
               $($elem.parent().parent().parent().find('.savedStatus')[0]).html('saving...');
               $($elem.parent().parent()[0]).trigger('submit.rails');
@@ -76,11 +73,9 @@ function submitForms() {
               $($elem.parent().parent().find('.savedStatus')[0]).html('typing...');
           },
           stop: function (event, $elem) {
-              var existingComment = $($elem).val();
-
-              if (!existingComment) {
-                  $($elem).val(' ');
-              }
+              var tb = $($elem);
+//              tb.height(tb.prop('scrollHeight'));
+              tb.context.rows = tb.context.innerHTML.match(/\n/g).length
 
               $($elem.parent().parent().find('.savedStatus')[0]).html('saving...');
               $($elem.parent()[0]).trigger('submit.rails');
