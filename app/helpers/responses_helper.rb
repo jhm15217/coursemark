@@ -38,21 +38,24 @@ module ResponsesHelper
     submission = response.evaluation.submission
     assignment = submission.assignment
     course = assignment.course
-    (if instructor and Time.zone.now > assignment.submission_due and !submission.instructor_approved
-       "<div class=submissionInstructorResponse' style='margin-top:25px; margin-bottom:-3px;'>" +
-           "<div class='submissionResponseFrom'>Instructors' Comments</div>" +
-           (nested_form_for [course, assignment, question, response], remote: true do |f|
-                 (f.text_area :instructor_response, class: 'submissionTextArea fl')  +
-             ('<br><br>' +
-              '<div class=\'savedStatus\'></div>').html_safe
-           end ).html_safe +
-           "</div>"
-     elsif response.instructor_response
-       "<div class='submissionResponseFrom'>Instructors' Comments</div>" +
-           response.instructor_response.gsub(/\n/,'<br>').html_safe
-     else
-       ''
-     end).html_safe
+    if instructor and Time.zone.now > assignment.submission_due and !submission.instructor_approved
+      ("<div class=submissionInstructorResponse' style='margin-top:25px; margin-bottom:-3px;'>" +
+          "<div class='submissionResponseFrom'>Instructors' Comments</div>" +
+          (nested_form_for [course, assignment, question, response], remote: true do |f|
+            (f.text_area :instructor_response, class: 'submissionTextArea fl', value: response[:instructor_response],
+                         rows: response[:instructor_response].split(/\n/).length + 1,
+                         name: 'text_box',
+                         onfocus: "adjust_focus($get('text_box')")  +
+                ('<br><br>' +
+                    '<div class=\'savedStatus\'></div>').html_safe
+          end ).html_safe +
+        "</div>").html_safe
+    elsif response.instructor_response
+      "<div class='submissionResponseFrom'>Instructors' Comments</div>" +
+          response.instructor_response.gsub(/\n/,'<br>').html_safe
+    else
+      ''
+    end
   end
 
   def student_rebuttal(response, user)
