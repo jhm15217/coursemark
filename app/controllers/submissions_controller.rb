@@ -33,22 +33,22 @@ class SubmissionsController < ApplicationController
     if params[:instructor_approved_toggle]
       @submission.instructor_approved = !@submission.instructor_approved
       @submission.save!
-      respond_to do |format|
-        format.html { render :layout => 'no_sidebar' }    # we came here from an instrucor page.
-        format.json { render json: @submission }
+      if @submission.instructor_approved
+        redirect_to  (course_assignment_path({id: params[:assignment_id]} )) + '/submissions'
+      else
+        respond_to do |format|
+          format.html { render :layout => 'no_sidebar' }
+          format.json { render json: @submission }
+        end
       end
     elsif params[:finish]
       if evaluation.is_complete?
         evaluation.finished = true
         evaluation.save!
-        redirect_to  course_assignment_path ({id: params[:assignment_id]} ) and return
-        respond_to do |format|
-          format.html { render :layout => 'no_sidebar' } # show.html.erb
-          format.json { render json: @submission }
-        end
+        redirect_to  course_assignment_path ({id: params[:assignment_id]} )
       else
         flash[:error] = "You can't publish unless all ratings and required comments have been done."
-        redirect_to :back and return
+        redirect_to :back
       end
     else # it's a student who submitted it or is completing  or seeing a review of someone else
       respond_to do |format|

@@ -9,7 +9,6 @@
   <title>Coursemark</title>
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width">
-  <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
 
   <link rel="stylesheet" href="/css/normalize.min.css">
@@ -31,8 +30,10 @@
   <%= yield %>
 </div>
 
+</body>
 <%= javascript_include_tag "application" %>
 <%= javascript_include_tag "nested_form" %>
 <%= yield :javascript_includes %>
-</body>
+
+
 </html>
