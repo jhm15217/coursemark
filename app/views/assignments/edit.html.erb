@@ -14,7 +14,7 @@
 </div>
 
 <% if @assignment.are_reviewers_assigned  %>
-    <% if (Time.zone.now > @assignment.submission_due)  %>
+    <% if Time.zone.now.between?(@assignment.submission_due, @assignment.review_due)  %>
         <div id="reviewing_tasks">
           <% @reviewing_tasks.each_with_index do |task, index| %>
               <%= link_to course_assignment_submission_path(@course, @assignment, task.submission) do %>
