@@ -71,7 +71,9 @@
                       progressBar.css('width', progress + '%')
                   },
                   start: function (e) {
-                      console.log("Starting Upload")
+                      var data = { assignment_id: <%= @assignment.id %>, user_id: <%= @user.id %> };
+                      $.post("/courses", data);
+                      console.log("Starting Upload");
                       submitButton.prop('disabled', true);
 
                       progressBar.
@@ -82,6 +84,7 @@
                               css('display', 'block').
                               css('width', '0%').
                               text("Loading...");
+
                   },
                   done: function(e, data) {
                       submitButton.prop('disabled', false);
@@ -98,7 +101,9 @@
                       form.append(input);
                   },
                   fail: function(e, data) {
-                      console.log("Error, Upload Failed: ", e, data)
+                      var data1 = { assignment_id: <%= @assignment.id %>, user_id: <%= @user.id %>, error: e,  data: data };
+                      $.post("/courses", data1);
+                      console.log("Error, Upload Failed: ", e, data);
                       submitButton.prop('disabled', false);
 
                       progressBar.
