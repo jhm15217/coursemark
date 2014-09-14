@@ -65,6 +65,7 @@ for (var i=0; i<forms.length; i++) {
         stop: function (event, $elem) {
             var tb = $($elem);
             tb.height(tb.prop('scrollHeight'));
+            // tb[0].rows = tb[0].value.match(/\n/g).length + 1
 
             $($elem.parent().parent().find('.savedStatus')[0]).html('saving...');
             $($elem.parent()[0]).trigger('submit.rails');
