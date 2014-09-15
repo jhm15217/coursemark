@@ -15,6 +15,28 @@ module ResponsesHelper
     response_form(response, :peer_review, response.question.written_response_required )
   end
 
+  def complete_peer_review(response, user)
+    question = response.question
+    nested_form_for [@course, @assignment, question, response], :remote => true  do |f|
+      (("<div class='peerReviewJustification'>" +
+          "<div class='submissionResponseFrom'>Comment #{question.written_response_required ? '(required)' : ''}</div>" +
+          (f.text_area :peer_review, :html => {class: "submissionTextArea fl"}, value: response[:peer_review],
+                       :required => question.written_response_required,
+                       rows: (response[:peer_review] || '').split(/\n/).length) +
+      "</div>") +
+      "<div class='radio_btns'>" +
+      (question.scales.sort_by {|s| s.value}.map do |scale|
+        "<div class='radio_btn'>"  +
+            (f.radio_button :scale_id, scale.id) +
+            (f.label "scale_id_#{scale.id}", "#{scale.value}% - #{scale.description}") +
+        "</div>"
+        end).reduce(:+) +
+      "</div>" +
+          "<br>" +
+          "<div class='savedStatus'></div>").html_safe
+    end
+  end
+
   def see_peer_review(response, index, user)
     ("<span class='submissionResponseFrom'>" +
         (if @user.id == response.evaluation.user.id and @user == current_user
@@ -39,8 +61,8 @@ module ResponsesHelper
           response_form(response, :instructor_response) +
           "</div>").html_safe
     elsif response.instructor_response
-      ("<div class='submissionResponseFrom'>Instructors' Comments</div>" +
-          response.instructor_response.gsub(/\n/,'<br>')).html_safe
+      "<div class='submissionResponseFrom'>Instructors' Comments</div>" +
+          response.instructor_response.gsub(/\n/,'<br>').html_safe
     else
       ''
     end
@@ -54,7 +76,12 @@ module ResponsesHelper
     (if @submitter and !@submission.instructor_approved   # the review is still open
        "<div class='submissionInstructorResponse'>" +
            "<div class='submissionResponseFrom' style='margin-top: 20px;'>Your Rebuttal</div>" +
-           response_form(response, :student_response)  +
+           response_form(response, :student_response)
+       (nested_form_for [course, assignment, question, response], remote: true do |f|
+             (f.text_area :student_response, class:'submissionTextArea fl') +
+                 ("<br><br>" +
+                     "<div class='savedStatus'></div>").html_safe
+           end) +
            "</div>"
      elsif response.student_response  # A rebuttal was made
        "<div class='submissionStudentResponse'>" +
