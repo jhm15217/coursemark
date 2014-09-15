@@ -39,6 +39,7 @@ function adjust_focus(elem) {
 
 for (var i=0; i<forms.length; i++) {
     var textarea = $(forms[i]).find('textarea[class="submissionTextArea fl"]')[0];
+    var textarea2 = $(forms[i]).find('textarea[name="response[peer_review]"]')[0];
 
     // Checkbox change
     var checkbox = $(forms[i]).find('input[name="response[scale_id]"]').parent().parent();
@@ -65,7 +66,19 @@ for (var i=0; i<forms.length; i++) {
         stop: function (event, $elem) {
             var tb = $($elem);
             tb.height(tb.prop('scrollHeight'));
-            // tb[0].rows = tb[0].value.match(/\n/g).length + 1
+
+            $($elem.parent().parent().find('.savedStatus')[0]).html('saving...');
+            $($elem.parent()[0]).trigger('submit.rails');
+        },
+        delay: 1000
+    });
+    $(textarea2).typing({
+        start: function (event, $elem) {
+            $($elem.parent().parent().find('.savedStatus')[0]).html('typing...');
+        },
+        stop: function (event, $elem) {
+            var tb = $($elem);
+            tb.height(tb.prop('scrollHeight'));
 
             $($elem.parent().parent().find('.savedStatus')[0]).html('saving...');
             $($elem.parent()[0]).trigger('submit.rails');
