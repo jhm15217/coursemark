@@ -72,15 +72,10 @@ module ResponsesHelper
     assignment = submission.assignment
     course = assignment.course
     (if @submitter and !@submission.instructor_approved   # the review is still open
-       "<div class='submissionInstructorResponse'>" +
+       ("<div class='submissionInstructorResponse'>" +
            "<div class='submissionResponseFrom' style='margin-top: 20px;'>Your Rebuttal</div>" +
-           response_form(response, :student_response)
-       (nested_form_for [course, assignment, question, response], remote: true do |f|
-             (f.text_area :student_response, class:'submissionTextArea fl') +
-                 ("<br><br>" +
-                     "<div class='savedStatus'></div>").html_safe
-           end) +
-           "</div>"
+           response_form(response, :student_response) +
+           "</div>").html_safe
      elsif response.student_response  # A rebuttal was made
        "<div class='submissionStudentResponse'>" +
            "<div class='submissionResponseFrom' style='margin-top: 30px;'>" +
