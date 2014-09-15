@@ -203,10 +203,12 @@ class AssignmentsController < ApplicationController
       @user = User.find(params[:assignment][:user_id])
       @assignment = Assignment.find(params[:assignment][:assignment_id])
       @submission = Submission.new(params['assignment'])
-      @submission[:url] =  @submission[:url].gsub('//s3.amazonaws.com', 'https://s3.amazonaws.com/Coursemark')
+      if @submission.url.class.name != 'String'
+        puts 'Error, wonky url: ' + @submission.url.inspect + ' for ' + @user.email
+      end
+#      @submission[:url] =  @submission[:url].gsub('//s3.amazonaws.com', 'https://s3.amazonaws.com/Coursemark')
       old_submissions = @assignment.submissions.
           select{|s| s.user.nil? or s.user.submitting_id(@assignment,@submission) == params[:assignment][:user_id].to_i }
-
       respond_to do |format|
         if @submission.save
           old_submissions.each{|s| s.destroy }

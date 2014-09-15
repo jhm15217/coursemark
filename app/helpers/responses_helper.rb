@@ -12,17 +12,15 @@ module ResponsesHelper
   end
 
   def complete_peer_review(response, user)
-    response_form(response, :peer_review, response.question.written_response_required )
-  end
-
-  def complete_peer_review(response, user)
     question = response.question
     nested_form_for [@course, @assignment, question, response], :remote => true  do |f|
-      (("<div class='peerReviewJustification'>" +
+      (("<div class='peerReviewJustification' >" +
           "<div class='submissionResponseFrom'>Comment #{question.written_response_required ? '(required)' : ''}</div>" +
           (f.text_area :peer_review, :html => {class: "submissionTextArea fl"}, value: response[:peer_review],
                        :required => question.written_response_required,
-                       rows: (response[:peer_review] || '').split(/\n/).length) +
+                       overflow: 'auto',
+                       height: 'auto',
+                       rows: '0') +
       "</div>") +
       "<div class='radio_btns'>" +
       (question.scales.sort_by {|s| s.value}.map do |scale|

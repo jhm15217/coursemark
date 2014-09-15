@@ -1493,7 +1493,9 @@ input[type="file"]::-webkit-file-upload-button {
 }
 
 #peer_review textarea {
-    /* height: 90px; */
+    height: auto;
+    width: 100%;
+    overflow: auto;
 }
 
 #peer_review input {
