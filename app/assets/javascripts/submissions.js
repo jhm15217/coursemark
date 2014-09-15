@@ -2,7 +2,7 @@ var forms = document.getElementsByTagName("FORM");
 var form_error = false;
 
 $('form').on('ajax:success', function(event, data, status, xhr) {
-    $($(this).parent().parent().find('.savedStatus')[0]).html('✓ saved');
+    $($(this).parent().find('.savedStatus')[0]).html('✓ saved');
     console.log("Status: ", status);
 });
 
