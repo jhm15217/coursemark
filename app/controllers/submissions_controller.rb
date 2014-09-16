@@ -51,6 +51,7 @@ class SubmissionsController < ApplicationController
         redirect_to :back
       end
     else # it's a student who submitted it or is completing  or seeing a review of someone else
+      @kibitzing = params[:instructor]
       respond_to do |format|
         format.html { render 'show', :layout => 'no_sidebar' } # show.html.erb
         format.json { render json: @submission }
