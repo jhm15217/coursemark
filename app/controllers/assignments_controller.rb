@@ -50,7 +50,7 @@ class AssignmentsController < ApplicationController
     #
     Submission.all.each do |s|
       if s.attachment_file_name
-        puts "Has attachement: " + (s.user ? s.user.email.inspect : '') + ' ' + s.attachment.url
+        puts "Has attachement: " + (s.user ? s.user.email.inspect : '') + ' ' + s.attachment_file_name.inspect  + ' ' + s.url
         # s.url = s.attachment.url.gsub('/system', 'https://s3.amazonaws.com/Coursemark')
         # s.save!
       else
