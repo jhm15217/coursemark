@@ -32,7 +32,8 @@
           </span>
         <% end %>
     <% end %>
-    <% if !@submitter and @user == current_user and (e = @submission.evaluations.forUser(@user)[0]) and !e.finished  and Time.zone.now < @assignment.review_due %>
+    <% if !@submitter and @user == current_user and (e = @submission.evaluations.forUser(@user)[0]) and
+            !@kibitzing and !e.finished  and Time.zone.now < @assignment.review_due %>
         <!-- This user is a reviewer who hasn't finished but has time  -->
         <% @questions.each do |question| %>
             <% if !question.nil? %>
