@@ -48,15 +48,15 @@ class AssignmentsController < ApplicationController
     #   end
     # end
     #
-    # Submission.all.each do |s|
-    #   if s.attachment_file_name
-    #     puts "Has attachement: " + (s.user ? s.user.email.inspect : '') + ' ' + s.attachment.url
-    #     s.url = s.attachment.url.gsub('/system', 'https://s3.amazonaws.com/Coursemark')
-    #     s.save!
-    #   else
-    #     puts "No attachment: " +  (s.user ? s.user.email.inspect : '')
-    #   end
-    # end
+    Submission.all.each do |s|
+      if s.attachment_file_name
+        puts "Has attachement: " + (s.user ? s.user.email.inspect : '') + ' ' + s.attachment.url
+        # s.url = s.attachment.url.gsub('/system', 'https://s3.amazonaws.com/Coursemark')
+        # s.save!
+      else
+        puts "No attachment: " +  (s.user ? s.user.email.inspect : '')
+      end
+    end
   end
 
   def vanilla(s)
