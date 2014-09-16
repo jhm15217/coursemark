@@ -6,7 +6,7 @@ module ResponsesHelper
                    required: required,
                    overflow: 'auto',
                    height: 'auto') +
-      '<div class=\'savedStatus\'></div>'
+      '<div class=\'savedStatus\'></div>'.html_safe
     end ).html_safe
   end
 
@@ -58,8 +58,8 @@ module ResponsesHelper
           response_form(response, :instructor_response) +
           "</div>").html_safe
     elsif response.instructor_response
-      "<div class='submissionResponseFrom'>Instructors' Comments</div>" +
-          response.instructor_response.gsub(/\n/,'<br>').html_safe
+      ("<div class='submissionResponseFrom'>Instructors' Comments</div>" +
+          response.instructor_response.gsub(/\n/,'<br>')).html_safe
     else
       ''
     end
