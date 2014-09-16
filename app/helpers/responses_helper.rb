@@ -4,11 +4,10 @@ module ResponsesHelper
     (nested_form_for [@course, @assignment, response.question, response], remote: true do |f|
       (f.text_area attribute, class: 'submissionTextArea fl', value: response[attribute],
                    required: required,
-                   rows: (response[attribute] || '').split(/\n/).length)  +
-          ('<br><br>' +
-              '<div class=\'savedStatus\'></div>').html_safe
+                   overflow: 'auto',
+                   height: 'auto') +
+      '<div class=\'savedStatus\'></div>'
     end ).html_safe
-
   end
 
   def complete_peer_review(response, user)
@@ -16,11 +15,11 @@ module ResponsesHelper
     nested_form_for [@course, @assignment, question, response], :remote => true  do |f|
       (("<div class='peerReviewJustification' >" +
           "<div class='submissionResponseFrom'>Comment #{question.written_response_required ? '(required)' : ''}</div>" +
-          (f.text_area :peer_review, :html => {class: "submissionTextArea fl"}, value: response[:peer_review],
-                       :required => question.written_response_required,
-                       overflow: 'auto',
-                       height: 'auto',
-                       rows: '0') +
+      "<textarea onKeyUp='textAreaAdjust(this);' style='overflow:hidden' html='{:class=>&quot;submissionTextArea fl&quot;}' id='response_peer_review' name='response[peer_review]' overflow='auto' >#{response.peer_review}</textarea>" +
+          # (f.text_area :peer_review, :html => {class: "submissionTextArea fl"}, value: response[:peer_review],
+          #              :required => question.written_response_required,
+          #              overflow: 'auto',
+          #              height: 'auto') +
       "</div>") +
       "<div class='radio_btns'>" +
       (question.scales.sort_by {|s| s.value}.map do |scale|

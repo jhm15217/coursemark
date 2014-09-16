@@ -20,7 +20,7 @@
 <% end %>
 
 <div id='submissionsWrapper'>
-  <div id='submissionBoxesWrapper'>
+  <div id='submissionBoxesWrapper'  >
     <% if instructor %>
         <% if Time.zone.now > @assignment.review_due %>
             <a href='<%= "/courses/#{@course.id}/assignments/#{@assignment.id}/submissions/#{@submission.id}?instructor_approved_toggle=true" %>' >
