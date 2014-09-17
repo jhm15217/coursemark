@@ -1001,6 +1001,11 @@ input[type="file"]::-webkit-file-upload-button {
     text-transform: uppercase;
     margin-top: 10px;
     opacity: 0.6;
+    display: block;
+    height: 25px;
+    width: 150px;
+    line-height: 25px;
+    overflow: hidden;
 }
 
 .alert {
