@@ -8,7 +8,6 @@ class Ability
     can :create, UserSession 
 
     can :new, Course
-    can :create, Course
 
     can :new, User
     can :create, User
@@ -48,11 +47,21 @@ class Ability
       end
     end
 
-    # instructor
-    can :manage, Course do |c|
-      # c.get_instructors.include? user
+    # administrator
+
+    can :create, Course do |c|
       user.email == 'admin@emailcom'
     end
+
+    can :manage, Course do |c|
+      user.email == 'admin@emailcom'
+    end
+
+    can :destroy, Course do |c|
+      user.email == 'admin@emailcom'
+    end
+
+    #instructors
 
     can :manage, Assignment do |a|
       if a.course
