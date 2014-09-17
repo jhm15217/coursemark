@@ -26,7 +26,7 @@
             <a href='<%= "/courses/#{@course.id}/assignments/#{@assignment.id}/submissions/#{@submission.id}?instructor_approved_toggle=true" %>' >
               <div class='button fl' style='margin-right: 20px;'><%= @submission.instructor_approved ? 'Reopen Review' : 'End Review'%></div>  </a>
         <% end %>
-        <% if g = @submission.grade %>
+        <% if !@kibitzing and g = @submission.grade %>
           <span class='submissionGradeBox'>
             <span class='grade'> Average <%= prettifyFloat(g).to_s + '%' %></span>
           </span>
