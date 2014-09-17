@@ -1,5 +1,7 @@
 class AssignmentsController < ApplicationController
   require 'csv'
+  require 'open-uri'
+
   before_filter :get_course
   load_and_authorize_resource :except => [:new, :create, :update]
   skip_authorization_check :only => [:new, :create]
@@ -48,14 +50,23 @@ class AssignmentsController < ApplicationController
     #   end
     # end
     #
-    Submission.all.each do |s|
-      if s.attachment_file_name
-        puts "Has attachement: " + (s.user ? s.user.email.inspect : '') + ' ' + s.attachment_file_name.inspect  + ' ' + s.url
-        # s.url = s.attachment.url.gsub('/system', 'https://s3.amazonaws.com/Coursemark')
-        # s.save!
-      else
-        puts "No attachment: " +  (s.user ? s.user.email.inspect : '')
+    # Submission.all.each do |s|
+    #   if s.attachment_file_name
+    #     puts "Has attachement: " + (s.user ? s.user.email.inspect : '') + ' ' + s.attachment_file_name.inspect  + ' ' + s.url
+    #     s.url = s.attachment.url.gsub('/system', 'https://s3.amazonaws.com/Coursemark')
+    #     s.save!
+    #   else
+    #     puts "No attachment: " +  (s.user ? s.user.email.inspect : '')
+    #   end
+    # end
+    @assignment.submissions.each do  |s|
+      begin
+        open(s.url)
+          puts 'OK: ' + s.url
+      rescue
+        puts 'Error, missing: ' + s.url + ' User: ' + s.user.name
       end
+
     end
   end
 
