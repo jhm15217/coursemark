@@ -42,7 +42,7 @@
           <% end %>
         </td>
 -->
-        <td><%= unless registration.user.email == 'admin@email.com' then link_to 'Remove', registration, method: :delete } end %></td>
+        <td><%= unless registration.user.email == 'admin@email.com' then link_to 'Remove', registration, method: :delete  end %></td>
         <td>
           <% if !registration.instructor %>
               <%= link_to 'Add to Course Staff', registrations_add_to_course_staff_path(:registration => registration.id), data: { confirm: 'Are you sure you wish to add this user to the course staff?' } %>
