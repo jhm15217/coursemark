@@ -1291,8 +1291,6 @@ input[type="file"]::-webkit-file-upload-button {
 
 .submissionTextArea, .reviewTextArea {
   width: 100%;
-  /* max-width: 100%; */
-  /* height: 32px; */
   border: 1px solid #DFDFDF;
   border-radius: 6px;
   margin: 0 auto
@@ -1355,6 +1353,7 @@ input[type="file"]::-webkit-file-upload-button {
 .peerReviewJustification {
     margin-bottom: 11px;
     word-wrap: break-word;
+    width: 100%
 }
 
 #submitFormsButton {
@@ -1362,10 +1361,6 @@ input[type="file"]::-webkit-file-upload-button {
     margin-top:50px;
 }
 
-.peerReviewJustification {
-  display:inline-block;
-  width: 100%;
-}
 
 .assignment_details {
     float: left;

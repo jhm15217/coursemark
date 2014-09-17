@@ -1,12 +1,17 @@
 module ResponsesHelper
 
+  def smart_textbox(name, content = '', required = nil)
+    "<textarea onKeyUp='textAreaAdjust(this);' style='overflow:hidden' html='{:class=>&quot;submissionTextArea fl&quot;}' " +
+    "rows='#{(content || '').split(/\n/).length + 1}'" +
+    "class='submissionTextArea fl' id='response_#{name}' name='response[#{name}]' overflow='auto' >#{content}</textarea>"
+  end
+
   def complete_peer_review(response, user)
     question = response.question
     nested_form_for [@course, @assignment, question, response], :remote => true  do |f|
       (("<div class='peerReviewJustification' >" +
           "<div class='submissionResponseFrom'>Comment #{question.written_response_required ? '(required)' : ''}</div>" +
-          "<textarea onKeyUp='textAreaAdjust(this);' style='overflow:hidden' html='{:class=>&quot;submissionTextArea fl&quot;}' " +
-          "class='submissionTextArea fl' id='response_peer_review' name='response[peer_review]' overflow='auto' >#{response.peer_review}</textarea>" +
+          smart_textbox('peer_review', response.peer_review, response.question.written_response_required) +
           "</div>") +
           "<div class='radio_btns'>" +
           (question.scales.sort_by {|s| s.value}.map do |scale|
@@ -40,14 +45,15 @@ module ResponsesHelper
     assignment = submission.assignment
     course = assignment.course
     if instructor and Time.zone.now > assignment.submission_due and !submission.instructor_approved
-      ("<div class=submissionInstructorResponse' style='margin-top:25px; margin-bottom:-3px;'>" +
-          "<div class='submissionResponseFrom'>Instructors' Comments</div>" +
-          (nested_form_for [@course, @assignment, response.question, response], remote: true do |f|
-            ("<textarea onKeyUp='textAreaAdjust(this);' style='overflow:hidden' html='{:class=>&quot;submissionTextArea fl&quot;}' " +
-                "class='submissionTextArea fl' id='response_instructor_response' name='response[instructor_response]' overflow='auto' >#{response.instructor_response}</textarea>").html_safe +
-                '<div class=\'savedStatus\'></div>'.html_safe
-          end ).html_safe  +
-      "</div>").html_safe
+        nested_form_for [@course, @assignment, response.question, response], remote: true do |f|
+            ("<div class='peerReviewJustification'>" +
+               "<div class='submissionResponseFrom'>Instructors' Comments</div>" +
+                smart_textbox('instructor_response', response.instructor_response) +
+               "</div>" +
+               "<br>" +
+               '<div class=\'savedStatus\'></div>' +
+              "</div>").html_safe
+        end
     elsif response.instructor_response
       ("<div class='submissionResponseFrom'>Instructors' Comments</div>" +
           response.instructor_response.gsub(/\n/,'<br>')).html_safe
@@ -62,11 +68,10 @@ module ResponsesHelper
     assignment = submission.assignment
     course = assignment.course
     (if @submitter and !@submission.instructor_approved   # the review is still open
-       ("<div class='submissionInstructorResponse'>" +
+       ("<div class='submissiontStudentResponse'>" +
            "<div class='submissionResponseFrom' style='margin-top: 20px;'>Your Rebuttal</div>" +
            (nested_form_for [@course, @assignment, response.question, response], remote: true do |f|
-             ("<textarea onKeyUp='textAreaAdjust(this);' style='overflow:hidden' html='{:class=>&quot;submissionTextArea fl&quot;}' " +
-                 "class='submissionTextArea fl' id='response_student_response' name='response[student_response]' overflow='auto' >#{response.student_response}</textarea>").html_safe +
+             (smart_textbox('student_response',response.student_response)).html_safe +
                  '<div class=\'savedStatus\'></div>'.html_safe
            end ).html_safe  +
            "</div>").html_safe
