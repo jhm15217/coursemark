@@ -1165,6 +1165,20 @@ input[type="file"]::-webkit-file-upload-button {
     margin-top: 30px;
 }
 
+th a.current {
+    padding-right: 20px;
+    background-repeat: no-repeat;
+    background-position: right center;
+}
+
+th a.current.asc {
+    background-image: url(images/up_arrow.gif);
+    /* padding-left: 20px; */
+}
+
+th a.current.desc {
+    background-image: url(images/down_arrow.gif);
+}
 #submissionHeader {
     position: fixed;
     width: 100%;
@@ -1255,6 +1269,8 @@ input[type="file"]::-webkit-file-upload-button {
   border-radius: 6px;
   margin-top: 20px;
   border: 1px solid #DFDFDF;
+  /* height: initial; */
+  /* overflow: auto; */
 }
 
 .submissionGradeBox {
@@ -1513,7 +1529,7 @@ input[type="file"]::-webkit-file-upload-button {
 }
 
 #reviewing_tasks {
-    margin-top: 20px;
+    margin-top: 40px;
     margin-right: 20px;
 }
 
@@ -1526,6 +1542,7 @@ input[type="file"]::-webkit-file-upload-button {
     border: 1px solid #DFDFDF;
     margin-right: 21px;
     margin-bottom: 20px;
+    margin-top: 25px;
 }
 
 .reviewing_task.highlighted {

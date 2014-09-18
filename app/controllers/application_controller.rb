@@ -79,7 +79,7 @@ class ApplicationController < ActionController::Base
 
 
   def compare_users(a,b)
-    !iff(a.pseudo,b.pseudo) ? (a.pseudo ? -1 : 1) :
+    a.pseudo != b.pseudo ? (a.pseudo ? -1 : 1) :
         a.last_name != b.last_name ? a.last_name <=> b.last_name :
             a.first_name != b.first_name ? a.first_name <=> b.first_name :
                 0

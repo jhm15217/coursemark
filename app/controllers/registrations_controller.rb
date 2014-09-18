@@ -81,12 +81,9 @@ class RegistrationsController < ApplicationController
     redirect_to :back
   end
 
-  def invite_student(row)
+  def invite_student(row)     #First Name,Last Name,Email,Section(optional)
     if user = User.find_by_email(row[2].downcase)
-      unless @course.get_students.any?{|s| s.id == user.id }
-        @course.register(user)
-        UserMailer.registration_email(user, @course).deliver
-      end
+      @course.register(user, row[3])
     else
       password = SecureRandom.hex(4)
       user = User.new({first_name: row[0], last_name: row[1], email:row[2], password: password, password_confirmation: password})

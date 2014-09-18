@@ -11,8 +11,14 @@ class Course < ActiveRecord::Base
   scope :students, -> {joins(:users).where("instructor = 'f'")}
   scope :instructors, -> {joins(:users).where("instructor = 't'")}
 
-  def register(user)
-    Registration.new({active: false, instructor: false, course_code: self.course_code, user_id: user.id, course_id: self.id}).save!
+  def register(user, section = nil)
+    if r = registrations.select{ |r| r.user_id == user.id }[0]
+      r.section = section || r.section
+      r.save!
+    else
+      Registration.new({active: false, instructor: false, course_code: course_code, user_id: user.id, course_id: self.id, section: section}).save!
+      UserMailer.registration_email(user, self).deliver
+    end
   end
 
   def to_do(user)

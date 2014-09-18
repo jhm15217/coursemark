@@ -60,7 +60,7 @@ class MembershipsController < ApplicationController
     end
   end
 
-  def add_teammate(row)
+  def add_teammate(row)     # first_name,last_name,email,first_teamname,last_teamname,
     student = User.find_all_by_email(row[2])[0]
     if !student  or !@course.get_students.any?{|s| s.id == student.id }
       if flash[:error]
@@ -79,8 +79,8 @@ class MembershipsController < ApplicationController
       else
         pseudo_user = User.new(first_name: row[3], last_name: row[4], email: row[3] + row[4] + '@team.edu',  pseudo: true)
         pseudo_user.save!(validate: false)
-        register_pseudo_user(@course.id, pseudo_user)
       end
+      register_pseudo_user(@course.id, pseudo_user, student)
       Membership.new(team:pseudo_user.name, user_id: student.id, assignment_id: @assignment.id, pseudo_user_id: pseudo_user.id).save!
     end
 
@@ -114,20 +114,14 @@ class MembershipsController < ApplicationController
       format.json { head :no_content }
     end
   end
-
   private
 
-  def register_pseudo_user(course_id,user)
-    registration = Registration.new()
-    registration.active = true
-    registration.instructor = false
-    registration.course_id = course_id
-    registration.user = user
-    # Throw an error if the user is already registered.
-    if (Registration.where(:user_id => user.id).length > 0)
-      raise ExistingRegistration
+  def register_pseudo_user(course_id, pseudo_user, student)
+    unless Registration.where(user_id:  pseudo_user.id, course_id: course_id).length > 0
+      registration = Registration.new(active: true, instructor: false, course_id: course_id, user_id: pseudo_user.id,
+                                      section: student.registration_in(Course.find(course_id)).section)
+      registration.save!
     end
-    registration.save!
   end
 
 

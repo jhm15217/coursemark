@@ -1165,6 +1165,19 @@ input[type="file"]::-webkit-file-upload-button {
     margin-top: 30px;
 }
 
+th a.current {
+    padding-right: 20px;
+    background-repeat: no-repeat;
+    background-position: right center;
+}
+
+th a.current.asc {
+    background-image: url(images/up_arrow.gif);
+}
+
+th a.current.desc {
+    background-image: url(images/down_arrow.gif);
+}
 #submissionHeader {
     position: fixed;
     width: 100%;
