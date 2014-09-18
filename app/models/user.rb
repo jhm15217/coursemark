@@ -67,6 +67,10 @@ class User < ActiveRecord::Base
     self.id
   end
 
+  def registration_in(course)
+    registrations.select{|r| r.user_id == self.id }[0]
+  end
+
 
   # Active Record Callbacks
   before_save { |user|

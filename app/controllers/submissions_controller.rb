@@ -3,6 +3,7 @@ class SubmissionsController < ApplicationController
   before_filter :get_evaluations, :only => :show
   load_and_authorize_resource
   skip_authorization_check :only => [:update]
+  helper_method :sort_column, :sort_direction, :key
 
   # GET /submissions
   # GET /submissions.json
@@ -11,9 +12,11 @@ class SubmissionsController < ApplicationController
       raise CanCan::AccessDenied.new("Not authorized!")
     end
 
-    @submissions = @assignment.submissions
-    @students =  sorted(@assignment.get_participants_in_assignment)  # @assignment version culls pseudo_users not used in this assignment
-
+    @submissions= @assignment.submissions
+    @students =  @assignment.get_participants_in_assignment.sort do |a,b|
+      result = sort_column == 'Name' ? compare_users(a,b) : key(a) <=> key(b)
+      sort_direction == 'desc' ? - result : result
+    end
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @submissions }
@@ -158,6 +161,34 @@ class SubmissionsController < ApplicationController
 
   def get_evaluations
     @evaluations = Evaluation.where(submission_id: params[:id])
+  end
+
+  private
+
+  def sort_column
+    params[:sort]
+  end
+
+  def sort_direction
+    %w[asc desc].include?(params[:direction]) ? params[:direction] : "asc"
+  end
+
+  def key(user)
+    if sort_column == 'Email'
+      user.email
+    elsif sort_column == "Section"
+      user.registration_in(@course).section || ""
+    elsif sort_column == 'Submitted'
+      result = Time.zone.now
+      @submissions.each{ |s| if s.user_id == user.id then result =  s.created_at; break end }
+      result
+    elsif sort_column == 'Grade'
+      result = 0
+      @submissions.each{ |s| if s.user_id == user.id and (g = s.grade) then result = g; break end }
+      result
+    else
+      user.last_name
+    end
   end
 
 end

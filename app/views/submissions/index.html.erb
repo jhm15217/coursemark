@@ -1,12 +1,14 @@
 <%= render "assignments/header" %>
 
 <table class="submissions">
+
   <tr>
-    <th>Name</th>
-    <th>Email</th>
-    <th>Submitted</th>
+    <th><%= sortable "Name" %></th>
+    <th><%= sortable "Email" %></th>
+    <th><%= sortable "Section" %></th>
+    <th><%= sortable "Submitted" %></th>
     <th>Reviews Received</th>
-    <th>Grade</th>
+    <th><%= sortable "Grade" %></th>
     <th>Reviews Given</th>
 
   </tr>
@@ -15,6 +17,7 @@
       <tr>
         <td><%= student.name %></td>
         <td><%= student.email %></td>
+        <td><%= student.registration_in(@course).section %></td>
         <% if submission %>
             <td>
               <%= submission.created_at.to_s(:pretty) %>

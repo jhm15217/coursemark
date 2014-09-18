@@ -7,6 +7,7 @@ class AssignmentsController < ApplicationController
   # GET /assignments
   # GET /assignments.json
   def index
+    @assignments = Assignment.all
     if current_user.instructor?(@course)
       if @assignment = @course.assignments.last
         @URL = course_assignment_url(@course, @assignment)
@@ -43,14 +44,14 @@ class AssignmentsController < ApplicationController
     #
     # Membership.all.each do |m|
     #   unless User.find_all_by_id(m.pseudo_user_id).length > 0
-    #     puts 'Destroying membership for ' + m.user.email
+    #     puts 'Error: Destroying membership for ' + m.user.email
     #     m.destroy
     #   end
     # end
     #
     # Submission.all.each do |s|
-    #   if s.attachment_file_name
-    #     puts "Has attachement: " + (s.user ? s.user.email.inspect : '') + ' ' + s.attachment.url
+    #   if !s.url and s.attachment_file_name
+    #     puts "Error: No url: " + (s.user ? s.user.email.inspect : '') + ' ' + s.attachment.url
     #     s.url = s.attachment.url.gsub('/system', 'https://s3.amazonaws.com/Coursemark')
     #     s.save!
     #   else

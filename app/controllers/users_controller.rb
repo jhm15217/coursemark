@@ -72,7 +72,6 @@ class UsersController < ApplicationController
           # Tell the UserMailer to send a welcome Email after save
           flash[:success] = "Welcome to Coursemark."
           UserMailer.welcome_email_walk_on(@user).deliver
-          # UserMailer.delay.welcome_email(@user)
           format.html { redirect_to(email_confirmation_path(id: @user.id)) }
         end
       else
@@ -124,7 +123,7 @@ class UsersController < ApplicationController
   # POST
   def resend_confirm_email
     @user = User.find(params[:id])
-    UserMailer.welcome_email(@user).deliver
+    UserMailer.welcome_email_walk_on(@user).deliver
     redirect_to email_confirmation_path(id: @user.id)
   end
 
