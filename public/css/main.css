@@ -409,7 +409,7 @@ textarea {
     width: 120px;
     height: 60px;
     padding-left: 35px;
-    padding-top: 24px;
+    padding-top: 10px;
     line-height: 26px;
     border-left: 1px solid #DFDFDF;
 }
@@ -1001,6 +1001,11 @@ input[type="file"]::-webkit-file-upload-button {
     text-transform: uppercase;
     margin-top: 10px;
     opacity: 0.6;
+    display: block;
+    height: 25px;
+    width: 150px;
+    line-height: 25px;
+    overflow: hidden;
 }
 
 .alert {
@@ -1304,8 +1309,6 @@ th a.current.desc {
 
 .submissionTextArea, .reviewTextArea {
   width: 100%;
-  /* max-width: 100%; */
-  /* height: 32px; */
   border: 1px solid #DFDFDF;
   border-radius: 6px;
   margin: 0 auto
@@ -1368,6 +1371,7 @@ th a.current.desc {
 .peerReviewJustification {
     margin-bottom: 11px;
     word-wrap: break-word;
+    width: 100%
 }
 
 #submitFormsButton {
@@ -1375,10 +1379,6 @@ th a.current.desc {
     margin-top:50px;
 }
 
-.peerReviewJustification {
-  display:inline-block;
-  width: 100%;
-}
 
 .assignment_details {
     float: left;
@@ -1506,7 +1506,9 @@ th a.current.desc {
 }
 
 #peer_review textarea {
-    /* height: 90px; */
+    height: auto;
+    width: 100%;
+    overflow: auto;
 }
 
 #peer_review input {

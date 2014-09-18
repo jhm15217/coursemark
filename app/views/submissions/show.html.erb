@@ -20,19 +20,20 @@
 <% end %>
 
 <div id='submissionsWrapper'>
-  <div id='submissionBoxesWrapper'>
+  <div id='submissionBoxesWrapper'  >
     <% if instructor %>
         <% if Time.zone.now > @assignment.review_due %>
             <a href='<%= "/courses/#{@course.id}/assignments/#{@assignment.id}/submissions/#{@submission.id}?instructor_approved_toggle=true" %>' >
               <div class='button fl' style='margin-right: 20px;'><%= @submission.instructor_approved ? 'Reopen Review' : 'End Review'%></div>  </a>
         <% end %>
-        <% if g = @submission.grade %>
+        <% if !@kibitzing and g = @submission.grade %>
           <span class='submissionGradeBox'>
             <span class='grade'> Average <%= prettifyFloat(g).to_s + '%' %></span>
           </span>
         <% end %>
     <% end %>
-    <% if !@submitter and @user == current_user and (e = @submission.evaluations.forUser(@user)[0]) and !e.finished  and Time.zone.now < @assignment.review_due %>
+    <% if !@submitter and @user == current_user and (e = @submission.evaluations.forUser(@user)[0]) and
+            !@kibitzing and !e.finished  and Time.zone.now < @assignment.review_due %>
         <!-- This user is a reviewer who hasn't finished but has time  -->
         <% @questions.each do |question| %>
             <% if !question.nil? %>
