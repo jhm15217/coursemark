@@ -68,7 +68,7 @@ class User < ActiveRecord::Base
   end
 
   def registration_in(course)
-    registrations.select{|r| r.user_id == self.id }[0]
+    registrations.select{|r| r.user_id == self.id and course.id == r.course_id }[0]
   end
 
 

@@ -94,7 +94,7 @@
 
                       // extract key and generate URL from response
                       var key   = $(data.jqXHR.responseXML).find("Key").text();
-                      var url   = '//<%= @s3_direct_post.url.host %>/' + key;
+                      var url   = '//<%= @s3_direct_post.url.host %>/Coursemark/' + key;
 
                       // create hidden field
                       var input = $("<input />", { type:'hidden', name: fileInput.attr('name'), value: url })

@@ -1,5 +1,7 @@
 class AssignmentsController < ApplicationController
   require 'csv'
+  require 'open-uri'
+
   before_filter :get_course
   load_and_authorize_resource :except => [:new, :create, :update]
   skip_authorization_check :only => [:new, :create]
@@ -31,6 +33,14 @@ class AssignmentsController < ApplicationController
   end
 
   def fix
+    @assignment.memberships.each do |m|
+      user_registration = @course.registrations.select{|r| r.user_id == m.user_id}[0]
+      team_registration = @course.registrations.select{|r| r.user_id == m.pseudo_user_id}[0]
+      team_registration.section = user_registration.section
+      puts "reg: " + user_registration.inspect
+      team_registration.save!
+      end
+
     # registrants = Registration.all.select{|r| params[:course_id].to_i == r.course_id }
     # registrants.each do |r|
     #   rssubs = r.user.submissions.select{|s| s.assignment_id == params[:id].to_i }
@@ -57,6 +67,16 @@ class AssignmentsController < ApplicationController
     #   else
     #     puts "No attachment: " +  (s.user ? s.user.email.inspect : '')
     #   end
+    # end
+
+    # @assignment.submissions.each do  |s|
+    #   begin
+    #     open(s.url)
+    #       puts 'OK: ' + s.url
+    #   rescue
+    #     puts 'Error, missing: ' + s.url + ' User: ' + s.user.name
+    #   end
+    #
     # end
   end
 
@@ -204,10 +224,12 @@ class AssignmentsController < ApplicationController
       @user = User.find(params[:assignment][:user_id])
       @assignment = Assignment.find(params[:assignment][:assignment_id])
       @submission = Submission.new(params['assignment'])
-      @submission[:url] =  @submission[:url].gsub('//s3.amazonaws.com', 'https://s3.amazonaws.com/Coursemark')
+      if @submission.url.class.name != 'String'
+        puts 'Error, wonky url: ' + @submission.url.inspect + ' for ' + @user.email
+      end
+#      @submission[:url] =  @submission[:url].gsub('//s3.amazonaws.com', 'https://s3.amazonaws.com/Coursemark')
       old_submissions = @assignment.submissions.
           select{|s| s.user.nil? or s.user.submitting_id(@assignment,@submission) == params[:assignment][:user_id].to_i }
-
       respond_to do |format|
         if @submission.save
           old_submissions.each{|s| s.destroy }

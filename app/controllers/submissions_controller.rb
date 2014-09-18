@@ -12,6 +12,7 @@ class SubmissionsController < ApplicationController
       raise CanCan::AccessDenied.new("Not authorized!")
     end
 
+    @course = Course.find(@assignment.course_id)
     @submissions= @assignment.submissions
     @students =  @assignment.get_participants_in_assignment.sort do |a,b|
       result = sort_column == 'Name' ? compare_users(a,b) : key(a) <=> key(b)
@@ -54,6 +55,7 @@ class SubmissionsController < ApplicationController
         redirect_to :back
       end
     else # it's a student who submitted it or is completing  or seeing a review of someone else
+      @kibitzing = params[:instructor]
       respond_to do |format|
         format.html { render 'show', :layout => 'no_sidebar' } # show.html.erb
         format.json { render json: @submission }
@@ -174,21 +176,21 @@ class SubmissionsController < ApplicationController
   end
 
   def key(user)
-    if sort_column == 'Email'
-      user.email
-    elsif sort_column == "Section"
-      user.registration_in(@course).section || ""
-    elsif sort_column == 'Submitted'
-      result = Time.zone.now
-      @submissions.each{ |s| if s.user_id == user.id then result =  s.created_at; break end }
-      result
-    elsif sort_column == 'Grade'
-      result = 0
-      @submissions.each{ |s| if s.user_id == user.id and (g = s.grade) then result = g; break end }
-      result
-    else
-      user.last_name
-    end
+    (if sort_column == 'Email'
+       user.email
+     elsif sort_column == "Section"
+       (user.registration_in(@course).section || "") + (user.pseudo ? '0' : '1')
+     elsif sort_column == 'Submitted'
+       result = Time.zone.now
+       @submissions.each{ |s| if s.user_id == user.id then result =  s.created_at; break end }
+       result.strftime('%y%m%d%H%M%S')
+     elsif sort_column == 'Grade'
+       result = 0
+       @submissions.each{ |s| if s.user_id == user.id and (g = s.grade) then result = g; break end }
+       result.to_s
+     else
+       ''
+     end) + user.last_name  + ' ' + user.first_name
   end
 
 end
