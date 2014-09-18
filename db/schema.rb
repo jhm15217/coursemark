@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140914163834) do
+ActiveRecord::Schema.define(:version => 20140918142924) do
 
   create_table "assignments", :force => true do |t|
     t.datetime "submission_due"
@@ -134,6 +134,7 @@ ActiveRecord::Schema.define(:version => 20140914163834) do
     t.string   "confirmation_token"
     t.datetime "password_reset_sent_at"
     t.boolean  "pseudo"
+    t.string   "sort_key"
   end
 
 end

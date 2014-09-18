@@ -14,8 +14,13 @@ class SubmissionsController < ApplicationController
 
     @course = Course.find(@assignment.course_id)
     @submissions= @assignment.submissions
-    @students =  @assignment.get_participants_in_assignment.sort do |a,b|
-      result = sort_column == 'Name' ? compare_users(a,b) : key(a) <=> key(b)
+    @students =  @assignment.get_participants_in_assignment
+    @students.each do |s|
+      s.sort_key = key(s)
+      s.save!(validate: false)
+    end
+    @students.sort! do |a,b|
+      result = sort_column == 'Name' ? compare_users(a,b) : a.sort_key <=> b.sort_key
       sort_direction == 'desc' ? - result : result
     end
     respond_to do |format|
