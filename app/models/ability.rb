@@ -2,7 +2,7 @@ class Ability
   include CanCan::Ability
 
   def initialize(user)
- 
+    user ||= User.new  # powerless user
     # universal
     can :destroy, UserSession
     can :create, UserSession 
