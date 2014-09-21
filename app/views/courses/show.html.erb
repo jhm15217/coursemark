@@ -1,10 +1,34 @@
+<%= render "header" %>
+
 <p id="notice"><%= notice %></p>
 
-<p>
-  <b>Name:</b>
-  <%= @course.name %>
-</p>
+<% if !@assignments %>
+    No Assignments Yet
+<% else %>
+    <% @assignments.each do |assignment| %>
+        <a href="/courses/<%= @course.id %>/assignments/<%= assignment.id %>"><h3><%= assignment.name %></h3></a>
+        <% assignment.to_do(current_user).each do |task| %>
+            <div class="toDoUl" style="margin-left:10px">
+              <% hours_remain = ((task[:time] - Time.zone.now) / 1.hour).round %>
+              <% remaining =  ' (' +
+                      (hours_remain.abs < 25 ? hours_remain.to_s + ' hours ' :
+                              (hours_remain/24).to_s + ' days ') +
+                      'left)' %>
+              <% if task[:action] == :submit %>
+                  <a href="/courses/<%= @course.id %>/assignments/<%= assignment.id %>" >
+                    <div class='a_name'>Submit <%= assignment.name + (task[:team] ? ' for ' + task[:team] : '') %> by
+                      <%= task[:time].strftime('%A (%-m/%-d) at %I:%M %p') + remaining  %>
+                    </div>
+                  </a>
+              <% else %>
+                  <a href="/courses/<%= @course.id %>/assignments/<%= assignment.id %>/submissions/<%= task[:submission_id] %>" >
+                    <div class='a_name'>Complete Review<%= task[:index].to_s %> by
+                      <%= task[:time].strftime('%A (%-m/%-d) at %I:%M %p') + remaining  %>
+                    </div>
+                  </a>
+              <% end %>
+            </div>
+        <% end %>
+    <% end %>
+<% end %>
 
-
-<%= link_to 'Edit', edit_course_path(@course) %> |
-<%= link_to 'Back', courses_path %>

@@ -9,101 +9,92 @@
 <!--[if IE 7]> <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]> <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title>Coursemark</title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width">
-        <link rel="stylesheet" href="/css/normalize.min.css">
-        <link rel="stylesheet" href="/css/main.css">
-        <link rel="stylesheet" href="/css/datepickers.css">
-        <link rel="shortcut icon" href="/favicon.png" />
-        <script src="/js/vendor/modernizr-2.6.2.min.js"></script>
-      <script>
-          function changeTeam(teamid) {
-              $.ajax({
-                  type: "POST",
-                  url: window.location.pathname + '/change_team',
-                  data: { teamID: teamid  }
-              });
-          }
-      </script>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Coursemark</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="/css/normalize.min.css">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/datepickers.css">
+  <link rel="shortcut icon" href="/favicon.png" />
+  <script src="/js/vendor/modernizr-2.6.2.min.js"></script>
+  <script>
+      function changeTeam(teamid) {
+          $.ajax({
+              type: "POST",
+              url: window.location.pathname + '/change_team',
+              data: { teamID: teamid  }
+          });
+      }
+  </script>
 
-    </head>
-    <body>
-    <!--[if lt IE 7]>
-        <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
-    <![endif]-->
-
-        <div id="courseSelectorModal" class="hidden">
-            <div class="modal">
-                <h1>Courses</h1>
-                <% current_user.courses.each do |course| %>
-                  <%= link_to course_path(course) do %>
-                    <div class="course"><%= course.name %></div>
-                  <% end %>
-                <% end %>
-            </div>
-        </div>
-
-        <div id="sidebar">
-
-            <%= link_to root_url do %>
-                <div id="logo" class="<%= if current_user.courses.length <= 1 then 'big' end %>">
-                    <%= image_tag "coursemark.png", alt: "Coursemark" %>
-                </div>
-            <% end %>
-            
-            <% if current_user.courses.length > 1 %>
-                <div id='courseSelector'>
-                  <%= @course.name  %>
-                </div>
-            <% end %>
-
-            <ul>
-                <li class="divider">Assignments</li>
-                <% if current_user.instructor?(@course) %>
-                    <li><%= link_to "+ New Assignment", new_course_assignment_path(@course) %></li>
-                <% end %>
-
-            	<% @assignments.sort_by{|a| a.submission_due }.each do |assignment| %>
-                    <li class="<%= 'active' if @assignment && @assignment.id == assignment.id %>">
-                    	<%= link_to course_assignment_path(@course, assignment) do %>
-                            <div class="name"><%= assignment.name %></div>
-                        <% end %>
-                    </li>
-                <% end %>
-
-                <% if (@assignments.length == 0) && !current_user.instructor?(@course) %>
-                    <li class="empty">No assignments yet</li>
-                <% end %>
-
-                <% if current_user.instructor?(@course) %>
-                    <li class="divider">Students</li>
-                    <%= link_to registrations_path(:course => @course.id) do %>
-                        <li class="<%= 'active' if controller.controller_name == 'registrations' %>">
-                            <div class="name=">Course Roster</div>
-                        </li>
-                    <% end %>
-                <% end %>
-            </ul>
-        </div>
+</head>
+<body>
+<!--[if lt IE 7]>
+<p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+<![endif]-->
 
 
-    <%= javascript_include_tag "application" %>
-    <%= yield :javascript_includes %>
+<div id="sidebar">
 
-    <div id="main">
-          <% flash.each do |key, value| %>
-              <%= content_tag(:div, value, class: "alert alert-#{key} center") %>
+  <%= link_to root_url do %>
+      <div id="logo" class="<%= if current_user.courses.length <= 1 then 'big' end %>">
+        <%= image_tag "coursemark.png", alt: "Coursemark" %>
+      </div>
+  <% end %>
+
+  <%= link_to course_path(@course) do %>
+      <div class="course"><h2><%= @course.name %></h2></div>
+  <% end %>
+
+  <% if current_user.instructor?(@course) %>
+      <%= link_to registrations_path(:course => @course.id) do %>
+          <li class="<%= 'active' if controller.controller_name == 'registrations' %>">
+            <div class="name="><h3>Course Roster</h3></div>
+          </li>
+      <% end %>
+      <li><%= link_to "+ New Assignment", new_course_assignment_path(@course) %></li>
+<% end %>
+
+  <% if @assignments %>
+      <ul>
+        <% @assignments.sort_by{|a| a.submission_due }.each do |assignment| %>
+            <li class="<%= 'active' if @assignment && @assignment.id == assignment.id %>" style="margin-left:15px;">
+              <%= link_to course_assignment_path(@course, assignment) do %>
+                  <div class="name"><%= assignment.name %></div>
+              <% end %>
+            </li>
+        <% end %>
+
+        <% if (@assignments.length == 0) && !current_user.instructor?(@course) %>
+            <li class="empty">No assignments yet</li>
+        <% end %>
+
+      </ul>
+  <% end %>
+
+
+ <h2>Other Courses</h2>
+ <% current_user.courses.each do |course|  %>
+      <% unless course == @course %>
+          <%= link_to course_path(course) do %>
+              <div class="course" style="margin-left:30px"><%= course.name %></div>
           <% end %>
-          <%= yield %>
-        </div>
+      <% end %>
+  <% end %>
+</div>
 
 
+<%= javascript_include_tag "application" %>
+<%= yield :javascript_includes %>
 
-
-
-    </body>
+<div id="main">
+  <% flash.each do |key, value| %>
+      <%= content_tag(:div, value, class: "alert alert-#{key} center") %>
+  <% end %>
+  <%= yield %>
+</div>
+</body>
 </html>

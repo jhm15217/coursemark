@@ -29,19 +29,20 @@ class Course < ActiveRecord::Base
 
   def get_tasks(assignment, user, to_do_list)
     unless assignment.draft
-      if Time.zone.now < assignment.submission_due
+      if Time.zone.now < assignment.review_due     # allow late submissions
         if assignment.team
           team_ids = user.memberships.select{|m| m.assignment_id == assignment.id }.map{|m| m.pseudo_user_id }.
               select{|pui| !assignment.submissions.any?{|s| s.user_id == pui}}
-          team_ids.each{|tid| to_do_list << {action: :submit, assignment: assignment, team: User.find(tid).name, time: assignment.submission_due - 2.hours }}
+          team_ids.each{|tid| to_do_list << {action: :submit, assignment: assignment, team: User.find(tid).name, time: assignment.submission_due  }}
         elsif assignment.get_submissions(user)[0].nil?
-          to_do_list << {action: :submit, assignment: assignment, time: assignment.submission_due - 2.hours }
+          to_do_list << {action: :submit, assignment: assignment, time: assignment.submission_due }
         end
-      elsif Time.zone.now <  assignment.review_due and assignment.are_reviewers_assigned
+      end
+      if assignment.are_reviewers_assigned
         assignment.evaluations.forUser(user).sort_by{|t| t.created_at}.each_with_index do |evaluation, index|
-          unless evaluation.finished
+          unless evaluation.finished  or evaluation.submission.instructor_approved
             to_do_list << {action: :review, index: index + 1, submission_id: evaluation.submission.id, assignment: assignment,
-                           time: assignment.review_due - 2.hours }
+                           time: assignment.review_due }
           end
         end
       end
