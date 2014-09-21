@@ -20,8 +20,8 @@
         <td><%= student.registration_in(@course).section %></td>
         <% if submission %>
             <td>
-              <%= submission.created_at  > @assignment.submission_due ? "<span style='color:red'>" : '<span>' %>
-              <%= submission.created_at.to_s(:pretty) %>
+              <%= (submission.created_at  > @assignment.submission_due ? "<span style='color:red'>" : '<span>').html_safe %>
+              <%= submission.created_at.strftime('%m/%d/%y %H:%M') %>
               </span>
             </td>
             <td>
@@ -40,9 +40,13 @@
         <% end %>
         <td>
           <% unless student.pseudo %>
-              <%if (completed_review_count = @assignment.evaluations.forUser(student).select {|evaluation| evaluation.finished?}.length) > 0 %>
-                  <a href=<%= "/courses/#{@course.id}/assignments/#{@assignment.id}?reviewer=#{student.id}" %>>
-                    <%= completed_review_count.to_s + "/" + @assignment.evaluations.forUser(student).length.to_s %></a>
+              <% completed_reviews =   @assignment.evaluations.forUser(student).select {|evaluation| evaluation.finished?} %>
+              <%if (completed_review_count = completed_reviews.length) > 0 %>
+                    <a href=<%= "/courses/#{@course.id}/assignments/#{@assignment.id}?reviewer=#{student.id}" %>>
+                      <span <%= completed_reviews.any?{|e| e.updated_at > @assignment.review_due } ? "style=color:red" : "" %> >
+                       <%= completed_review_count.to_s + "/" + @assignment.evaluations.forUser(student).length.to_s %>
+                      </span>
+                    </a>
               <% else %>
                   0/<%= @assignment.evaluations.forUser(student).length.to_s %>
               <% end %>
