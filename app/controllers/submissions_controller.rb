@@ -95,7 +95,7 @@ class SubmissionsController < ApplicationController
   # end
 
   # GET /submissions/new
-  # GET /submissions/new.json
+  # GET /submissions</a>/new.json
   def new
     @submission = Submission.new
     @submission.instructor_approved = false
