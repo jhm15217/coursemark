@@ -52,7 +52,8 @@ class UsersController < ApplicationController
 
   def edit
     @user = current_user
-    @course = @user.courses.first
+    @courses = @user.courses
+    @course = @courses.first
     @registrations = @user.registrations
 
     if params[:course]

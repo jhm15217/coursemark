@@ -33,13 +33,13 @@ class AssignmentsController < ApplicationController
   end
 
   def fix
-    @assignment.memberships.each do |m|
-      user_registration = @course.registrations.select{|r| r.user_id == m.user_id}[0]
-      team_registration = @course.registrations.select{|r| r.user_id == m.pseudo_user_id}[0]
-      team_registration.section = user_registration.section
-      puts "reg: " + user_registration.inspect
-      team_registration.save!
-      end
+    # @assignment.memberships.each do |m|
+    #   user_registration = @course.registrations.select{|r| r.user_id == m.user_id}[0]
+    #   team_registration = @course.registrations.select{|r| r.user_id == m.pseudo_user_id}[0]
+    #   team_registration.section = user_registration.section
+    #   puts "reg: " + user_registration.inspect
+    #   team_registration.save!
+    #   end
 
     # registrants = Registration.all.select{|r| params[:course_id].to_i == r.course_id }
     # registrants.each do |r|
@@ -89,6 +89,7 @@ class AssignmentsController < ApplicationController
 # GET /assignments/1.json
   def show
     @assignment = Assignment.find(params[:id])
+    @course = @assignment.course
     @user = current_user
     if @user.instructor?(@course)
       if params[:fix]
@@ -105,10 +106,13 @@ class AssignmentsController < ApplicationController
       end
     end
 
-    #Create 'To Do' List
+    # User is a student. Create 'To Do' List
     @to_do = @course.to_do(current_user)
 
     @reviewing_tasks = @assignment.evaluations.forUser(current_user).sort_by{|t| t.created_at}
+    if Time.zone.now > @assignment.review_due     # allow late reviewing until instructor ends
+      @reviewing_tasks = @reviewing_tasks.select{|r| r.finished or !r.submission.instructor_approved }
+    end
     @submissions = @assignment.get_submissions(current_user)
     @submission = @submissions.sort_by{|s| s.created_at }.last
     unless @submission

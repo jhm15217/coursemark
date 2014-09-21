@@ -8,7 +8,7 @@ class Response < ActiveRecord::Base
 
   # Validations
   validates_presence_of :question_id, :evaluation_id
-  validate :met_deadline, :if => :peer_review_changed?, :if => :scale_id_changed?
+#  validate :met_deadline, :if => :peer_review_changed?, :if => :scale_id_changed?, message: 'Review is too late.'
   validate :response_allowed, :if => :student_response_changed?
 
   def is_complete?

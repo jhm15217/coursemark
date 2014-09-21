@@ -2,29 +2,8 @@
 
 <!-- User is not instructor -->
 
-<% if @to_do.length > 0 %>
-    <div class="toDoList" >
-      <h3>To-Do List</h3>
-      <ul class="toDoUl">
-        <% @to_do.each do |task| %>
-
-            <% hours_remain = ((task[:time] - Time.zone.now) / 1.hour).round %>
-            <% if hours_remain < 25 then remaining = hours_remain.to_s + ' hours ' else remaining = (hours_remain/24).to_s + ' days ' end %>
-            <%= ((if task[:action] == :submit  then
-                    "<a href=/courses/#{@course.id}/assignments/#{task[:assignment].id}><li>
-                    <div class='a_name'>Submit #{task[:assignment].name + (task[:team] ? ' for ' + task[:team] : '')}"
-                  else
-                    "<a href=/courses/#{@course.id}/assignments/#{task[:assignment].id}/submissions/#{task[:submission_id]}><li><div class='a_name'>Complete Review #{task[:index].to_s} for #{task[:assignment].name}"
-                  end) +
-                    '</div> by ' + task[:time].strftime('%A (%-m/%-d) at %I:%M %p') + ' (<span class="red">' + remaining  + 'left</span>) </a>').html_safe
-            %>
-            </li>
-        <% end %>
-      </ul>
-    </div>
-<% end %>
-
-<% if (Time.zone.now < @assignment.submission_due) %>
+<% if Time.zone.now < @assignment.submission_due or
+        Time.zone.now < @assignment.review_due and @submissions.length == 0 %>    <!-- allow late submissions if none done -->
     <%= render 'submission' %>
 <% end %>
 
@@ -52,7 +31,7 @@
           <% @reviewing_tasks.each_with_index do |task, index| %>
               <div id="reviewing_task">
                 <%= link_to course_assignment_submission_path(@course, @assignment, task.submission) do %>
-                    <%= ((task.finished? or Time.zone.now > @assignment.review_due) ? 'See' : 'Complete') + ' Review ' + (index + 1).to_s %>
+                    <%= (task.finished?  ? 'See' : 'Complete') + ' Review ' + (index + 1).to_s %>
                 <% end %>
               </div>
           <% end %>

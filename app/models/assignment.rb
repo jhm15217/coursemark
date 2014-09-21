@@ -51,6 +51,29 @@ class Assignment < ActiveRecord::Base
     end
   end
 
+  def to_do(user)
+    to_do_list = []
+    unless draft
+      if Time.zone.now < review_due     # allow late submissions
+        if team
+          team_ids = user.memberships.select{|m| m.assignment_id == self.id }.map{|m| m.pseudo_user_id }.
+              select{|pui| !submissions.any?{|s| s.user_id == pui}}
+          team_ids.each{|tid| to_do_list << {action: :submit, team: User.find(tid).name, time: submission_due  }}
+        elsif get_submissions(user)[0].nil?
+          to_do_list << {action: :submit, time: submission_due }
+        end
+      end
+      if are_reviewers_assigned
+        evaluations.forUser(user).sort_by{|t| t.created_at}.each_with_index do |evaluation, index|
+          unless evaluation.finished  or evaluation.submission.instructor_approved
+            to_do_list << {action: :review, index: index + 1, submission_id: evaluation.submission.id, time: review_due }
+          end
+        end
+      end
+    end
+    to_do_list.sort{|a,b| a[:time] == b[:time] ? a[:index] <=> b[:index] : a[:time] <=> b[:time] }
+  end
+
   def total_points
     self.questions.map{|q| q.question_weight}.reduce(:+)
   end

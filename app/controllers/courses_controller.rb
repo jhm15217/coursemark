@@ -6,18 +6,12 @@ class CoursesController < ApplicationController
   # GET /courses
   # GET /courses.json
   def index
-
-    @courses = current_user.courses
-
     puts 'Login: ' + current_user.email
-
-    # Redirect to first course page or 
-    # new course page if there are none
-
-    if @courses.length > 0
-      @URL = @courses.last
+    @courses = current_user.courses
+    if @courses.length == 1
+      @URL = @courses[0]
     else
-      @URL = registrations_path
+      @URL = edit_user_path [current_user]
     end
 
     respond_to do |format|
@@ -30,13 +24,16 @@ class CoursesController < ApplicationController
   # GET /courses/1.json
   def show
     @course = Course.find(params[:id])
-    @course.registrations.each{|r| (r.active = true; r.save! ) if r.user_id == current_user.id  }
-
-
-    # Redirect to assignments page
+    current_user.registrations.each{|r| if r.course_id == @course.id  then r.active = true; r.save! end }
+    Assignment.order(:submission_due)
+    @assignments = @course.assignments
 
     respond_to do |format|
-      format.html { redirect_to course_assignments_path(@course) }
+      if current_user.instructor?(@course)
+        format.html { redirect_to course_assignments_path(@course) }
+      else
+        format.html {render layout: 'application'}
+      end
       format.json { render json: @course }
     end
   end

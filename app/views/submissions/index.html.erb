@@ -20,7 +20,9 @@
         <td><%= student.registration_in(@course).section %></td>
         <% if submission %>
             <td>
+              <%= submission.created_at  > @assignment.submission_due ? "<span style='color:red'>" : '<span>' %>
               <%= submission.created_at.to_s(:pretty) %>
+              </span>
             </td>
             <td>
               <a href=<%= "/courses/#{@course.id}/assignments/#{@assignment.id}/submissions/#{submission.id}?instructor=true" %>>
