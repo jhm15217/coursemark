@@ -221,7 +221,6 @@ textarea {
     width: 290px;
     padding: 0px;
     margin: 0px;
-    overflow-y: scroll;
 }
 
 #sidebar li {
