@@ -373,9 +373,7 @@ textarea {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-
     width: calc(100% - 530px);
-    height: 80px;
 }
 
 #main .tabs {
