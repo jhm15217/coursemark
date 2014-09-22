@@ -2,6 +2,15 @@
 
 <!-- User is not instructor -->
 
+<!-- <div class="assignmentStatus" style="width: 49%;">
+    <h3>Assignment Progress</h3>
+    <div class="checkPoint completed %>">Assignment released</div>
+    <div class="checkPoint <%= if (Time.zone.now > @assignment.submission_due) then 'completed' end %>">Assignment due on <%= @assignment.submission_due.to_s(:pretty) %></div>
+    <div class="checkPoint <%= if (@assignment.manual_assignment && @assignment.reviewers_assigned) || ((Time.zone.now > @assignment.submission_due) && (@assignment.reviews_required > 0) && !@assignment.manual_assignment) then 'completed' end %>">Peer reviews assigned</div>
+    <div class="checkPoint <%= if (Time.zone.now > @assignment.review_due) && (@assignment.reviews_required > 0)  then 'completed' end %>">Peer reviews due on <%= @assignment.review_due.to_s(:pretty) %></div>
+    <div class="checkPoint <%= if (@submission.instructor_approved) && (@assignment.reviews_required > 0) then 'completed' end %>">Grade approved</div>
+</div> -->
+
 <% if Time.zone.now < @assignment.submission_due or
         Time.zone.now < @assignment.review_due and @submissions.length == 0 %>    <!-- allow late submissions if none done -->
     <%= render 'submission' %>
@@ -29,7 +38,7 @@
       <% if @reviewing_tasks.length > 0 %>
           <h3 class='assignment_section_header'>Reviews by You</h3>
           <% @reviewing_tasks.each_with_index do |task, index| %>
-              <div id="reviewing_task">
+              <div class="reviewing_task">
                 <%= link_to course_assignment_submission_path(@course, @assignment, task.submission) do %>
                     <%= (task.finished?  ? 'See' : 'Complete') + ' Review ' + (index + 1).to_s %>
                 <% end %>
@@ -38,6 +47,7 @@
       <% end %>
     </div>
 <% end %>
+
 
 <!--<div class="clearfix"></div>-->
 
