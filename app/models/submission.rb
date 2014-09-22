@@ -24,7 +24,7 @@ class Submission < ActiveRecord::Base
   # end
 
   def save
-    super!
+    super
     assign_enough_review_tasks(assignment.initialize_reviewers)
   end
 
