@@ -70,11 +70,13 @@
   <% end %>
 
 
-  <h2>Other Courses</h2>
-  <% current_user.courses.each do |course|  %>
-      <% unless course == @course %>
-          <%= link_to course_path(course) do %>
-              <div class="course" style="margin-left:30px"><%= course.name %></div>
+  <% if current_user.courses.length > 1 %>
+      <h2>Other Courses</h2>
+      <% current_user.courses.each do |course|  %>
+          <% unless course == @course %>
+              <%= link_to course_path(course) do %>
+                  <div class="course" style="margin-left:30px"><%= course.name %></div>
+              <% end %>
           <% end %>
       <% end %>
   <% end %>
