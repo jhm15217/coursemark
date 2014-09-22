@@ -555,6 +555,22 @@ textarea {
     float: left;
     min-width: 360px;
 }
+
+#main .allTasksCompleted {
+    padding-left:25px;
+    color:#999;
+    margin-top:-10px;
+}
+
+#main a.assgnToDoName {
+    color: #333;
+    text-decoration: none;
+}
+
+#main a.assgnToDoName:hover {
+    color:#555;
+}
+
 #main .toDoList {
     background: #FFF;
     padding: 25px;
@@ -571,6 +587,7 @@ textarea {
 #main .toDoUl {
     list-style: none;
     padding:0px;
+    padding-left:15px;
 }
 
 #main .toDoUl li {
@@ -891,7 +908,7 @@ input[type="file"]::-webkit-file-upload-button {
 }
 
 .update_account_btn {
-    width:321px;
+    width:263px;
 }
 
 #main .loginFields .field,
