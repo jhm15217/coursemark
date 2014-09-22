@@ -20,7 +20,7 @@ class SubmissionsController < ApplicationController
       s.save!(validate: false)
     end
     @students.sort! do |a,b|
-      result = sort_column == 'Name' ? compare_users(a,b) : a.sort_key <=> b.sort_key
+      result = a.sort_key <=> b.sort_key
       sort_direction == 'desc' ? - result : result
     end
     respond_to do |format|
@@ -183,8 +183,8 @@ class SubmissionsController < ApplicationController
   def key(user)
     (if sort_column == 'Email'
        user.email
-     elsif sort_column == "Section"
-       (user.registration_in(@course).section || "") + (user.pseudo ? '0' : '1')
+     elsif sort_column == "Name"
+       ''
      elsif sort_column == 'Submitted'
        result = Time.zone.now
        @submissions.each{ |s| if s.user_id == user.id then result =  s.created_at; break end }
@@ -193,9 +193,9 @@ class SubmissionsController < ApplicationController
        result = 0
        @submissions.each{ |s| if s.user_id == user.id and (g = s.grade) then result = g; break end }
        result.to_s
-     else
-       ''
-     end) + user.last_name  + ' ' + user.first_name
+     else   # Section
+       (user.registration_in(@course).section || "Z") + (user.pseudo ? '0' : '1')
+     end) + (user.pseudo ? '0' : user.instructor?(@course) ? '2' : '1') + user.last_name  + ' ' + user.first_name
   end
 
 end
