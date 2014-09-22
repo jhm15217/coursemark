@@ -40,7 +40,7 @@
   <% end %>
 
   <%= link_to course_path(@course) do %>
-      <div class="course"><h2><%= @course.name %></h2></div>
+      <div class="courseTitle"><h2><%= @course.name %></h2></div>
   <% end %>
 
   <% if current_user.instructor?(@course) %>
@@ -55,7 +55,7 @@
   <% if @assignments %>
       <ul>
         <% @assignments.sort_by{|a| a.submission_due }.each do |assignment| %>
-            <li class="<%= 'active' if @assignment && @assignment.id == assignment.id %>" style="margin-left:15px;">
+            <li class="<%= 'active' if @assignment && @assignment.id == assignment.id %>">
               <%= link_to course_assignment_path(@course, assignment) do %>
                   <div class="name"><%= assignment.name %></div>
               <% end %>
@@ -69,12 +69,13 @@
       </ul>
   <% end %>
 
-
-  <h2>Other Courses</h2>
-  <% current_user.courses.each do |course|  %>
-      <% unless course == @course %>
-          <%= link_to course_path(course) do %>
-              <div class="course" style="margin-left:30px"><%= course.name %></div>
+  <% if current_user.courses.length > 1 then %>
+      <h2 class='otherCourses'>Other Courses</h2>
+      <% current_user.courses.each do |course|  %>
+          <% unless course == @course %>
+              <%= link_to course_path(course) do %>
+                  <div class="otherCourseTitle"><%= course.name %></div>
+              <% end %>
           <% end %>
       <% end %>
   <% end %>
