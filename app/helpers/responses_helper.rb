@@ -50,10 +50,9 @@ module ResponsesHelper
             ("<div class='peerReviewJustification'>" +
                "<div class='submissionResponseFrom'>Instructors' Comments</div>" +
                 smart_textbox('instructor_response', response.instructor_response) +
-               "</div>" +
-               "<br>" +
-               '<div class=\'savedStatus\'></div>' +
-              "</div>").html_safe
+            "</div> <!-- peerReviewJustification -->" +
+            "<br>" +
+            "<div class='savedStatus'></div>").html_safe
         end
     elsif response.instructor_response
       ("<div class='submissionResponseFrom'>Instructors' Comments</div>" +

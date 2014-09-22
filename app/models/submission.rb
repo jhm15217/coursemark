@@ -14,8 +14,8 @@ class Submission < ActiveRecord::Base
   validates_presence_of :assignment_id
   validates_presence_of :user_id
 # validate :met_deadline, :on => :create
-#  validates_attachment_size :attachment, :less_than => MAX_FILE_SIZE.megabytes, message: "File must be smaller than #{MAX_FILE_SIZE}MB. In MSW: File>Reduce File Size."
-#  validates_attachment_content_type :attachment, :content_type => ['application/pdf']
+# validates_attachment_size :attachment, :less_than => MAX_FILE_SIZE.megabytes, message: "File must be smaller than #{MAX_FILE_SIZE}MB. In MSW: File>Reduce File Size."
+# validates_attachment_content_type :attachment, :content_type => ['application/pdf']
 
   # def self.new(params)
   #   assignment_id = params[:assignment_id]
@@ -24,8 +24,10 @@ class Submission < ActiveRecord::Base
   # end
 
   def save
-    super
-    assign_enough_review_tasks(assignment.initialize_reviewers)
+    if super
+      assign_enough_review_tasks(assignment.initialize_reviewers)
+      true
+    end
   end
 
   def completed_responses
