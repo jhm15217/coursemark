@@ -335,6 +335,7 @@ textarea {
   width:100%;
   padding: 0px 0px 0px 0px;
   background: #F5F6F8;
+  left:0px;
 }
 
 #header {
@@ -354,6 +355,12 @@ textarea {
     height: 122px;
 }
 
+#main {
+    min-width: 495px;
+    position: absolute;
+    left:290px;
+}
+
 #main h1 {
     margin: 0px;
     margin-top:-5px;
@@ -365,6 +372,9 @@ textarea {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+
+    width: calc(100% - 530px);
+    height: 80px;
 }
 
 #main .tabs {
@@ -598,6 +608,7 @@ textarea {
     border-radius: 6px;
     color: rgb(92, 92, 92);
     margin-bottom: 10px;
+    background-color: white;
 }
 
 #main .toDoUl li:hover {
@@ -1588,6 +1599,10 @@ th a.current.desc {
     margin-top: 25px;
 }
 
+.reviewing_task:hover {
+    
+}
+
 .reviewing_task.highlighted {
     background: rgba(230, 126, 34, 0.05);
     border: 1px solid #e67e22;
@@ -1600,6 +1615,7 @@ th a.current.desc {
 .reviewing_task a {
     background: none;
     color: #343F53;
+    text-decoration: none;
 }
 
 /* ==========================================================================
