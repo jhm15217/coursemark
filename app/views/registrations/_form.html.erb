@@ -17,6 +17,8 @@
       <%= f.submit "Join course" %>
     </div>
 
+    <div class="actions newAccount"><%= link_to "Sign Out", logout_path, :class => "button" %></div>
+
     <% if current_user.email == 'admin@email.com'  %>
          <div class="actions newAccount"><%= link_to "Create a new course", new_course_path, :class => "button" %></div>
     <% end %>

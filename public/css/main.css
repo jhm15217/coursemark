@@ -101,6 +101,7 @@ textarea {
     background: #343F53;
     color: #A0ABC0;
     overflow-y: scroll;
+    overflow-x: hidden;
 }
 
 #sidebar a {
