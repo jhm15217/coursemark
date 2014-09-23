@@ -13,9 +13,6 @@ class Ability
     can :create, User
     can :confirm_email, User
     can :manage, User do |u|
-      if not user
-        puts "No user vs. " + u.inspect
-      end
       if user && u.id && user.id
         u.id == user.id
       else
@@ -54,7 +51,6 @@ class Ability
     end
 
     can :manage, Course do |c|
-      puts "User: "  + user.email.inspect
       user.email == 'admin@email.com'
     end
 
