@@ -40,7 +40,7 @@
   <% end %>
 
   <%= link_to course_path(@course) do %>
-      <div class="courseTitle"><h2><%= @course.name %></h2></div>
+      <div class="courseTitle"><h3><%= @course.name %></h3></div>
   <% end %>
 
   <% if current_user.instructor?(@course) %>
