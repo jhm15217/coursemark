@@ -54,11 +54,8 @@ class Ability
     end
 
     can :manage, Course do |c|
-      user.email == 'admin@emailcom'
-    end
-
-    can :destroy, Course do |c|
-      user.email == 'admin@emailcom'
+      puts "User: "  + user.email.inspect
+      user.email == 'admin@email.com'
     end
 
     #instructors
