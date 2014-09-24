@@ -51,18 +51,24 @@ class SubmissionsController < ApplicationController
         end
       end
     elsif params[:finish]
-      if evaluation.is_complete?
-        evaluation.finished = true
+      if evaluation.finished    # The reviewer is withdrawing the review
+        evaluation.finished = false
         evaluation.save!
-        redirect_to  course_assignment_path ({id: params[:assignment_id]} )
+        redirect_to  :back
       else
-        flash[:error] = "You can't publish unless all ratings and required comments have been done."
-        redirect_to :back
+        if evaluation.is_complete?
+          evaluation.finished = true
+          evaluation.save!
+          redirect_to  course_assignment_path ({id: params[:assignment_id]} )
+        else
+          flash[:error] = "You can't publish unless all ratings and required comments have been done."
+          redirect_to :back
+        end
       end
     else # it's a student who submitted it or is completing  or seeing a review of someone else
       @kibitzing = params[:instructor]
       respond_to do |format|
-        format.html { render 'show', :layout => 'no_sidebar' } # show.html.erb
+        format.html { render (params[:instructor_review_of] ? 'show_review' : 'show'), :layout => 'no_sidebar' }
         format.json { render json: @submission }
       end
     end

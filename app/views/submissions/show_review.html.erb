@@ -1,0 +1,75 @@
+<!-- The user is an instructor reviewing reviews  -->
+
+<div id='submissionHeader'>
+  <small style='display:block; float:left; margin-top:-18px; width:100%;'>
+    <%= link_to "&larr; #{@submission.assignment.name}".html_safe , course_assignment_path(@course, @assignment) %>
+    <h1 class="name"><%= @submission.user.name %></h1>
+    <% if @submission and @submission.url and !@submission.url.blank? %>
+        <div id='submissionDownloadBtn'>
+          <a href='<%= @submission.url %>' content-dispostition="inline" >Download Submission</a>
+        </div>
+    <% end %>
+  </small>
+</div>
+
+<% if @submission and @submission.url and !@submission.url.blank? %>
+    <div id='submissionPDFWrapper'>
+      <embed src="<%= @submission.url %>" content-dispostition="inline" width="100%" height="100%" style="border: none;"></embed>
+    </div>
+<% end %>
+
+<div id='submissionsWrapper'>
+  <div id='submissionBoxesWrapper'  >
+    <% if !@kibitzing and g = @submission.grade %>
+      <span class='submissionGradeBox'>
+        <span class='grade'> Average <%= prettifyFloat(g).to_s + '%' %></span>
+      </span>
+    <% end %>
+    <!--     EVALUATIONS by reviewer -->
+    <% @questions.each do |question| %>
+        <% response =  @submission.get_responses_for_question(question).select{|r| r.evaluation.user == @user }[0] %>
+        <div class='submissionQuestionBox'>
+          <h2><%= question.question_text %></h2>
+          <div class='possiblePoints'><%= question.question_weight %> Points</div>
+              <div class='submissionBox'>
+                <div class='submissionResponsePoints <%= gradeColorFullScale(response.scale.value) %>'>
+                  <%= response.scale.value.to_s + '%' %></div>
+                <%= see_peer_review(response, 0, @user) %>
+                <%= student_rebuttal(response, @user) %>
+                <%= instructor_comment(response, true) %>
+              </div>   <!-- submission box -->
+        </div> <!-- end submissionQuestionBox -->
+    <% end %>  <!-- question loop -->
+    <% if !@submission.evaluations.select{|e| e.user != @user }.any?{|e| e.finished? } %>
+          <h2>No Other Reviews</h2>
+    <% else %>
+        <h2>Other Reviews</h2>
+        <% @questions.each do |question| %>
+            <% rs =  @submission.get_responses_for_question(question).select{|r| r.evaluation.user != @user and r.evaluation.finished? } %>
+            <div class='submissionQuestionBox'>
+              <h2><%= question.question_text %></h2>
+              <div class='possiblePoints'><%= question.question_weight %> Points</div>
+              <% rs.sort_by!{|a| a.created_at }.each_with_index do |response, index| %>
+                  <% if response.evaluation.finished? %>
+                      <div class='submissionBox'>
+                        <div class='submissionResponsePoints <%= gradeColorFullScale(response.scale.value) %>'>
+                          <%= response.scale.value.to_s + '%' %></div>
+                        <%= see_peer_review(response, index, @user) %>
+                        <%= student_rebuttal(response, @user) %>
+                        <%= instructor_comment(response, true) %>
+                      </div>   <!-- submission box -->
+                  <% end %> <!-- if finished -->
+              <% end %>  <!-- response loop -->
+            </div> <!-- end submissionQuestionBox -->
+        <% end %>  <!-- question loop -->
+    <% end %> <!-- if-else -->
+  </div> <!-- submissionBoxesWrapper -->
+</div>  <!-- submissionWrapper -->
+
+
+<script>
+    function add_written_response(question_id) {
+        $('#awr_q_'+question_id).hide();
+        $('#q_response_'+question_id).css('display', 'inline-block');
+    }
+</script>

@@ -11,7 +11,7 @@
   <% @reviewing_tasks.each_with_index do |task, index| %>
       <% if task.finished? %>
           <%= link_to course_assignment_submission_path(@course, @assignment, task.submission) + '?instructor_review_of=' + @reviewer.id.to_s do %>
-              <div class="reviewing_task highlighted" >See Review <%= (index + 1).to_s %></div>
+              <div class="reviewing_task" >Review of <%= task.submission.user.name %></div>
           <% end %>
       <% end %>
   <% end %>
