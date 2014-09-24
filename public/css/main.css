@@ -1292,9 +1292,11 @@ th a.current.desc {
 }
 
 #submissionsWrapper {
-    width: 35.5%;
-    float: right;
-    margin-right: 3%;
+   width: 35.5%;
+   float: right;
+   overflow: scroll;
+   height: 100%;
+   margin-right: 3%;
 }
 
 #submissionsWrapperNoPDF {
