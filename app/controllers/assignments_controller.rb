@@ -236,10 +236,12 @@ class AssignmentsController < ApplicationController
       @submission = Submission.new(params['assignment'])
       if @submission.url.class.name != 'String'
         puts 'Error, wonky url: ' + @submission.url.inspect + ' for ' + @user.email
+        redirect_to  :back, flash: {error: 'Submission Failed. Try Again. Be Patient.'}
+        return
+      else
+        old_submissions = @assignment.submissions.
+            select{|s| s.user.nil? or s.user.submitting_id(@assignment,@submission) == params[:assignment][:user_id].to_i }
       end
-#      @submission[:url] =  @submission[:url].gsub('//s3.amazonaws.com', 'https://s3.amazonaws.com/Coursemark')
-      old_submissions = @assignment.submissions.
-          select{|s| s.user.nil? or s.user.submitting_id(@assignment,@submission) == params[:assignment][:user_id].to_i }
       respond_to do |format|
         if @submission.save
           old_submissions.each{|s| s.destroy }
