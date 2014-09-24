@@ -1598,6 +1598,7 @@ th a.current.desc {
     margin-right: 21px;
     margin-bottom: 20px;
     margin-top: 25px;
+    min-width: 300px;
 }
 
 .reviewing_task:hover {
@@ -1617,6 +1618,17 @@ th a.current.desc {
     background: none;
     color: #343F53;
     text-decoration: none;
+}
+
+.reviewing_task span {
+    display: block;
+    font-size: .9em;
+    color:#999;
+}
+
+.task_complete {
+border-color: rgb(63, 142, 46);
+background: rgba(63, 142, 46, 0.1);
 }
 
 /* ==========================================================================
