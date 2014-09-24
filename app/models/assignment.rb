@@ -116,7 +116,6 @@ class Assignment < ActiveRecord::Base
   def initialize_reviewers
     reviewers = MinHeap.new
     course.get_real_students.shuffle.each do |r|
-      puts "Reviewer: "   + r.name
       reviews =  evaluations.forUser(r)
       unless  reviews.length > 0 and reviews.length == reviews.select{|e| e.finished }.length
         reviewers.push(reviews.length, r)
