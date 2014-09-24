@@ -18,7 +18,7 @@
 
 <% if @submissions.length > 0 %>
     <h3 class='assignment_section_header'>Your Submission
-    <%= if @submissions.length > 1 then %>s<% end %>
+    <% if @submissions.length > 1 %>s<% end %>
     </h3>
     <% @submissions.each do |submission| %>
         <div class="reviewing_task your_submission">
@@ -41,7 +41,7 @@
           <% @reviewing_tasks.each_with_index do |task, index| %>
               <div class="reviewing_task <%= (task.finished?  ? '' : 'highlighted') %> ">
                 <%= link_to course_assignment_submission_path(@course, @assignment, task.submission) do %>
-                    <%= (task.finished?  ? 'See' : "Complete" ) + ' Review ' + (index + 1).to_s + "<span>by #{@assignment.review_due.strftime('%A (%-m/%-d) at %I:%M %p')}" %>
+                    <%= (task.finished?  ? 'See' : "Complete" ) + ' Review ' + (index + 1).to_s + ' <span>by ' + @assignment.review_due.strftime('%A (%-m/%-d) at %I:%M %p</span>') %>
                 <% end %>
               </div>
           <% end %>
