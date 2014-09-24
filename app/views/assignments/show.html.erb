@@ -2,7 +2,7 @@
 
 <!-- User is not instructor -->
 
-<!-- <div class="assignmentStatus" style="width: 49%;">
+<!--  <div class="assignmentStatus" style="width: 49%;">
     <h3>Assignment Progress</h3>
     <div class="checkPoint completed %>">Assignment released</div>
     <div class="checkPoint <%= if (Time.zone.now > @assignment.submission_due) then 'completed' end %>">Assignment due on <%= @assignment.submission_due.to_s(:pretty) %></div>
@@ -17,12 +17,14 @@
 
 
 <% if @submissions.length > 0 %>
-    <h3 class='assignment_section_header'>Your Submission(s)</h3>
+    <h3 class='assignment_section_header'>Your Submission
+    <%= if @submissions.length > 1 then %>s<% end %>
+    </h3>
     <% @submissions.each do |submission| %>
-        <div id="reviewing_task">
+        <div class="reviewing_task your_submission">
           <%= link_to course_assignment_submission_path(@course, @assignment, submission) + '?view=true' do %>
-              <%= submission.user.name + "'s" +
-                          ((e = submission.evaluations.select{|e| e.finished }.length) > 0 ? (" with " + e.to_s + ' review(s)') : '')  %>
+              <%= submission.user.name + "<span>" +
+                          ((e = submission.evaluations.select{|e| e.finished }.length) > 0 ? (e.to_s + ' review(s)') : '') + "</span>"  %>
           <% end %>
         </div>
     <% end %>
@@ -37,9 +39,9 @@
       <% if @reviewing_tasks.length > 0 %>
           <h3 class='assignment_section_header'>Reviews by You</h3>
           <% @reviewing_tasks.each_with_index do |task, index| %>
-              <div class="reviewing_task">
+              <div class="reviewing_task <%= (task.finished?  ? '' : 'highlighted') %> ">
                 <%= link_to course_assignment_submission_path(@course, @assignment, task.submission) do %>
-                    <%= (task.finished?  ? 'See' : 'Complete') + ' Review ' + (index + 1).to_s %>
+                    <%= (task.finished?  ? 'See' : "Complete" ) + ' Review ' + (index + 1).to_s + "<span>by #{@assignment.review_due.strftime('%A (%-m/%-d) at %I:%M %p')}" %>
                 <% end %>
               </div>
           <% end %>
