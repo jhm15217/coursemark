@@ -41,7 +41,7 @@
           <% @reviewing_tasks.each_with_index do |task, index| %>
               <div class="reviewing_task <%= (task.finished?  ? '' : 'highlighted') %> ">
                 <%= link_to course_assignment_submission_path(@course, @assignment, task.submission) do %>
-                    <%= ((task.finished?  ? 'See' : "Complete" ) + ' Review ' + (index + 1).to_s + (task.finished? ? '' : ' <span>by ' + @assignment.review_due.strftime('%A (%-m/%-d) at %I:%M %p</span>'))).html_safe %>
+                    <%= ((task.finished?  ? 'See' : "Complete" ) + ' Review ' + (index + 1).to_s + (task.finished? ? (e = task.submission.evaluations.select{|e| e.finished }.length) > 0 ? (e.to_s + ' review(s)') : ' <span>by ' + @assignment.review_due.strftime('%A (%-m/%-d) at %I:%M %p</span>'))).html_safe %>
                 <% end %>
               </div>
           <% end %>
