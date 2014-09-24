@@ -11,8 +11,7 @@
     <div class="checkPoint <%= if (@submission.instructor_approved) && (@assignment.reviews_required > 0) then 'completed' end %>">Grade approved</div>
 </div> -->
 
-<% if Time.zone.now < @assignment.submission_due or
-        Time.zone.now < @assignment.review_due and @submissions.length == 0 %>    <!-- allow late submissions if none done -->
+<% if Time.zone.now < @assignment.submission_due or (Time.zone.now < @assignment.review_due and @submissions.length == 0) %>    <!-- allow late submissions if none done -->
     <%= render 'submission' %>
 <% end %>
 

@@ -1,54 +1,54 @@
 
-  <%= form_for [@course, @assignment], html: {class: 'submissionUpload'} do |f| %>
-  <h3>Submit Assignment</h3>
-      <% if @teams.length > 1 %>
-          <select id="teams">
-            <option value='-1' >Select Submitting Team</option>
-            <% @teams.each do |t| %>
-                <option value="<%= t.id %>" ><%= t.name %></option>
-            <% end %>
-          </select>
-      <% end %>
-      <% if !@submission.url.blank?  %>
-          <%= link_to 'This file', @submission.url, :target => "_blank" %> has been submitted.<br />
-          <% if %>
-            You may re-submit until the deadline on <%= @submission.assignment.submission_due.strftime('%A (%-m/%-d) at %I:%M %p') %>.
+<%= form_for [@course, @assignment], html: {class: 'submissionUpload'} do |f| %>
+    <h3>Submit Assignment</h3>
+    <% if @teams.length > 1 %>
+        <select id="teams">
+          <option value='-1' >Select Submitting Team</option>
+          <% @teams.each do |t| %>
+              <option value="<%= t.id %>" ><%= t.name %></option>
           <% end %>
-      <% end %>
-      <div class="field">
-         <%= f.file_field :url, :accept => 'application/pdf', :required => true, :style => 'border: 0px' %>
-      </div>
-      <div class="field">
-        <%= f.hidden_field :assignment_id, value: @assignment.id %>
-      </div>
-      <div id='team' class="field">
-        <%= f.hidden_field :user_id, value: @teams.length == 1 ? @teams[0].id : @user.id %>    <!-- value will be overwritten if multi-team assignment -->
-      </div>
-      <div class="actions">
-        <script>
-            function get_team() {
-                var e = document.getElementById("teams");
-                var selected_team = e.options[e.selectedIndex].value;
-                console.log("old user " + document.getElementById("assignment_user_id").value);
-                console.log("new user " + selected_team);
-                document.getElementById("assignment_user_id").value =  selected_team;
-            }
-        </script>
-        
-        <button class="med_width_button" name="commit" type="submit" onclick="get_team();" value="Submit" >Submit</button>
+        </select>
+    <% end %>
+    <% if !@submission.url.blank?  %>
+        <% if Time.zone.now < @assignment.submission_due %>
+            <%= link_to 'This file', @submission.url, :target => "_blank" %> has been submitted.<br />
+            You may re-submit until the deadline on <%= @assignment.submission_due.strftime('%A (%-m/%-d) at %I:%M %p') %>.
+        <% end %>
+    <% end %>
+    <div class="field">
+      <%= f.file_field :url, :accept => 'application/pdf', :required => true, :style => 'border: 0px' %>
+    </div>
+    <div class="field">
+      <%= f.hidden_field :assignment_id, value: @assignment.id %>
+    </div>
+    <div id='team' class="field">
+      <%= f.hidden_field :user_id, value: @teams.length == 1 ? @teams[0].id : @user.id %>    <!-- value will be overwritten if multi-team assignment -->
+    </div>
+    <div class="actions">
+      <script>
+          function get_team() {
+              var e = document.getElementById("teams");
+              var selected_team = e.options[e.selectedIndex].value;
+              console.log("old user " + document.getElementById("assignment_user_id").value);
+              console.log("new user " + selected_team);
+              document.getElementById("assignment_user_id").value =  selected_team;
+          }
+      </script>
 
-      </div>
-<!--
-      <% if @submission.created_at %>
+      <button class="med_width_button" name="commit" type="submit" onclick="get_team();" value="Submit" >Submit</button>
+
+    </div>
+    <!--
+    <% if @submission.created_at %>
           <div class="edit_submission afterDeadline">
             <a href='<%= @submission.url %>' style="color:#343F53;">Check Submission</a>
           </div>
       <% end %>
--->
-  <% end %>
+    -->
+<% end %>
 
 
-  <script>
+<script>
       $(function() {
           $('.submissionUpload').find("input:file").each(function(i, elem) {
               var fileInput    = $(elem);
