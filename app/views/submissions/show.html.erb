@@ -2,7 +2,7 @@
 <% instructor = (@user.instructor?(@course) or current_user.instructor?(@course)) %>
 <div id='submissionHeader'>
   <small style='display:block; float:left; margin-top:-18px; width:100%;'>
-        <%= link_to "&larr; #{@submission.assignment.name}".html_safe , course_assignment_path(@course, @assignment) %>
+    <%= link_to "&larr; #{@submission.assignment.name}".html_safe , course_assignment_path(@course, @assignment) %>
     <h1 class="name"> <% if instructor %><%= @submission.user.name %><% end %></h1>
     <% if @submission and @submission.url and !@submission.url.blank? %>
         <div id='submissionDownloadBtn'>
@@ -44,6 +44,8 @@
                 <div class='submissionQuestionBox' id='peer_review'>
                   <h2><%= question.question_text %></h2>
                   <%= complete_peer_review(r, @user) %>
+                  <%= student_rebuttal(r, @user) %>
+                  <%= instructor_comment(r, instructor) %>
                 </div>
             <% else %>
                 <h2>Missing Question? Inform james.morris@cmu.edu, sending screen shot.</h2>
@@ -51,8 +53,13 @@
             <% end %> <!-- submissionQuestionBox -->
         <% end %> <!-- questions loop -->
         <div>
+          <%= link_to course_assignment_path(@course, @assignment) do %>
+              <div id='submitFormsButton' class='button'>Save Review</div>
+          <% end %>
+        </div>
+        <div>
           <%= link_to course_assignment_submission_path(@course, @assignment, @submission, finish: true) do %>
-              <div id='submitFormsButton' class='button'>Publish Review</div>
+              <div id='submitFormsButton' class='button'>Save and Publish Review</div>
           <% end %>
         </div>
 
@@ -83,6 +90,13 @@
                     </div> <!-- end submissionQuestionBox -->
                 <% end %>
             <% end %>  <!-- question loop -->
+            <% if !@submitter and !@submission.instructor_approved?  %>
+                <div>
+                  <%= link_to course_assignment_submission_path(@course, @assignment, @submission, finish: true) do %>
+                      <div id='submitFormsButton' class='button'>Withdraw Review</div>
+                  <% end %>
+                </div>
+            <% end %>
         <% end %> <!-- if-else -->
     <% end %>
   </div> <!-- submissionBoxesWrapper -->

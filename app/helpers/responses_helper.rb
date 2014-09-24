@@ -78,7 +78,7 @@ module ResponsesHelper
      elsif response.student_response  # A rebuttal was made
        "<div class='submissionStudentResponse'>" +
            "<div class='submissionResponseFrom' style='margin-top: 30px;'>" +
-           (@user.instructor?(course) ? submission.user.name + "'s Rebuttal":
+           (current_user.instructor?(course) ? submission.user.name + "'s Rebuttal":
                @submitter ? "Your Rebuttal" :
                    "Author's Rebuttal" ) +
            "</div>"  +
