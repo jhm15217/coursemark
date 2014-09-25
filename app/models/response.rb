@@ -37,6 +37,21 @@ class Response < ActiveRecord::Base
     end
   end
 
+  def reviewer_comment_title(current_user, index)
+    ((evaluation.user.instructor?(evaluation.submission.assignment.course) or
+        current_user.instructor?(evaluation.submission.assignment.course)) ? evaluation.user.name :
+        'Reviewer' + (index + 1).to_s) +
+        "'s Comment"
+  end
+
+  def rebuttal_title(current_user)
+    (evaluation.submission.user == current_user ? 'Your' :
+    (current_user.instructor?(evaluation.submission.assignment.course) ? evaluation.submission.user.name : 'Author') + "'s") +
+        ' Rebuttal'
+  end
+
+
+
 
   private
   def met_deadline

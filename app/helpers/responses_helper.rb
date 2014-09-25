@@ -32,7 +32,7 @@ module ResponsesHelper
         (if @user.id == response.evaluation.user.id and @user == current_user
            "Your Review:&nbsp"
          else
-           reviewer_name(response.evaluation, index) + "'s Review:&nbsp"
+           response.reviewer_comment_title(current_user, index)
          end) +
         "</span>" +
         "<span>" + ' ' + response.scale.description + "</span>" +
@@ -77,13 +77,9 @@ module ResponsesHelper
            "</div>").html_safe
      elsif response.student_response  # A rebuttal was made
        "<div class='submissionStudentResponse'>" +
-           "<div class='submissionResponseFrom' style='margin-top: 30px;'>" +
-           (current_user.instructor?(course) ? submission.user.name + "'s Rebuttal":
-               @submitter ? "Your Rebuttal" :
-                   "Author's Rebuttal" ) +
-           "</div>"  +
-           "<p>#{response.student_response.gsub(/\n/,'<br>').html_safe} </p>" +
-           "</div>"
+           "<div class='submissionResponseFrom'>" + response.rebuttal_title(current_user) + "</div>"  +
+           response.student_response.gsub(/\n/,'<br>').html_safe +
+       "</div>"
      else
        ""
      end).html_safe
