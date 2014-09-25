@@ -41,12 +41,6 @@ module ApplicationHelper
     scale.value
   end
 
-  def reviewer_name(evaluation, index)
-    (evaluation.user.instructor?(evaluation.submission.assignment.course) or
-        current_user.instructor?(evaluation.submission.assignment.course)) ? evaluation.user.name :
-        'Reviewer ' + (index + 1).to_s
-  end
-
   def multi_flash(tag, m1, m2)
     if flash[tag]
       flash[tag] << ', ' + m2
