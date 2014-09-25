@@ -806,7 +806,7 @@ table.submissions {
     margin-bottom: 1.6em;
 }
 #main input[type=submit], .button {
-    width: automatic;
+    width: auto;
     height: 50px;
     border-radius: 5px;
     border: 1px solid #d5d5d5;
@@ -815,7 +815,7 @@ table.submissions {
     margin-right: 15px;
     margin-bottom: 20px;
     cursor: pointer;
-    padding-top: 13px;
+    padding-top: 5px;
 }
 
 #main input[type=submit] {
