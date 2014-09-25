@@ -17,38 +17,32 @@
 
 
 <% if @submissions.length > 0 %>
-    <h3 class='assignment_section_header'>Your Submission
-    <%= if @submissions.length > 1 then %>s<% end %>
-    </h3>
+    <h3 class='assignment_section_header'>Your Submission<%= @submissions.length > 1 ? 's' : '' %></h3>
     <% @submissions.each do |submission| %>
         <div class="reviewing_task your_submission">
           <%= link_to course_assignment_submission_path(@course, @assignment, submission) + '?view=true' do %>
-              <%= submission.user.name + "<span>" +
-                          ((e = submission.evaluations.select{|e| e.finished }.length) > 0 ? (e.to_s + ' review(s)') : '') + "</span>"  %>
+              <%= submission.user.name +  ((n = submission.evaluations.select{|e| e.finished }.length) > 0 ? (n.to_s + ' review(s)') : '')  %>
           <% end %>
         </div>
     <% end %>
 <% end %>
 
 
-<br>
+<br><br>
 
 
-<% if @assignment.are_reviewers_assigned %>
+<% if @assignment.are_reviewers_assigned and @reviewing_tasks.length > 0 %>
     <div id="reviewing_tasks">
-      <% if @reviewing_tasks.length > 0 %>
-          <h3 class='assignment_section_header'>Reviews by You</h3>
-          <% @reviewing_tasks.each_with_index do |task, index| %>
-              <div class="reviewing_task <%= (task.finished?  ? '' : 'highlighted') %> ">
-                <%= link_to course_assignment_submission_path(@course, @assignment, task.submission) do %>
-                    <%= (task.finished?  ? 'See' : "Complete" ) + ' Review ' + (index + 1).to_s + "<span>by #{@assignment.review_due.strftime('%A (%-m/%-d) at %I:%M %p')}" %>
-                <% end %>
-              </div>
-          <% end %>
+      <h3 class='assignment_section_header' style="width:200px">Reviews by You</h3>
+      <% @reviewing_tasks.each_with_index do |task, index| %>
+          <div class="reviewing_task <%= (task.finished?  ? '' : 'highlighted') %> ">
+            <%= link_to course_assignment_submission_path(@course, @assignment, task.submission) do %>
+                <%= ((task.finished?  ? 'See' : "Complete" ) + ' Review ' + (index + 1).to_s + "<span>by #{@assignment.review_due.strftime('%A (%-m/%-d) at %I:%M %p')}").html_safe %>
+            <% end %>
+          </div>
       <% end %>
     </div>
 <% end %>
-
 
 <!--<div class="clearfix"></div>-->
 
