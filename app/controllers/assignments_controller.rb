@@ -33,12 +33,12 @@ class AssignmentsController < ApplicationController
   end
 
   def fix
-    admin = User.find_by_email('admin@email.com')
-    Course.all.each do |c|
-      unless admin.registrations.any?{|r| r.course_id == c.id }
-        Registration.new(course_id: c.id, user_id: admin.id, active:true, instructor: true, course_code: c.course_code).save!
-      end
-    end
+    # admin = User.find_by_email('admin@email.com')
+    # Course.all.each do |c|
+    #   unless admin.registrations.any?{|r| r.course_id == c.id }
+    #     Registration.new(course_id: c.id, user_id: admin.id, active:true, instructor: true, course_code: c.course_code).save!
+    #   end
+    # end
     # @assignment.memberships.each do |m|
     #   user_registration = @course.registrations.select{|r| r.user_id == m.user_id}[0]
     #   team_registration = @course.registrations.select{|r| r.user_id == m.pseudo_user_id}[0]
