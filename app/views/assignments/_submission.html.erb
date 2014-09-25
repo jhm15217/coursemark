@@ -101,9 +101,9 @@
                       form.append(input);
                   },
                   fail: function(e, data) {
-                      var data1 = { assignment_id: <%= @assignment.id %>, user_id: <%= @user.id %>, error: e,  data: data };
-                      $.post("/submissions", data1);
+                      var data1 = { assignment_id: <%= @assignment.id %>, user_id: <%= @user.id %>, error: e.type  };
                       console.log("Error, Upload Failed: ", e, data);
+                      $.post("/submissions", data1);
                       submitButton.prop('disabled', false);
 
                       progressBar.
@@ -112,7 +112,7 @@
                               css('border-radius', '6px').
                               css('padding', '5px').
                               css('width', '100%').
-                              text("Failed, try again");
+                              text("Failed, check credentials");
                   }
               });
           });
