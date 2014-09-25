@@ -1584,15 +1584,14 @@ th a.current.desc {
 }
 
 #reviewing_tasks {
-    margin-top: 100px;
+    margin-top: 10px;
     margin-right: 20px;
 }
 
 .reviewing_task {
-    float: left;
     background: #FFF;
     padding: 15px 25px 15px 25px;
-    width: auto;
+    width: 300px;
     border-radius: 6px;
     border: 1px solid #DFDFDF;
     margin-right: 21px;
