@@ -72,7 +72,7 @@
                   },
                   start: function (e) {
                       var data = { assignment_id: <%= @assignment.id %>, user_id: <%= @user.id %> };
-                      $.post("/courses", data);
+                      $.post("/submissions", data);
                       console.log("Starting Upload");
                       submitButton.prop('disabled', true);
 
@@ -102,7 +102,7 @@
                   },
                   fail: function(e, data) {
                       var data1 = { assignment_id: <%= @assignment.id %>, user_id: <%= @user.id %>, error: e,  data: data };
-                      $.post("/courses", data1);
+                      $.post("/submissions", data1);
                       console.log("Error, Upload Failed: ", e, data);
                       submitButton.prop('disabled', false);
 

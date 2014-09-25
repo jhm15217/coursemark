@@ -57,17 +57,6 @@ class CoursesController < ApplicationController
   # POST /courses
   # POST /courses.json
   def create
-    if assignment_id = params[:assignment_id]
-      # This is coming from javascript upload activity
-      if error = params[:error]
-        puts "Error during submission upload for assignment " + Assignment.find(assignment_id).name + " by "  + User.find(params[:user_id]).email +
-                 " error: " + params[:error].inspect + ' data: ' + params[:data].inspect
-
-      else
-        puts "Starting submission upload for assignment " + Assignment.find(assignment_id).name + " by "  + User.find(params[:user_id]).email
-      end
-      redirect_to :back and return
-    end
 
     @course = Course.new(params[:course])
 

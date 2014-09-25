@@ -2,7 +2,7 @@ class SubmissionsController < ApplicationController
   before_filter :get_assignment, :get_course
   before_filter :get_evaluations, :only => :show
   load_and_authorize_resource
-  skip_authorization_check :only => [:update]
+  skip_authorization_check :only => [:update, :create]
   helper_method :sort_column, :sort_direction, :key
 
   # GET /submissions
@@ -120,7 +120,33 @@ class SubmissionsController < ApplicationController
 
   # POST /submissions
   # POST /submissions.json
+
+
+  def upload_message
+    # This is coming from javascript upload activity
+    if error = params[:error]
+      puts "Error during submission upload for assignment " + Assignment.find(params[:assignment_id]).name + " by "  + User.find(params[:user_id]).email +
+               " error: " + params[:error].inspect + ' data: ' + params[:data].inspect
+
+    else
+      puts "Starting submission upload for assignment " + Assignment.find(params[:assignment_id]).name + " by "  + User.find(params[:user_id]).email
+    end
+    redirect_to :back
+  end
+
   def create
+    if assignment_id = params[:assignment_id]
+      # This is coming from javascript upload activity
+      if error = params[:error]
+        puts "Error during submission upload for assignment " + Assignment.find(assignment_id).name + " by "  + User.find(params[:user_id]).email +
+                 " error: " + params[:error].inspect + ' data: ' + params[:data].inspect
+
+      else
+        puts "Starting submission upload for assignment " + Assignment.find(assignment_id).name + " by "  + User.find(params[:user_id]).email
+      end
+      redirect_to :back and return
+    end
+
     @submission = Submission.new(params[:submission])
     respond_to do |format|
       if @submission.save
