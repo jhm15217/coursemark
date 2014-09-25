@@ -42,7 +42,7 @@
 <% if @assignment.are_reviewers_assigned and @reviewing_tasks.length > 0 %>
     <div id="reviewing_tasks">
       <% if @reviewing_tasks.length > 0 %>
-          <h3 class='assignment_section_header' style="width:200px;">Reviews by You</h3>
+          <h3 class='assignment_section_header'>Reviews by You</h3>
           <% @reviewing_tasks.each_with_index do |task, index| %>
               <div class="reviewing_task <%= (task.finished?  ? '' : 'highlighted') %> ">
                 <%= link_to course_assignment_submission_path(@course, @assignment, task.submission) do %>
