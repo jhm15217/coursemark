@@ -5,7 +5,7 @@
 <% if !@assignments %>
     No Assignments Yet
 <% else %>
-    <% @assignments.each do |assignment| %>
+    <% @assignments.sort_by{|a| a.submission_due }.each do |assignment| %>
         <a class="assgnToDoName" href="/courses/<%= @course.id %>/assignments/<%= assignment.id %>"><h3><%= assignment.name %> Tasks</h3></a>
         <% if assignment.to_do(current_user).length == 0 then %>
           <div class='allTasksCompleted'>All tasks for <%= assignment.name %> completed.</div>

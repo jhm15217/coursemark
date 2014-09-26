@@ -806,7 +806,7 @@ table.submissions {
     margin-bottom: 1.6em;
 }
 #main input[type=submit], .button {
-    width: automatic;
+    width: auto;
     height: 50px;
     border-radius: 5px;
     border: 1px solid #d5d5d5;
@@ -815,7 +815,7 @@ table.submissions {
     margin-right: 15px;
     margin-bottom: 20px;
     cursor: pointer;
-    padding-top: 13px;
+    padding-top: 5px;
 }
 
 #main input[type=submit] {
@@ -1584,15 +1584,14 @@ th a.current.desc {
 }
 
 #reviewing_tasks {
-    margin-top: 100px;
+    margin-top: 10px;
     margin-right: 20px;
 }
 
 .reviewing_task {
-    float: left;
     background: #FFF;
     padding: 15px 25px 15px 25px;
-    width: auto;
+    width: 300px;
     border-radius: 6px;
     border: 1px solid #DFDFDF;
     margin-right: 21px;
