@@ -88,7 +88,7 @@ class AssignmentsController < ApplicationController
       begin
         open(s.url)
       rescue
-        puts 'Error, missing: ' + s.url + ' User: ' + s.user.name + ' ' + s.user.id.to_s
+        puts 'Error, missing: ' + s.url.inspect + ' User: ' + s.user.name + ' ' + s.user.id.to_s
       end
 
     end
