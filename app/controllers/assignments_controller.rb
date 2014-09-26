@@ -87,7 +87,6 @@ class AssignmentsController < ApplicationController
     Submission.all.each do  |s|
       begin
         open(s.url)
-          puts 'OK: ' +  s.url.inspect + ' User: ' + s.user.name + ' ' + s.user.id.to_s
       rescue
         puts 'Error, missing: ' + s.url.inspect + ' User: ' + s.user.name + ' ' + s.user.id.to_s
       end
