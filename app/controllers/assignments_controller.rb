@@ -84,7 +84,7 @@ class AssignmentsController < ApplicationController
     #   end
     #
     # end
-    Submission.all.each do  |s|
+    @assignment.submissions.each do  |s|
       begin
         open(s.url)
       rescue
