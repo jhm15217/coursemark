@@ -84,14 +84,23 @@ class AssignmentsController < ApplicationController
     #   end
     #
     # end
+    count = 0
     @assignment.submissions.each do  |s|
-      begin
-        open(s.url)
-        puts 'OK: ' + s.url.inspect + ' User: ' + s.user.name + ' ' + s.user.id.to_s
-      rescue
-        puts 'Error, missing: ' + s.url.inspect + ' User: ' + s.user.name + ' ' + s.user.id.to_s
-      end
+     if test_file(s)
+       count += 1
+     end
+    end
+    puts "Successful opens: " + count.to_s
+  end
 
+  def test_file(s)
+    begin
+      s.url = "https:#{s.url}" unless s.url=~/^https?:\/\//
+      open(s.url)
+      true
+    rescue
+      puts 'Error, missing: ' + s.url.inspect + ' User: ' + s.user.name + ' ' + s.user.id.to_s
+      false
     end
   end
 
