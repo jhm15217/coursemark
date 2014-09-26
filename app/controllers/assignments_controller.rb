@@ -78,12 +78,20 @@ class AssignmentsController < ApplicationController
     # @assignment.submissions.each do  |s|
     #   begin
     #     open(s.url)
-    #       puts 'OK: ' + s.url
+    #     puts 'OK: ' + s.url
     #   rescue
     #     puts 'Error, missing: ' + s.url + ' User: ' + s.user.name
     #   end
     #
     # end
+    Submission.all.each do  |s|
+      begin
+        open(s.url)
+      rescue
+        puts 'Error, missing: ' + s.url + ' User: ' + s.user.name + ' ' + s.user.id.to_s
+      end
+
+    end
   end
 
   def vanilla(s)
