@@ -15,13 +15,24 @@ class SubmissionsController < ApplicationController
     @course = Course.find(@assignment.course_id)
     @submissions= @assignment.submissions
     @students =  @assignment.get_participants_in_assignment
+
+    # Avoid sort if nothing has changed
+    any_change = @assignment.sort_direction != sort_direction
     @students.each do |s|
-      s.sort_key = key(s)
-      s.save!(validate: false)
+      new_key =  key(s)
+      if s.sort_key != new_key
+        any_change = true
+        s.sort_key = new_key
+        s.save!(validate: false)
+      end
     end
-    @students.sort! do |a,b|
-      result = a.sort_key <=> b.sort_key
-      sort_direction == 'desc' ? - result : result
+    if any_change
+      @assignment.sort_direction = sort_direction
+      @assignment.save!
+      @students.sort! do |a,b|
+        result = a.sort_key <=> b.sort_key
+        sort_direction == 'desc' ? - result : result
+      end
     end
     respond_to do |format|
       format.html # index.html.erb
@@ -225,7 +236,7 @@ class SubmissionsController < ApplicationController
        @submissions.each{ |s| if s.user_id == user.id and (g = s.grade) then result = g; break end }
        result.to_s
      else   # Section
-       (user.registration_in(@course).section || "Z") + (user.pseudo ? '0' : '1')
+       (user.registration_in(@course).section || "Z")
      end) + (user.pseudo ? '0' : user.instructor?(@course) ? '2' : '1') + user.last_name  + ' ' + user.first_name
   end
 

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140918142924) do
+ActiveRecord::Schema.define(:version => 20140927203018) do
 
   create_table "assignments", :force => true do |t|
     t.datetime "submission_due"
@@ -26,6 +26,7 @@ ActiveRecord::Schema.define(:version => 20140918142924) do
     t.boolean  "reviewers_assigned"
     t.boolean  "team"
     t.integer  "instructor_reviews_required", :default => 0
+    t.string   "sort_direction"
   end
 
   create_table "courses", :force => true do |t|
