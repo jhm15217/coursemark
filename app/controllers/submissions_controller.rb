@@ -17,7 +17,8 @@ class SubmissionsController < ApplicationController
     @students =  @assignment.get_participants_in_assignment
 
     # Avoid sort if nothing has changed
-    any_change = @assignment.sort_direction != sort_direction
+    any_change = @assignment.sort_direction != sort_direction or
+        @assignment.cached_sort.nil? or @assignment.cached_sort.length != @students.length
     @students.each do |s|
       new_key =  key(s)
       if s.sort_key != new_key
@@ -27,12 +28,15 @@ class SubmissionsController < ApplicationController
       end
     end
     if any_change
-      @assignment.sort_direction = sort_direction
-      @assignment.save!
       @students.sort! do |a,b|
         result = a.sort_key <=> b.sort_key
         sort_direction == 'desc' ? - result : result
       end
+      @assignment.sort_direction = sort_direction
+      @assignment.cached_sort =  @students.map{|s| s.id }
+      @assignment.save!
+    else
+      @students = @assignment.cached_sort.map{|user_id| User.find(user_id) }
     end
     respond_to do |format|
       format.html # index.html.erb
