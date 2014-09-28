@@ -2,6 +2,7 @@ class Assignment < ActiveRecord::Base
   require 'csv'
   require 'algorithms'
   include Containers
+  serialize :cached_sort, Array
 
 
   attr_accessible :course_id, :draft, :manual_assignment, :reviewers_assigned, :review_due, :reviews_required
