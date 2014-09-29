@@ -240,7 +240,7 @@ class SubmissionsController < ApplicationController
        @submissions.each{ |s| if s.user_id == user.id and (g = s.grade) then result = g; break end }
        result.to_s
      else   # Section
-       (user.registration_in(@course).section || "Z")
+       (user.registration_in(@course).section || "\177")
      end) + (user.pseudo ? '0' : user.instructor?(@course) ? '2' : '1') + user.last_name  + ' ' + user.first_name
   end
 
