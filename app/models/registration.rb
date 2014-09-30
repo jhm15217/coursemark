@@ -1,10 +1,9 @@
 class Registration < ActiveRecord::Base
-  attr_accessible :active, :course_id, :instructor, :user_id, :course_code, :section
+  attr_accessible :active, :course_id, :instructor, :user_id, :course_code, :section, :sort_key
 
   # Relationships
   belongs_to :user
   belongs_to :course
-  :email, :first_name, :last_name, :password, :password_confirmation, :pseudo
 
   def email
     user.email
@@ -27,16 +26,12 @@ class Registration < ActiveRecord::Base
   end
 
   def save
-    super
-    user.save
+    super and user.save
   end
 
   def save!
-    if super
-      user.save!
-    else
-      false
-    end
+    super and user.save!
+  end
 
   # Helpers
   def name

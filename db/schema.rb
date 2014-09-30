@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140928032558) do
+ActiveRecord::Schema.define(:version => 20140930031627) do
 
   create_table "assignments", :force => true do |t|
     t.datetime "submission_due"
@@ -19,15 +19,15 @@ ActiveRecord::Schema.define(:version => 20140928032558) do
     t.integer  "reviews_required"
     t.boolean  "draft"
     t.integer  "course_id"
-    t.datetime "created_at",                                 :null => false
-    t.datetime "updated_at",                                 :null => false
+    t.datetime "created_at",                                              :null => false
+    t.datetime "updated_at",                                              :null => false
     t.string   "name"
     t.boolean  "manual_assignment"
     t.boolean  "reviewers_assigned"
     t.boolean  "team"
-    t.integer  "instructor_reviews_required", :default => 0
-    t.string   "sort_direction"
-    t.string   "cached_sort"
+    t.integer  "instructor_reviews_required",              :default => 0
+    t.text     "cached_sort"
+    t.integer  "sort_hash",                   :limit => 8
   end
 
   create_table "courses", :force => true do |t|
@@ -136,7 +136,6 @@ ActiveRecord::Schema.define(:version => 20140928032558) do
     t.string   "confirmation_token"
     t.datetime "password_reset_sent_at"
     t.boolean  "pseudo"
-    t.string   "sort_key"
   end
 
 end
