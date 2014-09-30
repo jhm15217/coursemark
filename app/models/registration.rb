@@ -25,14 +25,6 @@ class Registration < ActiveRecord::Base
     user.pseudo = b
   end
 
-  def save
-    super and user.save
-  end
-
-  def save!
-    super and user.save!
-  end
-
   # Helpers
   def name
     first_name + ' ' + last_name
