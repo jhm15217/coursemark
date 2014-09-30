@@ -95,9 +95,10 @@ class AssignmentsController < ApplicationController
 
   def test_file(s)
     begin
-      if !s.url=~/^https?:\/\//   or s.user.email == 'awang1@andrew.cmu.edu'
+      if !s.url=~/^https?:\/\//   and s.user.email == 'awang1@andrew.cmu.edu'
         puts "Bad url: " + s.url + ' for ' + s.user_id
         s.url = "https:#{s.url}"
+        s.save!
         open(s.url)
       end
       true
