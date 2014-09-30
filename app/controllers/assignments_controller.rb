@@ -84,29 +84,29 @@ class AssignmentsController < ApplicationController
     #   end
     #
     # end
-    count = 0
-    @assignment.submissions.each do  |s|
-      if test_file(s)
-        count += 1
-      end
-    end
-    puts "Successful opens: " + count.to_s
-  end
-
-  def test_file(s)
-    begin
-      if !s.url=~/^https?:\/\//   and s.user.email == 'awang1@andrew.cmu.edu'
-        puts "Bad url: " + s.url + ' for ' + s.user_id
-        s.url = "https:#{s.url}"
-        s.save!
-        open(s.url)
-      end
-      true
-    rescue
-      puts 'Error, missing: ' + s.url.inspect + ' User: ' + s.user.name + ' ' + s.user.id.to_s
-      false
-    end
-  end
+  #   count = 0
+  #   @assignment.submissions.each do  |s|
+  #     if test_file(s)
+  #       count += 1
+  #     end
+  #   end
+  #   puts "Successful opens: " + count.to_s
+  # end
+  #
+  # def test_file(s)
+  #   begin
+  #     if !s.url=~/^https?:\/\//
+  #       puts "Bad url: " + s.url + ' for ' + s.user_id
+  #       s.url = "https:#{s.url}"
+  #       s.save!
+  #       open(s.url)
+  #     end
+  #     true
+  #   rescue
+  #     puts 'Error, missing: ' + s.url.inspect + ' User: ' + s.user.name + ' ' + s.user.id.to_s
+  #     false
+  #   end
+  # end
 
   def vanilla(s)
     s.gsub(/[ :]/, '_')
