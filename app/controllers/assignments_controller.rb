@@ -84,15 +84,15 @@ class AssignmentsController < ApplicationController
     #   end
     #
     # end
-  #   count = 0
-  #   @assignment.submissions.each do  |s|
-  #     if test_file(s)
-  #       count += 1
-  #     end
-  #   end
-  #   puts "Successful opens: " + count.to_s
-  # end
-  #
+    # count = 0
+    # @assignment.submissions.each do  |s|
+    #   if test_file(s)
+    #     count += 1
+    #   end
+    # end
+    # puts "Successful opens: " + count.to_s
+  end
+
   # def test_file(s)
   #   begin
   #     if !s.url=~/^https?:\/\//
