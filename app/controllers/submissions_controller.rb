@@ -21,6 +21,8 @@ class SubmissionsController < ApplicationController
     sortable = registrations.map { |r|  { registration: r, sort_key: key(r) } }
     current_hash = Zlib.crc32(sort_direction + current_user.email +
                                   sortable.map{|record| record[:registration].id.to_s + record[:sort_key]}.reduce(:+))
+    puts "Current: " + current_hash.to_s + ' Stored: ' + @assignment.sort_hash.to_s
+    pust 'Sort: ' +   @assignment.cached_sort.inspect
     if current_hash == @assignment.sort_hash
       @students = @assignment.cached_sort.map{|r_id| Registration.find(r_id).user }
     else
