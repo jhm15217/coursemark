@@ -22,10 +22,11 @@
 
 <table>
   <tr>
-    <th>Name</th>
+    <th><%= sortable 'Name' %></th>
+    <th><%= sortable 'Email' %></th>
+    <th><%= sortable 'ID' %></th>
+    <th><%= sortable 'Section' %></th>
     <th>Type</th>
-    <th>Email</th>
-    <th>Section</th>
     <th>&nbsp;</th>
     <th>&nbsp;</th>
   </tr>
@@ -33,9 +34,10 @@
   <% @registrations.each do |registration| %>
       <tr>
         <td><%= registration.active ? registration.user.name : "<div style='color:red'>#{registration.user.name}</div>".html_safe %></td>
-        <td><%= registration.instructor ? 'Instructor' : registration.user.pseudo ? 'Team' : 'Student' %></td>
         <td><%= registration.user.email %></td>
+        <td><%= registration.user.id.to_s %></td>
         <td><%= registration.section %></td>
+        <td><%= registration.instructor ? 'Instructor' : registration.user.pseudo ? 'Team' : 'Student' %></td>
         <td><%= unless registration.user.email == 'admin@email.com' then link_to 'Remove', registration, method: :delete,
                                                               data: { confirm: 'Are you sure you wish to remove this student from the course?' } end %></td>
         <td>

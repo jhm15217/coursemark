@@ -2,6 +2,7 @@ class RegistrationsController < ApplicationController
   require 'csv'
   skip_before_filter :get_assignments, :except => [:index]
   load_and_authorize_resource :except => [:add_to_course_staff, :invite_students]
+  helper_method :sort_column, :sort_direction, :key
 
   # Exception Handling
   class InvalidCourse < StandardError
@@ -17,9 +18,14 @@ class RegistrationsController < ApplicationController
   def index
     @course = params[:course] ? Course.find(params[:course]) :  current_user.courses.last
     @assignments = @course.assignments
-    @registrations = sorted_registrations(@course.registrations)
     @template = "registrations/roster"
 
+    sortable = @course.registrations.map { |r|  { registration: r, sort_key: key(r) } }
+    sortable.sort! do |a,b|
+      result = a[:sort_key] <=> b[:sort_key]
+      sort_direction == 'desc' ? - result : result
+    end
+    @registrations = sortable.map{|record| record[:registration] }
     respond_to do |format|
       format.html #index.html
       format.json { render json: @registrations }
@@ -35,8 +41,8 @@ class RegistrationsController < ApplicationController
 
 
 
-  # GET /registrations/1
-  # GET /registrations/1.json
+# GET /registrations/1
+# GET /registrations/1.json
   def show
     @registration = Registration.find(params[:id])
 
@@ -46,8 +52,8 @@ class RegistrationsController < ApplicationController
     end
   end
 
-  # GET /registrations/new
-  # GET /registrations/new.json
+# GET /registrations/new
+# GET /registrations/new.json
   def new
     @registration = Registration.new
 
@@ -57,7 +63,7 @@ class RegistrationsController < ApplicationController
     end
   end
 
-  # GET /registrations/1/edit
+# GET /registrations/1/edit
   def edit
     @registration = Registration.find(params[:id])
   end
@@ -76,7 +82,7 @@ class RegistrationsController < ApplicationController
   def invite_students
     @course = Course.find(params[:course])
     params[:response][:invites].split("\r\n").each do |line|
-        invite_student(line.split(",").map{|s| clean_csv_item(s)})
+      invite_student(line.split(",").map{|s| clean_csv_item(s)})
     end
     redirect_to :back
   end
@@ -96,8 +102,8 @@ class RegistrationsController < ApplicationController
   end
 
 
-  # POST /registrations
-  # POST /registrations.json
+# POST /registrations
+# POST /registrations.json
   def create
     @registration = Registration.new(params[:registration])
     @registration.active = true;
@@ -124,8 +130,8 @@ class RegistrationsController < ApplicationController
     end
   end
 
-  # PUT /registrations/1
-  # PUT /registrations/1.json
+# PUT /registrations/1
+# PUT /registrations/1.json
   def update
     @registration = Registration.find(params[:id])
 
@@ -140,8 +146,8 @@ class RegistrationsController < ApplicationController
     end
   end
 
-  # DELETE /registrations/1
-  # DELETE /registrations/1.json
+# DELETE /registrations/1
+# DELETE /registrations/1.json
   def destroy
     @registration = Registration.find(params[:id])
     @course = @registration.course
