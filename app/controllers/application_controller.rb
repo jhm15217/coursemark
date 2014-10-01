@@ -123,7 +123,7 @@ class ApplicationController < ActionController::Base
      elsif sort_column == 'Grade'
        result = 0
        @submissions.each{ |s| if s.user_id == registration.user.id and (g = s.grade) then result = g; break end }
-       result.to_s.rjust(3,"0")
+       result.round.to_s.rjust(3,"0")
      elsif sort_column == 'ID'
        registration.user.id.to_s.rjust(3,'0')
      else   # Section
