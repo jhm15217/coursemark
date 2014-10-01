@@ -19,11 +19,12 @@ class SubmissionsController < ApplicationController
 
     # Avoid sort if nothing has changed
     sortable = registrations.map { |r|  { registration: r, sort_key: key(r) } }
-    current_hash = Zlib.crc32(sort_direction + current_user.name +
+    current_hash = Zlib.crc32(sort_direction + current_user.email +
                                   sortable.map{|record| record[:registration].id.to_s + record[:sort_key]}.reduce(:+))
     if current_hash == @assignment.sort_hash
       @students = @assignment.cached_sort.map{|r_id| Registration.find(r_id).user }
     else
+      puts 'Sorting submissions for ' + current_user.email
       sortable.sort! do |a,b|
         result = a[:sort_key] <=> b[:sort_key]
         sort_direction == 'desc' ? - result : result
@@ -212,31 +213,5 @@ class SubmissionsController < ApplicationController
   end
 
   private
-
-  def sort_column
-    params[:sort]
-  end
-
-  def sort_direction
-    %w[asc desc].include?(params[:direction]) ? params[:direction] : "asc"
-  end
-
-  def key(registration)
-    (if sort_column == 'Email'
-       registration.email
-     elsif sort_column == "Name"
-       ''
-     elsif sort_column == 'Submitted'
-       result = Time.zone.now
-       @submissions.each{ |s| if s.user_id == registration.user.id then result =  s.created_at; break end }
-       result.strftime('%y%m%d%H%M%S')
-     elsif sort_column == 'Grade'
-       result = 0
-       @submissions.each{ |s| if s.user_id == registration.user.id and (g = s.grade) then result = g; break end }
-       result.to_s
-     else   # Section
-       (registration.section || "\177")
-     end) + (registration.pseudo ? '0' : registration.instructor?(@course) ? '2' : '1') + registration.last_name  + ' ' + registration.first_name
-  end
 
 end

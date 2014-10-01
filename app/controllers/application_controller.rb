@@ -103,6 +103,37 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def sort_column
+    params[:sort]
+  end
+
+  def sort_direction
+    %w[asc desc].include?(params[:direction]) ? params[:direction] : "asc"
+  end
+
+  def key(registration)
+    (if sort_column == 'Email'
+       registration.email
+     elsif sort_column == "Name"
+       ''
+     elsif sort_column == 'Submitted'
+       result = Time.zone.now
+       @submissions.each{ |s| if s.user_id == registration.user.id then result =  s.created_at; break end }
+       result.strftime('%y%m%d%H%M%S')
+     elsif sort_column == 'Grade'
+       result = 0
+       @submissions.each{ |s| if s.user_id == registration.user.id and (g = s.grade) then result = g; break end }
+       result.to_s.rjust(3,"0")
+     elsif sort_column == 'ID'
+       registration.user.id.to_s.rjust(3,'0')
+     else   # Section
+       (registration.section || "\177")
+     end) + (registration.pseudo ? '0' : registration.instructor?(@course) ? '2' : '1') + registration.last_name  + ' ' + registration.first_name
+
+  end
+
+
+
 
   private
 
