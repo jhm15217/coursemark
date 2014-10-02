@@ -30,7 +30,7 @@ class SubmissionsController < ApplicationController
       end
       @assignment.sort_hash = current_hash
       @assignment.cached_sort =  sortable.map{|record| record[:registration].id }
-      @assignment.save!
+#      @assignment.save!
       @students = sortable.map{|record| record[:registration].user }
     end
     respond_to do |format|
