@@ -21,12 +21,9 @@ class SubmissionsController < ApplicationController
     sortable = registrations.map { |r|  { registration: r, sort_key: key(r) } }
     current_hash = Zlib.crc32(sort_direction + current_user.email +
                                   sortable.map{|record| record[:registration].id.to_s + record[:sort_key]}.reduce(:+))
-    puts "Current: " + current_hash.to_s + ' Stored: ' + @assignment.sort_hash.to_s
-    puts 'Sort: ' +   @assignment.cached_sort.inspect
     if current_hash == @assignment.sort_hash
       @students = @assignment.cached_sort.map{|r_id| Registration.find(r_id).user }
     else
-      puts 'Sorting submissions for ' + current_user.email
       sortable.sort! do |a,b|
         result = a[:sort_key] <=> b[:sort_key]
         sort_direction == 'desc' ? - result : result
@@ -57,25 +54,30 @@ class SubmissionsController < ApplicationController
       @submission.save!
       if @submission.instructor_approved
         redirect_to  (course_assignment_path({id: params[:assignment_id]} )) + '/submissions'
+        return
       else
         respond_to do |format|
           format.html { render :layout => 'no_sidebar' }
           format.json { render json: @submission }
         end
+        return
       end
     elsif params[:finish]
       if evaluation.finished    # The reviewer is withdrawing the review
         evaluation.finished = false
         evaluation.save!
         redirect_to  :back
+        return
       else
         if evaluation.is_complete?
           evaluation.finished = true
           evaluation.save!
           redirect_to  course_assignment_path ({id: params[:assignment_id]} )
+          return
         else
           flash[:error] = "You can't publish unless all ratings and required comments have been done."
           redirect_to :back
+          return
         end
       end
     else # it's a student who submitted it or is completing  or seeing a review of someone else
@@ -84,6 +86,7 @@ class SubmissionsController < ApplicationController
         format.html { render (params[:instructor_review_of] ? 'show_review' : 'show'), :layout => 'no_sidebar' }
         format.json { render json: @submission }
       end
+      return
     end
   end
 
