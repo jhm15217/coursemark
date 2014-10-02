@@ -16,23 +16,24 @@ class SubmissionsController < ApplicationController
     @course = Course.find(@assignment.course_id)
     @submissions= @assignment.submissions
     registrations =  @course.registrations
+    @students = registrations.sort_by{|r| r.section }.map{|r| r.user }
 
-    # Avoid sort if nothing has changed
-    sortable = registrations.map { |r|  { registration: r, sort_key: key(r) } }
-    current_hash = Zlib.crc32(sort_direction + current_user.email +
-                                  sortable.map{|record| record[:registration].id.to_s + record[:sort_key]}.reduce(:+))
-    if current_hash == @assignment.sort_hash
-      @students = @assignment.cached_sort.map{|r_id| Registration.find(r_id).user }
-    else
-      sortable.sort! do |a,b|
-        result = a[:sort_key] <=> b[:sort_key]
-        sort_direction == 'desc' ? - result : result
-      end
-      @assignment.sort_hash = current_hash
-      @assignment.cached_sort =  sortable.map{|record| record[:registration].id }
-#      @assignment.save!
-      @students = sortable.map{|record| record[:registration].user }
-    end
+    # # Avoid sort if nothing has changed
+    # sortable = registrations.map { |r|  { registration: r, sort_key: key(r) } }
+    # current_hash = Zlib.crc32(sort_direction + current_user.email +
+    #                               sortable.map{|record| record[:registration].id.to_s + record[:sort_key]}.reduce(:+))
+    # if current_hash == @assignment.sort_hash
+    #   @students = @assignment.cached_sort.map{|r_id| Registration.find(r_id).user }
+    # else
+    #   sortable.sort! do |a,b|
+    #     result = a[:sort_key] <=> b[:sort_key]
+    #     sort_direction == 'desc' ? - result : result
+    #   end
+    #   @assignment.sort_hash = current_hash
+    #   @assignment.cached_sort =  sortable.map{|record| record[:registration].id }
+    #   @assignment.save!
+    #   @students = sortable.map{|record| record[:registration].user }
+    # end
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @submissions }
