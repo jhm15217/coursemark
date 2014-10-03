@@ -13,8 +13,6 @@ class SubmissionsController < ApplicationController
       raise CanCan::AccessDenied.new("Not authorized!")
     end
 
-    @course = Course.find(@assignment.course_id)
-    @submissions= @assignment.submissions
     registrations =  @course.registrations
     @students = registrations.sort_by{|r| (r.section || "\177") + r.last_name + ' ' + r.first_name }.map{|r| r.user }
 
