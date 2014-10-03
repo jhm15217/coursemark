@@ -90,7 +90,7 @@
                     </div> <!-- end submissionQuestionBox -->
                 <% end %>
             <% end %>  <!-- question loop -->
-            <% if !@submitter and !@submission.instructor_approved?  %>
+            <% if !@submitter and !@submission.instructor_approved? and !@kibitzing %>
                 <div>
                   <%= link_to course_assignment_submission_path(@course, @assignment, @submission, finish: true) do %>
                       <div id='submitFormsButton' class='button'>Withdraw Review</div>
