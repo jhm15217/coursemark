@@ -16,7 +16,7 @@ class SubmissionsController < ApplicationController
     @course = Course.find(@assignment.course_id)
     @submissions= @assignment.submissions
     registrations =  @course.registrations
-    @students = registrations.sort_by{|r| r.section || "\177"}.map{|r| r.user }
+    @students = registrations.sort_by{|r| (r.section || "\177") + r.last_name + ' ' + r.first_name }.map{|r| r.user }
 
     # # Avoid sort if nothing has changed
     # sortable = registrations.map { |r|  { registration: r, sort_key: key(r) } }
