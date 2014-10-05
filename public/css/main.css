@@ -1262,7 +1262,7 @@ th a.current.desc {
 }
 
 #submissionPDFWrapper {
-  width: 62%;
+  width: 65%;
   height: -moz-calc(100% - 39px);
   height: calc(100% - 39px);
   min-height: 400px;
