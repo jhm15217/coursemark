@@ -10,10 +10,7 @@
         </select>
     <% end %>
     <% if !@submission.url.blank?  %>
-        <% if Time.zone.now < @assignment.submission_due %>
-            <%= link_to 'This file', @submission.url, :target => "_blank" %> has been submitted.<br />
-            You may re-submit until the deadline on <%= @assignment.submission_due.strftime('%A (%-m/%-d) at %I:%M %p') %>.
-        <% end %>
+            <%= link_to 'This file', @submission.url, :target => "_blank" %> has been submitted. You may re-submit.
     <% end %>
     <div class="field">
       <%= f.file_field :url, :accept => 'application/pdf', :required => true, :style => 'border: 0px' %>
