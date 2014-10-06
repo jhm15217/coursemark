@@ -16,7 +16,7 @@
     Assignment released
     <% end %> -->
 
-<% if Time.zone.now < @assignment.submission_due or (Time.zone.now < @assignment.review_due and @submissions.length == 0) %>    <!-- allow late submissions if none done -->
+<% if !@assignment.are_reviewers_assigned or (Time.zone.now < @assignment.review_due and @submissions.length == 0) %>    <!-- allow late submissions if none done -->
     <%= render 'submission' %>
 <% end %>
 
