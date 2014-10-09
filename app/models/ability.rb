@@ -54,6 +54,10 @@ class Ability
       user.email == 'admin@email.com'
     end
 
+    can :manage, User do |c|
+      user.email == 'admin@email.com'
+    end
+
     #instructors
 
     can :manage, Assignment do |a|
