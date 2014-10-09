@@ -2,16 +2,13 @@ class UsersController < ApplicationController
 	skip_before_filter :require_login, :except => [:edit]
 	load_and_authorize_resource
 
-  def index
-  end
-
   def all_users
     @course = Course.all[0]
   end
 
   def destroy
-    Memberships.each{|m| if m.pseudo_user_id == self.id then m.destroy end }
-    User.find(params[:id]).destroy
+    Membership.all.each{|m| if m.pseudo_user_id == @user.id then m.destroy end }
+    @user.destroy
     respond_to do |format|
       format.html { redirect_to :back }
       format.json { head :no_content }

@@ -1,5 +1,6 @@
 class UserSessionsController < ApplicationController
   skip_before_filter :require_login
+  skip_before_filter :get_assignments, only: [:destroy]
   load_and_authorize_resource
 
   def new

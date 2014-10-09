@@ -53,6 +53,11 @@ class MembershipsController < ApplicationController
     @assignment.memberships.each {|membership| membership.destroy }    # Every upload is a complete team designations
 
     params[:response][:teams].split("\r\n").each{ |line| add_teammate(line.split(',').map{|s| clean_csv_item(s)}) }
+    @course.get_real_students.each do |student|
+      if !@assignment.memberships.any?{|membership| membership.user_id == student.id }
+        multi_flash(:notice, 'Student(s) without a team: ', student.email)
+      end
+    end
 
     respond_to do |format|
       format.html { redirect_to course_assignment_memberships_path(@course,@assignment) }

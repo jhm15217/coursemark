@@ -283,10 +283,6 @@ class Assignment < ActiveRecord::Base
   def reviews_required_feasible
     max_team_size = 1
     if team
-      unless self.course.get_real_students.all?{|student| self.memberships.sum{|membership| membership.user_id == student.id ? 1 : 0} >= 1}
-        errors.add(:team, 'Each student must be a member of at least one team.')
-        return false
-      end
       #Figure out max team size
       team_count = Hash.new(0)
       self.memberships.each{|membership| team_count[membership.team] += 1}
