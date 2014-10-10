@@ -207,7 +207,7 @@ class AssignmentsController < ApplicationController
     if !current_user.instructor?(@course)
       return
     end
-    if params[:submission_due_date].blank? or params[:review_due_date].blank?
+    if params[:assignment][:submission_due_date].blank? or params[:assignment][:review_due_date].blank?
       flash[:error] = "Please fill in dates."
       redirect_to :back
       return
