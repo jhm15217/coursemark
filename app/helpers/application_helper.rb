@@ -8,7 +8,11 @@ module ApplicationHelper
   end
 
   def prettifyFloat(x, precision = 0)
-    ("%.#{precision}f" % x)
+    if x
+      ("%.#{precision}f" % x)
+    else
+      '--'
+    end
   end
 
   # Takes in a grade (b/w 50-100),

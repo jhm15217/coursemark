@@ -3,7 +3,7 @@ class AssignmentsController < ApplicationController
   require 'open-uri'
 
   before_filter :get_course
-  load_and_authorize_resource :except => [:new, :create, :update]
+  load_and_authorize_resource :except => [:new, :create]
   skip_authorization_check :only => [:new, :create]
 
   # GET /assignments
@@ -281,6 +281,12 @@ class AssignmentsController < ApplicationController
         end
       end
     else
+      if params[:commit] == 'End All Activity'
+        @assignment.submissions.each do |s|
+          s.instructor_approved = true
+          s.save!
+        end
+      end
       params['assignment']['submission_due_time'] = params['assignment']['submission_due_time(4i)'] + ':' + params['assignment']['submission_due_time(5i)']
       params['assignment'].delete 'submission_due_time(1i)'
       params['assignment'].delete 'submission_due_time(5i)'
