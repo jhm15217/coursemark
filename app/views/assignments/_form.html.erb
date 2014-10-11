@@ -44,15 +44,17 @@
     <div class="field">
       <%= f.label :draft, 'Draft' %>&nbsp;
       <%= f.check_box :draft, value: @assignment.draft %>
-<!--
-      <div class="clearfix"></div>
-      <%= f.submit name: 'publish', value: (@assignment.draft ? 'Publish Assignment' : 'Unpublish Assignment'), :style => 'margin-right: 0px !important' %>
--->
     </div>
     <div class="actions">
       <div class="clearfix"></div>
       <%= f.submit value:'Update' %>
     </div>
+    <% if @assignment.id %>
+        <div class="actioms">
+          <%= f.submit value:'End All Activity' %>
+          <!--<%= link_to 'End All Activity', course_assignment_path(@course, @assignment), method: :end %>-->
+        </div>
+    <% end %>
     <div class="clearfix"></div>
     <% if @assignment.id %>
         <div class="delete">
