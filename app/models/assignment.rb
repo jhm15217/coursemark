@@ -60,7 +60,8 @@ class Assignment < ActiveRecord::Base
           team_ids = user.memberships.select{|m| m.assignment_id == self.id }.map{|m| m.pseudo_user_id }.
               select{|pui| !submissions.any?{|s| s.user_id == pui}}
           team_ids.each{|tid| to_do_list << {action: :submit, team: User.find(tid).name, time: submission_due  }}
-        elsif get_submissions(user)[0].nil?
+        end
+        if team_ids.length == 0 and get_submissions(user)[0].nil?
           to_do_list << {action: :submit, time: submission_due }
         end
       end
