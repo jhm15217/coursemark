@@ -2,13 +2,12 @@
 
 <p id="notice"><%= notice %></p>
 
-<% if !@assignments %>
-    No Assignments Yet
-<% else %>
-    <% @assignments.sort_by{|a| a.submission_due }.each do |assignment| %>
+<% active_assignments = @assignments.select{|a| a.to_do(current_user).length > 0} %>
+<% if active_assignments.length > 0 %>
+    <% active_assignments.sort_by{|a| a.submission_due }.each do |assignment| %>
         <a class="assgnToDoName" href="/courses/<%= @course.id %>/assignments/<%= assignment.id %>"><h3><%= assignment.name %> Tasks</h3></a>
         <% if assignment.to_do(current_user).length == 0 then %>
-          <div class='allTasksCompleted'>All tasks for <%= assignment.name %> completed.</div>
+            <div class='allTasksCompleted'>All tasks for <%= assignment.name %> completed.</div>
         <% end %>
         <% assignment.to_do(current_user).each do |task| %>
             <div class="toDoUl">
@@ -20,17 +19,20 @@
               <% if task[:action] == :submit %>
                   <li><a href="/courses/<%= @course.id %>/assignments/<%= assignment.id %>" >
                     <div class='a_name'>Submit <%= assignment.name + (task[:team] ? ' for ' + task[:team] : '') %> </div>
-                     by <%= task[:time].strftime('%A (%-m/%-d) at %I:%M %p') + remaining  %>
+                    by <%= task[:time].strftime('%A (%-m/%-d) at %I:%M %p') + remaining  %>
                   </a></li>
               <% else %>
                   <li><a href="/courses/<%= @course.id %>/assignments/<%= assignment.id %>/submissions/<%= task[:submission_id] %>" >
                     <div class='a_name'>Complete Review <%= task[:index].to_s %></div>
-                      by <%= task[:time].strftime('%A (%-m/%-d) at %I:%M %p') + remaining  %>
-                    
+                    by <%= task[:time].strftime('%A (%-m/%-d) at %I:%M %p') + remaining  %>
+
                   </a></li>
               <% end %>
             </div>
         <% end %>
     <% end %>
+<% else %>
+    There is nothing to do.
 <% end %>
+
 

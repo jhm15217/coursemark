@@ -3,7 +3,7 @@ class AssignmentsController < ApplicationController
   require 'open-uri'
 
   before_filter :get_course
-  load_and_authorize_resource :except => [:new, :create, :update]
+  load_and_authorize_resource :except => [:new, :create, :update ]
   skip_authorization_check :only => [:new, :create]
 
   # GET /assignments
@@ -204,11 +204,11 @@ class AssignmentsController < ApplicationController
   # POST /assignments
   # POST /assignments.json
   def create
-    if !current_user.instructor?(@course)
+    unless current_user.instructor?(@course)
       return
     end
     if params[:assignment][:submission_due_date].blank? or params[:assignment][:review_due_date].blank?
-      flash[:error] = "Please fill in dates."
+      flash[:error] = 'Please fill in dates.'
       redirect_to :back
       return
     end
@@ -280,7 +280,7 @@ class AssignmentsController < ApplicationController
           format.json { render json: @assignment.errors, status: :unprocessable_entity }
         end
       end
-    else
+    elsif current_user.instructor?(@course)
       if params[:commit] == 'End All Activity'
         @assignment.submissions.each do |s|
           s.instructor_approved = true
