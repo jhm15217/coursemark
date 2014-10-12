@@ -56,6 +56,7 @@ class Assignment < ActiveRecord::Base
     to_do_list = []
     unless draft
       if Time.zone.now < review_due     # allow late submissions
+        team_ids = []
         if team
           team_ids = user.memberships.select{|m| m.assignment_id == self.id }.map{|m| m.pseudo_user_id }.
               select{|pui| !submissions.any?{|s| s.user_id == pui}}
