@@ -26,7 +26,7 @@ class CoursesController < ApplicationController
     @course = Course.find(params[:id])
     current_user.registrations.each{|r| if r.course_id == @course.id  then r.active = true; r.save! end }
     Assignment.order(:submission_due)
-    @assignments = @course.assignments
+    @assignments = @course.assignments.select{|a| !a.draft or current_user.instructor?(@course) }
 
     respond_to do |format|
       if current_user.instructor?(@course)
