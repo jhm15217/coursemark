@@ -3,7 +3,7 @@ class AssignmentsController < ApplicationController
   require 'open-uri'
 
   before_filter :get_course
-  load_and_authorize_resource :except => [:new, :create]
+  load_and_authorize_resource :except => [:new, :create, :update]
   skip_authorization_check :only => [:new, :create]
 
   # GET /assignments
