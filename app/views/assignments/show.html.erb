@@ -50,7 +50,7 @@
                     <%= ' Review ' + (index + 1).to_s %>
                     <% if Time.now < @assignment.review_due %>
                       <% review_time_is = @assignment.review_due.strftime('%A (%-m/%-d) at %I:%M %p</span>') %>
-                      <%= task.finished? ? ((e = task.submission.evaluations.select{|e| e.finished }.length) > 0 ? ("#{e.to_s} review(s)").html_safe : '') : ("<span>by #{review_time_is}</span>").html_safe %>
+                      <%= task.finished? ? ((e = task.submission.evaluations.select{|e| e.finished }.length) > 0 ? ("<span>#{e.to_s} review(s)</span>").html_safe : '') : ("<span>by #{review_time_is}</span>").html_safe %>
                     <% end %>
                 <% end %>
               </div>
