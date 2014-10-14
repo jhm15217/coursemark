@@ -1259,6 +1259,16 @@ th a.current.desc {
 
 #submissionHeader a {
     float: left;
+    color: #9A9A9A;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.assignment_back_btn {
+    padding-left: 20px;
+    background: url(../img/arrow_left.png) no-repeat left center;
+    background-size: 15px 15px;
+    background-position-y: 1px;
 }
 
 #submissionPDFWrapper {
@@ -1287,9 +1297,16 @@ th a.current.desc {
     padding: 17px 17px 17px 17px;
     overflow: hidden;
 }
+
 #submissionDownloadBtn {
   position: absolute;
   right: 36px;
+}
+
+div#submissionDownloadBtn a {
+    color: #9A9A9A;
+    text-decoration: none;
+    font-weight: 500;
 }
 
 #submissionsWrapper {
@@ -1320,6 +1337,10 @@ th a.current.desc {
     display: block;
     width: 100%;
     height: 100%;
+}
+
+#submissionBoxesWrapper a {
+    text-decoration: none;
 }
 
 .submissionQuestionBox, .submissionGradeBox {
@@ -1431,7 +1452,9 @@ th a.current.desc {
 
 #submitFormsButton {
     width:100%; 
-    margin-top:50px;
+    margin-top:20px;
+    color:#333;
+    line-height: 40px;
 }
 
 
