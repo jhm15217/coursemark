@@ -1270,6 +1270,7 @@ th a.current.desc {
   float: left;
   margin-left: -60px;
   position: absolute;
+  overflow-x: scroll;
   border-right: 1px solid #DFDFDF;
 }
 
@@ -1292,7 +1293,7 @@ th a.current.desc {
 }
 
 #submissionsWrapper {
-   width: 35.5%;
+   width: 35%;
    float: right;
    overflow: scroll;
    height: 100%;
