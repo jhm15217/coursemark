@@ -2,7 +2,7 @@
 <% instructor = (@user.instructor?(@course) or current_user.instructor?(@course)) %>
 <div id='submissionHeader'>
   <small style='display:block; float:left; margin-top:-18px; width:100%;'>
-    <%= link_to "&larr; #{@submission.assignment.name}".html_safe , course_assignment_path(@course, @assignment) %>
+    <%= link_to "#{@submission.assignment.name}".html_safe , course_assignment_path(@course, @assignment), :class => "assignment_back_btn" %>
     <h1 class="name"> <% if instructor %><%= @submission.user.name %><% end %></h1>
     <% if @submission and @submission.url and !@submission.url.blank? %>
         <div id='submissionDownloadBtn'>
