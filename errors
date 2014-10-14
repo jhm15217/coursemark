@@ -1,0 +1,47 @@
+2014-10-08T23:40:05.042253+00:00 app[web.1]: ActionController::RoutingError (No route matches [POST] "/courses/19/assignments/29/questions/130/responses/16053"):
+2014-10-12T03:21:35.871680+00:00 app[web.1]: ActionView::Template::Error (undefined method `length' for nil:NilClass):
+2014-10-12T03:21:35.867635+00:00 app[web.1]: Completed 500 Internal Server Error in 1015ms
+2014-10-12T03:21:37.350368+00:00 app[web.1]: ActionView::Template::Error (undefined method `length' for nil:NilClass):
+2014-10-12T03:21:37.348072+00:00 app[web.1]: Completed 500 Internal Server Error in 920ms
+2014-10-12T03:21:48.734766+00:00 app[web.1]: ActionView::Template::Error (undefined method `length' for nil:NilClass):
+2014-10-12T03:21:48.732643+00:00 app[web.1]: Completed 500 Internal Server Error in 318ms
+2014-10-12T03:21:53.933477+00:00 app[web.1]: Completed 500 Internal Server Error in 423ms
+2014-10-12T03:21:53.935693+00:00 app[web.1]: ActionView::Template::Error (undefined method `length' for nil:NilClass):
+2014-10-12T03:21:56.487340+00:00 app[web.1]: Completed 500 Internal Server Error in 342ms
+2014-10-12T03:21:56.490203+00:00 app[web.1]: ActionView::Template::Error (undefined method `length' for nil:NilClass):
+2014-10-12T03:21:57.585902+00:00 app[web.1]: Completed 500 Internal Server Error in 329ms
+2014-10-12T03:21:57.587845+00:00 app[web.1]: ActionView::Template::Error (undefined method `length' for nil:NilClass):
+2014-10-12T03:22:45.632943+00:00 app[web.1]: Error during submission upload for assignment Log Analysis by skazi@andrew.cmu.edu: fileuploadfail
+2014-10-12T03:23:07.676427+00:00 heroku[web.1]: Error R12 (Exit timeout) -> At least one process failed to exit within 10 seconds of SIGTERM
+2014-10-12T03:23:21.974615+00:00 app[web.1]: ActionView::Template::Error (undefined method `length' for nil:NilClass):
+2014-10-12T03:23:21.972275+00:00 app[web.1]: Completed 500 Internal Server Error in 2678ms
+2014-10-12T03:23:39.061026+00:00 app[web.1]: Completed 500 Internal Server Error in 388ms
+2014-10-12T03:23:39.063010+00:00 app[web.1]: ActionView::Template::Error (undefined method `length' for nil:NilClass):
+2014-10-12T03:23:39.640894+00:00 app[web.1]: Completed 500 Internal Server Error in 306ms
+2014-10-12T03:23:39.643877+00:00 app[web.1]: ActionView::Template::Error (undefined method `length' for nil:NilClass):
+2014-10-12T03:23:42.935340+00:00 app[web.1]: Completed 500 Internal Server Error in 488ms
+2014-10-12T03:23:42.937818+00:00 app[web.1]: ActionView::Template::Error (undefined method `length' for nil:NilClass):
+2014-10-12T03:23:46.256501+00:00 app[web.1]: Completed 500 Internal Server Error in 433ms
+2014-10-12T03:23:46.259183+00:00 app[web.1]: ActionView::Template::Error (undefined method `length' for nil:NilClass):
+2014-10-12T03:24:16.020649+00:00 app[web.1]: Completed 500 Internal Server Error in 315ms
+2014-10-12T03:24:16.025404+00:00 app[web.1]: ActionView::Template::Error (undefined method `length' for nil:NilClass):
+2014-10-12T03:24:23.624756+00:00 app[web.1]: Completed 500 Internal Server Error in 422ms
+2014-10-12T03:24:23.627343+00:00 app[web.1]: ActionView::Template::Error (undefined method `length' for nil:NilClass):
+2014-10-12T03:24:38.178807+00:00 app[web.1]: Completed 500 Internal Server Error in 336ms
+2014-10-12T03:24:38.182192+00:00 app[web.1]: ActionView::Template::Error (undefined method `length' for nil:NilClass):
+2014-10-12T03:27:29.179842+00:00 app[web.1]: Error during submission upload for assignment Log Analysis by skazi@andrew.cmu.edu: fileuploadfail
+2014-10-12T03:27:57.950870+00:00 app[web.1]: ActionController::RoutingError (No route matches [POST] "/courses/19/assignments/30"):
+2014-10-12T03:32:37.348101+00:00 app[web.1]: Error during submission upload for assignment Log Analysis by abelak@andrew.cmu.edu: fileuploadfail
+2014-10-12T03:32:58.331014+00:00 app[web.1]: Error, wonky url: #<ActionDispatch::Http::UploadedFile:0x00000005fcdac8 @original_filename="Log_Analysis_Submit.pdf", @content_type="application/pdf", @headers="Content-Disposition: form-data; name=\"assignment[url]\"; filename=\"Log_Analysis_Submit.pdf\"\r\nContent-Type: application/pdf\r\n", @tempfile=#<File:/tmp/RackMultipart20141012-8-opytwc>> for abelak@andrew.cmu.edu
+2014-10-12T05:42:56.980481+00:00 app[web.1]: Error during submission upload for assignment Log Analysis by prasannc@andrew.cmu.edu: fileuploadfail
+2014-10-12T05:42:57.002948+00:00 app[web.1]: Error, wonky url: #<ActionDispatch::Http::UploadedFile:0x00000003fd4aa0 @original_filename="log_analysis.pdf", @content_type="application/pdf", @headers="Content-Disposition: form-data; name=\"assignment[url]\"; filename=\"log_analysis.pdf\"\r\nContent-Type: application/pdf\r\n", @tempfile=#<File:/tmp/RackMultipart20141012-11-1lsmtqi>> for prasannc@andrew.cmu.edu
+2014-10-12T21:49:13.194165+00:00 app[web.1]: Error during submission upload for assignment Log Analysis by westin@cmu.edu: fileuploadfail
+2014-10-12T22:25:52.878644+00:00 app[web.1]: ActionController::RoutingError (No route matches [GET] "/css"):
+2014-10-12T22:29:58.800770+00:00 app[web.1]: Error during submission upload for assignment Log Analysis by eei@andrew.cmu.edu: fileuploadfail
+2014-10-13T00:02:14.974512+00:00 app[web.1]: Error during submission upload for assignment Log Analysis by minak@andrew.cmu.edu: fileuploadfail
+2014-10-13T01:31:57.589277+00:00 app[web.1]: Error during submission upload for assignment Log Analysis by mengshi@andrew.cmu.edu: fileuploadfail
+2014-10-13T01:37:22.687877+00:00 app[web.1]: Error during submission upload for assignment Log Analysis by hlb@andrew.cmu.edu: fileuploadfail
+2014-10-13T01:46:19.818396+00:00 app[web.1]: Error during submission upload for assignment Log Analysis by kchon@andrew.cmu.edu: fileuploadfail
+2014-10-13T01:46:24.705546+00:00 app[web.1]: Error, wonky url: #<ActionDispatch::Http::UploadedFile:0x0000000619c868 @original_filename="Log Analysis_Kristen Chon.pdf", @content_type="application/pdf", @headers="Content-Disposition: form-data; name=\"assignment[url]\"; filename=\"Log Analysis_Kristen Chon.pdf\"\r\nContent-Type: application/pdf\r\n", @tempfile=#<File:/tmp/RackMultipart20141013-8-jftixm>> for kchon@andrew.cmu.edu
+2014-10-13T01:47:16.437330+00:00 app[web.1]: Error during submission upload for assignment Log Analysis by minak@andrew.cmu.edu: fileuploadfail
+2014-10-13T01:47:38.896520+00:00 app[web.1]: Error during submission upload for assignment Log Analysis by minak@andrew.cmu.edu: fileuploadfail
