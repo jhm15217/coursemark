@@ -49,6 +49,7 @@ end
 group :production do
   gem 'unicorn'
   gem 'rails_12factor'
+  gem 'newrelic_rpm'
 end
 
 # Gems used only for assets and not required
