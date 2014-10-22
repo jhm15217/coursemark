@@ -281,6 +281,7 @@ class AssignmentsController < ApplicationController
         end
       end
     elsif current_user.instructor?(@course)
+      @assignment =  Assignment.find(params[:id])
       if params[:commit] == 'End All Activity'
         @assignment.submissions.each do |s|
           s.instructor_approved = true

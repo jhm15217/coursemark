@@ -49,7 +49,6 @@ end
 group :production do
   gem 'unicorn'
   gem 'rails_12factor'
-  gem 'newrelic_rpm'
 end
 
 # Gems used only for assets and not required
@@ -76,5 +75,6 @@ gem 'scrypt', '1.2.1'
 gem 'jquery_datepicker'
 gem 'turbolinks'
 gem 'request_store'
+gem 'newrelic_rpm'
 
 ruby '1.9.3'
