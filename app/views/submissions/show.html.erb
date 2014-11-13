@@ -1,8 +1,25 @@
 <!-- This should show the review of a submission regardless of who is asking for it-- instructor, submitter, or reviewer -->
+
+<script>
+// Highjack the back button
+var bajb_backdetect={Version:'1.0.0',Description:'Back Button Detection',Browser:{IE:!!(window.attachEvent&&!window.opera),Safari:navigator.userAgent.indexOf('Apple')>-1,Opera:!!window.opera},FrameLoaded:0,FrameTry:0,FrameTimeout:null,OnBack:function(){alert('Back Button Clicked')},BAJBFrame:function(){var BAJBOnBack=document.getElementById('BAJBOnBack');if(bajb_backdetect.FrameLoaded>1){if(bajb_backdetect.FrameLoaded==2){bajb_backdetect.OnBack();history.back()}}bajb_backdetect.FrameLoaded++;if(bajb_backdetect.FrameLoaded==1){if(bajb_backdetect.Browser.IE){bajb_backdetect.SetupFrames()}else{bajb_backdetect.FrameTimeout=setTimeout("bajb_backdetect.SetupFrames();",700)}}},SetupFrames:function(){clearTimeout(bajb_backdetect.FrameTimeout);var BBiFrame=document.getElementById('BAJBOnBack');var checkVar=BBiFrame.src.substr(-11,11);if(bajb_backdetect.FrameLoaded==1&&checkVar!="HistoryLoad"){BBiFrame.src="blank.html?HistoryLoad"}else{if(bajb_backdetect.FrameTry<2&&checkVar!="HistoryLoad"){bajb_backdetect.FrameTry++;bajb_backdetect.FrameTimeout=setTimeout("bajb_backdetect.SetupFrames();",700)}}},SafariHash:'false',Safari:function(){if(bajb_backdetect.SafariHash=='false'){if(window.location.hash=='#b'){bajb_backdetect.SafariHash='true'}else{window.location.hash='#b'}setTimeout("bajb_backdetect.Safari();",100)}else if(bajb_backdetect.SafariHash=='true'){if(window.location.hash==''){bajb_backdetect.SafariHash='back';bajb_backdetect.OnBack();history.back()}else{setTimeout("bajb_backdetect.Safari();",100)}}},Initialise:function(){if(bajb_backdetect.Browser.Safari){setTimeout("bajb_backdetect.Safari();",600)}else{document.write('<iframe src="blank.html" style="display:none;" id="BAJBOnBack" onunload="alert(\'de\')" onload="bajb_backdetect.BAJBFrame();"></iframe>')}}};bajb_backdetect.Initialise();
+
+bajb_backdetect.OnBack = function() {
+  window.location = document.referrer;
+}
+</script>
 <% instructor = (@user.instructor?(@course) or current_user.instructor?(@course)) %>
 <div id='submissionHeader'>
   <small style='display:block; float:left; margin-top:-18px; width:100%;'>
-    <%= link_to "#{@submission.assignment.name}".html_safe , course_assignment_path(@course, @assignment), :class => "assignment_back_btn" %>
+    <%= if instructor then %>
+      <%# link_to "#{@submission.assignment.name}".html_safe , course_assignment_path(@course, @assignment), :class => "assignment_back_btn" %>
+      <a class='assignment_back_btn' href=''><%= "#{@submission.assignment.name}" %></a>
+      <script>
+        $('.assignment_back_btn').attr('href', document.referrer);
+      </script>
+    <% else %>
+      <%= link_to "#{@submission.assignment.name}".html_safe , course_assignment_path(@course, @assignment), :class => "assignment_back_btn" %>
+    <% end %>
     <h1 class="name"> <% if instructor %><%= @submission.user.name %><% end %></h1>
     <% if @submission and @submission.url and !@submission.url.blank? %>
         <div id='submissionDownloadBtn'>
