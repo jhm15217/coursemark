@@ -14,8 +14,8 @@ class SubmissionsController < ApplicationController
     end
 
     registrations =  @course.registrations
-    @students = registrations.select{|r| r.user.pseudo ? @assignment.memberships.any?{|m| m.pseudo_user_id == r.user_id } : true }.
-        sort_by{|r| (r.section || "\177") + r.last_name + ' ' + r.first_name }.map{|r| r.user }
+    @students = registrations.select{|r| r.user.pseudo ? @assignment.memberships.any?{|m| m.pseudo_user_id == r.user_id } : true }
+    #.sort_by{|r| (r.section || "\177") + r.last_name + ' ' + r.first_name }.map{|r| r.user }
 
     # # Avoid sort if nothing has changed
     # sortable = registrations.map { |r|  { registration: r, sort_key: key(r) } }

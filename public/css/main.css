@@ -776,7 +776,7 @@ table.submissions {
 
 #main table td:nth-child(1),
 #main table th:nth-child(1) {
-    padding-left: 28px;
+    padding-left: 20px;
 }
 
 #main table tr:last-child td {
@@ -1654,6 +1654,23 @@ border-color: rgb(63, 142, 46);
 background: rgba(63, 142, 46, 0.1);
 }
 
+/* Table Sort */
+table.submissions thead th:nth-child(1){
+    padding-left:28px;
+}
+table.submissions thead tr .header {
+    background-image: url(../img/bg.gif);
+    background-repeat: no-repeat;
+    background-position: left 30px;
+    padding-left:21px;
+    cursor: pointer;
+}
+table.submissions thead tr .headerSortUp {
+    background-image: url(../img/asc.gif);
+}
+table.submissions thead tr .headerSortDown {
+    background-image: url(../img/desc.gif);
+}
 /* ==========================================================================
    Media Queries
    ========================================================================== */

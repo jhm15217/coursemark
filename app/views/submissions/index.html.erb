@@ -1,17 +1,18 @@
 <%= render "assignments/header" %>
 
-<table class="submissions">
-
-  <tr>
-    <th><%= sortable "Name" %></th>
-    <th><%= sortable "Email" %></th>
-    <th><%= sortable "Section" %></th>
-    <th><%= sortable "Submitted" %></th>
-    <th>Reviews Received</th>
-    <th><%= sortable "Grade" %></th>
-    <th>Reviews Given</th>
-
-  </tr>
+<table class="submissions" id="submissionTable">
+  <thead>
+    <tr>
+      <th><%= sortable "Name" %></th>
+      <th><%= sortable "Email" %></th>
+      <th><%= sortable "Section" %></th>
+      <th><%= sortable "Submitted" %></th>
+      <th>Reviews Received</th>
+      <th><%= sortable "Grade" %></th>
+      <th>Reviews Given</th>
+    </tr>
+  </thead>
+  <tbody>
   <% @students.each do |student| %>
       <% submission = @assignment.submissions.select{|s| s.user_id == student.id }[0] %>
       <tr>
@@ -54,7 +55,15 @@
         </td>
       </tr>
   <% end %>
+  <tbody>
 </table>
+<script>
+<!-- Client side table sorting -->
+$("#submissionTable").tablesorter({ 
+  // sort first on section, then by name. 
+  sortList: [[2,0],[0,0]] 
+});
+</script>
 <br />
 <%= link_to :controller => "assignments", :action => "export" do %>
     <div class='button' style="float: left; color:black; width:175px;">
