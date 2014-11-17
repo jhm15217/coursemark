@@ -11,11 +11,11 @@ bajb_backdetect.OnBack = function() {
 <% instructor = (@user.instructor?(@course) or current_user.instructor?(@course)) %>
 <div id='submissionHeader'>
   <small style='display:block; float:left; margin-top:-18px; width:100%;'>
-    <%= if instructor then %>
+    <% if  instructor then %>
       <%# link_to "#{@submission.assignment.name}".html_safe , course_assignment_path(@course, @assignment), :class => "assignment_back_btn" %>
-      <a class='assignment_back_btn' href=''><%= "#{@submission.assignment.name}" %></a>
+      <a class='assignment_back_btn' id='assignment_back_btn' href=''><%= "#{@submission.assignment.name}" %></a>
       <script>
-        $('.assignment_back_btn').attr('href', document.referrer);
+        document.getElementById('assignment_back_btn').href = document.referrer;
       </script>
     <% else %>
       <%= link_to "#{@submission.assignment.name}".html_safe , course_assignment_path(@course, @assignment), :class => "assignment_back_btn" %>
