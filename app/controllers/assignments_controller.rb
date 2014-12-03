@@ -121,11 +121,11 @@ class AssignmentsController < ApplicationController
     # team_submission = Submission.new(assignment_id: 39, user_id: 395,
     #                                  instructor_approved: false, url: "https://s3.amazonaws.com/Coursemark/UCRE_2014/116/Sequence_Consolidation.pdf" )
     # team_submission.save!
-    Membership.new(team:'A-4', user_id: 104, assignment_id: @assignment.id, pseudo_user_id: 395).save!
-    Membership.new(team:'A-4', user_id: 120, assignment_id: @assignment.id, pseudo_user_id: 395).save!
-    Membership.new(team:'A-4', user_id: 116, assignment_id: @assignment.id, pseudo_user_id: 395).save!
-    Membership.new(team:'A-4', user_id: 109, assignment_id: @assignment.id, pseudo_user_id: 395).save!
-    Membership.new(team:'A-4', user_id: 102, assignment_id: @assignment.id, pseudo_user_id: 395).save!
+    Membership.new(team:'A-4', user_id: 101, assignment_id: @assignment.id, pseudo_user_id: 395).save!
+    # Membership.new(team:'A-4', user_id: 120, assignment_id: @assignment.id, pseudo_user_id: 395).save!
+    # Membership.new(team:'A-4', user_id: 116, assignment_id: @assignment.id, pseudo_user_id: 395).save!
+    # Membership.new(team:'A-4', user_id: 109, assignment_id: @assignment.id, pseudo_user_id: 395).save!
+    # Membership.new(team:'A-4', user_id: 102, assignment_id: @assignment.id, pseudo_user_id: 395).save!
     #
     # @assignment.submissions.each do  |s|
     #   puts "Submission for: " +  s.user.email + " is " + s.inspect
