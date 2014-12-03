@@ -109,14 +109,27 @@ class AssignmentsController < ApplicationController
     #                   instructor_approved: false, url: "https://s3.amazonaws.com/Coursemark/UCRE_2014/177/Walking_the_Wall_and_Visioning.pdf" )
     # team_submission.save!
 
+    team_submission = Submission.new(assignment_id: 32, user_id: 395,
+                                     instructor_approved: false, url: "https://s3.amazonaws.com/Coursemark/UCRE_2014/102/Team_Contract.pdf" )
+    team_submission.save!
+    team_submission = Submission.new(assignment_id: 37, user_id: 395,
+                                     instructor_approved: false, url: "https://s3.amazonaws.com/Coursemark/UCRE_2014/109/Affinity.pdf" )
+    team_submission.save!
+    team_submission = Submission.new(assignment_id: 40, user_id: 395,
+                                     instructor_approved: false, url: "https://s3.amazonaws.com/Coursemark/UCRE_2014/116/Flow_Consolidation.pdf" )
+    team_submission.save!
+    team_submission = Submission.new(assignment_id: 39, user_id: 395,
+                                     instructor_approved: false, url: "https://s3.amazonaws.com/Coursemark/UCRE_2014/116/Sequence_Consolidation.pdf" )
+    team_submission.save!
     # Membership.new(team:'A-4', user_id: 101, assignment_id: @assignment.id, pseudo_user_id: 395).save!
-    @assignment.submissions.each do  |s|
-      puts "Submission for: " +  s.user.email + " is " + s.inspect
-    end
-    students = @course.registrations.select{|r| r.user.pseudo and @assignment.memberships.any?{|m| m.pseudo_user_id == r.user_id } }.map{|r| r.user }
-    students.each do |student|
-      puts "student: " +  student.email
-    end
+    #
+    # @assignment.submissions.each do  |s|
+    #   puts "Submission for: " +  s.user.email + " is " + s.inspect
+    # end
+    # students = @course.registrations.select{|r| r.user.pseudo and @assignment.memberships.any?{|m| m.pseudo_user_id == r.user_id } }.map{|r| r.user }
+    # students.each do |student|
+    #   puts "student: " +  student.email
+    # end
 
     # User.all.each do |user|
     #   if user.pseudo? and user.submissions.length == 0
