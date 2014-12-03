@@ -110,21 +110,21 @@ class AssignmentsController < ApplicationController
     # team_submission.save!
 
     # Membership.new(team:'A-4', user_id: 101, assignment_id: @assignment.id, pseudo_user_id: 395).save!
-    # @assignment.submissions.each do  |s|
-    #   puts "Submission for: " +  s.user.email + " is " + s.inspect
-    # end
-    # students = @course.registrations.select{|r| r.user.pseudo ? @assignment.memberships.any?{|m| m.pseudo_user_id == r.user_id } : false }.map{|r| r.user }
-    # students.each do |student|
-    #   puts "student: " +  student.email
-    # end
-
-    User.all.each do |user|
-      if user.pseudo? and user.submissions.length == 0
-        puts "Deleting " + user.name
-        Membership.all.each{|m| if m.pseudo_user_id == user.id then m.destroy end }
-        user.destroy
-      end
+    @assignment.submissions.each do  |s|
+      puts "Submission for: " +  s.user.email + " is " + s.inspect
     end
+    students = @course.registrations.select{|r| r.user.pseudo and @assignment.memberships.any?{|m| m.pseudo_user_id == r.user_id } }.map{|r| r.user }
+    students.each do |student|
+      puts "student: " +  student.email
+    end
+
+    # User.all.each do |user|
+    #   if user.pseudo? and user.submissions.length == 0
+    #     puts "Deleting " + user.name
+    #     Membership.all.each{|m| if m.pseudo_user_id == user.id then m.destroy end }
+    #     user.destroy
+    #   end
+    # end
 
   end
 
