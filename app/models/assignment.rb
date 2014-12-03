@@ -110,7 +110,14 @@ class Assignment < ActiveRecord::Base
       ok = reviews_required_feasible and ok
       if submission_due.nil? or review_due.nil? or submission_due > review_due
         ok = false
-        errors.add(:submission_due, 'Submission deadline must be before review deadline')
+        errors.add(:submission_due, 'Submission deadline must be before review deadline.')
+      end
+      if team
+        ms = memberships.all
+        if ms.length == 0 or !ms.any?{|m| m.assignment_id == self.id }
+          ok = false
+          errors.add(:submission_due, "No teams have been assigned.")
+        end
       end
     end
     ok

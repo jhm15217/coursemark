@@ -91,6 +91,22 @@ class AssignmentsController < ApplicationController
     #   end
     # end
     # puts "Successful opens: " + count.to_s
+    @assignment.submissions.each do  |s|
+      puts "Submission for: " +  s.user.email
+      if !s.user.pseudo  # this was submitted before teams were assigned
+        s.user.memberships.each do  |m|
+          if m.assignment_id == s.assignment_id
+            team_submission = Submission.new(assignment_id: s.assignment_id, user_id: m.pseudo_user_id,
+                                             instructor_approved: false, url: s.url )
+            team_submission.save!
+            puts "Moved: " + s.user.email + "'s submission to " + User.find(m.pseudo_user_id).email
+            s.destroy
+          end
+        end
+
+      end
+
+    end
   end
 
   # def test_file(s)

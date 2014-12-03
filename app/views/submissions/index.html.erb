@@ -2,15 +2,15 @@
 
 <table class="submissions" id="submissionTable">
   <thead>
-    <tr>
-      <th><%= sortable "Name" %></th>
-      <th><%= sortable "Email" %></th>
-      <th><%= sortable "Section" %></th>
-      <th><%= sortable "Submitted" %></th>
-      <th>Reviews Received</th>
-      <th><%= sortable "Grade" %></th>
-      <th>Reviews Given</th>
-    </tr>
+  <tr>
+    <th><%= sortable "Name" %></th>
+    <th><%= sortable "Email" %></th>
+    <th><%= sortable "Section" %></th>
+    <th><%= sortable "Submitted" %></th>
+    <th>Reviews Received</th>
+    <th><%= sortable "Grade" %></th>
+    <th>Reviews Given</th>
+  </tr>
   </thead>
   <tbody>
   <% @students.each do |student| %>
@@ -43,11 +43,11 @@
           <% unless student.pseudo %>
               <% completed_reviews =   @assignment.evaluations.forUser(student).select {|evaluation| evaluation.finished?} %>
               <%if (completed_review_count = completed_reviews.length) > 0 %>
-                    <a href=<%= "/courses/#{@course.id}/assignments/#{@assignment.id}?reviewer=#{student.id}" %>>
+                  <a href=<%= "/courses/#{@course.id}/assignments/#{@assignment.id}?reviewer=#{student.id}" %>>
                       <span <%= completed_reviews.any?{|e| e.updated_at > @assignment.review_due } ? "style=color:red" : "" %> >
                        <%= completed_review_count.to_s + "/" + @assignment.evaluations.forUser(student).length.to_s %>
                       </span>
-                    </a>
+                  </a>
               <% else %>
                   0/<%= @assignment.evaluations.forUser(student).length.to_s %>
               <% end %>
@@ -55,14 +55,14 @@
         </td>
       </tr>
   <% end %>
-  <tbody>
+  </tbody>
 </table>
 <script>
-<!-- Client side table sorting -->
-$("#submissionTable").tablesorter({ 
-  // sort first on section, then by name. 
-  sortList: [[2,0],[0,0]] 
-});
+    <!-- Client side table sorting -->
+    $("#submissionTable").tablesorter({
+        // sort first on section, then by name.
+        sortList: [[2,0],[0,0]]
+    });
 </script>
 <br />
 <%= link_to :controller => "assignments", :action => "export" do %>
