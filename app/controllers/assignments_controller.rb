@@ -112,7 +112,7 @@ class AssignmentsController < ApplicationController
     @assignment.submissions.each do  |s|
       puts "Submission for: " +  s.user.email + " is " + s.inspect
     end
-    students = @assignment.registrations.select{|r| r.user.pseudo ? @assignment.memberships.any?{|m| m.pseudo_user_id == r.user_id } : false }.map{|r| r.user }
+    students = @course.registrations.select{|r| r.user.pseudo ? @assignment.memberships.any?{|m| m.pseudo_user_id == r.user_id } : false }.map{|r| r.user }
     students.each do |student|
       puts "student: " +  student.email
     end
