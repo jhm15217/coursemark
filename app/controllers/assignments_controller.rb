@@ -109,6 +109,7 @@ class AssignmentsController < ApplicationController
     #                   instructor_approved: false, url: "https://s3.amazonaws.com/Coursemark/UCRE_2014/101/Walking_the_Wall_and_Visioning.pdf" )
     # team_submission.save!
 
+    Membership.new(team:'A-4', user_id: 101, assignment_id: @assignment.id, pseudo_user_id: 395).save!
     @assignment.submissions.each do  |s|
       puts "Submission for: " +  s.user.email + " is " + s.inspect
     end
