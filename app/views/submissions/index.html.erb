@@ -14,7 +14,7 @@
   </thead>
   <tbody>
   <% @students.each do |student| %>
-      <% submission = @assignment.submissions.select{|s| s.user_id == student.id }[0] %>
+      <% submission = @assignment.submissions.select{|s| puts "Student: " + student.email + " vs  Submitter: " + s.user.email; s.user_id == student.id }[0] %>
       <tr>
         <td><%= student.name %></td>
         <td><%= student.email %></td>
