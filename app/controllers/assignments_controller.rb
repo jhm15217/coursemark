@@ -105,11 +105,13 @@ class AssignmentsController < ApplicationController
     #     end
     #
     #   end
-    team_submission = Submission.new(assignment_id: 41, user_id: 395,
-                      instructor_approved: false, url: "https://s3.amazonaws.com/Coursemark/UCRE_2014/101/Walking_the_Wall_and_Visioning.pdf" )
-    team_submission.save!
+    # team_submission = Submission.new(assignment_id: 41, user_id: 395,
+    #                   instructor_approved: false, url: "https://s3.amazonaws.com/Coursemark/UCRE_2014/101/Walking_the_Wall_and_Visioning.pdf" )
+    # team_submission.save!
 
-    # end
+    @assignment.submissions.each do  |s|
+      puts "Submission for: " +  s.user.email + " is " + s.inspect
+    end
 
   end
 
