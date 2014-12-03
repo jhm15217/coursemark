@@ -92,7 +92,7 @@ class AssignmentsController < ApplicationController
     # end
     # puts "Successful opens: " + count.to_s
     @assignment.submissions.each do  |s|
-      puts "Submission for: " +  s.user.email
+      puts "Submission for: " +  s.user.email + " is " + s.inspect
       if !s.user.pseudo  # this was submitted before teams were assigned
         s.user.memberships.each do  |m|
           if m.assignment_id == s.assignment_id
