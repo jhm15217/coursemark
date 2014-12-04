@@ -149,8 +149,7 @@ class AssignmentsController < ApplicationController
     #   end
 
     @assignment.memberships.each do |membership|
-     if membership.team == 'C-3'
-       puts 'C-3: ' + membership.inspect
+       puts 'Membership ' + membership.inspect
      end
     end
 
