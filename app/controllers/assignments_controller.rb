@@ -150,7 +150,6 @@ class AssignmentsController < ApplicationController
 
     @assignment.memberships.each do |membership|
        puts 'Membership ' + membership.inspect
-     end
     end
 
   end
