@@ -32,7 +32,7 @@
                 <td><%= student.email %></td>
                 <% evals.sort_by{|e| e.created_at }.each do |e| %>
                     <td>
-                      <%  if e.user.submitting_id(@assignment, e.submission) == student.id then multi_flash(:error, 'Warning: Self-reviewing by ', e.user.email) end %>
+                      <%  if e.user.submitting_id(e.submission) == student.id then multi_flash(:error, 'Warning: Self-reviewing by ', e.user.email) end %>
                       <%= e.user.email %><%= link_to image_tag('delete.png'), e, method: :delete,
                                                      data: { confirm: e.finished ? 'A completed review will be discarded. Are you sure?' : "" } %>
                     </td>
