@@ -105,22 +105,15 @@ class AssignmentsController < ApplicationController
     #     end
     #
     #   end
-    # team_submission = Submission.new(assignment_id: 41, user_id: 236,
-    #                   instructor_approved: false, url: "https://s3.amazonaws.com/Coursemark/UCRE_2014/177/Walking_the_Wall_and_Visioning.pdf" )
-    # team_submission.save!
-
-    # team_submission = Submission.new(assignment_id: 32, user_id: 395,
-    #                                  instructor_approved: false, url: "https://s3.amazonaws.com/Coursemark/UCRE_2014/102/Team_Contract.pdf" )
-    # team_submission.save!
-    # team_submission = Submission.new(assignment_id: 37, user_id: 395,
-    #                                  instructor_approved: false, url: "https://s3.amazonaws.com/Coursemark/UCRE_2014/109/Affinity.pdf" )
-    # team_submission.save!
-    # team_submission = Submission.new(assignment_id: 40, user_id: 395,
-    #                                  instructor_approved: false, url: "https://s3.amazonaws.com/Coursemark/UCRE_2014/116/Flow_Consolidation.pdf" )
-    # team_submission.save!
-    # team_submission = Submission.new(assignment_id: 39, user_id: 395,
-    #                                  instructor_approved: false, url: "https://s3.amazonaws.com/Coursemark/UCRE_2014/116/Sequence_Consolidation.pdf" )
-    # team_submission.save!
+    team_submission = Submission.new(assignment_id: 32, user_id: 236,
+                                     instructor_approved: false, url: "https://s3.amazonaws.com/Coursemark/UCRE_2014/160/Team_Contract.pdf" )
+    team_submission.save!
+    team_submission = Submission.new(assignment_id: 40, user_id: 236,
+                                     instructor_approved: false, url: "https://s3.amazonaws.com/Coursemark/UCRE_2014/177/Flow_Consolidation.pdf" )
+    team_submission.save!
+    team_submission = Submission.new(assignment_id: 39, user_id: 236,
+                                     instructor_approved: false, url: "https://s3.amazonaws.com/Coursemark/UCRE_2014/177/Sequence_Consolidation.pdf" )
+    team_submission.save!
     # Membership.new(team:'A-4', user_id: 101, assignment_id: @assignment.id, pseudo_user_id: 395).save!
     # Membership.new(team:'A-4', user_id: 120, assignment_id: @assignment.id, pseudo_user_id: 395).save!
     # Membership.new(team:'A-4', user_id: 116, assignment_id: @assignment.id, pseudo_user_id: 395).save!
@@ -148,9 +141,9 @@ class AssignmentsController < ApplicationController
     #     puts 'Pseudo user: ' + user.first_name + ' ' + user.last_name + ' ' + user.submissions.length.to_s
     #   end
 
-    @assignment.memberships.each do |membership|
-       puts 'Membership ' + membership.inspect
-    end
+    # @assignment.memberships.each do |membership|
+    #    puts 'Membership ' + membership.inspect
+    # end
 
   end
 
