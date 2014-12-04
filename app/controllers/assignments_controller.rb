@@ -144,7 +144,7 @@ class AssignmentsController < ApplicationController
     # end
 
     User.all.each do |user|
-      if user.pseudo? and !user.first_name.blank?
+      if user.pseudo?
         puts 'Bad pseudo user: ' + user.first_name + ' ' + user.last_name + ' ' + user.submissions.length.to_s
       end
 
