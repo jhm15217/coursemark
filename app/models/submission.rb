@@ -89,7 +89,7 @@ class Submission < ActiveRecord::Base
     while required > 0  and reviewers.size > 0   # if you run out candidates, stop
       review_count = candidates.next_key
       candidate = candidates.pop
-      if candidate.submitting_id(assignment, self) == user_id or evaluations(true).any?{|e| e.user_id == candidate.id}
+      if candidate.submitting_id(self) == user_id or evaluations(true).any?{|e| e.user_id == candidate.id}
         disqualified << { key: review_count, value: candidate }
       else
         evaluation = Evaluation.new(submission_id: id, user_id: candidate.id)

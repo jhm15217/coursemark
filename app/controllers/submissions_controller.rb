@@ -47,7 +47,7 @@ class SubmissionsController < ApplicationController
     evaluation = @evaluations.where(:user_id => current_user.id).first
     @responses = ((e = @evaluations[0]) ? e.responses.sort_by {|obj| obj.created_at } : [])
     @user = params[:instructor_review_of] ? User.find(params[:instructor_review_of]) : current_user
-    @submitter =  @submission.user_id == @user.submitting_id(@assignment, @submission)
+    @submitter =  @submission.user_id == @user.submitting_id(@submission)
 
     if params[:instructor_approved_toggle]
       @submission.instructor_approved = !@submission.instructor_approved

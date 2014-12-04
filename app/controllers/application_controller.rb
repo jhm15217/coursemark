@@ -64,10 +64,6 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def submitting_user(assignment, submission)
-    User.find(current_user.submitting_id(assignment, submission))
-  end
-
   def iff(a,b)
     a ? b : !b
   end
