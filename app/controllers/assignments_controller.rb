@@ -143,11 +143,15 @@ class AssignmentsController < ApplicationController
     #   end
     # end
 
-    User.all.each do |user|
-      if user.pseudo?
-        puts 'Bad pseudo user: ' + user.first_name + ' ' + user.last_name + ' ' + user.submissions.length.to_s
-      end
+    # User.all.each do |user|
+    #   if user.pseudo?
+    #     puts 'Pseudo user: ' + user.first_name + ' ' + user.last_name + ' ' + user.submissions.length.to_s
+    #   end
 
+    @assignment.memberships.each do |membership|
+     if membership.team == 'C-3'
+       puts 'C-3: ' + membership.inspect
+     end
     end
 
   end
