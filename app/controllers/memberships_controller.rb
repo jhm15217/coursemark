@@ -65,29 +65,31 @@ class MembershipsController < ApplicationController
     end
   end
 
+  def multi_flash(tag, m1, m2)
+    if flash[tag]
+      flash[tag] << ', ' + m2
+    else
+      flash[tag] = m1 + m2
+    end
+  end
+
   def add_teammate(row)     # first_name,last_name,email,first_teamname,last_teamname,
     student = User.find_all_by_email(row[2])[0]
     if !student  or !@course.get_students.any?{|s| s.id == student.id }
-      if flash[:error]
-        flash[:error] << ", #{row[2]}"
-      else
-        flash[:error] = "Can't find #{row[2]}"
-      end
+      multi_flash(:error, "Can't find ", row[2])
     else
       # create new pseudo-user if needed
       if !row[3] then row[3] = '' end
       if !row[4] then row[4] = '' end
-      pseudo_users = User.all.select{|x| x.pseudo and x.first_name == row[3] and x.last_name == row[4]}
-      if pseudo_users.length > 0
-        pseudo_user = pseudo_users.first
-      else
-        pseudo_user = User.new(first_name: row[3], last_name: row[4], email: row[3] + row[4] + '@team.edu',  pseudo: true)
+      email = row[3] + row[4] + '@team.edu'
+      pseudo_user = User.all.select{|x| x.pseudo and x.email == email}[0]
+      if !pseudo_user
+        pseudo_user = User.new(first_name: row[3], last_name: row[4], email: email,  pseudo: true)
         pseudo_user.save!(validate: false)
       end
       register_pseudo_user(@course.id, pseudo_user, student)
       Membership.new(team:pseudo_user.name, user_id: student.id, assignment_id: @assignment.id, pseudo_user_id: pseudo_user.id).save!
     end
-
   end
 
 
