@@ -82,7 +82,7 @@ class Ability
 
     can :manage, Submission do |s|
       if s.assignment  
-        (s.assignment.course.get_instructors.include? user) || (s.user.id == user.submitting_id(s.assignment, s))
+        (s.assignment.course.get_instructors.include? user) || (s.user.id == user.submitting_id(s))
       else
         true
       end
@@ -142,7 +142,7 @@ class Ability
         end
       end
 
-      @evaluator || (s.user_id == user.submitting_id(s.assignment, s))
+      @evaluator || (s.user_id == user.submitting_id(s))
     end
   end
 end

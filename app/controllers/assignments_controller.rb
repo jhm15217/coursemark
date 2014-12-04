@@ -121,7 +121,7 @@ class AssignmentsController < ApplicationController
     # team_submission = Submission.new(assignment_id: 39, user_id: 395,
     #                                  instructor_approved: false, url: "https://s3.amazonaws.com/Coursemark/UCRE_2014/116/Sequence_Consolidation.pdf" )
     # team_submission.save!
-    Membership.new(team:'A-4', user_id: 101, assignment_id: @assignment.id, pseudo_user_id: 395).save!
+    # Membership.new(team:'A-4', user_id: 101, assignment_id: @assignment.id, pseudo_user_id: 395).save!
     # Membership.new(team:'A-4', user_id: 120, assignment_id: @assignment.id, pseudo_user_id: 395).save!
     # Membership.new(team:'A-4', user_id: 116, assignment_id: @assignment.id, pseudo_user_id: 395).save!
     # Membership.new(team:'A-4', user_id: 109, assignment_id: @assignment.id, pseudo_user_id: 395).save!
@@ -142,6 +142,13 @@ class AssignmentsController < ApplicationController
     #     user.destroy
     #   end
     # end
+
+    User.all.each do |user|
+      if user.pseudo? and !user.first_name.blank?
+        puts 'Bad pseudo user: ' + user.first_name + ' ' + user.last_name + ' ' + user.submissions.length.to_s
+      end
+
+    end
 
   end
 
@@ -203,10 +210,10 @@ class AssignmentsController < ApplicationController
         map{|m| User.find(m.pseudo_user_id)}
 
     @s3_direct_post = S3_BUCKET.presigned_post(
-        key: vanilla(@course.name) + '/' + @user.submitting_id(@assignment, @submission).to_s + '/' + vanilla(@assignment.name) + '.pdf',
+        key: vanilla(@course.name) + '/' + @user.id.to_s + '/' + vanilla(@assignment.name) + '.pdf',
         success_action_status: 201,
         acl: :public_read,
-        content_type: 'application/pdf')       # For uploads
+        content_type: 'application/pdf')       # For uploads. It will be filed under the human (not team) user id.
 
     respond_to do |format|
       format.html
@@ -320,7 +327,7 @@ class AssignmentsController < ApplicationController
         return
       else
         old_submissions = @assignment.submissions.
-            select{|s| s.user.nil? or s.user.submitting_id(@assignment,@submission) == params[:assignment][:user_id].to_i }
+            select{|s| s.user.nil? or s.user.submitting_id(@submission) == params[:assignment][:user_id].to_i }
       end
       respond_to do |format|
         if @submission.save

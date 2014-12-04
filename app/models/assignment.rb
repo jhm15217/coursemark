@@ -201,7 +201,6 @@ class Assignment < ActiveRecord::Base
   end
 
   def get_submissions(user)
-    # return current_user.submitting_user(assignment).submissions.first!
     ms = memberships.select{|m| m.user_id == user.id}
     if ms.length == 0
       Submission.where(:assignment_id => self.id, :user_id => user.id)
@@ -234,7 +233,7 @@ class Assignment < ActiveRecord::Base
 
       students.each do |student|
         this_sub = [student.email]
-        submission = submissions.select { |sub| sub.user.id == student.submitting_id(self, sub) }.first
+        submission = submissions.select { |sub| sub.user.id == student.submitting_id(sub) }.first
         if submission then
           this_sub << submission.created_at
           reviewer_shortfall = ['']*(reviewer_count-submission.evaluations.length)
