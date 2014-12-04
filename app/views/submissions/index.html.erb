@@ -14,46 +14,49 @@
   </thead>
   <tbody>
   <% @students.each do |student| %>
-      <% submission = @assignment.submissions.select{|s| puts "Student: " + student.email + " vs  Submitter: " + s.user.email; s.user_id == student.id }[0] %>
-      <tr>
-        <td><%= student.name %></td>
-        <td><%= student.email %></td>
-        <td><%= student.registration_in(@course).section %></td>
-        <% if submission %>
+      <% submissions = @assignment.submissions.select{|s| s.user_id == student.id } %>
+      <% if submissions.length == 0 then submissions = [nil] end %>
+      <% submissions.each do |submission| %>
+          <tr>
+            <td><%= student.name %></td>
+            <td><%= student.email %></td>
+            <td><%= student.registration_in(@course).section %></td>
+            <% if submission %>
+                <td>
+                  <%= (submission.created_at  > @assignment.submission_due ? "<span style='color:red'>" : '<span>').html_safe %>
+                  <%= submission.created_at.strftime('%m/%d/%y %H:%M') %>
+                  </span>
+                </td>
+                <td>
+                  <a href=<%= "/courses/#{@course.id}/assignments/#{@assignment.id}/submissions/#{submission.id}?instructor=true" %>>
+                    <%= @assignment.evaluations.forSubmission(submission).select {|evaluation| evaluation.finished?}.length %> /
+                    <%= @assignment.evaluations.forSubmission(submission).length %></a>
+                </td>
+                <td>
+                  <%= unless (g = submission.grade).blank? then prettifyFloat(g).to_s + '%' else "--" end %>
+                  <% if submission.instructor_approved then %><div class="checkmark"></div><% end %>
+                </td>
+            <% else %>
+                <td>--</td>
+                <td>--</td>
+                <td>--</td>
+            <% end %>
             <td>
-              <%= (submission.created_at  > @assignment.submission_due ? "<span style='color:red'>" : '<span>').html_safe %>
-              <%= submission.created_at.strftime('%m/%d/%y %H:%M') %>
-              </span>
-            </td>
-            <td>
-              <a href=<%= "/courses/#{@course.id}/assignments/#{@assignment.id}/submissions/#{submission.id}?instructor=true" %>>
-                <%= @assignment.evaluations.forSubmission(submission).select {|evaluation| evaluation.finished?}.length %> /
-                <%= @assignment.evaluations.forSubmission(submission).length %></a>
-            </td>
-            <td>
-              <%= unless (g = submission.grade).blank? then prettifyFloat(g).to_s + '%' else "--" end %>
-              <% if submission.instructor_approved then %><div class="checkmark"></div><% end %>
-            </td>
-        <% else %>
-            <td>--</td>
-            <td>--</td>
-            <td>--</td>
-        <% end %>
-        <td>
-          <% unless student.pseudo %>
-              <% completed_reviews =   @assignment.evaluations.forUser(student).select {|evaluation| evaluation.finished?} %>
-              <%if (completed_review_count = completed_reviews.length) > 0 %>
-                  <a href=<%= "/courses/#{@course.id}/assignments/#{@assignment.id}?reviewer=#{student.id}" %>>
+              <% unless student.pseudo %>
+                  <% completed_reviews =   @assignment.evaluations.forUser(student).select {|evaluation| evaluation.finished?} %>
+                  <%if (completed_review_count = completed_reviews.length) > 0 %>
+                      <a href=<%= "/courses/#{@course.id}/assignments/#{@assignment.id}?reviewer=#{student.id}" %>>
                       <span <%= completed_reviews.any?{|e| e.updated_at > @assignment.review_due } ? "style=color:red" : "" %> >
                        <%= completed_review_count.to_s + "/" + @assignment.evaluations.forUser(student).length.to_s %>
                       </span>
-                  </a>
-              <% else %>
-                  0/<%= @assignment.evaluations.forUser(student).length.to_s %>
+                      </a>
+                  <% else %>
+                      0/<%= @assignment.evaluations.forUser(student).length.to_s %>
+                  <% end %>
               <% end %>
-          <% end %>
-        </td>
-      </tr>
+            </td>
+          </tr>
+      <% end %>
   <% end %>
   </tbody>
 </table>
