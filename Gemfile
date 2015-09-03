@@ -41,7 +41,7 @@ group :development do
   gem "seed_dump"
   gem 'binding_of_caller'
   gem 'rails-erd'
-  gem 'debugger', '1.6.7'
+  gem 'byebug'
   gem 'debugger-xml'
   gem 'builder', '3.0.4'
 end
@@ -76,4 +76,4 @@ gem 'jquery_datepicker'
 gem 'turbolinks'
 gem 'request_store'
 
-ruby '1.9.3'
+ruby '2.0.0'
