@@ -81,7 +81,7 @@ class MembershipsController < ApplicationController
       # create new pseudo-user if needed
       if !row[3] then row[3] = '' end
       if !row[4] then row[4] = '' end
-      email = row[3] + row[4] + '@team.edu'
+      email = (row[3] + row[4] + '@team.edu').downcase
       pseudo_user = User.all.select{|x| x.pseudo and x.email == email}[0]
       if !pseudo_user
         pseudo_user = User.new(first_name: row[3], last_name: row[4], email: email,  pseudo: true)
