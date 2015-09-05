@@ -10,7 +10,7 @@ gem 'carrierwave-postgresql'
 gem 'haml', '~> 4.0'
 gem 'haml-rails'
 gem 'thin'
-gem 'bootstrap'
+#gem 'bootstrap'
 gem 'bootstrap-sass'
 
 # Gems used only in testing
