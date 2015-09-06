@@ -5,6 +5,7 @@
       <driver-ref>postgresql</driver-ref>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
       <jdbc-url>jdbc:postgresql://127.0.0.1/agora_development</jdbc-url>
+
       <libraries />
     </data-source>
     <data-source source="LOCAL" name="Rails Coursemark-transparency: test" uuid="6c7ef942-2f29-45f7-a034-d859cf5499a1">

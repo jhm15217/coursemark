@@ -295,6 +295,10 @@ DEPENDENCIES
   bcrypt-ruby (~> 3.0.0)
   better_errors (= 0.7.0)
   binding_of_caller
+<<<<<<< HEAD
+=======
+  bootstrap
+>>>>>>> 11b2b03806dd0eb5c8024ef0bccaa3eb8391626a
   bootstrap-sass
   builder (= 3.0.4)
   cancan

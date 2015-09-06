@@ -18,6 +18,8 @@
 /tmp
 
 *.pdf
+# Ignore AWS keys for security purposes
+.env
 
 config/database.yml
 config/environments/development.rb
