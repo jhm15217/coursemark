@@ -58,12 +58,21 @@ class AssignmentsController < ApplicationController
     #   end
     # end
     #
-    # Membership.all.each do |m|
-    #   unless User.find_all_by_id(m.pseudo_user_id).length > 0
-    #     puts 'Error: Destroying membership for ' + m.user.email
-    #     m.destroy
-    #   end
-    # end
+    User.all.each do |u|
+      if u.pseudo
+        ok = false
+        Membership.all.each do |m|
+          if m.pseudo_user_id == u.id
+            ok = true
+            break
+          end
+        end
+        unless ok
+          puts 'Error: Destroying pseudo user ' + u.email
+          u.destroy
+        end
+      end
+    end
     #
     # Submission.all.each do |s|
     #   if !s.url and s.attachment_file_name

@@ -14,13 +14,14 @@ gem 'thin'
 gem 'bootstrap-sass'
 
 # Gems used only in testing
+=begin
 group :test do
 	gem 'shoulda', '3.5.0'
 	gem 'shoulda-matchers', '2.5.0'
 	gem 'factory_girl_rails', '4.4.1'
 	gem 'mocha', '1.0.0'
 	gem 'cucumber-rails', :require => false
-	gem 'gherkin', '2.12.2'
+	gem 'gherkin'
 	gem 'capybara', '2.2.1'
 	gem 'database_cleaner', '1.2.0'
 	gem 'launchy', '2.4.2'
@@ -32,6 +33,7 @@ group :test do
   gem 'growl', '1.0.3'
   gem 'spork', '0.9.0'
 end
+=end
 
 # Gems used only in development
 group :development do
@@ -43,7 +45,7 @@ group :development do
   gem 'rails-erd'
   gem 'debugger', '1.6.7'
   gem 'debugger-xml'
-  gem 'builder', '3.0.4'
+  gem 'builder'
 end
 
 group :production do
@@ -61,7 +63,7 @@ end
 
 gem 'algorithms'
 gem 'nokogiri'
-gem 'aws-sdk'
+gem 'aws-sdk-v1'
 gem 'uuid'
 gem 'jquery-ui-rails'
 gem 'jquery-rails'
