@@ -50,22 +50,31 @@ class MembershipsController < ApplicationController
   def create
     @course = Course.find(params[:course_id])
     @assignment = Assignment.find(params[:assignment_id])
-    @assignment.memberships.each {|membership| membership.destroy }    # Every upload is a complete team designations
-
-    tm = params[:response][:teams].split("\r\n" )
-    tm.each{ |line|
+    # Every upload is a complete team designations
+    get_memberships(@assignment).each do |membership|
+      if !membership.destroy
+        puts  "Not destroyed: " + membership.inspect
+      end
+    end
+    params[:response][:teams].split("\r\n" ).each{ |line|
       add_teammate(line.split(',').map{|s| clean_csv_item(s)})
     }
+
     @course.get_real_students.each do |student|
-      if !@assignment.memberships.any?{|membership| membership.user_id == student.id }
+      if !get_memberships(@assignment).any?{|membership| membership.user_id == student.id }
         multi_flash(:notice, 'Student(s) without a team: ', student.email)
       end
     end
+
 
     respond_to do |format|
       format.html { redirect_to course_assignment_memberships_path(@course,@assignment) }
       format.json { render json: @membership, status: :created, location: @membership }
     end
+  end
+
+  def get_memberships(assignment)
+             Membership.all.select{|membership| membership.assignment_id == assignment.id }
   end
 
   def multi_flash(tag, m1, m2)

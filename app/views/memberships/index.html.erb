@@ -3,7 +3,6 @@
   <tr>
     <th>Team</th>
     <th>Student</th>
-    </th>
     <th>Email</th>
   </tr>
   <% @memberships.sort_by{|m| m.user.first_name }.sort_by{|m| m.user.last_name }.sort_by{|m| m.team }.each do |membership| %>

@@ -166,7 +166,7 @@ class RegistrationsController < ApplicationController
         end
       end
       assignment.memberships.each do |membership|
-        if membership.user_id == @registration.user_id
+        if membership.user_id == @registration.user_id  || membership.pseudo_user_id ==  @registration.user_id
           membership.destroy
         end
       end
