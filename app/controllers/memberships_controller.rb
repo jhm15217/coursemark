@@ -51,7 +51,7 @@ class MembershipsController < ApplicationController
     @course = Course.find(params[:course_id])
     @assignment = Assignment.find(params[:assignment_id])
     # Every upload is a complete team designations
-    get_memberships(@assignment).each do |membership|
+    @assignment.memberships(true).each do |membership|
       if !membership.destroy
         puts  "Not destroyed: " + membership.inspect
       end
@@ -61,7 +61,7 @@ class MembershipsController < ApplicationController
     }
 
     @course.get_real_students.each do |student|
-      if !get_memberships(@assignment).any?{|membership| membership.user_id == student.id }
+      if !@assignment.memberships(true).any?{|membership| membership.user_id == student.id }
         multi_flash(:notice, 'Student(s) without a team: ', student.email)
       end
     end
