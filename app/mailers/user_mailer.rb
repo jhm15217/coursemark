@@ -1,5 +1,5 @@
 class UserMailer < ActionMailer::Base
-  PROD_URL = "coursemark.org"
+  PROD_URL = "coursemark.herokuapp.com"      # This should be coursemark.org, but the proxy isn't working
   DEV_URL = "localhost:3000"
   PROTOCOL = 'http'
 
