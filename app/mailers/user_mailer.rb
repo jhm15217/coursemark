@@ -1,5 +1,5 @@
 class UserMailer < ActionMailer::Base
-  PROD_URL = "coursemark.herokuapp.com"      # This should be coursemark.org, but the proxy isn't working
+  PROD_URL = "coursemark.org"      # This should be coursemark.org, but the proxy isn't working
   DEV_URL = "localhost:3000"
   PROTOCOL = 'http'
 
@@ -57,7 +57,7 @@ class UserMailer < ActionMailer::Base
                                      end,
                                id: user.id,
                                confirmation_token: user.confirmation_token,
-                               protocol: if Rails.env.production? then 'https' else 'http' end)
+                               protocol: 'http')
     mail(to: user.email, subject: "Request for Password Reset")
   end
 
