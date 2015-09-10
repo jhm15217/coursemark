@@ -13,9 +13,9 @@
             <div class="toDoUl">
               <% hours_remain = ((task[:time] - Time.zone.now) / 1.hour).round %>
               <% remaining =  ' (' +
-                      (hours_remain.abs < 25 ? hours_remain.to_s + ' hours ' :
-                              (hours_remain/24).to_s + ' days ') +
-                      'left)' %>
+                      (hours_remain.abs < 25 ? pluralize(hours_remain, 'hour', 'hours') :
+                              pluralize(hours_remain/24, 'day', 'days')) +
+                      ' left)' %>
               <% if task[:action] == :submit %>
                   <li><a href="/courses/<%= @course.id %>/assignments/<%= assignment.id %>" >
                     <div class='a_name'>Submit <%= assignment.name + (task[:team] ? ' for ' + task[:team] : '') %> </div>
