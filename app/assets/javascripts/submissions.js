@@ -65,9 +65,12 @@ for (var i=0; i<forms.length; i++) {
         stop: function (event, $elem) {
 //            var tb = $($elem);
 //            tb.height(tb.prop('scrollHeight'));
+//            var tempScrollTop = $(window).scrollTop();
 
             $($elem.parent().parent().find('.savedStatus')[0]).html('saving...');
             $($elem.parent()[0]).trigger('submit.rails');
+
+            //$(window).scrollTop(tempScrollTop);
         },
         delay: 1000
     });
