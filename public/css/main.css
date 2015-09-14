@@ -1584,9 +1584,9 @@ div#submissionDownloadBtn a {
 }
 
 #peer_review textarea {
-    height: auto;
+    max-height: 300px;
     width: 100%;
-    overflow: auto;
+    overflow: scroll;
 }
 
 #peer_review input {
