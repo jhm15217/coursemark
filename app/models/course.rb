@@ -17,7 +17,6 @@ class Course < ActiveRecord::Base
       r.save!
     else
       Registration.new({active: false, instructor: false, course_code: course_code, user_id: user.id, course_id: self.id, section: section}).save!
-      UserMailer.registration_email(user, self).deliver
     end
   end
 

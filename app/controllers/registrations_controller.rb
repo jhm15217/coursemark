@@ -90,6 +90,7 @@ class RegistrationsController < ApplicationController
   def invite_student(row)     #First Name,Last Name,Email,Section(optional)
     if user = User.find_by_email(row[2].downcase)
       @course.register(user, row[3])
+      UserMailer.registration_email(user, @course)
     else
       password = SecureRandom.hex(4)
       user = User.new({first_name: row[0], last_name: row[1], email:row[2], password: password, password_confirmation: password})
@@ -97,6 +98,7 @@ class RegistrationsController < ApplicationController
       user.save!
       @course.register(user)
       UserMailer.welcome_email(user, password, @course).deliver
+
     end
 
   end
