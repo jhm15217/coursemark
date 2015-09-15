@@ -14,8 +14,10 @@
 </div>
 
 <% if @assignment.are_reviewers_assigned  %>
-    <% if Time.zone.now.between?(@assignment.submission_due, @assignment.review_due)  %>
-        <div id="reviewing_tasks">
+    <% if Time.zone.now.between?(@assignment.submission_due, @assignment.review_due) and @reviewing_tasks.length > 0 %>
+        <div id="reviewing_tasks" style="clear:both">
+          <br>
+          <b>Reviewing Tasks</b>
           <% @reviewing_tasks.each_with_index do |task, index| %>
               <%= link_to course_assignment_submission_path(@course, @assignment, task.submission) do %>
                   <div class="reviewing_task highlighted" > <%= ((task.finished? or Time.zone.now > @assignment.review_due) ? 'See' : 'Complete') + ' Review ' + (index + 1).to_s %></div>
