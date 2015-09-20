@@ -10,6 +10,6 @@ class Question < ActiveRecord::Base
 
   # Validations
   validates_inclusion_of :written_response_required, :in => [true, false], :message => "must be true or false"
-  validates_numericality_of :question_weight, :only_integer => true, :greater_than => 0
+  validates_numericality_of :question_weight, :only_integer => true
 
 end
