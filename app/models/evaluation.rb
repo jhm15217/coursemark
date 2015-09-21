@@ -22,6 +22,6 @@ class Evaluation < ActiveRecord::Base
 
   def destroy
     super
-    Response.check
+    # Response.check     # This is an expensive check that simply culls orphaned responses
   end
 end
