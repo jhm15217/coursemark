@@ -33,6 +33,8 @@ class AssignmentsController < ApplicationController
   end
 
   def fix
+    puts "Running fix"
+    Response.check
     # admin = User.find_by_email('admin@email.com')
     # Course.all.each do |c|
     #   unless admin.registrations.any?{|r| r.course_id == c.id }
@@ -58,21 +60,6 @@ class AssignmentsController < ApplicationController
     #   end
     # end
     #
-    User.all.each do |u|
-      if u.pseudo
-        ok = false
-        Membership.all.each do |m|
-          if m.pseudo_user_id == u.id
-            ok = true
-            break
-          end
-        end
-        unless ok
-          puts 'Error: Destroying pseudo user ' + u.email
-          u.destroy
-        end
-      end
-    end
     #
     # Submission.all.each do |s|
     #   if !s.url and s.attachment_file_name
@@ -114,15 +101,15 @@ class AssignmentsController < ApplicationController
     #     end
     #
     #   end
-   # team_submission = Submission.new(assignment_id: 32, user_id: 236,
-   #                                   instructor_approved: false, url: "https://s3.amazonaws.com/Coursemark/UCRE_2014/160/Team_Contract.pdf" )
-   #  team_submission.save!
-   #  team_submission = Submission.new(assignment_id: 40, user_id: 236,
-   #                                   instructor_approved: false, url: "https://s3.amazonaws.com/Coursemark/UCRE_2014/177/Flow_Consolidation.pdf" )
-   #  team_submission.save!
-   #  team_submission = Submission.new(assignment_id: 39, user_id: 236,
-   #                                    instructor_approved: false, url: "https://s3.amazonaws.com/Coursemark/UCRE_2014/177/Sequence_Consolidation.pdf" )
-   #  team_submission.save!
+    # team_submission = Submission.new(assignment_id: 32, user_id: 236,
+    #                                   instructor_approved: false, url: "https://s3.amazonaws.com/Coursemark/UCRE_2014/160/Team_Contract.pdf" )
+    #  team_submission.save!
+    #  team_submission = Submission.new(assignment_id: 40, user_id: 236,
+    #                                   instructor_approved: false, url: "https://s3.amazonaws.com/Coursemark/UCRE_2014/177/Flow_Consolidation.pdf" )
+    #  team_submission.save!
+    #  team_submission = Submission.new(assignment_id: 39, user_id: 236,
+    #                                    instructor_approved: false, url: "https://s3.amazonaws.com/Coursemark/UCRE_2014/177/Sequence_Consolidation.pdf" )
+    #  team_submission.save!
     # Membership.new(team:'A-4', user_id: 101, assignment_id: @assignment.id, pseudo_user_id: 395).save!
     # Membership.new(team:'A-4', user_id: 120, assignment_id: @assignment.id, pseudo_user_id: 395).save!
     # Membership.new(team:'A-4', user_id: 116, assignment_id: @assignment.id, pseudo_user_id: 395).save!
@@ -157,6 +144,25 @@ class AssignmentsController < ApplicationController
 
   end
 
+  def deleteOrphanedResponses
+    User.all.each do |u|
+      if u.pseudo
+        ok = false
+        Membership.all.each do |m|
+          if m.pseudo_user_id == u.id
+            ok = true
+            break
+          end
+        end
+        unless ok
+          puts 'Error: Destroying pseudo user ' + u.email
+          u.destroy
+        end
+      end
+    end
+  end
+
+
   # def test_file(s)
   #   begin
   #     if !s.url=~/^https?:\/\//
@@ -172,13 +178,14 @@ class AssignmentsController < ApplicationController
   #   end
   # end
 
+
   def vanilla(s)
     s.gsub(/[ :]/, '_')
   end
 
-# GET /assignments/1
+  # GET /assignments/1
 
-# GET /assignments/1.json
+  # GET /assignments/1.json
   def show
     @assignment = Assignment.find(params[:id])
     @course = @assignment.course
@@ -392,8 +399,8 @@ class AssignmentsController < ApplicationController
     end
   end
 
-# DELETE /assignments/1
-# DELETE /assignments/1.json
+  # DELETE /assignments/1
+  # DELETE /assignments/1.json
   def destroy
     @assignment = Assignment.find(params[:id])
     @assignment.destroy

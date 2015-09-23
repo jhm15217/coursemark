@@ -51,6 +51,7 @@ end
 group :production do
   gem 'unicorn'
   gem 'rails_12factor'
+  gem 'delayed_job'
 end
 
 # Gems used only for assets and not required
