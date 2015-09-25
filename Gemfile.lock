@@ -35,10 +35,10 @@ GEM
       activesupport (>= 3.2)
       request_store (~> 1.0)
       scrypt (>= 1.2, < 3.0)
-    autoprefixer-rails (6.0.0)
+    autoprefixer-rails (6.0.3)
       execjs
       json
-    aws-sdk-v1 (1.52.0)
+    aws-sdk-v1 (1.66.0)
       json (~> 1.4)
       nokogiri (>= 1.4.4)
     bcrypt-ruby (3.0.1)
@@ -86,6 +86,9 @@ GEM
       debugger (>= 1.6.2)
     delayed_job (4.1.0)
       activesupport (>= 3.0, < 5.0)
+    delayed_job_active_record (4.1.0)
+      activerecord (>= 3.0, < 5)
+      delayed_job (>= 3.0, < 5)
     erubis (2.7.0)
     eventmachine (1.0.8)
     execjs (2.6.0)
@@ -179,9 +182,6 @@ GEM
     scrypt (1.2.1)
       ffi-compiler (>= 0.0.2)
       rake
-    seed_dump (3.1.0)
-      activerecord
-      activesupport
     sprockets (2.2.3)
       hike (~> 1.2)
       multi_json (~> 1.0)
@@ -231,6 +231,7 @@ DEPENDENCIES
   debugger (= 1.6.7)
   debugger-xml
   delayed_job
+  delayed_job_active_record
   faker (= 1.1.2)
   haml (~> 4.0)
   haml-rails
@@ -248,7 +249,6 @@ DEPENDENCIES
   request_store
   sass-rails (~> 3.2.3)
   scrypt (= 1.2.1)
-  seed_dump
   thin
   turbolinks
   uglifier (>= 1.0.3)
