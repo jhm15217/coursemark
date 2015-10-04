@@ -68,13 +68,13 @@ bajb_backdetect.OnBack = function() {
             <% end %> <!-- submissionQuestionBox -->
         <% end %> <!-- questions loop -->
         <div>
-          <%= link_to course_assignment_path(@course, @assignment) do %>
-              <div id='submitFormsButton' class='button'>Save Review</div>
+          <%= link_to course_assignment_submission_path(@course, @assignment, @submission, finish: true) do %>
+              <div id='submitFormsButton' class='button'>Complete Review</div>
           <% end %>
         </div>
         <div>
-          <%= link_to course_assignment_submission_path(@course, @assignment, @submission, finish: true) do %>
-              <div id='submitFormsButton' class='button'>Save and Publish Review</div>
+          <%= link_to course_assignment_path(@course, @assignment) do %>
+              <div id='submitFormsButton' class='button'>Save Incomplete Review</div>
           <% end %>
         </div>
 

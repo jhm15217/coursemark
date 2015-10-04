@@ -61,6 +61,10 @@ production:
 
 11. Run `rake db:reset` from the Coursemark root directory
 
+###Restarting postgresql server locally (on Mac OS X) after a restart
+pg_ctl restart -D /usr/local/var/postgres
+
+
 ###Deploying Coursemark to Heroku
 
 1. Create a Heroku account at www.heroku.com
