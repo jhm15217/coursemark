@@ -135,11 +135,14 @@ class MembershipsController < ApplicationController
   private
 
   def register_pseudo_user(course_id, pseudo_user, student)
-    unless Registration.where(user_id:  pseudo_user.id, course_id: course_id).length > 0
+    registration = Registration.where(user_id:  pseudo_user.id, course_id: course_id)[0]
+    if registration
+      registration['section'] =  student.registration_in(Course.find(course_id)).section
+    else
       registration = Registration.new(active: true, instructor: false, course_id: course_id, user_id: pseudo_user.id,
                                       section: student.registration_in(Course.find(course_id)).section)
-      registration.save!
     end
+    registration.save!
   end
 
 

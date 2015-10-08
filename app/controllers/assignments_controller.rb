@@ -34,7 +34,8 @@ class AssignmentsController < ApplicationController
 
   def fix
     puts "Running fix"
-    Response.check
+    testTeamSections
+    # Response.check
     # admin = User.find_by_email('admin@email.com')
     # Course.all.each do |c|
     #   unless admin.registrations.any?{|r| r.course_id == c.id }
@@ -144,7 +145,27 @@ class AssignmentsController < ApplicationController
 
   end
 
+  def testTeamSections
+    @assignment.memberships.each do |m|
+      team = User.find(m.pseudo_user_id)
+      student = User.find(m.user_id)
+      if getSection(team) != getSection(student)
+        puts 'Section mistake for ' + team.email + ' (' + getSection(team) + ') vs. ' + student.email   + ' (' + getSection(student) + ')'
+      end
+    end
+  end
+
+  def getSection(user)
+    @course.registrations.each do |r|
+      if r.user_id == user.id
+        return r.section
+      end
+    end
+  end
+
+
   def deleteOrphanedResponses
+
     User.all.each do |u|
       if u.pseudo
         ok = false
