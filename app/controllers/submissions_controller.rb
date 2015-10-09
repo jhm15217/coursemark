@@ -76,7 +76,8 @@ class SubmissionsController < ApplicationController
           return
         else
           flash[:error] = "You can't publish unless all ratings and required comments have been done."
-          redirect_to :back
+          # redirect_to :back
+          render 'show', :layout => 'no_sidebar'
           return
         end
       end

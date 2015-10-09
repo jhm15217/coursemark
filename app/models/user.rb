@@ -62,8 +62,7 @@ class User < ActiveRecord::Base
 
   def submitting_id(submission)
     ms = submission.assignment.memberships.select{|m| m.user_id == self.id }
-    ms.each{|m| if submission.user_id == m.pseudo_user_id then puts 'Surprise: ' + m.inspect;
-                                                              return m.pseudo_user_id end }
+    ms.each{|m| if submission.user_id == m.pseudo_user_id then return m.pseudo_user_id end }
     self.id
   end
 

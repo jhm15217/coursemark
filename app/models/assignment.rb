@@ -123,12 +123,24 @@ class Assignment < ActiveRecord::Base
     ok
   end
 
+  def getTeamID(user)
+    memberships.each do |m|
+      if m.user_id == user.id
+        return m.pseudo_user_id
+      end
+    end
+    return user.id
+  end
+
   def initialize_reviewers
     reviewers = MinHeap.new
     course.get_real_students.shuffle.each do |r|
       reviews =  evaluations.forUser(r)
+      # Don't assign new reviews to someone who as completed all their reviews
       unless  reviews.length > 0 and reviews.length == reviews.select{|e| e.finished }.length
-        reviewers.push(reviews.length, r)
+        # Create a bias towards assigning reviewers who have not yet submitted so as avoid entrapment by the self-review prohibition
+        bias = submissions.any?{|s| s.user_id == getTeamID(r)}   ? 1 : 0
+        reviewers.push(2 * reviews.length + bias, r)
       end
     end
     reviewers
