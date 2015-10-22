@@ -20,8 +20,24 @@ class Evaluation < ActiveRecord::Base
     return self.responses.all? { |response| response.is_complete? }
   end
 
-  def incomplete_responses
-    return self.responses.select { |response| !response.is_complete? }
+  def mark_incomplete_questions
+    all_complete = true
+    responses.each do |response|
+      start_flag = response.question.question_text.index(' [PLEASE FINISH]')
+      if response.is_complete?
+        if start_flag
+          response.question.question_text= response.question.question_text.slice(0..start_flag)
+          response.question.save!
+        end
+      else
+        all_complete = false
+        unless start_flag
+          response.question.question_text= response.question.question_text +  ' [PLEASE FINISH]'
+          response.question.save!
+        end
+      end
+    end
+    all_complete
   end
 
   def destroy
