@@ -132,6 +132,29 @@ class Assignment < ActiveRecord::Base
     return user.id
   end
 
+
+=begin
+    Assume there S students, which is enough to do R reviews per submission; this was guaranteed by
+    required_reviews_feasible (below) checking that (S-T) >= R where T is the maximum team size.
+    For various reasons, we need to assign reviewers as submissions come in, so we can't control the number of reviews
+    each student performs directly.
+    Suppose there are N teams. To be fair we don't want to assign any student more than ceiling(NR/S) reviews, so we use
+    a priority heap to assign reviews first to the students with the fewest. However, since students can't review their
+    own team's work, we could get trapped on the last submission if it happens that the only students left with the
+    minimum number of reviews are all on the team that just submitted.
+    The following bias trick insures that can't happen:
+    A. We use a priority heap to assign R reviews to a submission when it comes in. Priority is given to the student with
+       priority 2*(Number of reviews already assigned) + (if student has submitted yet ? 1 : 0). In other words, we are biased
+       towards assigning reviews to students who haven't submitted yet.
+    B. When the next-to-last submission comes in, the only potential reviewers with zero bias are submitters of the last one.
+       Any who have the minimum number of reviews will be assigned to the next-to-last submission, because the required number
+       of reviewers is always at least the maximum team size. Then, when the final submission comes in, all its submitters
+       will have N+1 reviews. Any remaining people with N reviews will be assigned. If any with N+1 are then given an N+2nd review
+       that's OK because nobody has N reviews.
+=end
+
+
+
   def initialize_reviewers
     reviewers = MinHeap.new
     course.get_real_students.shuffle.each do |r|

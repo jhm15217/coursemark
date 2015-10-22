@@ -20,6 +20,10 @@ class Evaluation < ActiveRecord::Base
     return self.responses.all? { |response| response.is_complete? }
   end
 
+  def incomplete_responses
+    return self.responses.select { |response| !response.is_complete? }
+  end
+
   def destroy
     super
     # Response.check     # This is an expensive check that simply culls orphaned responses

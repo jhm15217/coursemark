@@ -75,6 +75,11 @@ class SubmissionsController < ApplicationController
           redirect_to  course_assignment_path ({id: params[:assignment_id]} )
           return
         else
+          evaluation.incomplete_responses.each do |r|
+            puts r.question.question_text + ' [NOT FINISHED]'
+            # r.question.question_text= r.question.question_text   + ' [NOT FINISHED]'
+            # r.question.save!
+          end
           flash[:error] = "You can't publish unless all ratings and required comments have been done."
           # redirect_to :back
           render 'show', :layout => 'no_sidebar'
