@@ -10,7 +10,7 @@
         </select>
     <% end %>
     <% if !@submission.url.blank?  %>
-            <%= link_to 'This file', @submission.url, :target => "_blank" %> has been submitted. You may re-submit.
+            A file has been submitted. Please click <%= link_to 'this', @submission.url, :target => "_blank" %> to ensure that it is readable. You may re-submit until the deadline.
     <% end %>
     <div class="field">
       <%= f.file_field :url, :accept => 'application/pdf', :required => true, :style => 'border: 0px' %>
