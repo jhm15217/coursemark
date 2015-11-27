@@ -34,7 +34,7 @@ class AssignmentsController < ApplicationController
 
   def fix
     puts "Running fix"
-    testTeamSections
+    # testTeamSections
     # Response.check
     # admin = User.find_by_email('admin@email.com')
     # Course.all.each do |c|
@@ -71,14 +71,19 @@ class AssignmentsController < ApplicationController
     #     puts "No attachment: " +  (s.user ? s.user.email.inspect : '')
     #   end
     # end
-
-    # @assignment.submissions.each do  |s|
-    #   begin
-    #     open(s.url)
-    #     puts 'OK: ' + s.url
-    #   rescue
-    #     puts 'Error, missing: ' + s.url + ' User: ' + s.user.name
-    #   end
+    file_count = 1
+    Dir.chdir('/Users/jhm/Desktop/Submissions')
+    @assignment.submissions.each do  |s|
+      begin
+        open('https:' + s.url, 'rb')  do |file|
+           process_file(file, file_count)
+           file_count = file_count + 1
+          end
+        end
+        puts 'OK: ' + s.url
+      # rescue
+      #   puts 'Error, missing: ' + s.url + ' User: ' + s.user.name
+      end
     #
     # end
     # count = 0
@@ -143,6 +148,12 @@ class AssignmentsController < ApplicationController
     #    puts 'Membership ' + membership.inspect
     # end
 
+  end
+
+  def process_file (file, count)
+    ofile = File.new(count.to_s + '.pdf', 'wb+')
+    ofile.write(file.read)
+    ofile.close
   end
 
   def testTeamSections
